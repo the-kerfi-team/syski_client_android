@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">android</string>
+    <string name="btnLogin_txt">Login</string>
 </resources>
