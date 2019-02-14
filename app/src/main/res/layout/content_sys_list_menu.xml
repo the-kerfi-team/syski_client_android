@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SysListActivity">
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="uk.co.syski.client.android.SysListMenu"
+    tools:showIn="@layout/app_bar_sys_list_menu">
 
     <ListView
         android:id="@+id/sysList"
@@ -14,4 +16,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 </android.support.constraint.ConstraintLayout>

@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openSysList(View view){
-        Intent intent = new Intent(this, SysListActivity.class);
+        Intent intent = new Intent(this, SysListMenu.class);
         startActivity(intent);
     }
 }
