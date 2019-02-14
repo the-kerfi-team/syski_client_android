@@ -17,4 +17,8 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="AppTheme.Splash">
+        <item name="android:windowBackground">@drawable/splashscrn</item>
+    </style>
+
 </resources>
