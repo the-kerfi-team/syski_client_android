@@ -16,7 +16,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SysListActivity"></activity>
+        <activity android:name=".SysListActivity" />
+        <activity
+            android:name=".SysListMenu"
+            android:label="@string/title_activity_sys_list_menu"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="uk.co.syski.client.android.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
