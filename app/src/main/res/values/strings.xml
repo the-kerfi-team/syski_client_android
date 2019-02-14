@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Syski</string>
     <string name="btnLogin_txt">Login</string>
-    <string name="title_activity_sys_list_menu">SysListMenu</string>
+    <string name="title_activity_sys_list_menu">System List</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
