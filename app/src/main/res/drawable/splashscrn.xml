@@ -3,13 +3,13 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android" android:opacity="opaque">
 
     <!-- The background color -->
-    <item android:drawable="@android:color/black"/>
+    <item android:drawable="@android:color/white"/>
 
     <!-- 144dp color version of your app icon - once implemented -->
     <item>
 
         <bitmap
-            android:src="@drawable/logo_sys_144"
+            android:src="@drawable/syski_sys_icon"
             android:gravity="center"/>
 
     </item>
