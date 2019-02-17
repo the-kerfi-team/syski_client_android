@@ -5,7 +5,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.room.Room;
+import uk.co.syski.client.android.data.CacheDatabase;
+
 public class MainActivity extends AppCompatActivity {
+
+    public final CacheDatabase Database = Room.databaseBuilder(getApplicationContext(), CacheDatabase.class, "SyskiCache").build();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
