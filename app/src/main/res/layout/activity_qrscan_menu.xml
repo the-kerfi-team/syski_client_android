@@ -19,7 +19,7 @@
         tools:layout_editor_absoluteY="167dp" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btnScan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="260dp"
