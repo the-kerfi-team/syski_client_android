@@ -3,9 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://C:\Users\cdrbv\Documents\Repos\syski_client_android\app\app.iml" filepath="C:\Users\cdrbv\Documents\Repos\syski_client_android\app\app.iml" />
       <module fileurl="file://$PROJECT_DIR$/syski_client_android.iml" filepath="$PROJECT_DIR$/syski_client_android.iml" />
-      <module fileurl="file://C:\Users\cdrbv\Documents\Repos\syski_client_android\syski_client_android.iml" filepath="C:\Users\cdrbv\Documents\Repos\syski_client_android\syski_client_android.iml" />
     </modules>
   </component>
 </project>
