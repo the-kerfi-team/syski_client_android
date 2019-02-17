@@ -113,8 +113,8 @@ public class SysListMenu extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
+        if (id == R.id.nav_qr) {
+            // Handle the QR action
         } else if (id == R.id.nav_settings){
             //Handle Settings
             Intent settings = new Intent(this, SettingsActivity.class);
