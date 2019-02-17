@@ -115,6 +115,8 @@ public class SysListMenu extends AppCompatActivity
 
         if (id == R.id.nav_qr) {
             // Handle the QR action
+            Intent intent = new Intent(this, QRScanMenuActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_settings){
             //Handle Settings
             Intent settings = new Intent(this, SettingsActivity.class);
