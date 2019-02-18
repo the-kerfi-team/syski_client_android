@@ -14,6 +14,7 @@ import uk.co.syski.client.android.data.type.*;
     },
     version = 1
 )
+@TypeConverters({Converters.class})
 public abstract class CacheDatabase extends RoomDatabase {
     public abstract SystemDao SystemDao();
     public abstract SystemTypeDao SystemTypeDao();

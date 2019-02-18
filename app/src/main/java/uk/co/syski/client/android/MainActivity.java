@@ -5,15 +5,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-import android.arch.persistence.room.*;
-import uk.co.syski.client.android.data.CacheDatabase;
+import uk.co.syski.client.android.data.Data;
 
 public class MainActivity extends AppCompatActivity {
+    public MainActivity() {
 
-    public final CacheDatabase Database = Room.databaseBuilder(getApplicationContext(), CacheDatabase.class, "SyskiCache").build();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Data.BuildDatabase(getApplicationContext());
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);

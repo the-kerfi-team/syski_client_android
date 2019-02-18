@@ -1,12 +1,13 @@
 package uk.co.syski.client.android.data.system;
 
-import java.util.Date;
-import java.util.UUID;
-import android.arch.persistence.room.*;
+        import java.util.Date;
+        import java.util.UUID;
+        import android.arch.persistence.room.*;
+        import android.support.annotation.NonNull;
 
 @Entity
 public class System {
-    @PrimaryKey
+    @PrimaryKey @NonNull
     public UUID Id;
 
     public String ModelName;

@@ -2,6 +2,8 @@ package uk.co.syski.client.android.data.systemtype;
 
 import java.util.UUID;
 import android.arch.persistence.room.*;
+import android.support.annotation.NonNull;
+
 import uk.co.syski.client.android.data.system.System;
 import uk.co.syski.client.android.data.type.Type;
 
@@ -24,6 +26,9 @@ import uk.co.syski.client.android.data.type.Type;
     }
 )
 public class SystemType {
+    @NonNull
     public UUID SystemId;
+
+    @NonNull
     public UUID TypeId;
 }
