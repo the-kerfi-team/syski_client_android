@@ -15,7 +15,7 @@ public class SyskiCache {
      */
     public static void BuildDatabase(Context Context) {
         if (Database == null)
-            Database = Room.databaseBuilder(Context, CacheDatabase.class, "SyskiCache").build();
+            Database = Room.databaseBuilder(Context, CacheDatabase.class, "SyskiCache.db").build();
     }
 
     public static CacheDatabase GetDatabase() {
