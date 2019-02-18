@@ -3,9 +3,9 @@ package uk.co.syski.client.android.data;
 import android.arch.persistence.room.Room;
 import android.content.Context;
 
-public class Data {
+public class SyskiCache {
 
-    private Data() {
+    private SyskiCache() {
     }
 
     private static CacheDatabase Database;

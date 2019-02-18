@@ -9,8 +9,8 @@ public interface SystemDao {
     @Query("SELECT * FROM System")
     List<System> indexSystems();
 
-    @Query("SELECT * FROM System WHERE Id = (:Id)")
-    System getSystem(UUID Id);
+    @Query("SELECT * FROM System WHERE Id IN (:Ids)")
+    List<System> getSystems(UUID... Ids);
 
     @Insert
     void InsertAll(System... Systems);
