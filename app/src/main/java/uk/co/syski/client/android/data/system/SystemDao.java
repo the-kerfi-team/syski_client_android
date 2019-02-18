@@ -1,8 +1,12 @@
 package uk.co.syski.client.android.data.system;
 
+import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Delete;
+import android.arch.persistence.room.Insert;
+import android.arch.persistence.room.Query;
+
 import java.util.List;
 import java.util.UUID;
-import android.arch.persistence.room.*;
 
 @Dao
 public interface SystemDao {

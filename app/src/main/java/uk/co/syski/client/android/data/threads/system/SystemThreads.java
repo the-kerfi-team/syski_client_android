@@ -16,24 +16,19 @@ public class SystemThreads {
 
     private SystemThreads() {}
 
-    private IndexSystems IndexSystems = new IndexSystems();
-    private GetSystems GetSystems = new GetSystems();
-    private InsertAll InsertAll = new InsertAll();
-    private DeleteAll DeleteAll = new DeleteAll();
-
     public List<System> IndexSystems() throws ExecutionException, InterruptedException {
-        return IndexSystems.execute().get();
+        return new IndexSystems().execute().get();
     }
 
     public List<System> GetSystems(UUID... Ids) throws ExecutionException, InterruptedException {
-        return GetSystems.execute(Ids).get();
+        return new GetSystems().execute(Ids).get();
     }
 
     public Void InsertAll(System... systems) throws ExecutionException, InterruptedException {
-        return InsertAll.execute(systems).get();
+        return new InsertAll().execute(systems).get();
     }
 
     public Void DeleteAll(System... systems) throws ExecutionException, InterruptedException {
-        return DeleteAll.execute(systems).get();
+        return new DeleteAll().execute(systems).get();
     }
 }

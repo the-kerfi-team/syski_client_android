@@ -8,6 +8,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.List;
+
+import uk.co.syski.client.android.data.system.System;
+
 public class SysListAdapter extends ArrayAdapter {
 
     //to reference the Activity
@@ -16,21 +20,15 @@ public class SysListAdapter extends ArrayAdapter {
     //to store images
     private final Integer[] imageIDarray;
 
-    //to store the list of names
-    private final String[] nameArray;
+    private List<System> mSystemList;
 
-    //to store the list of info
-    private final String[] infoArray;
-
-    public SysListAdapter(Activity context, String[] sysNames, String[] hostnames, Integer[] images){
-
-        super(context,R.layout.list_item , sysNames);
+    public SysListAdapter(Activity context, Integer[] images, List<System> systemList)
+    {
+        super(context, R.layout.list_item, systemList);
 
         this.context=context;
         this.imageIDarray = images;
-        this.nameArray = sysNames;
-        this.infoArray = hostnames;
-
+        mSystemList = systemList;
     }
 
     @Override
@@ -44,9 +42,9 @@ public class SysListAdapter extends ArrayAdapter {
         ImageView imageView = (ImageView) rowView.findViewById(R.id.sysImg);
 
         //sets display values from arrays
-        sysNameTextField.setText(nameArray[position]);
-        hostTextField.setText(infoArray[position]);
-        imageView.setImageResource(imageIDarray[position]);
+        sysNameTextField.setText(mSystemList.get(position).HostName);
+        hostTextField.setText(mSystemList.get(position).HostName);
+        imageView.setImageResource(imageIDarray[1]);
 
         return rowView;
     }
