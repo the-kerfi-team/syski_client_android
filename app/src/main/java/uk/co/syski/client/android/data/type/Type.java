@@ -1,7 +1,7 @@
 package uk.co.syski.client.android.data.type;
 
 import java.util.UUID;
-import androidx.room.*;
+import android.arch.persistence.room.*;
 
 @Entity
 public class Type {

@@ -2,7 +2,7 @@ package uk.co.syski.client.android.data.system;
 
 import java.util.Date;
 import java.util.UUID;
-import androidx.room.*;
+import android.arch.persistence.room.*;
 
 @Entity
 public class System {

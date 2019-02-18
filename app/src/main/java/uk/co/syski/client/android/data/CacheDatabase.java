@@ -1,6 +1,6 @@
 package uk.co.syski.client.android.data;
 
-import androidx.room.*;
+import android.arch.persistence.room.*;
 import uk.co.syski.client.android.data.system.System;
 import uk.co.syski.client.android.data.system.SystemDao;
 import uk.co.syski.client.android.data.systemtype.*;

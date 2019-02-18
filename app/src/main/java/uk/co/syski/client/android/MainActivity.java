@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-import androidx.room.Room;
+import android.arch.persistence.room.*;
 import uk.co.syski.client.android.data.CacheDatabase;
 
 public class MainActivity extends AppCompatActivity {

@@ -2,7 +2,7 @@ package uk.co.syski.client.android.data.system;
 
 import java.util.List;
 import java.util.UUID;
-import androidx.room.*;
+import android.arch.persistence.room.*;
 
 @Dao
 public interface SystemDao {
