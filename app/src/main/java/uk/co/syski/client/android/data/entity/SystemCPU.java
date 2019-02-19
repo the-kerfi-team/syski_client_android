@@ -2,6 +2,7 @@ package uk.co.syski.client.android.data.entity;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
+import android.support.annotation.NonNull;
 
 import java.util.UUID;
 
@@ -24,7 +25,9 @@ import java.util.UUID;
     }
 )
 public class SystemCPU {
+    @NonNull
     public UUID SystemId;
 
+    @NonNull
     public UUID CPUId;
 }
