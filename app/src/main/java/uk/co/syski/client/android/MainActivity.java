@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }).start();
 
-
+/*
         System system = new System();
         UUID uuid = UUID.fromString("38400000-8cf0-11bd-b23e-10b96e4ef00d");
         system.Id = uuid.randomUUID();
@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+*/
 
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
