@@ -12,9 +12,6 @@ import uk.co.syski.client.android.data.entity.SystemCPU;
 
 @Dao
 public interface SystemCPUDao {
-    @Query("SELECT CPUId FROM SystemCPU WHERE SystemId IN (:Ids)")
-    List<UUID> GetCPUIds(UUID... Ids);
-
     @Insert
     void InsertAll(SystemCPU... SystemCPUs);
 

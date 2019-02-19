@@ -16,10 +16,6 @@ public class SystemCPUThreads {
 
     private SystemCPUThreads() {}
 
-    public List<UUID> GetCPUIds(UUID... Ids) throws ExecutionException, InterruptedException {
-        return new GetCPUIds().execute(Ids).get();
-    }
-
     public Void InsertAll(SystemCPU... SystemCPUs) throws ExecutionException, InterruptedException {
         return new InsertAll().execute(SystemCPUs).get();
     }
