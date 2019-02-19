@@ -9,7 +9,7 @@
     <item>
 
         <bitmap
-            android:src="@drawable/placeholder"
+            android:src="@drawable/syski_sys_icon"
             android:gravity="center"/>
 
     </item>
