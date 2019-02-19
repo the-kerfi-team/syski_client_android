@@ -1,11 +1,11 @@
-package uk.co.syski.client.android.data.thread.system;
+package uk.co.syski.client.android.data.thread.entity.system;
 
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 import uk.co.syski.client.android.data.entity.System;
-import uk.co.syski.client.android.data.thread.system.statement.*;
+import uk.co.syski.client.android.data.thread.entity.system.statement.*;
 
 public class SystemThreads {
     private static final SystemThreads ourInstance = new SystemThreads();

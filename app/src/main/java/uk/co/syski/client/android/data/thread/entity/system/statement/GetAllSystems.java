@@ -1,18 +1,18 @@
-package uk.co.syski.client.android.data.thread.system.statement;
+package uk.co.syski.client.android.data.thread.entity.system.statement;
 
 import android.os.AsyncTask;
+
+import java.util.List;
 
 import uk.co.syski.client.android.data.SyskiCache;
 import uk.co.syski.client.android.data.entity.System;
 import uk.co.syski.client.android.data.dao.SystemDao;
 
-public final class InsertAll extends AsyncTask<System, Void, Void> {
+public final class GetAllSystems extends AsyncTask<Void, Void, List<System>>{
 
     @Override
-    protected Void doInBackground(System... Systems) {
+    protected List<System> doInBackground(Void... voids) {
         SystemDao SystemDao = SyskiCache.GetDatabase().SystemDao();
-        SystemDao.InsertAll(Systems);
-        return null;
+        return SystemDao.getAllSystems();
     }
-
 }

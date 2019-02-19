@@ -1,11 +1,11 @@
-package uk.co.syski.client.android.data.thread.type;
+package uk.co.syski.client.android.data.thread.entity.type;
 
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 import uk.co.syski.client.android.data.entity.Type;
-import uk.co.syski.client.android.data.thread.type.statement.*;
+import uk.co.syski.client.android.data.thread.entity.type.statement.*;
 
 public class TypeThreads {
     private static final TypeThreads ourInstance = new TypeThreads();
