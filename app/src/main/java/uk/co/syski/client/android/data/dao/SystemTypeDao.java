@@ -10,7 +10,4 @@ import uk.co.syski.client.android.data.entity.SystemType;
 public interface SystemTypeDao {
     @Insert
     void InsertAll(SystemType... SystemTypes);
-
-    @Delete
-    void DeleteAll(SystemType... SystemTypes);
 }

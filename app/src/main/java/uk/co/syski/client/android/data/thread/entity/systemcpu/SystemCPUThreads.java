@@ -19,8 +19,4 @@ public class SystemCPUThreads {
     public Void InsertAll(SystemCPU... SystemCPUs) throws ExecutionException, InterruptedException {
         return new InsertAll().execute(SystemCPUs).get();
     }
-
-    public Void DeleteAll(SystemCPU... SystemCPUs) throws ExecutionException, InterruptedException {
-        return new DeleteAll().execute().get();
-    }
 }

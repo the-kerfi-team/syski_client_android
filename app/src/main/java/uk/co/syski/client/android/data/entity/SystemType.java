@@ -4,8 +4,7 @@ import java.util.UUID;
 import android.arch.persistence.room.*;
 import android.support.annotation.NonNull;
 
-import uk.co.syski.client.android.data.entity.System;
-import uk.co.syski.client.android.data.entity.Type;
+import static android.arch.persistence.room.ForeignKey.CASCADE;
 
 @Entity(
     primaryKeys = {
@@ -16,12 +15,14 @@ import uk.co.syski.client.android.data.entity.Type;
         @ForeignKey(
             entity = System.class,
             parentColumns = "Id",
-            childColumns = "SystemId"
+            childColumns = "SystemId",
+            onDelete = CASCADE
         ),
         @ForeignKey(
             entity = Type.class,
             parentColumns = "Id",
-            childColumns = "TypeId"
+            childColumns = "TypeId",
+            onDelete = CASCADE
         )
     }
 )

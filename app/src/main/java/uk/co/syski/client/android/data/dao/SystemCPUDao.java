@@ -14,7 +14,4 @@ import uk.co.syski.client.android.data.entity.SystemCPU;
 public interface SystemCPUDao {
     @Insert
     void InsertAll(SystemCPU... SystemCPUs);
-
-    @Delete
-    void DeleteAll(SystemCPU... SystemCPUs);
 }

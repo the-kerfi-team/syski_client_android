@@ -6,6 +6,8 @@ import android.support.annotation.NonNull;
 
 import java.util.UUID;
 
+import static android.arch.persistence.room.ForeignKey.CASCADE;
+
 @Entity(
     primaryKeys = {
             "SystemId",
@@ -15,12 +17,14 @@ import java.util.UUID;
         @ForeignKey(
             entity = System.class,
             parentColumns = "Id",
-            childColumns = "SystemId"
+            childColumns = "SystemId",
+            onDelete = CASCADE
         ),
         @ForeignKey(
             entity = CPU.class,
             parentColumns = "Id",
-            childColumns = "CPUId"
+            childColumns = "CPUId",
+            onDelete = CASCADE
         )
     }
 )
