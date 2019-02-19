@@ -8,7 +8,7 @@ import uk.co.syski.client.android.data.entity.Type;
 
 @Dao
 public interface TypeDao {
-    @Query("SELECT Name FROM Type WHERE Id IN (:Ids)")
+    @Query("SELECT Name FROM Type INNER JOIN SystemType WHERE SystemId IN (:Ids)")
     List<String> getTypeNames(UUID... Ids);
 
     @Insert
