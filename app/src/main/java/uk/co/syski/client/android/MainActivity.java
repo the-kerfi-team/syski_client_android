@@ -9,8 +9,8 @@ import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 import uk.co.syski.client.android.data.SyskiCache;
-import uk.co.syski.client.android.data.system.System;
-import uk.co.syski.client.android.data.threads.SyskiCacheThread;
+import uk.co.syski.client.android.data.entity.System;
+import uk.co.syski.client.android.data.thread.SyskiCacheThread;
 
 public class MainActivity extends AppCompatActivity {
     public MainActivity() {

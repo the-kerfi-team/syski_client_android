@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import uk.co.syski.client.android.data.system.System;
+import uk.co.syski.client.android.data.entity.System;
 
 public class SysListAdapter extends ArrayAdapter {
 

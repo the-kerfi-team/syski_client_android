@@ -18,8 +18,8 @@ import android.widget.ListView;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import uk.co.syski.client.android.data.system.System;
-import uk.co.syski.client.android.data.threads.SyskiCacheThread;
+import uk.co.syski.client.android.data.entity.System;
+import uk.co.syski.client.android.data.thread.SyskiCacheThread;
 
 public class SysListMenu extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
