@@ -1,10 +1,9 @@
-package uk.co.syski.client.android.data.thread.entity.systemcpu;
+package uk.co.syski.client.android.data.thread.entity.linking.systemcpu;
 
-import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
-import uk.co.syski.client.android.data.entity.SystemCPU;
+import uk.co.syski.client.android.data.entity.linking.SystemCPU;
+import uk.co.syski.client.android.data.thread.entity.linking.systemcpu.statement.InsertAll;
 import uk.co.syski.client.android.data.thread.entity.systemcpu.statement.*;
 
 public class SystemCPUThreads {

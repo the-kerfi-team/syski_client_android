@@ -1,8 +1,11 @@
-package uk.co.syski.client.android.data.entity;
+package uk.co.syski.client.android.data.entity.linking;
 
 import java.util.UUID;
 import android.arch.persistence.room.*;
 import android.support.annotation.NonNull;
+
+import uk.co.syski.client.android.data.entity.System;
+import uk.co.syski.client.android.data.entity.Type;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
