@@ -20,6 +20,8 @@ android:
   - android-${ANDROID_API}
   - build-tools-${ANDROID_BUILD_TOOLS}
   - extra
+before_install:
+ - chmod +x gradlew
 after_success:
  - wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
  - chmod +x send.sh
