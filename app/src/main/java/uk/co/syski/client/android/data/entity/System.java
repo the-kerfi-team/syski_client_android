@@ -1,4 +1,4 @@
-package uk.co.syski.client.android.data.system;
+package uk.co.syski.client.android.data.entity;
 
         import java.util.Date;
         import java.util.UUID;

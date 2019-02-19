@@ -1,11 +1,11 @@
-package uk.co.syski.client.android.data.threads.system;
+package uk.co.syski.client.android.data.thread.system;
 
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
-import uk.co.syski.client.android.data.system.System;
-import uk.co.syski.client.android.data.threads.system.statements.*;
+import uk.co.syski.client.android.data.entity.System;
+import uk.co.syski.client.android.data.thread.system.statement.*;
 
 public class SystemThreads {
     private static final SystemThreads ourInstance = new SystemThreads();
@@ -17,7 +17,7 @@ public class SystemThreads {
     private SystemThreads() {}
 
     public List<System> IndexSystems() throws ExecutionException, InterruptedException {
-        return new IndexSystems().execute().get();
+        return new GetAllSystems().execute().get();
     }
 
     public List<System> GetSystems(UUID... Ids) throws ExecutionException, InterruptedException {

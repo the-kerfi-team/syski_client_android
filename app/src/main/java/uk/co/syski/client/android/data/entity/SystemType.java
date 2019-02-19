@@ -1,11 +1,11 @@
-package uk.co.syski.client.android.data.systemtype;
+package uk.co.syski.client.android.data.entity;
 
 import java.util.UUID;
 import android.arch.persistence.room.*;
 import android.support.annotation.NonNull;
 
-import uk.co.syski.client.android.data.system.System;
-import uk.co.syski.client.android.data.type.Type;
+import uk.co.syski.client.android.data.entity.System;
+import uk.co.syski.client.android.data.entity.Type;
 
 @Entity(
     primaryKeys = {

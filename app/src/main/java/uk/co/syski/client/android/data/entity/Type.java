@@ -1,4 +1,4 @@
-package uk.co.syski.client.android.data.type;
+package uk.co.syski.client.android.data.entity;
 
 import java.util.UUID;
 import android.arch.persistence.room.*;

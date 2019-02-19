@@ -1,6 +1,6 @@
-package uk.co.syski.client.android.data.threads;
+package uk.co.syski.client.android.data.thread;
 
-import uk.co.syski.client.android.data.threads.system.SystemThreads;
+import uk.co.syski.client.android.data.thread.system.SystemThreads;
 
 public class SyskiCacheThread {
     private static final SyskiCacheThread ourInstance = new SyskiCacheThread();
@@ -12,5 +12,5 @@ public class SyskiCacheThread {
     private SyskiCacheThread() {
     }
 
-    public final SystemThreads SystemThreads = uk.co.syski.client.android.data.threads.system.SystemThreads.getInstance();
+    public final SystemThreads SystemThreads = uk.co.syski.client.android.data.thread.system.SystemThreads.getInstance();
 }
