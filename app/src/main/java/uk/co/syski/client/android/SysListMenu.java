@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.List;
@@ -65,6 +66,19 @@ public class SysListMenu extends AppCompatActivity
         SysListAdapter adapter = new SysListAdapter(this, imageArray, systemList);
         listView = findViewById(R.id.sysList);
         listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(SysListMenu.this, SysOverviewActivity.class);
+
+                //Add extra here to identify the tapped system
+
+                intent.putExtra("placeholdertxt", "Placeholder");
+
+                startActivity(intent);
+            }
+        });
 
     }
 
