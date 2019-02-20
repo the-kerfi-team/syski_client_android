@@ -3,13 +3,17 @@ package uk.co.syski.client.android.data;
 import android.arch.persistence.room.*;
 
 import uk.co.syski.client.android.data.dao.CPUDao;
+import uk.co.syski.client.android.data.dao.OperatingSystemDao;
 import uk.co.syski.client.android.data.dao.linking.SystemCPUDao;
+import uk.co.syski.client.android.data.dao.linking.SystemOSDao;
 import uk.co.syski.client.android.data.dao.linking.SystemTypeDao;
 import uk.co.syski.client.android.data.dao.TypeDao;
 import uk.co.syski.client.android.data.entity.CPU;
+import uk.co.syski.client.android.data.entity.OperatingSystem;
 import uk.co.syski.client.android.data.entity.System;
 import uk.co.syski.client.android.data.dao.SystemDao;
 import uk.co.syski.client.android.data.entity.linking.SystemCPU;
+import uk.co.syski.client.android.data.entity.linking.SystemOS;
 import uk.co.syski.client.android.data.entity.linking.SystemType;
 import uk.co.syski.client.android.data.entity.Type;
 
@@ -19,7 +23,9 @@ import uk.co.syski.client.android.data.entity.Type;
         SystemType.class,
         Type.class,
         CPU.class,
-        SystemCPU.class
+        SystemCPU.class,
+        OperatingSystem.class,
+        SystemOS.class
     },
     version = 1
 )
@@ -30,5 +36,7 @@ public abstract class CacheDatabase extends RoomDatabase {
     public abstract TypeDao TypeDao();
     public abstract CPUDao CPUDao();
     public abstract SystemCPUDao SystemCPUDao();
+    public abstract OperatingSystemDao OperatingSystemDao();
+    public abstract SystemOSDao SystemOSDao();
 }
 
