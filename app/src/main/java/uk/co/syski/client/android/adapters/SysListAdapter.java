@@ -1,4 +1,4 @@
-package uk.co.syski.client.android;
+package uk.co.syski.client.android.adapters;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -10,8 +10,12 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.data.entity.System;
 
+/**
+ * SysListAdapter - An ArrayAdapter class used for listing systems from an array in the system list
+ */
 public class SysListAdapter extends ArrayAdapter {
 
     //to reference the Activity
