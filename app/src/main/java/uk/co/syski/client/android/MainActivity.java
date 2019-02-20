@@ -127,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static class Tab_Authentication extends Fragment {
 
+        protected boolean mDisableButton;
         protected EditText mEmailView;
         protected EditText mPasswordView;
 
@@ -183,6 +184,7 @@ public class MainActivity extends AppCompatActivity {
             mEmailView.setError(getString(R.string.error_invalid_email));
             mPasswordView.setError(getString(R.string.error_incorrect_password));
             mPasswordView.requestFocus();
+            mDisableButton = false;
         }
 
         protected boolean isEmailValid(String email)
@@ -232,42 +234,45 @@ public class MainActivity extends AppCompatActivity {
         }
 
         private void attemptLogin() {
-            mEmailView.setError(null);
-            mPasswordView.setError(null);
+            if (!mDisableButton) {
+                mDisableButton = true;
+                mEmailView.setError(null);
+                mPasswordView.setError(null);
 
-            final String email = mEmailView.getText().toString();
-            final String password = mPasswordView.getText().toString();
+                final String email = mEmailView.getText().toString();
+                final String password = mPasswordView.getText().toString();
 
-            boolean cancel = false;
-            View focusView = null;
+                boolean cancel = false;
+                View focusView = null;
 
-            if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-                mPasswordView.setError(getString(R.string.error_invalid_password));
-                focusView = mPasswordView;
-                cancel = true;
-            }
-
-            if (TextUtils.isEmpty(email)) {
-                mEmailView.setError(getString(R.string.error_field_required));
-                focusView = mEmailView;
-                cancel = true;
-            } else if (!isEmailValid(email)) {
-                mEmailView.setError(getString(R.string.error_invalid_email));
-                focusView = mEmailView;
-                cancel = true;
-            }
-
-            if (cancel) {
-                focusView.requestFocus();
-            } else {
-                JSONObject jsonBody = new JSONObject();
-                try {
-                    jsonBody.put("email", email);
-                    jsonBody.put("password", password);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+                    mPasswordView.setError(getString(R.string.error_invalid_password));
+                    focusView = mPasswordView;
+                    cancel = true;
                 }
-                sendAPIRequest("auth/user/login", jsonBody);
+
+                if (TextUtils.isEmpty(email)) {
+                    mEmailView.setError(getString(R.string.error_field_required));
+                    focusView = mEmailView;
+                    cancel = true;
+                } else if (!isEmailValid(email)) {
+                    mEmailView.setError(getString(R.string.error_invalid_email));
+                    focusView = mEmailView;
+                    cancel = true;
+                }
+
+                if (cancel) {
+                    focusView.requestFocus();
+                } else {
+                    JSONObject jsonBody = new JSONObject();
+                    try {
+                        jsonBody.put("email", email);
+                        jsonBody.put("password", password);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    sendAPIRequest("auth/user/login", jsonBody);
+                }
             }
         }
 
@@ -309,42 +314,46 @@ public class MainActivity extends AppCompatActivity {
         }
 
         private void attemptRegister() {
-            mEmailView.setError(null);
-            mPasswordView.setError(null);
+            if (!mDisableButton) {
+                mDisableButton = true;
+                mEmailView.setError(null);
+                mPasswordView.setError(null);
 
-            final String email = mEmailView.getText().toString();
-            final String password = mPasswordView.getText().toString();
+                final String email = mEmailView.getText().toString();
+                final String password = mPasswordView.getText().toString();
 
-            boolean cancel = false;
-            View focusView = null;
+                boolean cancel = false;
+                View focusView = null;
 
-            if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-                mPasswordView.setError(getString(R.string.error_invalid_password));
-                focusView = mPasswordView;
-                cancel = true;
-            }
-
-            if (TextUtils.isEmpty(email)) {
-                mEmailView.setError(getString(R.string.error_field_required));
-                focusView = mEmailView;
-                cancel = true;
-            } else if (!isEmailValid(email)) {
-                mEmailView.setError(getString(R.string.error_invalid_email));
-                focusView = mEmailView;
-                cancel = true;
-            }
-
-            if (cancel) {
-                focusView.requestFocus();
-            } else {
-                JSONObject jsonBody = new JSONObject();
-                try {
-                    jsonBody.put("email", email);
-                    jsonBody.put("password", password);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+                    mPasswordView.setError(getString(R.string.error_invalid_password));
+                    focusView = mPasswordView;
+                    cancel = true;
                 }
-                sendAPIRequest("auth/user/register", jsonBody);
+
+                if (TextUtils.isEmpty(email)) {
+                    mEmailView.setError(getString(R.string.error_field_required));
+                    focusView = mEmailView;
+                    cancel = true;
+                } else if (!isEmailValid(email)) {
+                    mEmailView.setError(getString(R.string.error_invalid_email));
+                    focusView = mEmailView;
+                    cancel = true;
+                }
+
+                if (cancel) {
+                    focusView.requestFocus();
+                } else {
+                    mDisableButton = true;
+                    JSONObject jsonBody = new JSONObject();
+                    try {
+                        jsonBody.put("email", email);
+                        jsonBody.put("password", password);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    sendAPIRequest("auth/user/register", jsonBody);
+                }
             }
         }
 
