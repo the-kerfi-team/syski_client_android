@@ -37,7 +37,9 @@
             android:name=".SysOverviewActivity"
             android:label="@string/sys_overview_lbl"
             android:parentActivityName=".SysListMenu" />
-        <activity android:name=".cpuActivity"></activity>
+        <activity
+            android:name=".cpuActivity"
+            android:parentActivityName=".SysOverviewActivity"/>
     </application>
 
 </manifest>
