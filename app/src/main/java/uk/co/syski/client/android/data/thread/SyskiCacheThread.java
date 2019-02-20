@@ -5,6 +5,7 @@ import uk.co.syski.client.android.data.thread.entity.system.SystemThreads;
 import uk.co.syski.client.android.data.thread.entity.linking.systemcpu.SystemCPUThreads;
 import uk.co.syski.client.android.data.thread.entity.linking.systemtype.SystemTypeThreads;
 import uk.co.syski.client.android.data.thread.entity.type.TypeThreads;
+import uk.co.syski.client.android.data.thread.entity.user.UserThreads;
 
 public class SyskiCacheThread {
     private static final SyskiCacheThread ourInstance = new SyskiCacheThread();
@@ -15,6 +16,8 @@ public class SyskiCacheThread {
 
     private SyskiCacheThread() {
     }
+
+    public final UserThreads UserThreads = uk.co.syski.client.android.data.thread.entity.user.UserThreads.getInstance();
 
     public final SystemThreads SystemThreads = uk.co.syski.client.android.data.thread.entity.system.SystemThreads.getInstance();
 
