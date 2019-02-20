@@ -17,7 +17,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -27,6 +26,7 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 
 import org.json.JSONException;
@@ -37,6 +37,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import uk.co.syski.client.android.data.SyskiCache;
+
 public class MainActivity extends AppCompatActivity {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
@@ -45,6 +47,35 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SyskiCache.BuildDatabase(getApplicationContext());
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                SyskiCache.GetDatabase().clearAllTables();
+            }
+        }).start();
+
+/*
+        System system = new System();
+        UUID uuid = UUID.fromString("38400000-8cf0-11bd-b23e-10b96e4ef00d");
+        system.Id = uuid.randomUUID();
+        system.HostName = "Earth";
+
+        System system1 = new System();
+        system1.Id = uuid.randomUUID();
+        system1.HostName = "Mars";
+
+        try {
+            SyskiCacheThread.getInstance().SystemThreads.InsertAll(system);
+            SyskiCacheThread.getInstance().SystemThreads.InsertAll(system1);
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+*/
+
         super.onCreate(savedInstanceState);
         setTheme(R.style.AppTheme);
         setContentView(R.layout.activity_main);
@@ -78,11 +109,50 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public static class Tab_Login extends Fragment
-    {
+    public static class Tab_Authentication extends Fragment {
 
-        private AutoCompleteTextView mEmailView;
-        private EditText mPasswordView;
+        protected EditText mEmailView;
+        protected EditText mPasswordView;
+
+        public Tab_Authentication() {
+
+        }
+
+        protected void sendAPIRequest(String url, JSONObject jsonBody) {
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, "https://api.syski.co.uk/" + url, jsonBody,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            RequestSuccessful(response);
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            RequestFailed(error);
+                        }
+                    });
+            VolleySingleton.getInstance(getActivity()).addToRequestQueue(request);
+        }
+
+        protected void RequestSuccessful(JSONObject response) {
+
+        }
+
+        protected void RequestFailed(VolleyError error) {
+
+        }
+
+        protected boolean isEmailValid(String email) {
+            return email.contains("@");
+        }
+
+        protected boolean isPasswordValid(String password) {
+            return password.length() > 6;
+        }
+    }
+
+    public static class Tab_Login extends Tab_Authentication {
 
         public Tab_Login() {
 
@@ -90,11 +160,10 @@ public class MainActivity extends AppCompatActivity {
 
         @Nullable
         @Override
-        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
-        {
+        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             View view = inflater.inflate(R.layout.fragment_main_tab_login, container, false);
 
-            mEmailView = (AutoCompleteTextView) view.findViewById(R.id.email);
+            mEmailView = (EditText) view.findViewById(R.id.email);
             mPasswordView = (EditText) view.findViewById(R.id.password);
             mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
@@ -147,73 +216,33 @@ public class MainActivity extends AppCompatActivity {
             if (cancel) {
                 focusView.requestFocus();
             } else {
-                StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://api.syski.co.uk/auth/user/login",
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                try {
-                                    JSONObject obj = new JSONObject(response);
 
-                                    if (!obj.getBoolean("error")) {
-                                        Toast.makeText(getActivity(), obj.getString("message"), Toast.LENGTH_SHORT).show();
+                JSONObject paramJson = new JSONObject();
+                try {
+                    paramJson.put("email", email);
+                    paramJson.put("password", password);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
-                                        getActivity().finish();
-                                        startActivity(new Intent(getActivity(), SysListMenu.class));
-                                    } else {
-                                        Toast.makeText(getActivity(), obj.getString("message"), Toast.LENGTH_SHORT).show();
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                                mPasswordView.requestFocus();
-                            }
-                        }) {
-                    @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
-                        Map<String, String> params = new HashMap<>();
-                        params.put("email", email);
-                        params.put("password", password);
-                        return params;
-                    }
-                };
-                VolleySingleton.getInstance(getActivity()).addToRequestQueue(stringRequest);
+
             }
-        }
-
-        private boolean isEmailValid(String email) {
-            return email.contains("@");
-        }
-
-        private boolean isPasswordValid(String password) {
-            return password.length() > 6;
         }
 
     }
 
-    public static class Tab_Register extends Fragment
-    {
+    public static class Tab_Register extends Tab_Authentication {
 
-        private AutoCompleteTextView mEmailView;
-        private EditText mPasswordView;
-
-        public Tab_Register()
-        {
+        public Tab_Register() {
 
         }
 
         @Nullable
         @Override
-        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
-        {
-            View view = inflater.inflate(R.layout.fragment_main_tab_login, container, false);
+        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+            View view = inflater.inflate(R.layout.fragment_main_tab_register, container, false);
 
-            mEmailView = (AutoCompleteTextView) view.findViewById(R.id.email);
+            mEmailView = (EditText) view.findViewById(R.id.email);
             mPasswordView = (EditText) view.findViewById(R.id.password);
             mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
@@ -226,8 +255,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-            Button mEmailSignInButton = (Button) view.findViewById(R.id.email_sign_in_button);
-            mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
+            Button mEmailSignUpButton = (Button) view.findViewById(R.id.email_sign_up_button);
+            mEmailSignUpButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     attemptRegister();
@@ -305,14 +334,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        private boolean isEmailValid(String email) {
-            return email.contains("@");
-        }
-
-        private boolean isPasswordValid(String password) {
-            return password.length() > 6;
-        }
-
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
@@ -324,8 +345,7 @@ public class MainActivity extends AppCompatActivity {
             super(fm);
         }
 
-        public void addFragment(Fragment fragment, String title)
-        {
+        public void addFragment(Fragment fragment, String title) {
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
         }
