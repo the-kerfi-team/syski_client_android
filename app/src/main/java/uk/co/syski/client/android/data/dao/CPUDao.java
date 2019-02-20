@@ -12,7 +12,8 @@ import uk.co.syski.client.android.data.entity.CPU;
 
 @Dao
 public interface CPUDao {
-    @Query("SELECT * FROM CPU INNER JOIN SystemCPU WHERE SystemId IN (:Ids)")
+    @Query("SELECT Id, ModelName, ManufacturerName, ArchitectureName, ClockSpeed, CoreCount, ThreadCount" +
+            " FROM CPU INNER JOIN SystemCPU WHERE SystemId IN (:Ids)")
     List<CPU> getCPUs(UUID... Ids);
 
     @Insert
