@@ -133,6 +133,15 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         }
     }
 
+    public boolean onOptionsItemSelected(MenuItem menu) {
+        switch (menu.getItemId())
+        {
+            case 16908332: finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(menu);
+    }
+
     /**
      * {@inheritDoc}
      */

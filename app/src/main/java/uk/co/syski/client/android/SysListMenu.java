@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import uk.co.syski.client.android.adapters.SysListAdapter;
+import uk.co.syski.client.android.data.SyskiCache;
 import uk.co.syski.client.android.data.entity.System;
 import uk.co.syski.client.android.data.thread.SyskiCacheThread;
 
@@ -125,12 +126,15 @@ public class SysListMenu extends AppCompatActivity
             //Handle Settings
             Intent settings = new Intent(this, SettingsActivity.class);
             startActivity(settings);
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.nav_logout) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    SyskiCache.GetDatabase().clearAllTables();
+                }
+            }).start();
+            finish();
+            startActivity(new Intent(this, MainActivity.class));
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
