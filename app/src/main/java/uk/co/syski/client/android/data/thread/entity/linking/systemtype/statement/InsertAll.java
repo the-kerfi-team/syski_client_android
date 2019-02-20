@@ -1,10 +1,10 @@
-package uk.co.syski.client.android.data.thread.systemtype.statement;
+package uk.co.syski.client.android.data.thread.entity.linking.systemtype.statement;
 
 import android.os.AsyncTask;
 
 import uk.co.syski.client.android.data.SyskiCache;
-import uk.co.syski.client.android.data.dao.SystemTypeDao;
-import uk.co.syski.client.android.data.entity.SystemType;
+import uk.co.syski.client.android.data.dao.linking.SystemTypeDao;
+import uk.co.syski.client.android.data.entity.linking.SystemType;
 
 public final class InsertAll extends AsyncTask<SystemType, Void, Void> {
 

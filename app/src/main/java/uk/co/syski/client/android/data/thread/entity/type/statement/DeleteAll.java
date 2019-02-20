@@ -1,4 +1,4 @@
-package uk.co.syski.client.android.data.thread.type.statement;
+package uk.co.syski.client.android.data.thread.entity.type.statement;
 
 import android.os.AsyncTask;
 
