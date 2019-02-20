@@ -2,9 +2,7 @@ package uk.co.syski.client.android;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,11 +14,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
+import uk.co.syski.client.android.adapters.SysListAdapter;
 import uk.co.syski.client.android.data.entity.System;
 import uk.co.syski.client.android.data.thread.SyskiCacheThread;
 
@@ -75,7 +73,7 @@ public class SysListMenu extends AppCompatActivity
                 Intent intent = new Intent(SysListMenu.this, SysOverviewActivity.class);
 
                 //Add extra here to identify the tapped system
-                UUID extra = systemList.get(position).Id;
+                String extra = systemList.get(position).Id.toString();
                 intent.putExtra("SYSTEMID",extra);
                 startActivity(intent);
             }
