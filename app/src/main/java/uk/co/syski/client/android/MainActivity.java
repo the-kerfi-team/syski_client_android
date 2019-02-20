@@ -263,6 +263,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if (cancel) {
                     focusView.requestFocus();
+                    mDisableButton = false;
                 } else {
                     JSONObject jsonBody = new JSONObject();
                     try {
@@ -343,8 +344,8 @@ public class MainActivity extends AppCompatActivity {
 
                 if (cancel) {
                     focusView.requestFocus();
+                    mDisableButton = false;
                 } else {
-                    mDisableButton = true;
                     JSONObject jsonBody = new JSONObject();
                     try {
                         jsonBody.put("email", email);
