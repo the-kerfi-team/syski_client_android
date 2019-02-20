@@ -3,14 +3,14 @@ package uk.co.syski.client.android.data;
 import android.arch.persistence.room.*;
 
 import uk.co.syski.client.android.data.dao.CPUDao;
-import uk.co.syski.client.android.data.dao.SystemCPUDao;
-import uk.co.syski.client.android.data.dao.SystemTypeDao;
+import uk.co.syski.client.android.data.dao.linking.SystemCPUDao;
+import uk.co.syski.client.android.data.dao.linking.SystemTypeDao;
 import uk.co.syski.client.android.data.dao.TypeDao;
 import uk.co.syski.client.android.data.entity.CPU;
 import uk.co.syski.client.android.data.entity.System;
 import uk.co.syski.client.android.data.dao.SystemDao;
-import uk.co.syski.client.android.data.entity.SystemCPU;
-import uk.co.syski.client.android.data.entity.SystemType;
+import uk.co.syski.client.android.data.entity.linking.SystemCPU;
+import uk.co.syski.client.android.data.entity.linking.SystemType;
 import uk.co.syski.client.android.data.entity.Type;
 
 @Database(
