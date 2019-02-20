@@ -19,22 +19,22 @@ import uk.co.syski.client.android.data.entity.linking.SystemType;
 
 @Database(
     entities = {
+        User.class,
         System.class,
         SystemType.class,
         Type.class,
         CPU.class,
-        SystemCPU.class,
-        User.class
+        SystemCPU.class
     },
     version = 1
 )
 @TypeConverters({Converters.class})
 public abstract class CacheDatabase extends RoomDatabase {
+    public abstract UserDao UserDao();
     public abstract SystemDao SystemDao();
     public abstract SystemTypeDao SystemTypeDao();
     public abstract TypeDao TypeDao();
     public abstract CPUDao CPUDao();
     public abstract SystemCPUDao SystemCPUDao();
-    public abstract UserDao UserDao();
 }
 

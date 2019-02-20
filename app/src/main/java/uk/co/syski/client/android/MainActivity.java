@@ -33,6 +33,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 import uk.co.syski.client.android.api.VolleySingleton;
@@ -97,16 +98,20 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.sys_list_menu, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+
         if (id == R.id.action_settings) {
+            Intent settings = new Intent(this, SettingsActivity.class);
+            startActivity(settings);
             return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -120,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         protected void sendAPIRequest(String url, JSONObject jsonBody) {
-            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(null);
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
             String api_url = sp.getString("pref_api_url", getString(R.string.pref_api_url_default));
             String api_port = sp.getString("pref_api_port", getString(R.string.pref_api_port_default));
             String api_path = sp.getString("pref_api_path", getString(R.string.pref_api_path_default));
@@ -144,6 +149,7 @@ public class MainActivity extends AppCompatActivity {
         protected void RequestSuccessful(JSONObject response) {
             User user = new User();
             try {
+                user.Id = UUID.fromString("38400000-8cf0-11bd-b23e-10b96e4ef00d");
                 user.Email = response.getString("email");
                 user.AccessToken = response.getString("token");
                 user.RefreshToken = response.getString("refreshToken");
@@ -251,7 +257,7 @@ public class MainActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                sendAPIRequest("/auth/user/login", jsonBody);
+                sendAPIRequest("auth/user/login", jsonBody);
             }
         }
 
@@ -328,7 +334,7 @@ public class MainActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                sendAPIRequest("/auth/user/register", jsonBody);
+                sendAPIRequest("auth/user/register", jsonBody);
             }
         }
 
