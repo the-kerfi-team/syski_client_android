@@ -41,9 +41,9 @@ public class SysListAdapter extends ArrayAdapter {
         View rowView = inflater.inflate(R.layout.list_item, null, true);
 
         //gets references to objects in the list item file
-        TextView sysNameTextField = (TextView) rowView.findViewById(R.id.sysName);
-        TextView hostTextField = (TextView) rowView.findViewById(R.id.sysHost);
-        ImageView imageView = (ImageView) rowView.findViewById(R.id.sysImg);
+        TextView sysNameTextField = rowView.findViewById(R.id.sysName);
+        TextView hostTextField = rowView.findViewById(R.id.sysHost);
+        ImageView imageView = rowView.findViewById(R.id.sysImg);
 
         //sets display values from arrays
         sysNameTextField.setText(mSystemList.get(position).HostName);
