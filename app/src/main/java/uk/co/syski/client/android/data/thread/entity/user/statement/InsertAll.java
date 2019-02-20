@@ -10,7 +10,7 @@ public class InsertAll extends AsyncTask<User, Void, Void> {
 
         @Override
         protected Void doInBackground(User... Users){
-            UserDao UserDao = SyskiCache.GetDatabase().userDao();
+            UserDao UserDao = SyskiCache.GetDatabase().UserDao();
             UserDao.InsertAll(Users);
             return null;
         }
