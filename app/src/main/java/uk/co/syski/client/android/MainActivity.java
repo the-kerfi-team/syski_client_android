@@ -1,7 +1,9 @@
 package uk.co.syski.client.android;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -20,24 +22,23 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
+import uk.co.syski.client.android.api.VolleySingleton;
 import uk.co.syski.client.android.data.SyskiCache;
+import uk.co.syski.client.android.data.entity.User;
+import uk.co.syski.client.android.data.thread.SyskiCacheThread;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -119,7 +120,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         protected void sendAPIRequest(String url, JSONObject jsonBody) {
-            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, "https://api.syski.co.uk/" + url, jsonBody,
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(null);
+            String api_url = sp.getString("pref_api_url", getString(R.string.pref_api_url_default));
+            String api_port = sp.getString("pref_api_port", getString(R.string.pref_api_port_default));
+            String api_path = sp.getString("pref_api_path", getString(R.string.pref_api_path_default));
+
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,  "https://" + api_url + ":" + api_port + api_path + url, jsonBody,
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
@@ -136,18 +142,40 @@ public class MainActivity extends AppCompatActivity {
         }
 
         protected void RequestSuccessful(JSONObject response) {
+            User user = new User();
+            try {
+                user.Email = response.getString("email");
+                user.AccessToken = response.getString("token");
+                user.RefreshToken = response.getString("refreshToken");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
+            try {
+                SyskiCacheThread.getInstance().UserThreads.InsertAll(user);
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            getActivity().finish();
+            startActivity(new Intent(getActivity(), SysListMenu.class));
         }
 
         protected void RequestFailed(VolleyError error) {
-
+            mEmailView.setError(getString(R.string.error_invalid_email));
+            mPasswordView.setError(getString(R.string.error_incorrect_password));
+            mPasswordView.requestFocus();
         }
 
-        protected boolean isEmailValid(String email) {
+        protected boolean isEmailValid(String email)
+        {
             return email.contains("@");
         }
 
-        protected boolean isPasswordValid(String password) {
+        protected boolean isPasswordValid(String password)
+        {
             return password.length() > 6;
         }
     }
@@ -163,8 +191,8 @@ public class MainActivity extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             View view = inflater.inflate(R.layout.fragment_main_tab_login, container, false);
 
-            mEmailView = (EditText) view.findViewById(R.id.email);
-            mPasswordView = (EditText) view.findViewById(R.id.password);
+            mEmailView = view.findViewById(R.id.email);
+            mPasswordView = view.findViewById(R.id.password);
             mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
                 public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -176,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-            Button mEmailSignInButton = (Button) view.findViewById(R.id.email_sign_in_button);
+            Button mEmailSignInButton = view.findViewById(R.id.email_sign_in_button);
             mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -216,16 +244,14 @@ public class MainActivity extends AppCompatActivity {
             if (cancel) {
                 focusView.requestFocus();
             } else {
-
-                JSONObject paramJson = new JSONObject();
+                JSONObject jsonBody = new JSONObject();
                 try {
-                    paramJson.put("email", email);
-                    paramJson.put("password", password);
+                    jsonBody.put("email", email);
+                    jsonBody.put("password", password);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-
+                sendAPIRequest("/auth/user/login", jsonBody);
             }
         }
 
@@ -295,42 +321,14 @@ public class MainActivity extends AppCompatActivity {
             if (cancel) {
                 focusView.requestFocus();
             } else {
-                StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://api.syski.co.uk/auth/user/register",
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                try {
-                                    JSONObject obj = new JSONObject(response);
-
-                                    if (!obj.getBoolean("error")) {
-                                        Toast.makeText(getActivity(), obj.getString("message"), Toast.LENGTH_SHORT).show();
-
-                                        getActivity().finish();
-                                        startActivity(new Intent(getActivity(), SysListMenu.class));
-                                    } else {
-                                        Toast.makeText(getActivity(), obj.getString("message"), Toast.LENGTH_SHORT).show();
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                                mPasswordView.requestFocus();
-                            }
-                        }) {
-                    @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
-                        Map<String, String> params = new HashMap<>();
-                        params.put("email", email);
-                        params.put("password", password);
-                        return params;
-                    }
-                };
-                VolleySingleton.getInstance(getActivity()).addToRequestQueue(stringRequest);
+                JSONObject jsonBody = new JSONObject();
+                try {
+                    jsonBody.put("email", email);
+                    jsonBody.put("password", password);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                sendAPIRequest("/auth/user/register", jsonBody);
             }
         }
 

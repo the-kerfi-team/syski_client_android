@@ -1,4 +1,4 @@
-package uk.co.syski.client.android;
+package uk.co.syski.client.android.api;
 
 import android.content.Context;
 
