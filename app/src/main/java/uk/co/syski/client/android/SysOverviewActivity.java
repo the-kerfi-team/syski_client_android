@@ -1,7 +1,10 @@
 package uk.co.syski.client.android;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -20,7 +23,6 @@ public class SysOverviewActivity extends AppCompatActivity {
     ListView listView;
 
     String[] listItems = {
-            "System",
             "CPU"
     };
     Integer[] images = {
@@ -41,6 +43,25 @@ public class SysOverviewActivity extends AppCompatActivity {
 
         SysListOverviewAdapter adapter = new SysListOverviewAdapter(this, images, listItems);
         listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Class dest;
+                switch (position) {
+                    case 0: dest = cpuActivity.class;
+                            break;
+                    default: dest = null;
+                }
+
+                Intent intent = new Intent(SysOverviewActivity.this, dest);
+
+                //Add extra here to identify the system
+                String extra = system.Id.toString();
+                intent.putExtra("SYSTEMID",extra);
+                startActivity(intent);
+            }
+        });
 
     }
 
