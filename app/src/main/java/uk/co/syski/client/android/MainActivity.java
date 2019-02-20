@@ -38,8 +38,11 @@ import java.util.concurrent.ExecutionException;
 
 import uk.co.syski.client.android.api.VolleySingleton;
 import uk.co.syski.client.android.data.SyskiCache;
+import uk.co.syski.client.android.data.entity.CPU;
 import uk.co.syski.client.android.data.entity.User;
+import uk.co.syski.client.android.data.entity.linking.SystemCPU;
 import uk.co.syski.client.android.data.thread.SyskiCacheThread;
+import uk.co.syski.client.android.data.entity.System;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -58,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }).start();
 
-/*
+
         System system = new System();
         UUID uuid = UUID.fromString("38400000-8cf0-11bd-b23e-10b96e4ef00d");
         system.Id = uuid.randomUUID();
@@ -68,15 +71,30 @@ public class MainActivity extends AppCompatActivity {
         system1.Id = uuid.randomUUID();
         system1.HostName = "Mars";
 
+        CPU cpu = new CPU();
+        cpu.ThreadCount = 2;
+        cpu.ModelName="CPU Model";
+        cpu.ManufacturerName="CPU Manufacturer";
+        cpu.CoreCount=1;
+        cpu.ClockSpeed=1;
+        cpu.ArchitectureName="Architecture";
+        cpu.Id = UUID.randomUUID();
+
+        SystemCPU systemCPU = new SystemCPU();
+        systemCPU.CPUId = cpu.Id;
+        systemCPU.SystemId = system.Id;
+
         try {
             SyskiCacheThread.getInstance().SystemThreads.InsertAll(system);
             SyskiCacheThread.getInstance().SystemThreads.InsertAll(system1);
+            SyskiCacheThread.getInstance().CPUThreads.InsertAll(cpu);
+            SyskiCacheThread.getInstance().SystemCPUThreads.InsertAll(systemCPU);
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-*/
+
 
         super.onCreate(savedInstanceState);
         setTheme(R.style.AppTheme);

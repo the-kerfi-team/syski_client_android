@@ -42,9 +42,9 @@ public class cpuActivity extends AppCompatActivity {
             model.setText(cpu.ModelName);
             manufacturer.setText(cpu.ManufacturerName);
             architecture.setText(cpu.ArchitectureName);
-            clock.setText(cpu.ClockSpeed);
-            core.setText(cpu.CoreCount);
-            thread.setText(cpu.ThreadCount);
+            clock.setText(""+cpu.ClockSpeed);
+            core.setText(""+cpu.CoreCount);
+            thread.setText(""+cpu.ThreadCount);
         }
 
     }
