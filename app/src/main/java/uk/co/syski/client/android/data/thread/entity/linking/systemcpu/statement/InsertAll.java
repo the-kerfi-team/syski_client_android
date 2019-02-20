@@ -1,10 +1,10 @@
-package uk.co.syski.client.android.data.thread.entity.systemcpu.statement;
+package uk.co.syski.client.android.data.thread.entity.linking.systemcpu.statement;
 
 import android.os.AsyncTask;
 
 import uk.co.syski.client.android.data.SyskiCache;
-import uk.co.syski.client.android.data.dao.SystemCPUDao;
-import uk.co.syski.client.android.data.entity.SystemCPU;
+import uk.co.syski.client.android.data.dao.linking.SystemCPUDao;
+import uk.co.syski.client.android.data.entity.linking.SystemCPU;
 
 public final class InsertAll extends AsyncTask<SystemCPU, Void, Void> {
 
