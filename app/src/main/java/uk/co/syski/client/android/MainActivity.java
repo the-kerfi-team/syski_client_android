@@ -38,6 +38,7 @@ import java.util.concurrent.ExecutionException;
 
 import uk.co.syski.client.android.api.VolleySingleton;
 import uk.co.syski.client.android.data.SyskiCache;
+import uk.co.syski.client.android.data.entity.System;
 import uk.co.syski.client.android.data.entity.User;
 import uk.co.syski.client.android.data.thread.SyskiCacheThread;
 
@@ -49,16 +50,44 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
         SyskiCache.BuildDatabase(getApplicationContext());
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                SyskiCache.GetDatabase().clearAllTables();
+        try {
+            if (SyskiCacheThread.getInstance().UserThreads.HasData())
+            {
+                finish();
+                startActivity(new Intent(this, SysListMenu.class));
             }
-        }).start();
+            else
+            {
+                setTheme(R.style.AppTheme);
+                setContentView(R.layout.activity_main);
 
-/*
+                SeedDatabase();
+
+                mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+                mSectionsPagerAdapter.addFragment(new Tab_Login(), "Login");
+                mSectionsPagerAdapter.addFragment(new Tab_Register(), "Register");
+
+                mViewPager = (ViewPager) findViewById(R.id.container);
+                mViewPager.setAdapter(mSectionsPagerAdapter);
+
+                TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+
+                mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+                tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+            }
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void SeedDatabase()
+    {
         System system = new System();
         UUID uuid = UUID.fromString("38400000-8cf0-11bd-b23e-10b96e4ef00d");
         system.Id = uuid.randomUUID();
@@ -70,30 +99,11 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             SyskiCacheThread.getInstance().SystemThreads.InsertAll(system);
-            SyskiCacheThread.getInstance().SystemThreads.InsertAll(system1);
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-*/
-
-        super.onCreate(savedInstanceState);
-        setTheme(R.style.AppTheme);
-        setContentView(R.layout.activity_main);
-
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        mSectionsPagerAdapter.addFragment(new Tab_Login(), "Login");
-        mSectionsPagerAdapter.addFragment(new Tab_Register(), "Register");
-
-        mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-
-        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
-
     }
 
     @Override
