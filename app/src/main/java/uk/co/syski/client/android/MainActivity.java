@@ -57,8 +57,8 @@ public class MainActivity extends AppCompatActivity {
         try {
             if (SyskiCacheThread.getInstance().UserThreads.HasData())
             {
-                finish();
                 startActivity(new Intent(this, SysListMenu.class));
+                finish();
             }
             else
             {
@@ -175,8 +175,8 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            getActivity().finish();
             startActivity(new Intent(getActivity(), SysListMenu.class));
+            getActivity().finish();
         }
 
         protected void RequestFailed(VolleyError error) {
