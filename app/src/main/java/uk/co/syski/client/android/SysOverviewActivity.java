@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
