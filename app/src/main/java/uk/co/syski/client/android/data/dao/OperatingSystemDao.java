@@ -14,7 +14,7 @@ import uk.co.syski.client.android.data.entity.OperatingSystem;
 public interface OperatingSystemDao {
     @Query("SELECT Id, Name, ArchitectureName, Version FROM OperatingSystem INNER JOIN SystemOS " +
             "WHERE SystemId IN (:Ids)")
-    List<OperatingSystem> GetOperatingSystems(UUID... Ids);
+    List<uk.co.syski.client.android.model.OperatingSystem> GetOperatingSystems(UUID... Ids);
 
     @Insert
     void InsertAll(OperatingSystem... OperatingSystems);
