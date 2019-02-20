@@ -2,9 +2,6 @@ package uk.co.syski.client.android;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -13,7 +10,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.ExecutionException;
+
+import uk.co.syski.client.android.adapters.SysListAdapter;
+import uk.co.syski.client.android.data.entity.System;
+import uk.co.syski.client.android.data.thread.SyskiCacheThread;
 
 public class SysListMenu extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -24,19 +31,8 @@ public class SysListMenu extends AppCompatActivity
             R.drawable.placeholder
     };
 
-    String[] hostnames = {
-            "winsys",
-            "unixsys",
-            "testsys"
-    };
-
-    String[] sysNames = {
-            "Test Windows System",
-            "Test UNIX System",
-            "Test System"
-    };
-
     ListView listView;
+    List<System> systemList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,39 +40,50 @@ public class SysListMenu extends AppCompatActivity
         setContentView(R.layout.activity_sys_list_menu);
 
         //Setup toolbar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //Setup FAB
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Create action for adding a system(?)", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         //Setup drawer
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         //Setup list
-        SysListAdapter adapter = new SysListAdapter(this,sysNames,hostnames,imageArray);
+
+        try {
+            systemList = SyskiCacheThread.getInstance().SystemThreads.IndexSystems();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        SysListAdapter adapter = new SysListAdapter(this, imageArray, systemList);
         listView = findViewById(R.id.sysList);
         listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(SysListMenu.this, SysOverviewActivity.class);
+
+                //Add extra here to identify the tapped system
+                String extra = systemList.get(position).Id.toString();
+                intent.putExtra("SYSTEMID",extra);
+                startActivity(intent);
+            }
+        });
 
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -129,7 +136,7 @@ public class SysListMenu extends AppCompatActivity
 
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

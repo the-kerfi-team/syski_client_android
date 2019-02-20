@@ -2,13 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="uk.co.syski.client.android">
 
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/syski_sys_icon_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/syski_sys_icon_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
@@ -33,6 +34,10 @@
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
             android:parentActivityName=".SysListMenu" />
+        <activity
+            android:name=".SysOverviewActivity"
+            android:parentActivityName=".SysListMenu"
+            android:label="@string/sys_overview_lbl"/>
         <activity
             android:name=".QRScanMenuActivity"
             android:label="@string/qr_activity"
