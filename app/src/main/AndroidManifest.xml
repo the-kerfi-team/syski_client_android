@@ -33,6 +33,10 @@
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
             android:parentActivityName=".SysListMenu" />
+        <activity
+            android:name=".SysOverviewActivity"
+            android:parentActivityName=".SysListMenu"
+            android:label="@string/sys_overview_lbl"/>
     </application>
 
 </manifest>
