@@ -36,14 +36,17 @@ public class cpuActivity extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        cpu = cpuList.get(0);
 
-        model.setText(cpu.ModelName);
-        manufacturer.setText(cpu.ManufacturerName);
-        architecture.setText(cpu.ArchitectureName);
-        clock.setText(cpu.ClockSpeed);
-        core.setText(cpu.CoreCount);
-        thread.setText(cpu.ThreadCount);
+        if(cpuList.size() > 0) {
+            cpu = cpuList.get(0);
+            model.setText(cpu.ModelName);
+            manufacturer.setText(cpu.ManufacturerName);
+            architecture.setText(cpu.ArchitectureName);
+            clock.setText(cpu.ClockSpeed);
+            core.setText(cpu.CoreCount);
+            thread.setText(cpu.ThreadCount);
+        }
+
     }
 
     private void initViews() {
