@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
         protected void RequestSuccessful(JSONObject response) {
             User user = new User();
             try {
-                user.Id = UUID.fromString(response.getString("uuid"));
+                user.Id = UUID.fromString(response.getString("id"));
                 user.Email = response.getString("email");
                 user.AccessToken = response.getString("token");
                 user.RefreshToken = response.getString("refreshToken");
