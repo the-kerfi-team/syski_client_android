@@ -16,7 +16,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import java.io.Serializable;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 import uk.co.syski.client.android.data.entity.System;
@@ -32,6 +34,7 @@ public class SysListMenu extends AppCompatActivity
     };
 
     ListView listView;
+    List<System> systemList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +57,6 @@ public class SysListMenu extends AppCompatActivity
 
         //Setup list
 
-        List<System> systemList = null;
         try {
             systemList = SyskiCacheThread.getInstance().SystemThreads.IndexSystems();
         } catch (ExecutionException e) {
@@ -73,9 +75,8 @@ public class SysListMenu extends AppCompatActivity
                 Intent intent = new Intent(SysListMenu.this, SysOverviewActivity.class);
 
                 //Add extra here to identify the tapped system
-
-                intent.putExtra("placeholdertxt", "Placeholder");
-
+                UUID extra = systemList.get(position).Id;
+                intent.putExtra("SYSTEMID",extra);
                 startActivity(intent);
             }
         });
