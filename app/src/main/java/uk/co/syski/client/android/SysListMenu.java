@@ -1,5 +1,6 @@
 package uk.co.syski.client.android;
 
+import android.content.ClipData;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -154,7 +155,8 @@ public class SysListMenu extends AppCompatActivity
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
-        return true;
+        //Unhighlight item
+        return false;
     }
 
 
