@@ -1,18 +1,25 @@
 package uk.co.syski.client.android;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.util.List;
 import java.util.UUID;
@@ -123,8 +130,13 @@ public class SysListMenu extends AppCompatActivity
 
         if (id == R.id.nav_qr) {
             // Handle the QR action
-            Intent intent = new Intent(this, QRScanMenuActivity.class);
-            startActivity(intent);
+            IntentIntegrator integrator = new IntentIntegrator(this);
+            integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
+            integrator.setPrompt("Scan a QR Code");
+            integrator.setCameraId(0);  // Use a specific camera of the device
+            integrator.setOrientationLocked(false);
+            integrator.setBeepEnabled(false);
+            integrator.initiateScan();
         } else if (id == R.id.nav_settings){
             //Handle Settings
             Intent settings = new Intent(this, SettingsActivity.class);
@@ -143,5 +155,46 @@ public class SysListMenu extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (result != null) {
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this); //This is always the same.
+            if (result.getContents() == null) {
+                Log.d("MainActivity", "Cancelled scan");
+                Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
+            } else {
+                Log.d("MainActivity", "Scanned");
+                if (sp.getBoolean("pref_developer_mode", Boolean.parseBoolean(getString(R.string.pref_developer_mode_default))))
+                {
+                    Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
+                }
+                try {
+                    boolean systemNotFound = true;
+                    UUID systemId = UUID.fromString(result.getContents());
+                    try {
+                        systemNotFound = SyskiCacheThread.getInstance().SystemThreads.GetSystems(systemId).isEmpty();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    if (!systemNotFound) {
+                        Intent intent = new Intent(this, SysOverviewActivity.class);
+                        intent.putExtra("SYSTEMID", systemId.toString());
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(this, "Error: System does not exist", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (IllegalArgumentException e) {
+                    Toast.makeText(this, "Error: QR Code does not represent a system", Toast.LENGTH_SHORT).show();
+                }
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 }
