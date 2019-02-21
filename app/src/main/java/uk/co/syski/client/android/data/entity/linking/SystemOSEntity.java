@@ -31,7 +31,7 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
         )
     }
 )
-public class SystemOS {
+public class SystemOSEntity {
     @NonNull
     public UUID SystemId;
 
