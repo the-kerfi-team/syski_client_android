@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
-import uk.co.syski.client.android.data.entity.System;
+import uk.co.syski.client.android.data.entity.SystemEntity;
 import uk.co.syski.client.android.data.thread.entity.system.statement.*;
 
 public class SystemThreads {
@@ -16,19 +16,19 @@ public class SystemThreads {
 
     private SystemThreads() {}
 
-    public List<System> IndexSystems() throws ExecutionException, InterruptedException {
+    public List<SystemEntity> IndexSystems() throws ExecutionException, InterruptedException {
         return new GetAllSystems().execute().get();
     }
 
-    public List<System> GetSystems(UUID... Ids) throws ExecutionException, InterruptedException {
+    public List<SystemEntity> GetSystems(UUID... Ids) throws ExecutionException, InterruptedException {
         return new GetSystems().execute(Ids).get();
     }
 
-    public Void InsertAll(System... systems) throws ExecutionException, InterruptedException {
-        return new InsertAll().execute(systems).get();
+    public Void InsertAll(SystemEntity... systemEntities) throws ExecutionException, InterruptedException {
+        return new InsertAll().execute(systemEntities).get();
     }
 
-    public Void DeleteAll(System... systems) throws ExecutionException, InterruptedException {
-        return new DeleteAll().execute(systems).get();
+    public Void DeleteAll(SystemEntity... systemEntities) throws ExecutionException, InterruptedException {
+        return new DeleteAll().execute(systemEntities).get();
     }
 }

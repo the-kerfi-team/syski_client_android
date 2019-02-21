@@ -4,14 +4,14 @@ import android.os.AsyncTask;
 
 import uk.co.syski.client.android.data.SyskiCache;
 import uk.co.syski.client.android.data.dao.UserDao;
-import uk.co.syski.client.android.data.entity.User;
+import uk.co.syski.client.android.data.entity.UserEntity;
 
-public class InsertAll extends AsyncTask<User, Void, Void> {
+public class InsertAll extends AsyncTask<UserEntity, Void, Void> {
 
         @Override
-        protected Void doInBackground(User... Users){
+        protected Void doInBackground(UserEntity... userEntities){
             UserDao UserDao = SyskiCache.GetDatabase().UserDao();
-            UserDao.InsertAll(Users);
+            UserDao.InsertAll(userEntities);
             return null;
         }
 }

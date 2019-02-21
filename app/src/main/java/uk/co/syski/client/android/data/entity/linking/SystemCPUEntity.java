@@ -6,8 +6,8 @@ import android.support.annotation.NonNull;
 
 import java.util.UUID;
 
-import uk.co.syski.client.android.data.entity.CPU;
-import uk.co.syski.client.android.data.entity.System;
+import uk.co.syski.client.android.data.entity.CPUEntity;
+import uk.co.syski.client.android.data.entity.SystemEntity;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
@@ -18,20 +18,20 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
     },
     foreignKeys = {
         @ForeignKey(
-            entity = System.class,
+            entity = SystemEntity.class,
             parentColumns = "Id",
             childColumns = "SystemId",
             onDelete = CASCADE
         ),
         @ForeignKey(
-            entity = CPU.class,
+            entity = CPUEntity.class,
             parentColumns = "Id",
             childColumns = "CPUId",
             onDelete = CASCADE
         )
     }
 )
-public class SystemCPU {
+public class SystemCPUEntity {
     @NonNull
     public UUID SystemId;
 

@@ -6,7 +6,7 @@ package uk.co.syski.client.android.data.entity;
         import android.support.annotation.NonNull;
 
 @Entity
-public class System {
+public class SystemEntity {
     @PrimaryKey @NonNull
     public UUID Id;
 

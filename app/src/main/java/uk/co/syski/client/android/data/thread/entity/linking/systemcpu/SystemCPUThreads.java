@@ -2,7 +2,7 @@ package uk.co.syski.client.android.data.thread.entity.linking.systemcpu;
 
 import java.util.concurrent.ExecutionException;
 
-import uk.co.syski.client.android.data.entity.linking.SystemCPU;
+import uk.co.syski.client.android.data.entity.linking.SystemCPUEntity;
 import uk.co.syski.client.android.data.thread.entity.linking.systemcpu.statement.InsertAll;
 
 public class SystemCPUThreads {
@@ -14,7 +14,7 @@ public class SystemCPUThreads {
 
     private SystemCPUThreads() {}
 
-    public Void InsertAll(SystemCPU... SystemCPUs) throws ExecutionException, InterruptedException {
-        return new InsertAll().execute(SystemCPUs).get();
+    public Void InsertAll(SystemCPUEntity... systemCPUEntities) throws ExecutionException, InterruptedException {
+        return new InsertAll().execute(systemCPUEntities).get();
     }
 }

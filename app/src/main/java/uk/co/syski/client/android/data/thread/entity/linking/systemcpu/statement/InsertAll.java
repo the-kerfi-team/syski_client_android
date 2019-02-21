@@ -4,14 +4,14 @@ import android.os.AsyncTask;
 
 import uk.co.syski.client.android.data.SyskiCache;
 import uk.co.syski.client.android.data.dao.linking.SystemCPUDao;
-import uk.co.syski.client.android.data.entity.linking.SystemCPU;
+import uk.co.syski.client.android.data.entity.linking.SystemCPUEntity;
 
-public final class InsertAll extends AsyncTask<SystemCPU, Void, Void> {
+public final class InsertAll extends AsyncTask<SystemCPUEntity, Void, Void> {
 
     @Override
-    protected Void doInBackground(SystemCPU... systemCPUS) {
+    protected Void doInBackground(SystemCPUEntity... systemCPUEntities) {
         SystemCPUDao SystemCPUDao = SyskiCache.GetDatabase().SystemCPUDao();
-        SystemCPUDao.InsertAll(systemCPUS);
+        SystemCPUDao.InsertAll(systemCPUEntities);
         return null;
     }
 

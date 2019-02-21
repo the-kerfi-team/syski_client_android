@@ -5,13 +5,13 @@ import android.os.AsyncTask;
 import java.util.List;
 
 import uk.co.syski.client.android.data.SyskiCache;
-import uk.co.syski.client.android.data.entity.System;
+import uk.co.syski.client.android.data.entity.SystemEntity;
 import uk.co.syski.client.android.data.dao.SystemDao;
 
-public final class GetAllSystems extends AsyncTask<Void, Void, List<System>>{
+public final class GetAllSystems extends AsyncTask<Void, Void, List<SystemEntity>>{
 
     @Override
-    protected List<System> doInBackground(Void... voids) {
+    protected List<SystemEntity> doInBackground(Void... voids) {
         SystemDao SystemDao = SyskiCache.GetDatabase().SystemDao();
         return SystemDao.getAllSystems();
     }

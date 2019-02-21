@@ -8,17 +8,17 @@ import android.arch.persistence.room.Query;
 import java.util.List;
 import java.util.UUID;
 
-import uk.co.syski.client.android.data.entity.CPU;
+import uk.co.syski.client.android.data.entity.CPUEntity;
 
 @Dao
 public interface CPUDao {
     @Query("SELECT Id, ModelName, ManufacturerName, ArchitectureName, ClockSpeed, CoreCount, ThreadCount" +
-            " FROM CPU INNER JOIN SystemCPU WHERE SystemId IN (:Ids)")
-    List<CPU> getCPUs(UUID... Ids);
+            " FROM CPUEntity INNER JOIN SystemCPUEntity WHERE SystemId IN (:Ids)")
+    List<CPUEntity> getCPUs(UUID... Ids);
 
     @Insert
-    void InsertAll(CPU... cpus);
+    void InsertAll(CPUEntity... cpuEntities);
 
     @Delete
-    void DeleteAll(CPU... cpus);
+    void DeleteAll(CPUEntity... cpuEntities);
 }

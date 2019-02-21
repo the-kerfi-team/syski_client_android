@@ -3,10 +3,10 @@ package uk.co.syski.client.android.data.dao.linking;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 
-import uk.co.syski.client.android.data.entity.linking.SystemOSEntity;
+import uk.co.syski.client.android.data.entity.linking.SystemRAMEntity;
 
 @Dao
-public interface SystemOSDao {
+public interface SystemRAMDao {
     @Insert
-    void InsertAll(SystemOSEntity... systemOSEntities);
+    void InsertAll(SystemRAMEntity... systemRAMEntities);
 }
