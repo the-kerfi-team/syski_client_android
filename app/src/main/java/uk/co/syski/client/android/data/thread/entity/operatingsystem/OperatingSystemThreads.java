@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
-import uk.co.syski.client.android.data.thread.entity.operatingsystem.statement.*;
-import uk.co.syski.client.android.model.OperatingSystem;
+import uk.co.syski.client.android.data.entity.OperatingSystem;
+import uk.co.syski.client.android.data.thread.entity.operatingsystem.statement.DeleteAll;
+import uk.co.syski.client.android.data.thread.entity.operatingsystem.statement.GetOperatingSystems;
+import uk.co.syski.client.android.data.thread.entity.operatingsystem.statement.InsertAll;
 
 public class OperatingSystemThreads {
     private static final OperatingSystemThreads ourInstance = new OperatingSystemThreads();

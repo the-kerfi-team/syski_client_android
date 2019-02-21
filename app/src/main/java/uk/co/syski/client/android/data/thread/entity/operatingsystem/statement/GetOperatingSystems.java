@@ -7,7 +7,7 @@ import java.util.UUID;
 
 import uk.co.syski.client.android.data.SyskiCache;
 import uk.co.syski.client.android.data.dao.OperatingSystemDao;
-import uk.co.syski.client.android.model.OperatingSystem;
+import uk.co.syski.client.android.data.entity.OperatingSystem;
 
 public final class GetOperatingSystems extends AsyncTask<UUID, Void, List<OperatingSystem>> {
 

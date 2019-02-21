@@ -2,12 +2,16 @@ package uk.co.syski.client.android;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import java.util.UUID;
+import java.util.concurrent.ExecutionException;
+
+import uk.co.syski.client.android.data.thread.SyskiCacheThread;
 
 public class QRScanMenuActivity extends AppCompatActivity {
 
@@ -30,6 +34,7 @@ public class QRScanMenuActivity extends AppCompatActivity {
                 runScanner();
             }
         });
+        runScanner();
     }
 
     private void runScanner(){
@@ -54,8 +59,35 @@ public class QRScanMenuActivity extends AppCompatActivity {
         if (requestCode == 0) {
 
             if (resultCode == RESULT_OK) {
+                boolean systemNotFound = true;
                 String contents = data.getStringExtra("SCAN_RESULT");
-                qrTxt.setText(contents);
+
+                try {
+                    UUID systemId = UUID.fromString(contents);
+                    try {
+                        systemNotFound = SyskiCacheThread.getInstance().SystemThreads.GetSystems(systemId).isEmpty();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    if (!systemNotFound)
+                    {
+                        Intent intent = new Intent(this, SysOverviewActivity.class);
+                        intent.putExtra("SYSTEMID", contents);
+                        startActivity(intent);
+                        finish();
+                    }
+                    else
+                    {
+                        qrTxt.setText("Error: System does not exist");
+                    }
+                }
+                catch (IllegalArgumentException e)
+                {
+                    qrTxt.setText("Error: QR Code does not represent a system");
+                }
             }
         }
     }

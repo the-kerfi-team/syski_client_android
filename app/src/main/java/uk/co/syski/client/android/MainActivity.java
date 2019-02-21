@@ -38,6 +38,7 @@ import java.util.concurrent.ExecutionException;
 
 import uk.co.syski.client.android.api.VolleySingleton;
 import uk.co.syski.client.android.data.SyskiCache;
+import uk.co.syski.client.android.data.entity.System;
 import uk.co.syski.client.android.data.entity.User;
 import uk.co.syski.client.android.data.thread.SyskiCacheThread;
 
@@ -58,10 +59,10 @@ public class MainActivity extends AppCompatActivity {
             }
         }).start();
 
-/*
         System system = new System();
         UUID uuid = UUID.fromString("38400000-8cf0-11bd-b23e-10b96e4ef00d");
-        system.Id = uuid.randomUUID();
+        //system.Id = uuid.randomUUID();
+        system.Id = uuid;
         system.HostName = "Earth";
 
         System system1 = new System();
@@ -76,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-*/
 
         super.onCreate(savedInstanceState);
         setTheme(R.style.AppTheme);
