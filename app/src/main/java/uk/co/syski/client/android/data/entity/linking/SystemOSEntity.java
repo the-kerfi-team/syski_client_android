@@ -6,35 +6,39 @@ import android.support.annotation.NonNull;
 
 import java.util.UUID;
 
-import uk.co.syski.client.android.data.entity.RAM;
-import uk.co.syski.client.android.data.entity.System;
+import uk.co.syski.client.android.data.entity.OperatingSystemEntity;
+import uk.co.syski.client.android.data.entity.SystemEntity;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
 @Entity(
     primaryKeys = {
         "SystemId",
-        "RAMId"
+        "OSId"
     },
     foreignKeys = {
         @ForeignKey(
-            entity = System.class,
+            entity = SystemEntity.class,
             parentColumns = "Id",
             childColumns = "SystemId",
             onDelete = CASCADE
         ),
         @ForeignKey(
-            entity = RAM.class,
+            entity = OperatingSystemEntity.class,
             parentColumns = "Id",
-            childColumns = "RAMId",
+            childColumns = "OSId",
             onDelete = CASCADE
         )
     }
 )
-public class SystemRAM {
+public class SystemOS {
     @NonNull
     public UUID SystemId;
 
     @NonNull
-    public UUID RAMId;
+    public UUID OSId;
+
+    public String ArchitectureName;
+
+    public String Version;
 }

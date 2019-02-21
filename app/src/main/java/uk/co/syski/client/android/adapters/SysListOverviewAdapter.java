@@ -1,7 +1,6 @@
 package uk.co.syski.client.android.adapters;
 
 import android.app.Activity;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,10 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.List;
-
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.data.entity.System;
 
 public class SysListOverviewAdapter extends ArrayAdapter {
 

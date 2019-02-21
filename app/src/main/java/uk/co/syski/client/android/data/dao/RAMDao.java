@@ -8,18 +8,18 @@ import android.arch.persistence.room.Query;
 import java.util.List;
 import java.util.UUID;
 
-import uk.co.syski.client.android.data.entity.RAM;
+import uk.co.syski.client.android.data.entity.RAMEntity;
 
 @Dao
 public interface RAMDao {
-    @Query("SELECT Id, ModelName, ManufacturerName, MemoryTypeName, MemoryBytes FROM RAM INNER JOIN SystemRAM" +
-            " WHERE SystemId IN (:Ids)")
-    List<RAM> GetRAMs(UUID... Ids);
+    @Query("SELECT Id, ModelName, ManufacturerName, MemoryTypeName, MemoryBytes FROM RAMEntity INNER JOIN SystemRAM" +
+            "Entity WHERE SystemId IN (:Ids)")
+    List<RAMEntity> GetRAMs(UUID... Ids);
 
     @Insert
-    void InsertAll(RAM... RAMs);
+    void InsertAll(RAMEntity... RAMEntities);
 
     @Delete
-    void DeleteAll(RAM... RAMs);
+    void DeleteAll(RAMEntity... RAMEntities);
 }
 

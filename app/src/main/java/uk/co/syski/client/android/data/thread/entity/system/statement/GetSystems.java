@@ -7,12 +7,12 @@ import java.util.UUID;
 
 import uk.co.syski.client.android.data.SyskiCache;
 import uk.co.syski.client.android.data.dao.SystemDao;
-import uk.co.syski.client.android.data.entity.System;
+import uk.co.syski.client.android.data.entity.SystemEntity;
 
-public final class GetSystems extends AsyncTask<UUID, Void, List<System>> {
+public final class GetSystems extends AsyncTask<UUID, Void, List<SystemEntity>> {
 
     @Override
-    protected List<System> doInBackground(UUID... uuids) {
+    protected List<SystemEntity> doInBackground(UUID... uuids) {
         SystemDao SystemDao = SyskiCache.GetDatabase().SystemDao();
         return SystemDao.getSystems(uuids);
     }

@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
-import uk.co.syski.client.android.data.entity.Type;
+import uk.co.syski.client.android.data.entity.TypeEntity;
 import uk.co.syski.client.android.data.thread.entity.type.statement.*;
 
 public class TypeThreads {
@@ -20,11 +20,11 @@ public class TypeThreads {
         return new GetTypeNames().execute(uuids).get();
     }
 
-    public Void InsertAll(Type... types) throws ExecutionException, InterruptedException {
-        return new InsertAll().execute(types).get();
+    public Void InsertAll(TypeEntity... typeEntities) throws ExecutionException, InterruptedException {
+        return new InsertAll().execute(typeEntities).get();
     }
 
-    public Void DeleteAll(Type... types) throws ExecutionException, InterruptedException {
-        return new DeleteAll().execute(types).get();
+    public Void DeleteAll(TypeEntity... typeEntities) throws ExecutionException, InterruptedException {
+        return new DeleteAll().execute(typeEntities).get();
     }
 }
