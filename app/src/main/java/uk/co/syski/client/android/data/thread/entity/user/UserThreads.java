@@ -4,6 +4,7 @@ import java.util.concurrent.ExecutionException;
 
 import uk.co.syski.client.android.data.entity.User;
 import uk.co.syski.client.android.data.thread.entity.user.statement.InsertAll;
+import uk.co.syski.client.android.data.thread.entity.user.statement.UserCount;
 
 public class UserThreads {
     private static final UserThreads ourInstance = new UserThreads();
@@ -13,6 +14,10 @@ public class UserThreads {
     }
 
     private UserThreads() {}
+
+    public boolean HasData() throws ExecutionException, InterruptedException {
+        return (new UserCount().execute().get() > 0);
+    }
 
     public Void InsertAll(User... users) throws ExecutionException, InterruptedException {
         return new InsertAll().execute(users).get();

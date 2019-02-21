@@ -50,15 +50,44 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
         SyskiCache.BuildDatabase(getApplicationContext());
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                SyskiCache.GetDatabase().clearAllTables();
+        try {
+            if (SyskiCacheThread.getInstance().UserThreads.HasData())
+            {
+                startActivity(new Intent(this, SysListMenu.class));
+                finish();
             }
-        }).start();
+            else
+            {
+                setTheme(R.style.AppTheme);
+                setContentView(R.layout.activity_main);
 
+                SeedDatabase();
+
+                mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+                mSectionsPagerAdapter.addFragment(new Tab_Login(), "Login");
+                mSectionsPagerAdapter.addFragment(new Tab_Register(), "Register");
+
+                mViewPager = (ViewPager) findViewById(R.id.container);
+                mViewPager.setAdapter(mSectionsPagerAdapter);
+
+                TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+
+                mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+                tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+            }
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void SeedDatabase()
+    {
         System system = new System();
         UUID uuid = UUID.fromString("38400000-8cf0-11bd-b23e-10b96e4ef00d");
         //system.Id = uuid.randomUUID();
@@ -71,29 +100,11 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             SyskiCacheThread.getInstance().SystemThreads.InsertAll(system);
-            SyskiCacheThread.getInstance().SystemThreads.InsertAll(system1);
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-        super.onCreate(savedInstanceState);
-        setTheme(R.style.AppTheme);
-        setContentView(R.layout.activity_main);
-
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        mSectionsPagerAdapter.addFragment(new Tab_Login(), "Login");
-        mSectionsPagerAdapter.addFragment(new Tab_Register(), "Register");
-
-        mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-
-        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
-
     }
 
     @Override
@@ -117,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static class Tab_Authentication extends Fragment {
 
+        protected boolean mDisableButton;
         protected EditText mEmailView;
         protected EditText mPasswordView;
 
@@ -165,14 +177,15 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            getActivity().finish();
             startActivity(new Intent(getActivity(), SysListMenu.class));
+            getActivity().finish();
         }
 
         protected void RequestFailed(VolleyError error) {
             mEmailView.setError(getString(R.string.error_invalid_email));
             mPasswordView.setError(getString(R.string.error_incorrect_password));
             mPasswordView.requestFocus();
+            mDisableButton = false;
         }
 
         protected boolean isEmailValid(String email)
@@ -222,42 +235,46 @@ public class MainActivity extends AppCompatActivity {
         }
 
         private void attemptLogin() {
-            mEmailView.setError(null);
-            mPasswordView.setError(null);
+            if (!mDisableButton) {
+                mDisableButton = true;
+                mEmailView.setError(null);
+                mPasswordView.setError(null);
 
-            final String email = mEmailView.getText().toString();
-            final String password = mPasswordView.getText().toString();
+                final String email = mEmailView.getText().toString();
+                final String password = mPasswordView.getText().toString();
 
-            boolean cancel = false;
-            View focusView = null;
+                boolean cancel = false;
+                View focusView = null;
 
-            if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-                mPasswordView.setError(getString(R.string.error_invalid_password));
-                focusView = mPasswordView;
-                cancel = true;
-            }
-
-            if (TextUtils.isEmpty(email)) {
-                mEmailView.setError(getString(R.string.error_field_required));
-                focusView = mEmailView;
-                cancel = true;
-            } else if (!isEmailValid(email)) {
-                mEmailView.setError(getString(R.string.error_invalid_email));
-                focusView = mEmailView;
-                cancel = true;
-            }
-
-            if (cancel) {
-                focusView.requestFocus();
-            } else {
-                JSONObject jsonBody = new JSONObject();
-                try {
-                    jsonBody.put("email", email);
-                    jsonBody.put("password", password);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+                    mPasswordView.setError(getString(R.string.error_invalid_password));
+                    focusView = mPasswordView;
+                    cancel = true;
                 }
-                sendAPIRequest("auth/user/login", jsonBody);
+
+                if (TextUtils.isEmpty(email)) {
+                    mEmailView.setError(getString(R.string.error_field_required));
+                    focusView = mEmailView;
+                    cancel = true;
+                } else if (!isEmailValid(email)) {
+                    mEmailView.setError(getString(R.string.error_invalid_email));
+                    focusView = mEmailView;
+                    cancel = true;
+                }
+
+                if (cancel) {
+                    focusView.requestFocus();
+                    mDisableButton = false;
+                } else {
+                    JSONObject jsonBody = new JSONObject();
+                    try {
+                        jsonBody.put("email", email);
+                        jsonBody.put("password", password);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    sendAPIRequest("auth/user/login", jsonBody);
+                }
             }
         }
 
@@ -299,42 +316,46 @@ public class MainActivity extends AppCompatActivity {
         }
 
         private void attemptRegister() {
-            mEmailView.setError(null);
-            mPasswordView.setError(null);
+            if (!mDisableButton) {
+                mDisableButton = true;
+                mEmailView.setError(null);
+                mPasswordView.setError(null);
 
-            final String email = mEmailView.getText().toString();
-            final String password = mPasswordView.getText().toString();
+                final String email = mEmailView.getText().toString();
+                final String password = mPasswordView.getText().toString();
 
-            boolean cancel = false;
-            View focusView = null;
+                boolean cancel = false;
+                View focusView = null;
 
-            if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-                mPasswordView.setError(getString(R.string.error_invalid_password));
-                focusView = mPasswordView;
-                cancel = true;
-            }
-
-            if (TextUtils.isEmpty(email)) {
-                mEmailView.setError(getString(R.string.error_field_required));
-                focusView = mEmailView;
-                cancel = true;
-            } else if (!isEmailValid(email)) {
-                mEmailView.setError(getString(R.string.error_invalid_email));
-                focusView = mEmailView;
-                cancel = true;
-            }
-
-            if (cancel) {
-                focusView.requestFocus();
-            } else {
-                JSONObject jsonBody = new JSONObject();
-                try {
-                    jsonBody.put("email", email);
-                    jsonBody.put("password", password);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+                    mPasswordView.setError(getString(R.string.error_invalid_password));
+                    focusView = mPasswordView;
+                    cancel = true;
                 }
-                sendAPIRequest("auth/user/register", jsonBody);
+
+                if (TextUtils.isEmpty(email)) {
+                    mEmailView.setError(getString(R.string.error_field_required));
+                    focusView = mEmailView;
+                    cancel = true;
+                } else if (!isEmailValid(email)) {
+                    mEmailView.setError(getString(R.string.error_invalid_email));
+                    focusView = mEmailView;
+                    cancel = true;
+                }
+
+                if (cancel) {
+                    focusView.requestFocus();
+                    mDisableButton = false;
+                } else {
+                    JSONObject jsonBody = new JSONObject();
+                    try {
+                        jsonBody.put("email", email);
+                        jsonBody.put("password", password);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    sendAPIRequest("auth/user/register", jsonBody);
+                }
             }
         }
 
