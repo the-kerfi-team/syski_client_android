@@ -11,7 +11,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.data.entity.System;
+import uk.co.syski.client.android.data.entity.SystemEntity;
 
 /**
  * SysListAdapter - An ArrayAdapter class used for listing systems from an array in the system list
@@ -24,15 +24,15 @@ public class SysListAdapter extends ArrayAdapter {
     //to store images
     private final Integer[] imageIDarray;
 
-    private List<System> mSystemList;
+    private List<SystemEntity> mSystemEntityList;
 
-    public SysListAdapter(Activity context, Integer[] images, List<System> systemList)
+    public SysListAdapter(Activity context, Integer[] images, List<SystemEntity> systemEntityList)
     {
-        super(context, R.layout.list_item, systemList);
+        super(context, R.layout.list_item, systemEntityList);
 
         this.context=context;
         this.imageIDarray = images;
-        mSystemList = systemList;
+        mSystemEntityList = systemEntityList;
     }
 
     @Override
@@ -46,8 +46,8 @@ public class SysListAdapter extends ArrayAdapter {
         ImageView imageView = rowView.findViewById(R.id.sysImg);
 
         //sets display values from arrays
-        sysNameTextField.setText(mSystemList.get(position).HostName);
-        hostTextField.setText(mSystemList.get(position).HostName);
+        sysNameTextField.setText(mSystemEntityList.get(position).HostName);
+        hostTextField.setText(mSystemEntityList.get(position).HostName);
         imageView.setImageResource(imageIDarray[1]);
 
         return rowView;

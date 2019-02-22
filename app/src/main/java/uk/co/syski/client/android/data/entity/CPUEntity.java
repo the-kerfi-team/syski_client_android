@@ -7,7 +7,7 @@ import android.support.annotation.NonNull;
 import java.util.UUID;
 
 @Entity
-public class CPU {
+public class CPUEntity {
     @PrimaryKey @NonNull
     public UUID Id;
 

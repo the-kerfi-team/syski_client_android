@@ -15,13 +15,13 @@ import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 import uk.co.syski.client.android.adapters.SysListOverviewAdapter;
-import uk.co.syski.client.android.data.entity.System;
+import uk.co.syski.client.android.data.entity.SystemEntity;
 import uk.co.syski.client.android.data.thread.SyskiCacheThread;
 
 public class SysOverviewActivity extends AppCompatActivity {
 
     TextView textView;
-    System system;
+    SystemEntity systemEntity;
     ListView listView;
 
     String[] listItems = {
@@ -43,7 +43,7 @@ public class SysOverviewActivity extends AppCompatActivity {
         String sysId = prefs.getString(getString(R.string.preference_sysID_key), null);
         system = getSystem(sysId);
 
-        textView.setText(system.HostName);
+        textView.setText(systemEntity.HostName);
 
         SysListOverviewAdapter adapter = new SysListOverviewAdapter(this, images, listItems);
         listView.setAdapter(adapter);
@@ -66,8 +66,8 @@ public class SysOverviewActivity extends AppCompatActivity {
 
     }
 
-    private System getSystem(String sysId){
-        List<System> sysList = null;
+    private SystemEntity getSystem(String sysId){
+        List<SystemEntity> sysList = null;
         try {
             sysList = SyskiCacheThread.getInstance().SystemThreads.GetSystems(UUID.fromString(sysId));
         } catch (ExecutionException e) {
@@ -75,8 +75,8 @@ public class SysOverviewActivity extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        system = sysList.get(0);
-        return system;
+        systemEntity = sysList.get(0);
+        return systemEntity;
     }
 
     private void initViews(){

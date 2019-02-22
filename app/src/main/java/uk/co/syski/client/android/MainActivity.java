@@ -38,9 +38,8 @@ import java.util.concurrent.ExecutionException;
 
 import uk.co.syski.client.android.api.VolleySingleton;
 import uk.co.syski.client.android.data.SyskiCache;
-import uk.co.syski.client.android.data.entity.CPU;
-import uk.co.syski.client.android.data.entity.User;
-import uk.co.syski.client.android.data.entity.linking.SystemCPU;
+import uk.co.syski.client.android.data.entity.SystemEntity;
+import uk.co.syski.client.android.data.entity.UserEntity;
 import uk.co.syski.client.android.data.thread.SyskiCacheThread;
 import uk.co.syski.client.android.data.entity.System;
 
@@ -90,14 +89,15 @@ public class MainActivity extends AppCompatActivity {
 
     private void SeedDatabase()
     {
-        System system = new System();
+        SystemEntity systemEntity = new SystemEntity();
         UUID uuid = UUID.fromString("38400000-8cf0-11bd-b23e-10b96e4ef00d");
-        system.Id = uuid.randomUUID();
+        //system.Id = uuid.randomUUID();
+        system.Id = uuid;
         system.HostName = "Earth";
 
-        System system1 = new System();
-        system1.Id = uuid.randomUUID();
-        system1.HostName = "Mars";
+        SystemEntity systemEntity1 = new SystemEntity();
+        systemEntity1.Id = uuid.randomUUID();
+        systemEntity1.HostName = "Mars";
 
         CPU cpu = new CPU();
         cpu.ThreadCount = 2;
@@ -113,10 +113,7 @@ public class MainActivity extends AppCompatActivity {
         systemCPU.SystemId = system.Id;
 
         try {
-            SyskiCacheThread.getInstance().SystemThreads.InsertAll(system);
-            SyskiCacheThread.getInstance().SystemThreads.InsertAll(system1);
-            SyskiCacheThread.getInstance().CPUThreads.InsertAll(cpu);
-            SyskiCacheThread.getInstance().SystemCPUThreads.InsertAll(systemCPU);
+            SyskiCacheThread.getInstance().SystemThreads.InsertAll(systemEntity);
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -176,18 +173,18 @@ public class MainActivity extends AppCompatActivity {
         }
 
         protected void RequestSuccessful(JSONObject response) {
-            User user = new User();
+            UserEntity userEntity = new UserEntity();
             try {
-                user.Id = UUID.fromString(response.getString("id"));
-                user.Email = response.getString("email");
-                user.AccessToken = response.getString("token");
-                user.RefreshToken = response.getString("refreshToken");
+                userEntity.Id = UUID.fromString(response.getString("id"));
+                userEntity.Email = response.getString("email");
+                userEntity.AccessToken = response.getString("token");
+                userEntity.RefreshToken = response.getString("refreshToken");
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
             try {
-                SyskiCacheThread.getInstance().UserThreads.InsertAll(user);
+                SyskiCacheThread.getInstance().UserThreads.InsertAll(userEntity);
             } catch (ExecutionException e) {
                 e.printStackTrace();
             } catch (InterruptedException e) {

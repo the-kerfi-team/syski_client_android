@@ -7,12 +7,12 @@ import java.util.UUID;
 
 import uk.co.syski.client.android.data.SyskiCache;
 import uk.co.syski.client.android.data.dao.CPUDao;
-import uk.co.syski.client.android.data.entity.CPU;
+import uk.co.syski.client.android.data.entity.CPUEntity;
 
-public final class GetCPUs extends AsyncTask<UUID, Void, List<CPU>> {
+public final class GetCPUs extends AsyncTask<UUID, Void, List<CPUEntity>> {
 
     @Override
-    protected List<CPU> doInBackground(UUID... uuids) {
+    protected List<CPUEntity> doInBackground(UUID... uuids) {
         CPUDao CPUDao = SyskiCache.GetDatabase().CPUDao();
         return CPUDao.getCPUs(uuids);
     }

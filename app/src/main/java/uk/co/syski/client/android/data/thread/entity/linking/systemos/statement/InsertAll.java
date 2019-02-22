@@ -4,14 +4,14 @@ import android.os.AsyncTask;
 
 import uk.co.syski.client.android.data.SyskiCache;
 import uk.co.syski.client.android.data.dao.linking.SystemOSDao;
-import uk.co.syski.client.android.data.entity.linking.SystemOS;
+import uk.co.syski.client.android.data.entity.linking.SystemOSEntity;
 
-public final class InsertAll extends AsyncTask<SystemOS, Void, Void> {
+public final class InsertAll extends AsyncTask<SystemOSEntity, Void, Void> {
 
     @Override
-    protected Void doInBackground(SystemOS... systemOS) {
+    protected Void doInBackground(SystemOSEntity... systemOSEntities) {
         SystemOSDao SystemOSDao = SyskiCache.GetDatabase().SystemOSDao();
-        SystemOSDao.InsertAll(systemOS);
+        SystemOSDao.InsertAll(systemOSEntities);
         return null;
     }
 

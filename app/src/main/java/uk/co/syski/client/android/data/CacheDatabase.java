@@ -6,31 +6,37 @@ import android.arch.persistence.room.TypeConverters;
 
 import uk.co.syski.client.android.data.dao.CPUDao;
 import uk.co.syski.client.android.data.dao.OperatingSystemDao;
+import uk.co.syski.client.android.data.dao.RAMDao;
 import uk.co.syski.client.android.data.dao.SystemDao;
 import uk.co.syski.client.android.data.dao.TypeDao;
 import uk.co.syski.client.android.data.dao.UserDao;
 import uk.co.syski.client.android.data.dao.linking.SystemCPUDao;
 import uk.co.syski.client.android.data.dao.linking.SystemOSDao;
+import uk.co.syski.client.android.data.dao.linking.SystemRAMDao;
 import uk.co.syski.client.android.data.dao.linking.SystemTypeDao;
-import uk.co.syski.client.android.data.entity.CPU;
-import uk.co.syski.client.android.data.entity.OperatingSystem;
-import uk.co.syski.client.android.data.entity.System;
-import uk.co.syski.client.android.data.entity.Type;
-import uk.co.syski.client.android.data.entity.User;
-import uk.co.syski.client.android.data.entity.linking.SystemCPU;
-import uk.co.syski.client.android.data.entity.linking.SystemOS;
-import uk.co.syski.client.android.data.entity.linking.SystemType;
+import uk.co.syski.client.android.data.entity.CPUEntity;
+import uk.co.syski.client.android.data.entity.OperatingSystemEntity;
+import uk.co.syski.client.android.data.entity.RAMEntity;
+import uk.co.syski.client.android.data.entity.SystemEntity;
+import uk.co.syski.client.android.data.entity.TypeEntity;
+import uk.co.syski.client.android.data.entity.UserEntity;
+import uk.co.syski.client.android.data.entity.linking.SystemCPUEntity;
+import uk.co.syski.client.android.data.entity.linking.SystemOSEntity;
+import uk.co.syski.client.android.data.entity.linking.SystemRAMEntity;
+import uk.co.syski.client.android.data.entity.linking.SystemTypeEntity;
 
 @Database(
     entities = {
-        User.class,
-        System.class,
-        SystemType.class,
-        Type.class,
-        CPU.class,
-        SystemCPU.class,
-        OperatingSystem.class,
-        SystemOS.class
+        UserEntity.class,
+        SystemEntity.class,
+        SystemTypeEntity.class,
+        TypeEntity.class,
+        CPUEntity.class,
+        SystemCPUEntity.class,
+        OperatingSystemEntity.class,
+        SystemOSEntity.class,
+        RAMEntity.class,
+        SystemRAMEntity.class
     },
     version = 1
 )
@@ -44,5 +50,7 @@ public abstract class CacheDatabase extends RoomDatabase {
     public abstract SystemCPUDao SystemCPUDao();
     public abstract OperatingSystemDao OperatingSystemDao();
     public abstract SystemOSDao SystemOSDao();
+    public abstract RAMDao RAMDao();
+    public abstract SystemRAMDao SystemRAMDao();
 }
 
