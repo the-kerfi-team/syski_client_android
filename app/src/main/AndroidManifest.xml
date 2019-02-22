@@ -41,10 +41,6 @@
             android:parentActivityName=".SysListMenu"
             android:label="@string/sys_overview_lbl"/>
         <activity
-            android:name=".QRScanMenuActivity"
-            android:label="@string/qr_activity"
-            android:parentActivityName=".SysListMenu"/>
-        <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
             android:screenOrientation="fullSensor"
             tools:replace="screenOrientation" />

@@ -1,6 +1,5 @@
 package uk.co.syski.client.android;
 
-import android.content.ClipData;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,7 +10,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -134,7 +132,7 @@ public class SysListMenu extends AppCompatActivity
             IntentIntegrator integrator = new IntentIntegrator(this);
             integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
             integrator.setPrompt("Scan a QR Code");
-            integrator.setCameraId(0);  // Use a specific camera of the device
+            integrator.setCameraId(0);
             integrator.setOrientationLocked(false);
             integrator.setBeepEnabled(false);
             integrator.initiateScan();
@@ -165,10 +163,10 @@ public class SysListMenu extends AppCompatActivity
         if (result != null) {
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this); //This is always the same.
             if (result.getContents() == null) {
-                Log.d("MainActivity", "Cancelled scan");
-                Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
+                if (sp.getBoolean("pref_developer_mode", Boolean.parseBoolean(getString(R.string.pref_developer_mode_default)))) {
+                    Toast.makeText(this, "Scan Cancelled", Toast.LENGTH_LONG).show();
+                }
             } else {
-                Log.d("MainActivity", "Scanned");
                 if (sp.getBoolean("pref_developer_mode", Boolean.parseBoolean(getString(R.string.pref_developer_mode_default))))
                 {
                     Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
