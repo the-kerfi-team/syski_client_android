@@ -22,6 +22,7 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 import uk.co.syski.client.android.adapters.SysListAdapter;
@@ -39,7 +40,7 @@ public class SysListMenu extends AppCompatActivity
     };
 
     ListView listView;
-    List<System> systemList;
+    List<SystemEntity> systemList;
     SharedPreferences prefs;
     SharedPreferences.Editor prefEditor;
 
@@ -70,14 +71,14 @@ public class SysListMenu extends AppCompatActivity
         //Setup list
 
         try {
-            systemEntityList = SyskiCacheThread.getInstance().SystemThreads.IndexSystems();
+            systemList = SyskiCacheThread.getInstance().SystemThreads.IndexSystems();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        SysListAdapter adapter = new SysListAdapter(this, imageArray, systemEntityList);
+        SysListAdapter adapter = new SysListAdapter(this, imageArray, systemList);
         listView = findViewById(R.id.sysList);
         listView.setAdapter(adapter);
 

@@ -13,14 +13,14 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
-import uk.co.syski.client.android.data.entity.CPU;
+import uk.co.syski.client.android.data.entity.CPUEntity;
 import uk.co.syski.client.android.data.thread.SyskiCacheThread;
 
 public class cpuActivity extends AppCompatActivity {
 
-    List<CPU> cpuList;
+    List<CPUEntity> cpuList;
     TextView model,manufacturer,architecture,clock,core,thread;
-    CPU cpu;
+    CPUEntity cpu;
 
     SharedPreferences prefs;
 

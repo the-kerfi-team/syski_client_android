@@ -33,6 +33,7 @@ public class SysOverviewActivity extends AppCompatActivity {
     };
 
     SharedPreferences prefs;
+    SystemEntity system;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
