@@ -21,12 +21,11 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 import uk.co.syski.client.android.adapters.SysListAdapter;
 import uk.co.syski.client.android.data.SyskiCache;
-import uk.co.syski.client.android.data.entity.System;
+import uk.co.syski.client.android.data.entity.SystemEntity;
 import uk.co.syski.client.android.data.thread.SyskiCacheThread;
 
 public class SysListMenu extends AppCompatActivity
@@ -39,7 +38,7 @@ public class SysListMenu extends AppCompatActivity
     };
 
     ListView listView;
-    List<System> systemList;
+    List<SystemEntity> systemEntityList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,14 +62,14 @@ public class SysListMenu extends AppCompatActivity
         //Setup list
 
         try {
-            systemList = SyskiCacheThread.getInstance().SystemThreads.IndexSystems();
+            systemEntityList = SyskiCacheThread.getInstance().SystemThreads.IndexSystems();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        SysListAdapter adapter = new SysListAdapter(this, imageArray, systemList);
+        SysListAdapter adapter = new SysListAdapter(this, imageArray, systemEntityList);
         listView = findViewById(R.id.sysList);
         listView.setAdapter(adapter);
 
@@ -79,8 +78,8 @@ public class SysListMenu extends AppCompatActivity
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(SysListMenu.this, SysOverviewActivity.class);
 
-                //Add extra here to identify the tapped system
-                String extra = systemList.get(position).Id.toString();
+                //Add extra here to identify the tapped systemEntity
+                String extra = systemEntityList.get(position).Id.toString();
                 intent.putExtra("SYSTEMID",extra);
                 startActivity(intent);
             }

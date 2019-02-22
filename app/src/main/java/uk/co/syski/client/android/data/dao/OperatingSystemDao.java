@@ -8,17 +8,18 @@ import android.arch.persistence.room.Query;
 import java.util.List;
 import java.util.UUID;
 
-import uk.co.syski.client.android.data.entity.OperatingSystem;
+import uk.co.syski.client.android.data.entity.OperatingSystemEntity;
+import uk.co.syski.client.android.model.OperatingSystemModel;
 
 @Dao
 public interface OperatingSystemDao {
-    @Query("SELECT Id, Name, ArchitectureName, Version FROM OperatingSystem INNER JOIN SystemOS " +
+    @Query("SELECT Id, Name, ArchitectureName, Version FROM OperatingSystemEntity INNER JOIN SystemOSEntity " +
             "WHERE SystemId IN (:Ids)")
-    List<OperatingSystem> GetOperatingSystems(UUID... Ids);
+    List<OperatingSystemModel> GetOperatingSystems(UUID... Ids);
 
     @Insert
-    void InsertAll(OperatingSystem... OperatingSystems);
+    void InsertAll(OperatingSystemEntity... operatingSystemEntities);
 
     @Delete
-    void DeleteAll(OperatingSystem... OperatingSystems);
+    void DeleteAll(OperatingSystemEntity... operatingSystemEntities);
 }

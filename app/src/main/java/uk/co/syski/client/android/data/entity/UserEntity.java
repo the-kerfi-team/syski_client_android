@@ -7,7 +7,7 @@ import android.support.annotation.NonNull;
 import java.util.UUID;
 
 @Entity
-public class User {
+public class UserEntity {
     @PrimaryKey
     @NonNull
     public UUID Id;

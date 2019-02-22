@@ -5,7 +5,7 @@ import android.arch.persistence.room.*;
 import android.support.annotation.NonNull;
 
 @Entity
-public class Type {
+public class TypeEntity {
     @PrimaryKey  @NonNull
     public UUID Id;
 
