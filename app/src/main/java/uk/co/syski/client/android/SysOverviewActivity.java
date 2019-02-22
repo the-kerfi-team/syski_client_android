@@ -1,6 +1,8 @@
 package uk.co.syski.client.android;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -30,13 +32,15 @@ public class SysOverviewActivity extends AppCompatActivity {
             R.drawable.placeholder
     };
 
+    SharedPreferences prefs;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sys_overview);
         initViews();
 
-        String sysId = this.getIntent().getStringExtra("SYSTEMID");
+        String sysId = prefs.getString(getString(R.string.preference_sysID_key), null);
         system = getSystem(sysId);
 
         textView.setText(system.HostName);
@@ -56,9 +60,6 @@ public class SysOverviewActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(SysOverviewActivity.this, dest);
 
-                //Add extra here to identify the system
-                String extra = system.Id.toString();
-                intent.putExtra("SYSTEMID",extra);
                 startActivity(intent);
             }
         });
@@ -81,5 +82,7 @@ public class SysOverviewActivity extends AppCompatActivity {
     private void initViews(){
         textView = findViewById(R.id.txtDetails);
         listView = findViewById(R.id.compList);
+        prefs = this.getSharedPreferences(
+                getString(R.string.preference_sysID_key), Context.MODE_PRIVATE);
     }
 }

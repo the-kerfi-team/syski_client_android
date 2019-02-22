@@ -1,6 +1,8 @@
 package uk.co.syski.client.android;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -33,6 +35,8 @@ public class SysListMenu extends AppCompatActivity
 
     ListView listView;
     List<System> systemList;
+    SharedPreferences prefs;
+    SharedPreferences.Editor prefEditor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +57,11 @@ public class SysListMenu extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        prefs = this.getSharedPreferences(
+                getString(R.string.preference_sysID_key), Context.MODE_PRIVATE);
+        prefEditor = prefs.edit();
+
+
         //Setup list
 
         try {
@@ -72,9 +81,11 @@ public class SysListMenu extends AppCompatActivity
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(SysListMenu.this, SysOverviewActivity.class);
 
-                //Add extra here to identify the tapped system
                 String extra = systemList.get(position).Id.toString();
-                intent.putExtra("SYSTEMID",extra);
+
+                prefEditor.putString(getString(R.string.preference_sysID_key), extra);
+                prefEditor.apply();
+
                 startActivity(intent);
             }
         });

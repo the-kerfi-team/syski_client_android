@@ -102,4 +102,5 @@
     <string name="pref_title_developer_mode">Developer Mode</string>
     <string name="sys_overview_lbl">System Overview</string>
     <string name="menu_logout">Logout</string>
+    <string name="preference_sysID_key">uk.co.syski.client.android.SYSID</string>
 </resources>

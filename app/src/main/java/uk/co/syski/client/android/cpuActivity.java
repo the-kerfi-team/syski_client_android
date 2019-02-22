@@ -1,5 +1,7 @@
 package uk.co.syski.client.android;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ListView;
@@ -20,6 +22,8 @@ public class cpuActivity extends AppCompatActivity {
     TextView model,manufacturer,architecture,clock,core,thread;
     CPU cpu;
 
+    SharedPreferences prefs;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +31,7 @@ public class cpuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cpu);
         initViews();
 
-        String sysId = this.getIntent().getStringExtra("SYSTEMID");
+        String sysId = prefs.getString(getString(R.string.preference_sysID_key), null);
 
         try {
             cpuList = SyskiCacheThread.getInstance().CPUThreads.GetCPUs(UUID.fromString(sysId));
@@ -56,5 +60,7 @@ public class cpuActivity extends AppCompatActivity {
         clock = findViewById(R.id.cpuClock);
         core = findViewById(R.id.cpuCore);
         thread = findViewById(R.id.cpuThread);
+        prefs = this.getSharedPreferences(
+                getString(R.string.preference_sysID_key), Context.MODE_PRIVATE);
     }
 }
