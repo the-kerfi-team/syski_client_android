@@ -90,8 +90,9 @@ public class MainActivity extends AppCompatActivity {
     {
         SystemEntity systemEntity = new SystemEntity();
         UUID uuid = UUID.fromString("38400000-8cf0-11bd-b23e-10b96e4ef00d");
-        systemEntity.Id = uuid.randomUUID();
-        systemEntity.HostName = "Earth";
+        //system.Id = uuid.randomUUID();
+        system.Id = uuid;
+        system.HostName = "Earth";
 
         SystemEntity systemEntity1 = new SystemEntity();
         systemEntity1.Id = uuid.randomUUID();
