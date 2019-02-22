@@ -38,9 +38,12 @@ import java.util.concurrent.ExecutionException;
 
 import uk.co.syski.client.android.api.VolleySingleton;
 import uk.co.syski.client.android.data.SyskiCache;
+import uk.co.syski.client.android.data.entity.CPUEntity;
 import uk.co.syski.client.android.data.entity.SystemEntity;
 import uk.co.syski.client.android.data.entity.UserEntity;
+import uk.co.syski.client.android.data.entity.linking.SystemCPUEntity;
 import uk.co.syski.client.android.data.thread.SyskiCacheThread;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -88,18 +91,29 @@ public class MainActivity extends AppCompatActivity {
 
     private void SeedDatabase()
     {
-        SystemEntity systemEntity = new SystemEntity();
+        SystemEntity system = new SystemEntity();
         UUID uuid = UUID.fromString("38400000-8cf0-11bd-b23e-10b96e4ef00d");
         //system.Id = uuid.randomUUID();
-        systemEntity.Id = uuid;
-        systemEntity.HostName = "Earth";
+        system.Id = uuid;
+        system.HostName = "Earth";
 
-        SystemEntity systemEntity1 = new SystemEntity();
-        systemEntity1.Id = uuid.randomUUID();
-        systemEntity1.HostName = "Mars";
+        CPUEntity cpu = new CPUEntity();
+        cpu.ThreadCount = 2;
+        cpu.ModelName="CPU Model";
+        cpu.ManufacturerName="CPU Manufacturer";
+        cpu.CoreCount=1;
+        cpu.ClockSpeed=1;
+        cpu.ArchitectureName="Architecture";
+        cpu.Id = UUID.randomUUID();
+
+        SystemCPUEntity systemCPU = new SystemCPUEntity();
+        systemCPU.CPUId = cpu.Id;
+        systemCPU.SystemId = system.Id;
 
         try {
-            SyskiCacheThread.getInstance().SystemThreads.InsertAll(systemEntity);
+            SyskiCacheThread.getInstance().SystemThreads.InsertAll(system);
+            SyskiCacheThread.getInstance().CPUThreads.InsertAll(cpu);
+            SyskiCacheThread.getInstance().SystemCPUThreads.InsertAll(systemCPU);
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {

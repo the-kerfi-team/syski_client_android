@@ -1,5 +1,6 @@
 package uk.co.syski.client.android;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -39,7 +40,9 @@ public class SysListMenu extends AppCompatActivity
     };
 
     ListView listView;
-    List<SystemEntity> systemEntityList;
+    List<SystemEntity> systemList;
+    SharedPreferences prefs;
+    SharedPreferences.Editor prefEditor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,17 +63,22 @@ public class SysListMenu extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        prefs = this.getSharedPreferences(
+                getString(R.string.preference_sysID_key), Context.MODE_PRIVATE);
+        prefEditor = prefs.edit();
+
+
         //Setup list
 
         try {
-            systemEntityList = SyskiCacheThread.getInstance().SystemThreads.IndexSystems();
+            systemList = SyskiCacheThread.getInstance().SystemThreads.IndexSystems();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        SysListAdapter adapter = new SysListAdapter(this, imageArray, systemEntityList);
+        SysListAdapter adapter = new SysListAdapter(this, imageArray, systemList);
         listView = findViewById(R.id.sysList);
         listView.setAdapter(adapter);
 
@@ -79,9 +87,11 @@ public class SysListMenu extends AppCompatActivity
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(SysListMenu.this, SysOverviewActivity.class);
 
-                //Add extra here to identify the tapped systemEntity
-                String extra = systemEntityList.get(position).Id.toString();
-                intent.putExtra("SYSTEMID",extra);
+                String extra = systemList.get(position).Id.toString();
+
+                prefEditor.putString(getString(R.string.preference_sysID_key), extra);
+                prefEditor.apply();
+
                 startActivity(intent);
             }
         });

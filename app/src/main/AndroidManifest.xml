@@ -38,12 +38,15 @@
             android:parentActivityName=".SysListMenu" />
         <activity
             android:name=".SysOverviewActivity"
-            android:parentActivityName=".SysListMenu"
-            android:label="@string/sys_overview_lbl"/>
+            android:label="@string/sys_overview_lbl"
+            android:parentActivityName=".SysListMenu" />
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
             android:screenOrientation="fullSensor"
             tools:replace="screenOrientation" />
+        <activity
+            android:name=".cpuActivity"
+            android:parentActivityName=".SysOverviewActivity"/>
     </application>
 
 </manifest>
