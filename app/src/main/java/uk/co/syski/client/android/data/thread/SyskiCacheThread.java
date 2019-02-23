@@ -3,8 +3,10 @@ package uk.co.syski.client.android.data.thread;
 import uk.co.syski.client.android.data.thread.entity.cpu.CPUThreads;
 import uk.co.syski.client.android.data.thread.entity.linking.systemos.SystemOSThreads;
 import uk.co.syski.client.android.data.thread.entity.linking.systemram.SystemRAMThreads;
+import uk.co.syski.client.android.data.thread.entity.linking.systemstorage.SystemStorageThreads;
 import uk.co.syski.client.android.data.thread.entity.operatingsystem.OperatingSystemThreads;
 import uk.co.syski.client.android.data.thread.entity.ram.RAMThreads;
+import uk.co.syski.client.android.data.thread.entity.storage.StorageThreads;
 import uk.co.syski.client.android.data.thread.entity.system.SystemThreads;
 import uk.co.syski.client.android.data.thread.entity.linking.systemcpu.SystemCPUThreads;
 import uk.co.syski.client.android.data.thread.entity.linking.systemtype.SystemTypeThreads;
@@ -40,4 +42,7 @@ public class SyskiCacheThread {
 
     public final SystemRAMThreads SystemRAMThreads = uk.co.syski.client.android.data.thread.entity.linking.systemram.SystemRAMThreads.getInstance();
 
+    public final StorageThreads StorageThreads = uk.co.syski.client.android.data.thread.entity.storage.StorageThreads.getInstance();
+
+    public final SystemStorageThreads SystemStorageThreads = uk.co.syski.client.android.data.thread.entity.linking.systemstorage.SystemStorageThreads.getInstance();
 }
