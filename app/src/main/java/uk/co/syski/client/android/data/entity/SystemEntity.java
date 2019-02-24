@@ -5,7 +5,15 @@ package uk.co.syski.client.android.data.entity;
         import android.arch.persistence.room.*;
         import android.support.annotation.NonNull;
 
-@Entity
+@Entity(
+    foreignKeys = {
+        @ForeignKey(
+            entity = MotherboardEntity.class,
+            parentColumns = "Id",
+            childColumns = "MotherboardId"
+        )
+    }
+)
 public class SystemEntity {
     @PrimaryKey @NonNull
     public UUID Id;
@@ -17,4 +25,6 @@ public class SystemEntity {
     public String HostName;
 
     public Date LastUpdated;
+
+    public UUID MotherboardId;
 }

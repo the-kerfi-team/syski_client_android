@@ -24,7 +24,8 @@ import uk.co.syski.client.android.data.entity.linking.*;
         GPUEntity.class,
         SystemGPUEntity.class,
         StorageEntity.class,
-        SystemStorageEntity.class
+        SystemStorageEntity.class,
+        MotherboardEntity.class
     },
     version = 1
 )
@@ -44,5 +45,6 @@ public abstract class CacheDatabase extends RoomDatabase {
     public abstract SystemGPUDao SystemGPUDao();
     public abstract StorageDao StorageDao();
     public abstract SystemStorageDao SystemStorageDao();
+    public abstract MotherboardDao MotherboardDao();
 }
 
