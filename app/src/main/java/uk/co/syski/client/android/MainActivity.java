@@ -96,6 +96,8 @@ public class MainActivity extends AppCompatActivity {
         //system.Id = uuid.randomUUID();
         system.Id = uuid;
         system.HostName = "Earth";
+        system.ManufacturerName = "Not Dell";
+        system.ModelName = "Mega Thinkpad";
 
         CPUEntity cpu = new CPUEntity();
         cpu.ThreadCount = 2;
