@@ -5,8 +5,10 @@ import uk.co.syski.client.android.data.thread.entity.gpu.GPUThreads;
 import uk.co.syski.client.android.data.thread.entity.linking.systemgpu.SystemGPUThreads;
 import uk.co.syski.client.android.data.thread.entity.linking.systemos.SystemOSThreads;
 import uk.co.syski.client.android.data.thread.entity.linking.systemram.SystemRAMThreads;
+import uk.co.syski.client.android.data.thread.entity.linking.systemstorage.SystemStorageThreads;
 import uk.co.syski.client.android.data.thread.entity.operatingsystem.OperatingSystemThreads;
 import uk.co.syski.client.android.data.thread.entity.ram.RAMThreads;
+import uk.co.syski.client.android.data.thread.entity.storage.StorageThreads;
 import uk.co.syski.client.android.data.thread.entity.system.SystemThreads;
 import uk.co.syski.client.android.data.thread.entity.linking.systemcpu.SystemCPUThreads;
 import uk.co.syski.client.android.data.thread.entity.linking.systemtype.SystemTypeThreads;
@@ -46,4 +48,7 @@ public class SyskiCacheThread {
 
     public final SystemGPUThreads SystemGPUThreads = uk.co.syski.client.android.data.thread.entity.linking.systemgpu.SystemGPUThreads.getInstance();
 
+    public final StorageThreads StorageThreads = uk.co.syski.client.android.data.thread.entity.storage.StorageThreads.getInstance();
+
+    public final SystemStorageThreads SystemStorageThreads = uk.co.syski.client.android.data.thread.entity.linking.systemstorage.SystemStorageThreads.getInstance();
 }
