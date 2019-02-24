@@ -21,6 +21,8 @@ import uk.co.syski.client.android.data.entity.linking.*;
         SystemOSEntity.class,
         RAMEntity.class,
         SystemRAMEntity.class,
+        GPUEntity.class,
+        SystemGPUEntity.class,
         StorageEntity.class,
         SystemStorageEntity.class
     },
@@ -38,6 +40,8 @@ public abstract class CacheDatabase extends RoomDatabase {
     public abstract SystemOSDao SystemOSDao();
     public abstract RAMDao RAMDao();
     public abstract SystemRAMDao SystemRAMDao();
+    public abstract GPUDao GPUDao();
+    public abstract SystemGPUDao SystemGPUDao();
     public abstract StorageDao StorageDao();
     public abstract SystemStorageDao SystemStorageDao();
 }
