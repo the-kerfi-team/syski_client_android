@@ -26,7 +26,8 @@ public class SysOverviewActivity extends AppCompatActivity {
 
     String[] listItems = {
             "CPU",
-            "RAM"
+            "RAM",
+            "Storage"
     };
     Integer[] images = {
             R.drawable.placeholder,
@@ -60,6 +61,8 @@ public class SysOverviewActivity extends AppCompatActivity {
                     case 0: dest = cpuActivity.class;
                             break;
                     case 1: dest = RAMActivity.class;
+                            break;
+                    case 2: dest = StorageActivity.class;
                             break;
                     default: dest = null;
                 }
