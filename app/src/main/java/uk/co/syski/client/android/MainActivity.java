@@ -40,10 +40,12 @@ import uk.co.syski.client.android.api.VolleySingleton;
 import uk.co.syski.client.android.data.SyskiCache;
 import uk.co.syski.client.android.data.entity.CPUEntity;
 import uk.co.syski.client.android.data.entity.RAMEntity;
+import uk.co.syski.client.android.data.entity.StorageEntity;
 import uk.co.syski.client.android.data.entity.SystemEntity;
 import uk.co.syski.client.android.data.entity.UserEntity;
 import uk.co.syski.client.android.data.entity.linking.SystemCPUEntity;
 import uk.co.syski.client.android.data.entity.linking.SystemRAMEntity;
+import uk.co.syski.client.android.data.entity.linking.SystemStorageEntity;
 import uk.co.syski.client.android.data.thread.SyskiCacheThread;
 
 
@@ -117,6 +119,13 @@ public class MainActivity extends AppCompatActivity {
         ram.MemoryTypeName = "RAM TYPE";
         ram.ModelName = "RAM MODEL";
 
+        StorageEntity storage = new StorageEntity();
+        storage.Id = UUID.randomUUID();
+        storage.ManufacturerName = "Storage Manufacturer";
+        storage.MemoryBytes = 2199023255552L;
+        storage.MemoryTypeName = "StorageType";
+        storage.ModelName = "Storage Model";
+
         SystemCPUEntity systemCPU = new SystemCPUEntity();
         systemCPU.CPUId = cpu.Id;
         systemCPU.SystemId = system.Id;
@@ -125,12 +134,18 @@ public class MainActivity extends AppCompatActivity {
         systemRAM.RAMId = ram.Id;
         systemRAM.SystemId = system.Id;
 
+        SystemStorageEntity systemStore = new SystemStorageEntity();
+        systemStore.StorageId = storage.Id;
+        systemStore.SystemId = system.Id;
+
         try {
             SyskiCacheThread.getInstance().SystemThreads.InsertAll(system);
             SyskiCacheThread.getInstance().CPUThreads.InsertAll(cpu);
             SyskiCacheThread.getInstance().SystemCPUThreads.InsertAll(systemCPU);
             SyskiCacheThread.getInstance().RAMThreads.InsertAll(ram);
             SyskiCacheThread.getInstance().SystemRAMThreads.InsertAll(systemRAM);
+            SyskiCacheThread.getInstance().StorageThreads.InsertAll(storage);
+            SyskiCacheThread.getInstance().SystemStorageThreads.InsertAll(systemStore);
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
