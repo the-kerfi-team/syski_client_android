@@ -39,9 +39,11 @@ import java.util.concurrent.ExecutionException;
 import uk.co.syski.client.android.api.VolleySingleton;
 import uk.co.syski.client.android.data.SyskiCache;
 import uk.co.syski.client.android.data.entity.CPUEntity;
+import uk.co.syski.client.android.data.entity.RAMEntity;
 import uk.co.syski.client.android.data.entity.SystemEntity;
 import uk.co.syski.client.android.data.entity.UserEntity;
 import uk.co.syski.client.android.data.entity.linking.SystemCPUEntity;
+import uk.co.syski.client.android.data.entity.linking.SystemRAMEntity;
 import uk.co.syski.client.android.data.thread.SyskiCacheThread;
 
 
@@ -96,6 +98,8 @@ public class MainActivity extends AppCompatActivity {
         //system.Id = uuid.randomUUID();
         system.Id = uuid;
         system.HostName = "Earth";
+        system.ManufacturerName = "Not Dell";
+        system.ModelName = "Mega Thinkpad";
 
         CPUEntity cpu = new CPUEntity();
         cpu.ThreadCount = 2;
@@ -106,14 +110,27 @@ public class MainActivity extends AppCompatActivity {
         cpu.ArchitectureName="Architecture";
         cpu.Id = UUID.randomUUID();
 
+        RAMEntity ram = new RAMEntity();
+        ram.Id = UUID.randomUUID();
+        ram.ManufacturerName = "RAM MANUFACTURER";
+        ram.MemoryBytes = 50000;
+        ram.MemoryTypeName = "RAM TYPE";
+        ram.ModelName = "RAM MODEL";
+
         SystemCPUEntity systemCPU = new SystemCPUEntity();
         systemCPU.CPUId = cpu.Id;
         systemCPU.SystemId = system.Id;
+
+        SystemRAMEntity systemRAM = new SystemRAMEntity();
+        systemRAM.RAMId = ram.Id;
+        systemRAM.SystemId = system.Id;
 
         try {
             SyskiCacheThread.getInstance().SystemThreads.InsertAll(system);
             SyskiCacheThread.getInstance().CPUThreads.InsertAll(cpu);
             SyskiCacheThread.getInstance().SystemCPUThreads.InsertAll(systemCPU);
+            SyskiCacheThread.getInstance().RAMThreads.InsertAll(ram);
+            SyskiCacheThread.getInstance().SystemRAMThreads.InsertAll(systemRAM);
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {

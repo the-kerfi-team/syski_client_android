@@ -103,7 +103,10 @@
     <string name="sys_overview_lbl">System Overview</string>
     <string name="menu_logout">Logout</string>
     <string name="preference_sysID_key">uk.co.syski.client.android.SYSID</string>
-    <string name="qr_txt" >No QR Code Scanned</string>
+    <string name="qr_txt">No QR Code Scanned</string>
     <string name="qr_button">Scan</string>
     <string name="qr_activity">QR Scanner</string>
+    <string name="txtModel">Model</string>
+    <string name="txtManufacturer" >Manufacturer</string>
+    <string name="txtMemType">Memory Type</string>
 </resources>
