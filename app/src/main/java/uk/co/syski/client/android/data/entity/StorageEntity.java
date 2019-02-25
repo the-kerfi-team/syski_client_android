@@ -17,5 +17,5 @@ public class StorageEntity {
 
     public String MemoryTypeName;
 
-    public int MemoryBytes;
+    public long MemoryBytes;
 }
