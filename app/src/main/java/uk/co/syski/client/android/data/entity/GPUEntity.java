@@ -25,5 +25,5 @@ public class GPUEntity {
 
     public String MemoryTypeName;
 
-    public int MemoryBytes;
+    public long MemoryBytes;
 }

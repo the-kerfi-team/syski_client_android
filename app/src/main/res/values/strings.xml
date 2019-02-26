@@ -107,6 +107,9 @@
     <string name="qr_button">Scan</string>
     <string name="qr_activity">QR Scanner</string>
     <string name="txtModel">Model</string>
-    <string name="txtManufacturer" >Manufacturer</string>
+    <string name="txtManufacturer">Manufacturer</string>
     <string name="txtMemType">Memory Type</string>
+    <string name="sys_cpu_lbl">CPU</string>
+    <string name="sys_ram_lbl">RAM</string>
+    <string name="sys_stg_lbl">Storage</string>
 </resources>

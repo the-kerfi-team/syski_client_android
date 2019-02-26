@@ -46,9 +46,15 @@
             tools:replace="screenOrientation" />
         <activity
             android:name=".cpuActivity"
+            android:label="@string/sys_cpu_lbl"
             android:parentActivityName=".SysOverviewActivity" />
         <activity
             android:name=".RAMActivity"
+            android:label="@string/sys_ram_lbl"
+            android:parentActivityName=".SysOverviewActivity" />
+        <activity
+            android:name=".StorageActivity"
+            android:label="@string/sys_stg_lbl"
             android:parentActivityName=".SysOverviewActivity"/>
     </application>
 
