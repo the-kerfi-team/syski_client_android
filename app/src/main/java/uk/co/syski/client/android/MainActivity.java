@@ -39,11 +39,13 @@ import java.util.concurrent.ExecutionException;
 import uk.co.syski.client.android.api.VolleySingleton;
 import uk.co.syski.client.android.data.SyskiCache;
 import uk.co.syski.client.android.data.entity.CPUEntity;
+import uk.co.syski.client.android.data.entity.GPUEntity;
 import uk.co.syski.client.android.data.entity.RAMEntity;
 import uk.co.syski.client.android.data.entity.StorageEntity;
 import uk.co.syski.client.android.data.entity.SystemEntity;
 import uk.co.syski.client.android.data.entity.UserEntity;
 import uk.co.syski.client.android.data.entity.linking.SystemCPUEntity;
+import uk.co.syski.client.android.data.entity.linking.SystemGPUEntity;
 import uk.co.syski.client.android.data.entity.linking.SystemRAMEntity;
 import uk.co.syski.client.android.data.entity.linking.SystemStorageEntity;
 import uk.co.syski.client.android.data.thread.SyskiCacheThread;
@@ -126,6 +128,17 @@ public class MainActivity extends AppCompatActivity {
         storage.MemoryTypeName = "StorageType";
         storage.ModelName = "Storage Model";
 
+        GPUEntity gpu = new GPUEntity();
+        gpu.Id = UUID.randomUUID();
+        gpu.ModelName = "GPU Model";
+        gpu.ThreadCount = 1;
+        gpu.MemoryTypeName = "GPU Type";
+        gpu.MemoryBytes = 0;
+        gpu.ManufacturerName = "GPU Manufacturer";
+        gpu.CoreCount = 1;
+        gpu.ClockSpeed = 1;
+        gpu.ArchitectureName = "GPU Architecture";
+
         SystemCPUEntity systemCPU = new SystemCPUEntity();
         systemCPU.CPUId = cpu.Id;
         systemCPU.SystemId = system.Id;
@@ -138,6 +151,10 @@ public class MainActivity extends AppCompatActivity {
         systemStore.StorageId = storage.Id;
         systemStore.SystemId = system.Id;
 
+        SystemGPUEntity systemGPU = new SystemGPUEntity();
+        systemGPU.SystemId = system.Id;
+        systemGPU.GPUId = gpu.Id;
+
         try {
             SyskiCacheThread.getInstance().SystemThreads.InsertAll(system);
             SyskiCacheThread.getInstance().CPUThreads.InsertAll(cpu);
@@ -146,6 +163,8 @@ public class MainActivity extends AppCompatActivity {
             SyskiCacheThread.getInstance().SystemRAMThreads.InsertAll(systemRAM);
             SyskiCacheThread.getInstance().StorageThreads.InsertAll(storage);
             SyskiCacheThread.getInstance().SystemStorageThreads.InsertAll(systemStore);
+            SyskiCacheThread.getInstance().GPUThreads.InsertAll(gpu);
+            SyskiCacheThread.getInstance().SystemGPUThreads.InsertAll(systemGPU);
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {

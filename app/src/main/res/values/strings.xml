@@ -112,4 +112,9 @@
     <string name="sys_cpu_lbl">CPU</string>
     <string name="sys_ram_lbl">RAM</string>
     <string name="sys_stg_lbl">Storage</string>
+    <string name="txtArch">Architecture</string>
+    <string name="txtClock">Clock Speed</string>
+    <string name="txtCore">Core Count</string>
+    <string name="txtThread">Thread Count</string>
+    <string name="txtSize">Size</string>
 </resources>

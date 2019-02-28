@@ -55,6 +55,9 @@
         <activity
             android:name=".StorageActivity"
             android:label="@string/sys_stg_lbl"
+            android:parentActivityName=".SysOverviewActivity" />
+        <activity
+            android:name=".GPUActivity"
             android:parentActivityName=".SysOverviewActivity"/>
     </application>
 
