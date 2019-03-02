@@ -12,7 +12,7 @@
         <string name="pref_api_url_default">api.syski.co.uk</string>
         <string name="pref_api_port_default">443</string>
         <string name="pref_api_path_default">/</string>
-        <string name="pref_api_refreshinterval_default">10</string>
+        <string name="pref_api_refreshinterval_default">30</string>
 
     <!-- Developer Preferences -->
         <!-- Keys -->

@@ -42,14 +42,13 @@ public class APIThread extends Thread {
     public void run() {
         while (true)
         {
-            try
-            {
-                VolleySingleton.getInstance(mContext).addToRequestQueue(new APISystemsRequest(mContext, mUserId, null, null));
-                sleep(mSharedPreferences.getInt("pref_api_refreshinterval", Integer.parseInt(mContext.getString(R.string.pref_api_refreshinterval_default))) * 1000);
-            }
-            catch (Exception e)
-            {
-
+            VolleySingleton.getInstance(mContext).addToRequestQueue(new APISystemsRequest(mContext, mUserId, null, null));
+            int defaultRefreshTime = Integer.parseInt(mContext.getString(R.string.pref_api_refreshinterval_default));
+            //int refreshTime = mSharedPreferences.getInt("pref_api_refreshinterval", defaultRefreshTime);
+            try {
+                Thread.sleep(defaultRefreshTime * 1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }
