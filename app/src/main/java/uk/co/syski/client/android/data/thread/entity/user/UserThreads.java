@@ -3,6 +3,7 @@ package uk.co.syski.client.android.data.thread.entity.user;
 import java.util.concurrent.ExecutionException;
 
 import uk.co.syski.client.android.data.entity.UserEntity;
+import uk.co.syski.client.android.data.thread.entity.user.statement.GetUser;
 import uk.co.syski.client.android.data.thread.entity.user.statement.InsertAll;
 import uk.co.syski.client.android.data.thread.entity.user.statement.UserAccessToken;
 import uk.co.syski.client.android.data.thread.entity.user.statement.UserCount;
@@ -15,6 +16,10 @@ public class UserThreads {
     }
 
     private UserThreads() {}
+
+    public UserEntity getUser() throws ExecutionException, InterruptedException {
+        return new GetUser().execute().get();
+    }
 
     public boolean HasData() throws ExecutionException, InterruptedException {
         return (new UserCount().execute().get() > 0);

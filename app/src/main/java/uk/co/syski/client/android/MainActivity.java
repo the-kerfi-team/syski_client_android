@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
+import uk.co.syski.client.android.api.APIThread;
 import uk.co.syski.client.android.api.VolleySingleton;
 import uk.co.syski.client.android.api.requests.APIRequest;
 import uk.co.syski.client.android.api.requests.auth.APILoginRequest;
@@ -57,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             if (SyskiCacheThread.getInstance().UserThreads.HasData())
             {
+                APIThread.getInstance(getApplicationContext()).start();
                 startActivity(new Intent(this, SysListMenu.class));
                 finish();
             }
@@ -187,6 +189,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         protected void RequestSuccessful(JSONObject response) {
+            APIThread.getInstance(getContext()).start();
             startActivity(new Intent(getActivity(), SysListMenu.class));
             getActivity().finish();
         }
