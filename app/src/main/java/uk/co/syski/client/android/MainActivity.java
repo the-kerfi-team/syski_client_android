@@ -54,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         SyskiCache.BuildDatabase(getApplicationContext());
-        NukeSSLCerts.nuke();
         try {
             if (SyskiCacheThread.getInstance().UserThreads.HasData())
             {

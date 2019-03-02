@@ -14,7 +14,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -64,12 +65,14 @@ public class APITokenRequest extends APIRequest<JSONObject> {
             {
                 return Response.error(new VolleyError());
             }
-            SyskiCache.GetDatabase().UserDao().setToken(mUUID, jsonObject.getString("access_token"), jsonObject.getString("refresh_token"), new Date(jsonObject.getString("expiry")));
+            SyskiCache.GetDatabase().UserDao().setToken(mUUID, jsonObject.getString("access_token"), jsonObject.getString("refresh_token"), new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSSXXX").parse(jsonObject.getString("expiry")));
             return Response.success(jsonObject, HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException e) {
             return Response.error(new ParseError(e));
         } catch (JSONException je) {
             return Response.error(new ParseError(je));
+        } catch (ParseException e) {
+            return Response.error(new ParseError(e));
         }
     }
 

@@ -49,15 +49,6 @@ public class SysListMenu extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sys_list_menu);
 
-        NukeSSLCerts.nuke();
-        try {
-            new APIGetSystems(getApplicationContext());
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
         //Setup toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

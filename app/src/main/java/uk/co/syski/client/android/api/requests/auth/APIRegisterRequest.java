@@ -12,7 +12,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.UUID;
 
 import uk.co.syski.client.android.api.requests.APIRequest;
@@ -57,13 +58,15 @@ public class APIRegisterRequest extends APIRequest<JSONObject> {
             userEntity.Email = jsonObject.getString("email");
             userEntity.AccessToken = jsonObject.getString("access_token");
             userEntity.RefreshToken = jsonObject.getString("refresh_token");
-            userEntity.TokenExpiry = new Date(jsonObject.getString("expiry"));
+            userEntity.TokenExpiry = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSSXXX").parse(jsonObject.getString("expiry"));
             SyskiCache.GetDatabase().UserDao().InsertAll(userEntity);
             return Response.success(jsonObject, HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException e) {
             return Response.error(new ParseError(e));
         } catch (JSONException je) {
             return Response.error(new ParseError(je));
+        } catch (ParseException e) {
+            return Response.error(new ParseError(e));
         }
     }
 
