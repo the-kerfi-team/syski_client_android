@@ -8,7 +8,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 import java.util.UUID;
@@ -35,14 +37,26 @@ public class GPUActivity extends AppCompatActivity {
         initViews();
         getGPU();
 
-        model.setText(gpu.ModelName);
-        man.setText(gpu.ManufacturerName);
-        arch.setText(gpu.ArchitectureName);
-        clock.setText(""+gpu.ClockSpeed);
-        core.setText(""+gpu.CoreCount);
-        thread.setText(""+gpu.ThreadCount);
-        type.setText(gpu.MemoryTypeName);
-        size.setText(""+gpu.MemoryBytes);
+        if(gpu != null) {
+            model.setText(gpu.ModelName);
+            man.setText(gpu.ManufacturerName);
+            arch.setText(gpu.ArchitectureName);
+            clock.setText("" + gpu.ClockSpeed);
+            core.setText("" + gpu.CoreCount);
+            thread.setText("" + gpu.ThreadCount);
+            type.setText(gpu.MemoryTypeName);
+            size.setText("" + gpu.MemoryBytes);
+        }else {
+            model.setVisibility(View.INVISIBLE);
+            man.setVisibility(View.INVISIBLE);
+            arch.setVisibility(View.INVISIBLE);
+            clock.setVisibility(View.INVISIBLE);
+            core.setVisibility(View.INVISIBLE);
+            thread.setVisibility(View.INVISIBLE);
+            type.setVisibility(View.INVISIBLE);
+            size.setVisibility(View.INVISIBLE);
+            Toast.makeText(this,"GPU not found",Toast.LENGTH_SHORT).show();
+        }
 
     }
 

@@ -7,6 +7,7 @@
     tools:context="uk.co.syski.client.android.StorageActivity">
 
     <GridLayout
+        android:id="@+id/grdStorage"
         android:layout_width="368dp"
         android:layout_height="495dp"
         tools:layout_editor_absoluteX="8dp"

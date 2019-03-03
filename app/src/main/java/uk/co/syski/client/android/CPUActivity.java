@@ -8,8 +8,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -33,8 +35,40 @@ public class CPUActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cpu);
-        initViews();
 
+        initViews();
+        getCPU();
+
+        if(cpu != null) {
+            model.setText(cpu.ModelName);
+            manufacturer.setText(cpu.ManufacturerName);
+            architecture.setText(cpu.ArchitectureName);
+            clock.setText("" + cpu.ClockSpeed);
+            core.setText("" + cpu.CoreCount);
+            thread.setText("" + cpu.ThreadCount);
+        } else {
+            model.setVisibility(View.INVISIBLE);
+            manufacturer.setVisibility(View.INVISIBLE);
+            architecture.setVisibility(View.INVISIBLE);
+            clock.setVisibility(View.INVISIBLE);
+            core.setVisibility(View.INVISIBLE);
+            thread.setVisibility(View.INVISIBLE);
+            Toast.makeText(this,"CPU not found",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void initViews() {
+        model = findViewById(R.id.cpuModel);
+        manufacturer = findViewById(R.id.cpuMan);
+        architecture = findViewById(R.id.cpuArch);
+        clock = findViewById(R.id.cpuClock);
+        core = findViewById(R.id.cpuCore);
+        thread = findViewById(R.id.cpuThread);
+        prefs = this.getSharedPreferences(
+                getString(R.string.preference_sysID_key), Context.MODE_PRIVATE);
+    }
+
+    private void getCPU() {
         String sysId = prefs.getString(getString(R.string.preference_sysID_key), null);
 
         try {
@@ -47,25 +81,7 @@ public class CPUActivity extends AppCompatActivity {
 
         if(cpuList.size() > 0) {
             cpu = cpuList.get(0);
-            model.setText(cpu.ModelName);
-            manufacturer.setText(cpu.ManufacturerName);
-            architecture.setText(cpu.ArchitectureName);
-            clock.setText(""+cpu.ClockSpeed);
-            core.setText(""+cpu.CoreCount);
-            thread.setText(""+cpu.ThreadCount);
         }
-
-    }
-
-    private void initViews() {
-        model = findViewById(R.id.cpuModel);
-        manufacturer = findViewById(R.id.cpuMan);
-        architecture = findViewById(R.id.cpuArch);
-        clock = findViewById(R.id.cpuClock);
-        core = findViewById(R.id.cpuCore);
-        thread = findViewById(R.id.cpuThread);
-        prefs = this.getSharedPreferences(
-                getString(R.string.preference_sysID_key), Context.MODE_PRIVATE);
     }
 
     @Override

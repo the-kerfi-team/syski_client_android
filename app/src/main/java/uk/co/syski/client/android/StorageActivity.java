@@ -8,7 +8,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.GridLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -36,10 +39,19 @@ public class StorageActivity extends AppCompatActivity {
         initViews();
         getStorage();
 
-        manufacturer.setText(storage.ManufacturerName);
-        size.setText(""+storage.MemoryBytes);
-        type.setText(storage.MemoryTypeName);
-        name.setText(storage.ModelName);
+
+        if(storage != null) {
+            manufacturer.setText(storage.ManufacturerName);
+            size.setText("" + storage.MemoryBytes);
+            type.setText(storage.MemoryTypeName);
+            name.setText(storage.ModelName);
+        } else {
+            manufacturer.setVisibility(View.INVISIBLE);
+            size.setVisibility(View.INVISIBLE);
+            type.setVisibility(View.INVISIBLE);
+            name.setVisibility(View.INVISIBLE);
+            Toast.makeText(this,"Storage Info not found",Toast.LENGTH_SHORT).show();
+        }
 
     }
 

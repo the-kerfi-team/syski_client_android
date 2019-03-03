@@ -8,7 +8,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -34,10 +36,18 @@ public class RAMActivity extends AppCompatActivity {
         initViews();
         getRAM();
 
-        model.setText(ram.ModelName);
-        manufacturer.setText(ram.ManufacturerName);
-        type.setText(ram.MemoryTypeName);
-        size.setText(""+ram.MemoryBytes);
+        if (ram != null) {
+            model.setText(ram.ModelName);
+            manufacturer.setText(ram.ManufacturerName);
+            type.setText(ram.MemoryTypeName);
+            size.setText(""+ram.MemoryBytes);
+        } else {
+            model.setVisibility(View.INVISIBLE);
+            manufacturer.setVisibility(View.INVISIBLE);
+            type.setVisibility(View.INVISIBLE);
+            size.setVisibility(View.INVISIBLE);
+            Toast.makeText(this,"RAM not found",Toast.LENGTH_SHORT).show();
+        }
 
 
     }
