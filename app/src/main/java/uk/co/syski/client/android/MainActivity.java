@@ -40,8 +40,14 @@ import uk.co.syski.client.android.api.requests.auth.APIRegisterRequest;
 import uk.co.syski.client.android.api.requests.system.APISystemsRequest;
 import uk.co.syski.client.android.data.SyskiCache;
 import uk.co.syski.client.android.data.entity.CPUEntity;
+import uk.co.syski.client.android.data.entity.GPUEntity;
+import uk.co.syski.client.android.data.entity.RAMEntity;
+import uk.co.syski.client.android.data.entity.StorageEntity;
 import uk.co.syski.client.android.data.entity.SystemEntity;
 import uk.co.syski.client.android.data.entity.linking.SystemCPUEntity;
+import uk.co.syski.client.android.data.entity.linking.SystemGPUEntity;
+import uk.co.syski.client.android.data.entity.linking.SystemRAMEntity;
+import uk.co.syski.client.android.data.entity.linking.SystemStorageEntity;
 import uk.co.syski.client.android.data.thread.SyskiCacheThread;
 
 
@@ -94,6 +100,8 @@ public class MainActivity extends AppCompatActivity {
         //system.Id = uuid.randomUUID();
         system.Id = uuid;
         system.HostName = "Earth";
+        system.ManufacturerName = "Not Dell";
+        system.ModelName = "Mega Thinkpad";
 
         CPUEntity cpu = new CPUEntity();
         cpu.ThreadCount = 2;
@@ -104,14 +112,57 @@ public class MainActivity extends AppCompatActivity {
         cpu.ArchitectureName="Architecture";
         cpu.Id = UUID.randomUUID();
 
+        RAMEntity ram = new RAMEntity();
+        ram.Id = UUID.randomUUID();
+        ram.ManufacturerName = "RAM MANUFACTURER";
+        ram.MemoryBytes = 50000;
+        ram.MemoryTypeName = "RAM TYPE";
+        ram.ModelName = "RAM MODEL";
+
+        StorageEntity storage = new StorageEntity();
+        storage.Id = UUID.randomUUID();
+        storage.ManufacturerName = "Storage Manufacturer";
+        storage.MemoryBytes = 2199023255552L;
+        storage.MemoryTypeName = "StorageType";
+        storage.ModelName = "Storage Model";
+
+        GPUEntity gpu = new GPUEntity();
+        gpu.Id = UUID.randomUUID();
+        gpu.ModelName = "GPU Model";
+        gpu.ThreadCount = 1;
+        gpu.MemoryTypeName = "GPU Type";
+        gpu.MemoryBytes = 0;
+        gpu.ManufacturerName = "GPU Manufacturer";
+        gpu.CoreCount = 1;
+        gpu.ClockSpeed = 1;
+        gpu.ArchitectureName = "GPU Architecture";
+
         SystemCPUEntity systemCPU = new SystemCPUEntity();
         systemCPU.CPUId = cpu.Id;
         systemCPU.SystemId = system.Id;
+
+        SystemRAMEntity systemRAM = new SystemRAMEntity();
+        systemRAM.RAMId = ram.Id;
+        systemRAM.SystemId = system.Id;
+
+        SystemStorageEntity systemStore = new SystemStorageEntity();
+        systemStore.StorageId = storage.Id;
+        systemStore.SystemId = system.Id;
+
+        SystemGPUEntity systemGPU = new SystemGPUEntity();
+        systemGPU.SystemId = system.Id;
+        systemGPU.GPUId = gpu.Id;
 
         try {
             SyskiCacheThread.getInstance().SystemThreads.InsertAll(system);
             SyskiCacheThread.getInstance().CPUThreads.InsertAll(cpu);
             SyskiCacheThread.getInstance().SystemCPUThreads.InsertAll(systemCPU);
+            SyskiCacheThread.getInstance().RAMThreads.InsertAll(ram);
+            SyskiCacheThread.getInstance().SystemRAMThreads.InsertAll(systemRAM);
+            SyskiCacheThread.getInstance().StorageThreads.InsertAll(storage);
+            SyskiCacheThread.getInstance().SystemStorageThreads.InsertAll(systemStore);
+            SyskiCacheThread.getInstance().GPUThreads.InsertAll(gpu);
+            SyskiCacheThread.getInstance().SystemGPUThreads.InsertAll(systemGPU);
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {

@@ -7,7 +7,7 @@ import android.support.annotation.NonNull;
 import java.util.UUID;
 
 @Entity
-public class RAMEntity {
+public class GPUEntity {
     @PrimaryKey @NonNull
     public UUID Id;
 
@@ -15,8 +15,15 @@ public class RAMEntity {
 
     public String ManufacturerName;
 
+    public String ArchitectureName;
+
+    public int ClockSpeed;
+
+    public int CoreCount;
+
+    public int ThreadCount;
+
     public String MemoryTypeName;
 
     public long MemoryBytes;
 }
-

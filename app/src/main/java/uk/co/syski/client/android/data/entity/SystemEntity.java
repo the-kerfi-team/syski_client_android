@@ -7,7 +7,15 @@ import android.support.annotation.NonNull;
 import java.util.Date;
 import java.util.UUID;
 
-@Entity
+@Entity(
+    foreignKeys = {
+        @ForeignKey(
+            entity = MotherboardEntity.class,
+            parentColumns = "Id",
+            childColumns = "MotherboardId"
+        )
+    }
+)
 public class SystemEntity {
     @PrimaryKey @NonNull
     public UUID Id;
@@ -19,4 +27,6 @@ public class SystemEntity {
     public String ManufacturerName;
 
     public Date LastUpdated;
+
+    public UUID MotherboardId;
 }

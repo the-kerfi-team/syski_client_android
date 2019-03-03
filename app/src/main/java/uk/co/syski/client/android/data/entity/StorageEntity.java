@@ -7,7 +7,7 @@ import android.support.annotation.NonNull;
 import java.util.UUID;
 
 @Entity
-public class RAMEntity {
+public class StorageEntity {
     @PrimaryKey @NonNull
     public UUID Id;
 
@@ -19,4 +19,3 @@ public class RAMEntity {
 
     public long MemoryBytes;
 }
-

@@ -20,12 +20,15 @@ import uk.co.syski.client.android.data.thread.SyskiCacheThread;
 
 public class SysOverviewActivity extends AppCompatActivity {
 
-    TextView textView;
+    TextView host,manufacturer,model;
     SystemEntity systemEntity;
     ListView listView;
 
     String[] listItems = {
-            "CPU"
+            "CPU",
+            "RAM",
+            "Storage",
+            "GPU"
     };
     Integer[] images = {
             R.drawable.placeholder,
@@ -44,7 +47,9 @@ public class SysOverviewActivity extends AppCompatActivity {
         String sysId = prefs.getString(getString(R.string.preference_sysID_key), null);
         system = getSystem(sysId);
 
-        textView.setText(systemEntity.HostName);
+        host.setText(system.HostName);
+        manufacturer.setText(system.ManufacturerName);
+        model.setText(system.ModelName);
 
         SysListOverviewAdapter adapter = new SysListOverviewAdapter(this, images, listItems);
         listView.setAdapter(adapter);
@@ -55,6 +60,12 @@ public class SysOverviewActivity extends AppCompatActivity {
                 Class dest;
                 switch (position) {
                     case 0: dest = cpuActivity.class;
+                            break;
+                    case 1: dest = RAMActivity.class;
+                            break;
+                    case 2: dest = StorageActivity.class;
+                            break;
+                    case 3: dest = GPUActivity.class;
                             break;
                     default: dest = null;
                 }
@@ -81,7 +92,9 @@ public class SysOverviewActivity extends AppCompatActivity {
     }
 
     private void initViews(){
-        textView = findViewById(R.id.txtDetails);
+        host = findViewById(R.id.txtHostname);
+        manufacturer = findViewById(R.id.txtManufacturer);
+        model = findViewById(R.id.txtModel);
         listView = findViewById(R.id.compList);
         prefs = this.getSharedPreferences(
                 getString(R.string.preference_sysID_key), Context.MODE_PRIVATE);
