@@ -1,9 +1,13 @@
 package uk.co.syski.client.android;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import java.util.List;
@@ -70,5 +74,25 @@ public class GPUActivity extends AppCompatActivity {
             gpu = gpuList.get(0);
         }
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.appbar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_syslist) {
+            Intent settings = new Intent(this, SysListMenu.class);
+            startActivity(settings);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -59,7 +62,7 @@ public class SysOverviewActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Class dest;
                 switch (position) {
-                    case 0: dest = cpuActivity.class;
+                    case 0: dest = CPUActivity.class;
                             break;
                     case 1: dest = RAMActivity.class;
                             break;
@@ -98,5 +101,25 @@ public class SysOverviewActivity extends AppCompatActivity {
         listView = findViewById(R.id.compList);
         prefs = this.getSharedPreferences(
                 getString(R.string.preference_sysID_key), Context.MODE_PRIVATE);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.appbar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_syslist) {
+            Intent settings = new Intent(this, SysListMenu.class);
+            startActivity(settings);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

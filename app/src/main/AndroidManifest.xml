@@ -45,7 +45,7 @@
             android:screenOrientation="fullSensor"
             tools:replace="screenOrientation" />
         <activity
-            android:name=".cpuActivity"
+            android:name=".CPUActivity"
             android:label="@string/sys_cpu_lbl"
             android:parentActivityName=".SysOverviewActivity" />
         <activity
