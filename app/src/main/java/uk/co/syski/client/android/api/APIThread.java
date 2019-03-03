@@ -4,18 +4,21 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import java.util.UUID;
+import java.util.Calendar;
 import java.util.concurrent.ExecutionException;
 
 import uk.co.syski.client.android.R;
+import uk.co.syski.client.android.api.requests.auth.APITokenRequest;
 import uk.co.syski.client.android.api.requests.system.APISystemsRequest;
+import uk.co.syski.client.android.data.SyskiCache;
+import uk.co.syski.client.android.data.entity.UserEntity;
 import uk.co.syski.client.android.data.thread.SyskiCacheThread;
 
 public class APIThread extends Thread {
 
     private static APIThread mInstance;
     private static Context mContext;
-    private static UUID mUserId;
+    private static UserEntity mUser;
     private static SharedPreferences mSharedPreferences;
 
     public static synchronized APIThread getInstance(Context context) {
@@ -30,7 +33,7 @@ public class APIThread extends Thread {
         mContext = context;
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         try {
-            mUserId = SyskiCacheThread.getInstance().UserThreads.getUser().Id;
+            mUser = SyskiCacheThread.getInstance().UserThreads.getUser();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -42,7 +45,11 @@ public class APIThread extends Thread {
     public void run() {
         while (true)
         {
-            VolleySingleton.getInstance(mContext).addToRequestQueue(new APISystemsRequest(mContext, mUserId, null, null));
+            if (Calendar.getInstance().getTime().after(SyskiCache.GetDatabase().UserDao().getUser().TokenExpiry))
+            {
+                VolleySingleton.getInstance(mContext).addToRequestQueue(new APITokenRequest(mContext, mUser.Id));
+            }
+            VolleySingleton.getInstance(mContext).addToRequestQueue(new APISystemsRequest(mContext));
             int defaultRefreshTime = Integer.parseInt(mContext.getString(R.string.pref_api_refreshinterval_default));
             //int refreshTime = mSharedPreferences.getInt("pref_api_refreshinterval", defaultRefreshTime);
             try {

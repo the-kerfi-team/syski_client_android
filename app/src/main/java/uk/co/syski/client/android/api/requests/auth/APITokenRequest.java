@@ -1,7 +1,6 @@
 package uk.co.syski.client.android.api.requests.auth;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
@@ -27,8 +26,8 @@ public class APITokenRequest extends APIRequest<JSONObject> {
 
     private UUID mUUID;
 
-    public APITokenRequest(Context context, UUID userId, Response.Listener<JSONObject> listener, @Nullable Response.ErrorListener errorListener) {
-        super(context, Method.POST, "/auth/user/token/refresh", null, listener, errorListener);
+    public APITokenRequest(Context context, UUID userId) {
+        super(context, Method.POST, "/auth/user/token/refresh", null, null, null);
         mUUID = userId;
     }
 

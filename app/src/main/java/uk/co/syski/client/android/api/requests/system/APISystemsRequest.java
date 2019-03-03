@@ -1,7 +1,6 @@
 package uk.co.syski.client.android.api.requests.system;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
@@ -15,7 +14,6 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.UUID;
 
 import uk.co.syski.client.android.api.requests.APIAuthorizationRequest;
@@ -24,16 +22,12 @@ import uk.co.syski.client.android.data.entity.SystemEntity;
 
 public class APISystemsRequest extends APIAuthorizationRequest<JSONArray> {
 
-    public APISystemsRequest(Context context, UUID userId, Response.Listener<JSONArray> listener, @Nullable Response.ErrorListener errorListener) {
-        super(context, userId, Method.GET, "api/systems", null, listener, errorListener);
+    public APISystemsRequest(Context context) {
+        super(context, Method.GET, "api/systems", null, null, null);
     }
 
     @Override
     protected Response parseNetworkResponse(NetworkResponse response) {
-        if (Calendar.getInstance().getTime().after(SyskiCache.GetDatabase().UserDao().getUser().TokenExpiry))
-        {
-            super.parseNetworkResponse(response);
-        }
         try {
 
             JSONArray jsonArray = new JSONArray(new String(response.data, HttpHeaderParser.parseCharset(response.headers, PROTOCOL_CHARSET)));

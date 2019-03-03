@@ -37,6 +37,7 @@ import uk.co.syski.client.android.api.VolleySingleton;
 import uk.co.syski.client.android.api.requests.APIRequest;
 import uk.co.syski.client.android.api.requests.auth.APILoginRequest;
 import uk.co.syski.client.android.api.requests.auth.APIRegisterRequest;
+import uk.co.syski.client.android.api.requests.system.APISystemsRequest;
 import uk.co.syski.client.android.data.SyskiCache;
 import uk.co.syski.client.android.data.entity.CPUEntity;
 import uk.co.syski.client.android.data.entity.SystemEntity;
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             if (SyskiCacheThread.getInstance().UserThreads.HasData())
             {
-                APIThread.getInstance(getApplicationContext()).start();
+                VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(new APISystemsRequest(getApplicationContext()));
                 startActivity(new Intent(this, SysListMenu.class));
                 finish();
             }
