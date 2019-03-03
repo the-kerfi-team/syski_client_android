@@ -117,4 +117,8 @@
     <string name="txtCore">Core Count</string>
     <string name="txtThread">Thread Count</string>
     <string name="txtSize">Size</string>
+    <string name="pref_api_connection_heading">API Connection</string>
+    <string name="pref_api_refresh_heading">Refresh</string>
+    <string name="pref_api_refreshinterval_title">Refresh Inverval</string>
+    <string name="pref_api_refreshinterval_desc">The amount of time between each request of system data from the API.</string>
 </resources>

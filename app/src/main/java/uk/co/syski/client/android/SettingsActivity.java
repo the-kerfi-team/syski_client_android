@@ -278,6 +278,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_api_url)));
             bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_api_port)));
             bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_api_path)));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_api_refreshinterval)));
         }
 
         @Override

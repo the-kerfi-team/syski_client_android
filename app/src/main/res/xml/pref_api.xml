@@ -1,25 +1,37 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-
+    <PreferenceCategory
+        android:title="@string/pref_api_connection_heading">
+        <EditTextPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:defaultValue="@string/pref_api_url_default"
+            android:key="pref_api_url"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/pref_title_api_url" />
+        <EditTextPreference
+            android:defaultValue="@string/pref_api_port_default"
+            android:key="@string/pref_api_port"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/pref_title_api_port" />
+        <EditTextPreference
+            android:defaultValue="@string/pref_api_path_default"
+            android:key="@string/pref_api_path"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/pref_title_api_path" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/pref_api_refresh_heading">
     <EditTextPreference
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:defaultValue="@string/pref_api_url_default"
-        android:key="pref_api_url"
+        android:defaultValue="@string/pref_api_refreshinterval_default"
+        android:key="@string/pref_api_refreshinterval"
         android:selectAllOnFocus="true"
         android:singleLine="true"
-        android:title="@string/pref_title_api_url" />
-    <EditTextPreference
-        android:defaultValue="@string/pref_api_port_default"
-        android:key="@string/pref_api_port"
-        android:selectAllOnFocus="true"
-        android:singleLine="true"
-        android:title="@string/pref_title_api_port" />
-    <EditTextPreference
-        android:defaultValue="@string/pref_api_path_default"
-        android:key="@string/pref_api_path"
-        android:selectAllOnFocus="true"
-        android:singleLine="true"
-        android:title="@string/pref_title_api_path" />
+        android:inputType="number"
+        android:title="@string/pref_api_refreshinterval_title" />
+    </PreferenceCategory>
 
     <!-- NOTE: EditTextPreference accepts EditText attributes. -->
     <!-- NOTE: EditTextPreference's summary should be set to its value by the activity code. -->
