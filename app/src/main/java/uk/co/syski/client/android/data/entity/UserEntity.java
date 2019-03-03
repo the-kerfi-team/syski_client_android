@@ -4,6 +4,7 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
+import java.util.Date;
 import java.util.UUID;
 
 @Entity
@@ -17,4 +18,6 @@ public class UserEntity {
     public String RefreshToken;
 
     public String AccessToken;
+
+    public Date TokenExpiry;
 }

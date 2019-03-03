@@ -4,13 +4,14 @@ import android.os.AsyncTask;
 
 import uk.co.syski.client.android.data.SyskiCache;
 import uk.co.syski.client.android.data.dao.UserDao;
+import uk.co.syski.client.android.data.entity.UserEntity;
 
-public class UserCount extends AsyncTask<Void, Void, Integer> {
+public class GetUser extends AsyncTask<Void, Void, UserEntity> {
 
     @Override
-    protected Integer doInBackground(Void... Voids){
+    protected UserEntity doInBackground(Void... Voids) {
         UserDao UserDao = SyskiCache.GetDatabase().UserDao();
-        return UserDao.getUsersCount();
+        return UserDao.getUser();
     }
 
 }

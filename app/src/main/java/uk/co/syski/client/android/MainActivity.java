@@ -1,9 +1,7 @@
 package uk.co.syski.client.android;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -23,10 +21,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,14 +32,18 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
+import uk.co.syski.client.android.api.APIThread;
 import uk.co.syski.client.android.api.VolleySingleton;
+import uk.co.syski.client.android.api.requests.APIRequest;
+import uk.co.syski.client.android.api.requests.auth.APILoginRequest;
+import uk.co.syski.client.android.api.requests.auth.APIRegisterRequest;
+import uk.co.syski.client.android.api.requests.system.APISystemsRequest;
 import uk.co.syski.client.android.data.SyskiCache;
 import uk.co.syski.client.android.data.entity.CPUEntity;
 import uk.co.syski.client.android.data.entity.GPUEntity;
 import uk.co.syski.client.android.data.entity.RAMEntity;
 import uk.co.syski.client.android.data.entity.StorageEntity;
 import uk.co.syski.client.android.data.entity.SystemEntity;
-import uk.co.syski.client.android.data.entity.UserEntity;
 import uk.co.syski.client.android.data.entity.linking.SystemCPUEntity;
 import uk.co.syski.client.android.data.entity.linking.SystemGPUEntity;
 import uk.co.syski.client.android.data.entity.linking.SystemRAMEntity;
@@ -62,10 +62,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         SyskiCache.BuildDatabase(getApplicationContext());
-
         try {
             if (SyskiCacheThread.getInstance().UserThreads.HasData())
             {
+                VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(new APISystemsRequest(getApplicationContext()));
                 startActivity(new Intent(this, SysListMenu.class));
                 finish();
             }
@@ -73,8 +73,6 @@ public class MainActivity extends AppCompatActivity {
             {
                 setTheme(R.style.AppTheme);
                 setContentView(R.layout.activity_main);
-
-                SeedDatabase();
 
                 mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
                 mSectionsPagerAdapter.addFragment(new Tab_Login(), "Login");
@@ -201,47 +199,49 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-        protected void sendAPIRequest(String url, JSONObject jsonBody) {
-            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
-            String api_url = sp.getString("pref_api_url", getString(R.string.pref_api_url_default));
-            String api_port = sp.getString("pref_api_port", getString(R.string.pref_api_port_default));
-            String api_path = sp.getString("pref_api_path", getString(R.string.pref_api_path_default));
-
-            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,  "https://" + api_url + ":" + api_port + api_path + url, jsonBody,
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            RequestSuccessful(response);
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            RequestFailed(error);
-                        }
-                    });
+        protected void sendAPIRequest(String APIRequest) {
+            APIRequest request = null;
+            if (APIRequest.equalsIgnoreCase("register"))
+            {
+                request = new APIRegisterRequest(getContext(),
+                        mEmailView.getText().toString(),
+                        mPasswordView.getText().toString(),
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                RequestSuccessful(response);
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                RequestFailed(error);
+                            }
+                        });
+            }
+            else if (APIRequest.equalsIgnoreCase("login"))
+            {
+                request = new APILoginRequest(getContext(),
+                        mEmailView.getText().toString(),
+                        mPasswordView.getText().toString(),
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                RequestSuccessful(response);
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                RequestFailed(error);
+                            }
+                        });
+            }
             VolleySingleton.getInstance(getActivity()).addToRequestQueue(request);
         }
 
         protected void RequestSuccessful(JSONObject response) {
-            UserEntity userEntity = new UserEntity();
-            try {
-                userEntity.Id = UUID.fromString(response.getString("id"));
-                userEntity.Email = response.getString("email");
-                userEntity.AccessToken = response.getString("token");
-                userEntity.RefreshToken = response.getString("refreshToken");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            try {
-                SyskiCacheThread.getInstance().UserThreads.InsertAll(userEntity);
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
+            APIThread.getInstance(getContext()).start();
             startActivity(new Intent(getActivity(), SysListMenu.class));
             getActivity().finish();
         }
@@ -331,14 +331,7 @@ public class MainActivity extends AppCompatActivity {
                     focusView.requestFocus();
                     mDisableButton = false;
                 } else {
-                    JSONObject jsonBody = new JSONObject();
-                    try {
-                        jsonBody.put("email", email);
-                        jsonBody.put("password", password);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    sendAPIRequest("auth/user/login", jsonBody);
+                    sendAPIRequest("login");
                 }
             }
         }
@@ -419,7 +412,7 @@ public class MainActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    sendAPIRequest("auth/user/register", jsonBody);
+                    sendAPIRequest("register");
                 }
             }
         }
