@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +19,7 @@ import uk.co.syski.client.android.data.thread.SyskiCacheThread;
 
 public class MOBOActivity extends AppCompatActivity {
 
+    private static final String TAG = "MOBOActivity";
     TextView model,manufacturer,version;
     List<MotherboardEntity> moboList;
     MotherboardEntity mobo;
@@ -40,7 +42,7 @@ public class MOBOActivity extends AppCompatActivity {
             model.setVisibility(View.INVISIBLE);
             manufacturer.setVisibility(View.INVISIBLE);
             version.setVisibility(View.INVISIBLE);
-            Toast.makeText(this,"Motherboard not found",Toast.LENGTH_SHORT);
+            Toast.makeText(this,"Motherboard not found",Toast.LENGTH_SHORT).show();
         }
 
 
@@ -59,6 +61,7 @@ public class MOBOActivity extends AppCompatActivity {
     {
         String sysId = prefs.getString(getString(R.string.preference_sysID_key), null);
         try {
+            Log.d(TAG, "Querying database");
             moboList = SyskiCacheThread.getInstance().MotherboardThreads.GetMotherboards(UUID.fromString(sysId));
         } catch (ExecutionException e) {
             e.printStackTrace();
@@ -68,6 +71,8 @@ public class MOBOActivity extends AppCompatActivity {
 
         if(moboList.size() > 0){
             mobo = moboList.get(0);
+        } else {
+            Log.i(TAG, "Query returned no motherboard entity");
         }
     }
 }
