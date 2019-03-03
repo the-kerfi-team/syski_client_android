@@ -33,9 +33,13 @@ public class SysOverviewActivity extends AppCompatActivity {
             "Storage",
             "GPU"
     };
+
+    //TODO: Replace placeholders with corresponding icons
     Integer[] images = {
+            R.drawable.ic_cpu,
             R.drawable.placeholder,
-            R.drawable.placeholder
+            R.drawable.ic_storage,
+            R.drawable.ic_gpu
     };
 
     SharedPreferences prefs;

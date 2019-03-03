@@ -7,7 +7,7 @@
 
     <ImageView
         android:id="@+id/sysImg"
-        android:layout_width="126dp"
+        android:layout_width="173dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         app:srcCompat="@drawable/placeholder" />

@@ -40,7 +40,8 @@ public class SysListOverviewAdapter extends ArrayAdapter {
 
         compName.setText(listItems[position]);
         compDesc.setText("");
-        compImg.setImageResource(imageIDarray[1]);
+        //TODO: Once icons are implemented, update to use them
+        compImg.setImageResource(imageIDarray[position]);
 
         return listItem;
     }
