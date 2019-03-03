@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,6 +24,7 @@ import uk.co.syski.client.android.data.thread.SyskiCacheThread;
 
 public class RAMActivity extends AppCompatActivity {
 
+    private static final String TAG = "RAMActivity";
     TextView model,manufacturer,type,size;
     List<RAMEntity> ramList;
     RAMEntity ram;
@@ -62,6 +64,7 @@ public class RAMActivity extends AppCompatActivity {
     }
 
     private void getRAM(){
+        Log.d(TAG, "Querying database");
         String sysId = prefs.getString(getString(R.string.preference_sysID_key), null);
         try {
             ramList = SyskiCacheThread.getInstance().RAMThreads.GetRAMs(UUID.fromString(sysId));
@@ -73,6 +76,8 @@ public class RAMActivity extends AppCompatActivity {
 
         if(ramList.size() > 0){
             ram = ramList.get(0);
+        } else {
+            Log.i(TAG, "Query returned no RAM entity");
         }
     }
 

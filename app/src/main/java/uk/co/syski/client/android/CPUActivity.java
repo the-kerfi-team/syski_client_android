@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -24,6 +25,7 @@ import uk.co.syski.client.android.data.thread.SyskiCacheThread;
 
 public class CPUActivity extends AppCompatActivity {
 
+    private static final String TAG = "CPUActivity";
     List<CPUEntity> cpuList;
     TextView model,manufacturer,architecture,clock,core,thread;
     CPUEntity cpu;
@@ -72,6 +74,7 @@ public class CPUActivity extends AppCompatActivity {
         String sysId = prefs.getString(getString(R.string.preference_sysID_key), null);
 
         try {
+            Log.d(TAG, "Querying database");
             cpuList = SyskiCacheThread.getInstance().CPUThreads.GetCPUs(UUID.fromString(sysId));
         } catch (ExecutionException e) {
             e.printStackTrace();
@@ -81,6 +84,8 @@ public class CPUActivity extends AppCompatActivity {
 
         if(cpuList.size() > 0) {
             cpu = cpuList.get(0);
+        } else {
+            Log.i(TAG, "Query returned no CPU Entities");
         }
     }
 

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,6 +23,7 @@ import uk.co.syski.client.android.data.thread.SyskiCacheThread;
 
 public class GPUActivity extends AppCompatActivity {
 
+    private static final String TAG = "GPUActivity";
     List<GPUEntity> gpuList;
     GPUEntity gpu;
     SharedPreferences prefs;
@@ -77,6 +79,7 @@ public class GPUActivity extends AppCompatActivity {
 
         String sysId = prefs.getString(getString(R.string.preference_sysID_key), null);
         try {
+            Log.d(TAG, "Querying database");
             gpuList = SyskiCacheThread.getInstance().GPUThreads.GetGPUs(UUID.fromString(sysId));
         } catch (ExecutionException e) {
             e.printStackTrace();
@@ -86,6 +89,8 @@ public class GPUActivity extends AppCompatActivity {
 
         if(gpuList.size() > 0){
             gpu = gpuList.get(0);
+        } else{
+            Log.i(TAG, "Query returned no storage entity");
         }
 
     }
