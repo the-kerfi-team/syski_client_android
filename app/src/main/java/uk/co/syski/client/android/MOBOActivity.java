@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 import java.util.UUID;
@@ -28,6 +30,18 @@ public class MOBOActivity extends AppCompatActivity {
 
         initViews();
         getMOBO();
+
+
+        if(mobo != null){
+            model.setText(mobo.ModelName);
+            manufacturer.setText(mobo.ManufacturerName);
+            version.setText(mobo.Version);
+        } else {
+            model.setVisibility(View.INVISIBLE);
+            manufacturer.setVisibility(View.INVISIBLE);
+            version.setVisibility(View.INVISIBLE);
+            Toast.makeText(this,"Motherboard not found",Toast.LENGTH_SHORT);
+        }
 
 
     }
