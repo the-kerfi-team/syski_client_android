@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.GridLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +28,7 @@ public class GPUActivity extends AppCompatActivity {
     List<GPUEntity> gpuList;
     GPUEntity gpu;
     SharedPreferences prefs;
+    GridLayout gridLayout;
 
     //Views
     TextView model,man,arch,clock,core,thread,type,size;
@@ -49,14 +51,8 @@ public class GPUActivity extends AppCompatActivity {
             type.setText(gpu.MemoryTypeName);
             size.setText("" + gpu.MemoryBytes);
         }else {
-            model.setVisibility(View.INVISIBLE);
-            man.setVisibility(View.INVISIBLE);
-            arch.setVisibility(View.INVISIBLE);
-            clock.setVisibility(View.INVISIBLE);
-            core.setVisibility(View.INVISIBLE);
-            thread.setVisibility(View.INVISIBLE);
-            type.setVisibility(View.INVISIBLE);
-            size.setVisibility(View.INVISIBLE);
+            //TODO: Once test data is available, change to remove views based on cpu fields
+            gridLayout.removeAllViewsInLayout();
             Toast.makeText(this,"GPU not found",Toast.LENGTH_SHORT).show();
         }
 
@@ -73,6 +69,7 @@ public class GPUActivity extends AppCompatActivity {
         thread = findViewById(R.id.txtGPUThread);
         type = findViewById(R.id.txtGPUType);
         size = findViewById(R.id.txtGPUSize);
+        gridLayout = findViewById(R.id.grdGPU);
     }
 
     private void getGPU(){

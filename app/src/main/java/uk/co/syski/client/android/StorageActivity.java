@@ -31,6 +31,7 @@ public class StorageActivity extends AppCompatActivity {
     List<StorageEntity> storageList;
     StorageEntity storage;
     SharedPreferences prefs;
+    GridLayout gridLayout;
 
 
     @Override
@@ -48,10 +49,8 @@ public class StorageActivity extends AppCompatActivity {
             type.setText(storage.MemoryTypeName);
             name.setText(storage.ModelName);
         } else {
-            manufacturer.setVisibility(View.INVISIBLE);
-            size.setVisibility(View.INVISIBLE);
-            type.setVisibility(View.INVISIBLE);
-            name.setVisibility(View.INVISIBLE);
+            //TODO: Once test data is available, change to remove views based on cpu fields
+            gridLayout.removeAllViewsInLayout();
             Toast.makeText(this,"Storage Info not found",Toast.LENGTH_SHORT).show();
         }
 
@@ -64,6 +63,7 @@ public class StorageActivity extends AppCompatActivity {
         size = findViewById(R.id.txtStorageSize);
         type = findViewById(R.id.txtStorageType);
         name = findViewById(R.id.txtStoreModel);
+        gridLayout = findViewById(R.id.grdStorage);
     }
 
     private void getStorage() {

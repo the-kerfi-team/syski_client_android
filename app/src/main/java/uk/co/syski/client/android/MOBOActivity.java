@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.GridLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +25,7 @@ public class MOBOActivity extends AppCompatActivity {
     List<MotherboardEntity> moboList;
     MotherboardEntity mobo;
     SharedPreferences prefs;
+    GridLayout gridLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +41,8 @@ public class MOBOActivity extends AppCompatActivity {
             manufacturer.setText(mobo.ManufacturerName);
             version.setText(mobo.Version);
         } else {
-            model.setVisibility(View.INVISIBLE);
-            manufacturer.setVisibility(View.INVISIBLE);
-            version.setVisibility(View.INVISIBLE);
+            //TODO: Once test data is available, change to remove views based on cpu fields
+            gridLayout.removeAllViewsInLayout();
             Toast.makeText(this,"Motherboard not found",Toast.LENGTH_SHORT).show();
         }
 
@@ -55,6 +56,7 @@ public class MOBOActivity extends AppCompatActivity {
         model = findViewById(R.id.txtMoboModel);
         manufacturer = findViewById(R.id.txtMoboManufacturer);
         version = findViewById(R.id.txtMoboVersion);
+        gridLayout = findViewById(R.id.grdMobo);
     }
 
     private void getMOBO()

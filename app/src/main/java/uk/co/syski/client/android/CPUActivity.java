@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.GridLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +30,7 @@ public class CPUActivity extends AppCompatActivity {
     List<CPUEntity> cpuList;
     TextView model,manufacturer,architecture,clock,core,thread;
     CPUEntity cpu;
+    GridLayout gridLayout;
 
     SharedPreferences prefs;
 
@@ -49,12 +51,8 @@ public class CPUActivity extends AppCompatActivity {
             core.setText("" + cpu.CoreCount);
             thread.setText("" + cpu.ThreadCount);
         } else {
-            model.setVisibility(View.INVISIBLE);
-            manufacturer.setVisibility(View.INVISIBLE);
-            architecture.setVisibility(View.INVISIBLE);
-            clock.setVisibility(View.INVISIBLE);
-            core.setVisibility(View.INVISIBLE);
-            thread.setVisibility(View.INVISIBLE);
+            //TODO: Once test data is available, change to remove views based on cpu fields
+            gridLayout.removeAllViewsInLayout();
             Toast.makeText(this,"CPU not found",Toast.LENGTH_SHORT).show();
         }
     }
@@ -68,6 +66,7 @@ public class CPUActivity extends AppCompatActivity {
         thread = findViewById(R.id.cpuThread);
         prefs = this.getSharedPreferences(
                 getString(R.string.preference_sysID_key), Context.MODE_PRIVATE);
+        gridLayout = findViewById(R.id.grdCPU);
     }
 
     private void getCPU() {

@@ -7,6 +7,7 @@
     tools:context="uk.co.syski.client.android.GPUActivity">
 
     <GridLayout
+        android:id="@+id/grdGPU"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"
