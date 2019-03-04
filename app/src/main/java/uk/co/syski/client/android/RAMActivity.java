@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,15 +20,16 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
+import uk.co.syski.client.android.adapters.RAMAdapter;
+import uk.co.syski.client.android.adapters.SysListOverviewAdapter;
 import uk.co.syski.client.android.data.entity.RAMEntity;
 import uk.co.syski.client.android.data.thread.SyskiCacheThread;
 
 public class RAMActivity extends AppCompatActivity {
 
     private static final String TAG = "RAMActivity";
-    TextView model,manufacturer,type,size;
+    ListView listView;
     List<RAMEntity> ramList;
-    RAMEntity ram;
     SharedPreferences prefs;
 
     @Override
@@ -35,32 +37,40 @@ public class RAMActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ram);
 
+
         initViews();
         getRAM();
 
-        if (ram != null) {
-            model.setText(ram.ModelName);
-            manufacturer.setText(ram.ManufacturerName);
-            type.setText(ram.MemoryTypeName);
-            size.setText(""+ram.MemoryBytes);
-        } else {
-            model.setVisibility(View.INVISIBLE);
-            manufacturer.setVisibility(View.INVISIBLE);
-            type.setVisibility(View.INVISIBLE);
-            size.setVisibility(View.INVISIBLE);
+
+//        if (ram != null) {
+//            model.setText(ram.ModelName);
+//            manufacturer.setText(ram.ManufacturerName);
+//            type.setText(ram.MemoryTypeName);
+//            size.setText(""+ram.MemoryBytes);
+//        } else {
+//            model.setVisibility(View.INVISIBLE);
+//            manufacturer.setVisibility(View.INVISIBLE);
+//            type.setVisibility(View.INVISIBLE);
+//            size.setVisibility(View.INVISIBLE);
+//            Toast.makeText(this,"RAM not found",Toast.LENGTH_SHORT).show();
+//        }
+
+        if(ramList.size() > 0) {
+            RAMAdapter adapter = new RAMAdapter(this, ramList);
+            listView.setAdapter(adapter);
+        } else{
             Toast.makeText(this,"RAM not found",Toast.LENGTH_SHORT).show();
         }
+
 
 
     }
 
     private void initViews(){
-        model = findViewById(R.id.txtRamModel);
-        manufacturer = findViewById(R.id.txtRamManufacturer);
-        type = findViewById(R.id.txtRamType);
-        size = findViewById(R.id.txtRamSize);
         prefs = this.getSharedPreferences(
                 getString(R.string.preference_sysID_key), Context.MODE_PRIVATE);
+        listView = findViewById(R.id.ramListView);
+
     }
 
     private void getRAM(){
@@ -74,9 +84,7 @@ public class RAMActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        if(ramList.size() > 0){
-            ram = ramList.get(0);
-        } else {
+        if(ramList.size() == 0){
             Log.i(TAG, "Query returned no RAM entity");
         }
     }
