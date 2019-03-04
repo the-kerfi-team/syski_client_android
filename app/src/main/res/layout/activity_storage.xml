@@ -8,10 +8,16 @@
 
     <GridLayout
         android:id="@+id/grdStorage"
-        android:layout_width="368dp"
-        android:layout_height="495dp"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="8dp">
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/textView2"
@@ -37,7 +43,7 @@
 
         <TextView
             android:id="@+id/textView9"
-            android:layout_width="121dp"
+            android:layout_width="@dimen/gridPadding"
             android:layout_height="wrap_content"
             android:layout_column="0"
             android:layout_row="3"
