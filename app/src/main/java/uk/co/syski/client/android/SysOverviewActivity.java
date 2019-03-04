@@ -40,7 +40,8 @@ public class SysOverviewActivity extends AppCompatActivity {
             R.drawable.ic_cpu,
             R.drawable.placeholder,
             R.drawable.ic_storage,
-            R.drawable.ic_gpu
+            R.drawable.ic_gpu,
+            R.drawable.placeholder
     };
 
     SharedPreferences prefs;
