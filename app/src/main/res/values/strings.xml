@@ -121,4 +121,5 @@
     <string name="pref_api_refresh_heading">Refresh</string>
     <string name="pref_api_refreshinterval_title">Refresh Inverval</string>
     <string name="pref_api_refreshinterval_desc">The amount of time between each request of system data from the API.</string>
+    <string name="txtVersion">Version</string>
 </resources>

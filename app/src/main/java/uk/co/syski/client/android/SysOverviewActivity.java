@@ -28,7 +28,8 @@ public class SysOverviewActivity extends AppCompatActivity {
             "CPU",
             "RAM",
             "Storage",
-            "GPU"
+            "GPU",
+            "Motherboard"
     };
     Integer[] images = {
             R.drawable.placeholder,
@@ -66,6 +67,8 @@ public class SysOverviewActivity extends AppCompatActivity {
                     case 2: dest = StorageActivity.class;
                             break;
                     case 3: dest = GPUActivity.class;
+                            break;
+                    case 4: dest = MOBOActivity.class;
                             break;
                     default: dest = null;
                 }

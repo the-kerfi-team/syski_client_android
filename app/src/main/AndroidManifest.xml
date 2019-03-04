@@ -58,6 +58,9 @@
             android:parentActivityName=".SysOverviewActivity" />
         <activity
             android:name=".GPUActivity"
+            android:parentActivityName=".SysOverviewActivity" />
+        <activity
+            android:name=".MOBOActivity"
             android:parentActivityName=".SysOverviewActivity"/>
     </application>
 
