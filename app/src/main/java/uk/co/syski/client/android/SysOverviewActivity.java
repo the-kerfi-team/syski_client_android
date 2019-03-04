@@ -31,7 +31,8 @@ public class SysOverviewActivity extends AppCompatActivity {
             "CPU",
             "RAM",
             "Storage",
-            "GPU"
+            "GPU",
+            "Motherboard"
     };
 
     //TODO: Replace placeholders with corresponding icons
@@ -73,6 +74,8 @@ public class SysOverviewActivity extends AppCompatActivity {
                     case 2: dest = StorageActivity.class;
                             break;
                     case 3: dest = GPUActivity.class;
+                            break;
+                    case 4: dest = MOBOActivity.class;
                             break;
                     default: dest = null;
                 }
