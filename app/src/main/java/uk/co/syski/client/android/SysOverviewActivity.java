@@ -10,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -24,6 +25,7 @@ import uk.co.syski.client.android.data.thread.SyskiCacheThread;
 public class SysOverviewActivity extends AppCompatActivity {
 
     TextView host,manufacturer,model;
+    ImageView img;
     SystemEntity systemEntity;
     ListView listView;
 
@@ -38,10 +40,12 @@ public class SysOverviewActivity extends AppCompatActivity {
     //TODO: Replace placeholders with corresponding icons
     Integer[] images = {
             R.drawable.ic_cpu,
-            R.drawable.placeholder,
+            //TODO: Find better Icon
+            R.drawable.ic_gpu,
             R.drawable.ic_storage,
             R.drawable.ic_gpu,
-            R.drawable.placeholder
+            //TODO: Find better Icon
+            R.drawable.ic_gpu
     };
 
     SharedPreferences prefs;
@@ -109,6 +113,9 @@ public class SysOverviewActivity extends AppCompatActivity {
         listView = findViewById(R.id.compList);
         prefs = this.getSharedPreferences(
                 getString(R.string.preference_sysID_key), Context.MODE_PRIVATE);
+        img = findViewById(R.id.imgOverview);
+        //TODO: Add actual logic, todo with OS
+        img.setImageResource(R.drawable.ic_pc);
     }
 
     @Override

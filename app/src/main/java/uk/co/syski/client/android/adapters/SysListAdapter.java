@@ -48,7 +48,7 @@ public class SysListAdapter extends ArrayAdapter {
         //sets display values from arrays
         sysNameTextField.setText(mSystemEntityList.get(position).HostName);
         hostTextField.setText(mSystemEntityList.get(position).HostName);
-        imageView.setImageResource(imageIDarray[1]);
+        imageView.setImageResource(imageIDarray[0]);
 
         return rowView;
     }

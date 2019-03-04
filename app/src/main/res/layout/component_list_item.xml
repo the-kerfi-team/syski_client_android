@@ -7,12 +7,18 @@
 
     <ImageView
         android:id="@+id/compImg"
-        android:layout_width="126dp"
-        android:layout_height="126dp"
+        android:layout_width="157dp"
+        android:layout_height="85dp"
         android:layout_weight="1"
         app:srcCompat="@drawable/placeholder" />
 
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
     <LinearLayout
+        android:id="@+id/linComp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
