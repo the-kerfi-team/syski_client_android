@@ -27,7 +27,7 @@ public class APITokenRequest extends APIRequest<JSONObject> {
     private UUID mUUID;
 
     public APITokenRequest(Context context, UUID userId) {
-        super(context, Method.POST, "/auth/user/token/refresh", null, null, null);
+        super(context, Method.POST, "auth/user/token/refresh", null, null, null);
         mUUID = userId;
     }
 

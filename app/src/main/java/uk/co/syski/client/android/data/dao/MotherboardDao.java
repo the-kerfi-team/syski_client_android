@@ -12,6 +12,10 @@ import uk.co.syski.client.android.data.entity.MotherboardEntity;
 
 @Dao
 public interface MotherboardDao {
+
+    @Query("SELECT * FROM MotherboardEntity WHERE Id == :Id")
+    MotherboardEntity GetMotherboard(UUID Id);
+
     @Query("SELECT * FROM MotherboardEntity WHERE Id IN (:Ids)")
     List<MotherboardEntity> GetMotherboards(UUID... Ids);
 

@@ -20,6 +20,9 @@ public interface SystemDao {
     @Query("UPDATE SystemEntity SET HostName=:hostName ,ModelName=:modelName, ManufacturerName=:manufacturerName, LastUpdated=:lastUpdated WHERE Id = :uuid")
     void setSystem(UUID uuid, String hostName, String modelName, String manufacturerName, Date lastUpdated);
 
+    @Query("UPDATE SystemEntity SET MotherboardId=:motherboardId WHERE Id = :uuid")
+    void setSystemMotherboard(UUID uuid, UUID motherboardId);
+
     @Query("SELECT * FROM SystemEntity")
     List<SystemEntity> getAllSystems();
 
