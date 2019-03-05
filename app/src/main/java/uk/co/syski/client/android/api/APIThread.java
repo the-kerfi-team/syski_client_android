@@ -59,7 +59,7 @@ public class APIThread extends Thread {
                 VolleySingleton.getInstance(mContext).addToRequestQueue(new APITokenRequest(mContext, mUser.Id));
             }
             expiryDate = SyskiCache.GetDatabase().UserDao().getUser().TokenExpiry;
-            if (expiryDate != null || Calendar.getInstance().getTime().before(expiryDate)) {
+            if (expiryDate != null && Calendar.getInstance().getTime().before(expiryDate)) {
                 VolleySingleton.getInstance(mContext).addToRequestQueue(new APISystemsRequest(mContext));
                 List<SystemEntity> systemEntities = SyskiCache.GetDatabase().SystemDao().getAllSystems();
                 for (SystemEntity system : systemEntities) {
