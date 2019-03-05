@@ -45,7 +45,7 @@
             android:screenOrientation="fullSensor"
             tools:replace="screenOrientation" />
         <activity
-            android:name=".cpuActivity"
+            android:name=".CPUActivity"
             android:label="@string/sys_cpu_lbl"
             android:parentActivityName=".SysOverviewActivity" />
         <activity
@@ -58,10 +58,12 @@
             android:parentActivityName=".SysOverviewActivity" />
         <activity
             android:name=".GPUActivity"
-            android:parentActivityName=".SysOverviewActivity" />
+            android:parentActivityName=".SysOverviewActivity"
+            android:label="@string/sys_gpu_lbl"/>
         <activity
             android:name=".MOBOActivity"
-            android:parentActivityName=".SysOverviewActivity"/>
+            android:parentActivityName=".SysOverviewActivity"
+            android:label="@string/sys_mobo_lbl"/>
     </application>
 
 </manifest>

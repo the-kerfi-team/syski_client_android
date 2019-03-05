@@ -121,5 +121,8 @@
     <string name="pref_api_refresh_heading">Refresh</string>
     <string name="pref_api_refreshinterval_title">Refresh Inverval</string>
     <string name="pref_api_refreshinterval_desc">The amount of time between each request of system data from the API.</string>
+    <string name="action_syslist">System List</string>
     <string name="txtVersion">Version</string>
+    <string name="sys_gpu_lbl">GPU</string>
+    <string name="sys_mobo_lbl">Motherboard</string>
 </resources>

@@ -34,9 +34,7 @@ public class SysListMenu extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     Integer[] imageArray = {
-            R.drawable.placeholder,
-            R.drawable.placeholder,
-            R.drawable.placeholder
+            R.drawable.ic_pc
     };
 
     ListView listView;

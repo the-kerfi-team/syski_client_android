@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import uk.co.syski.client.android.R;
@@ -26,6 +27,7 @@ public class SysListOverviewAdapter extends ArrayAdapter {
     TextView compName;
     TextView compDesc;
     View listItem;
+    LinearLayout lin;
 
     public SysListOverviewAdapter(Activity context, Integer[] images, String[] listItems){
         super(context, R.layout.component_list_item, listItems);
@@ -39,8 +41,9 @@ public class SysListOverviewAdapter extends ArrayAdapter {
         initViews();
 
         compName.setText(listItems[position]);
-        compDesc.setText("");
-        compImg.setImageResource(imageIDarray[1]);
+        //TODO: Tweak when component descriptions implemented
+        lin.removeView(compDesc);
+        compImg.setImageResource(imageIDarray[position]);
 
         return listItem;
     }
@@ -51,6 +54,7 @@ public class SysListOverviewAdapter extends ArrayAdapter {
         compImg = listItem.findViewById(R.id.compImg);
         compName = listItem.findViewById(R.id.compName);
         compDesc = listItem.findViewById(R.id.compDesc);
+        lin = listItem.findViewById(R.id.linComp);
     }
 
 }

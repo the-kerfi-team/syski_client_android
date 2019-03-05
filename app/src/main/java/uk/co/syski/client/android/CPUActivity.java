@@ -11,85 +11,81 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.GridLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
-import uk.co.syski.client.android.data.entity.GPUEntity;
-import uk.co.syski.client.android.data.entity.RAMEntity;
+import uk.co.syski.client.android.data.entity.CPUEntity;
 import uk.co.syski.client.android.data.thread.SyskiCacheThread;
 
-public class GPUActivity extends AppCompatActivity {
+public class CPUActivity extends AppCompatActivity {
 
-    private static final String TAG = "GPUActivity";
-    List<GPUEntity> gpuList;
-    GPUEntity gpu;
-    SharedPreferences prefs;
+    private static final String TAG = "CPUActivity";
+    List<CPUEntity> cpuList;
+    TextView model,manufacturer,architecture,clock,core,thread;
+    CPUEntity cpu;
     GridLayout gridLayout;
 
-    //Views
-    TextView model,man,arch,clock,core,thread,type,size;
+    SharedPreferences prefs;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_gpu);
+        setContentView(R.layout.activity_cpu);
 
         initViews();
-        getGPU();
+        getCPU();
 
-        if(gpu != null) {
-            model.setText(gpu.ModelName);
-            man.setText(gpu.ManufacturerName);
-            arch.setText(gpu.ArchitectureName);
-            clock.setText("" + gpu.ClockSpeed);
-            core.setText("" + gpu.CoreCount);
-            thread.setText("" + gpu.ThreadCount);
-            type.setText(gpu.MemoryTypeName);
-            size.setText("" + gpu.MemoryBytes);
-        }else {
+        if(cpu != null) {
+            model.setText(cpu.ModelName);
+            manufacturer.setText(cpu.ManufacturerName);
+            architecture.setText(cpu.ArchitectureName);
+            clock.setText("" + cpu.ClockSpeed);
+            core.setText("" + cpu.CoreCount);
+            thread.setText("" + cpu.ThreadCount);
+        } else {
             //TODO: Once test data is available, change to remove views based on cpu fields
             gridLayout.removeAllViewsInLayout();
-            Toast.makeText(this,"GPU not found",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"CPU not found",Toast.LENGTH_SHORT).show();
         }
-
     }
 
-    private void initViews(){
+    private void initViews() {
+        model = findViewById(R.id.cpuModel);
+        manufacturer = findViewById(R.id.cpuMan);
+        architecture = findViewById(R.id.cpuArch);
+        clock = findViewById(R.id.cpuClock);
+        core = findViewById(R.id.cpuCore);
+        thread = findViewById(R.id.cpuThread);
         prefs = this.getSharedPreferences(
                 getString(R.string.preference_sysID_key), Context.MODE_PRIVATE);
-        model = findViewById(R.id.txtGPUModel);
-        man = findViewById(R.id.txtGPUMan);
-        arch = findViewById(R.id.txtGPUArch);
-        clock = findViewById(R.id.txtGPUClock);
-        core = findViewById(R.id.txtGPUCore);
-        thread = findViewById(R.id.txtGPUThread);
-        type = findViewById(R.id.txtGPUType);
-        size = findViewById(R.id.txtGPUSize);
-        gridLayout = findViewById(R.id.grdGPU);
+        gridLayout = findViewById(R.id.grdCPU);
     }
 
-    private void getGPU(){
-
+    private void getCPU() {
         String sysId = prefs.getString(getString(R.string.preference_sysID_key), null);
+
         try {
             Log.d(TAG, "Querying database");
-            gpuList = SyskiCacheThread.getInstance().GPUThreads.GetGPUs(UUID.fromString(sysId));
+            cpuList = SyskiCacheThread.getInstance().CPUThreads.GetCPUs(UUID.fromString(sysId));
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        if(gpuList.size() > 0){
-            gpu = gpuList.get(0);
-        } else{
-            Log.i(TAG, "Query returned no storage entity");
+        if(cpuList.size() > 0) {
+            cpu = cpuList.get(0);
+        } else {
+            Log.i(TAG, "Query returned no CPU Entities");
         }
-
     }
 
     @Override
