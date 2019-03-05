@@ -11,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.GridLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +21,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
+import uk.co.syski.client.android.adapters.RAMAdapter;
+import uk.co.syski.client.android.adapters.StorageAdapter;
 import uk.co.syski.client.android.data.entity.RAMEntity;
 import uk.co.syski.client.android.data.entity.StorageEntity;
 import uk.co.syski.client.android.data.thread.SyskiCacheThread;
@@ -27,11 +30,10 @@ import uk.co.syski.client.android.data.thread.SyskiCacheThread;
 public class StorageActivity extends AppCompatActivity {
 
     private static final String TAG = "StorageActivity";
-    TextView manufacturer,size,type,name;
+
     List<StorageEntity> storageList;
-    StorageEntity storage;
     SharedPreferences prefs;
-    GridLayout gridLayout;
+    ListView listView;
 
 
     @Override
@@ -43,15 +45,22 @@ public class StorageActivity extends AppCompatActivity {
         getStorage();
 
 
-        if(storage != null) {
-            manufacturer.setText(storage.ManufacturerName);
-            size.setText("" + storage.MemoryBytes);
-            type.setText(storage.MemoryTypeName);
-            name.setText(storage.ModelName);
-        } else {
-            //TODO: Once test data is available, change to remove views based on cpu fields
-            gridLayout.removeAllViewsInLayout();
-            Toast.makeText(this,"Storage Info not found",Toast.LENGTH_SHORT).show();
+//        if(storage != null) {
+//            manufacturer.setText(storage.ManufacturerName);
+//            size.setText("" + storage.MemoryBytes);
+//            type.setText(storage.MemoryTypeName);
+//            name.setText(storage.ModelName);
+//        } else {
+//            //TODO: Once test data is available, change to remove views based on cpu fields
+//            gridLayout.removeAllViewsInLayout();
+//            Toast.makeText(this,"Storage Info not found",Toast.LENGTH_SHORT).show();
+//        }
+
+        if(storageList.size() > 0) {
+            StorageAdapter adapter = new StorageAdapter(this, storageList);
+            listView.setAdapter(adapter);
+        } else{
+            Toast.makeText(this,"Storage not found",Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -59,11 +68,7 @@ public class StorageActivity extends AppCompatActivity {
     private void initViews() {
         prefs = this.getSharedPreferences(
                 getString(R.string.preference_sysID_key), Context.MODE_PRIVATE);
-        manufacturer = findViewById(R.id.txtStorageManufacturer);
-        size = findViewById(R.id.txtStorageSize);
-        type = findViewById(R.id.txtStorageType);
-        name = findViewById(R.id.txtStoreModel);
-        gridLayout = findViewById(R.id.grdStorage);
+        listView = findViewById(R.id.stgListView);
     }
 
     private void getStorage() {
@@ -77,9 +82,7 @@ public class StorageActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        if(storageList.size() > 0){
-            storage = storageList.get(0);
-        } else {
+        if(storageList.size() <= 0){
             Log.i(TAG,"Query returned no storage entitity");
         }
     }
