@@ -49,9 +49,10 @@ public class APISystemCPURequest extends APIAuthorizationRequest<JSONArray> {
                     cpuEntity.ManufacturerName = ((JSONObject) jsonArray.get(i)).getString("manufacturerName");
                     cpuEntity.ModelName = ((JSONObject) jsonArray.get(i)).getString("modelName");
                     cpuEntity.ArchitectureName = ((JSONObject) jsonArray.get(i)).getString("architectureName");
-                    cpuEntity.ClockSpeed = Integer.parseInt(((JSONObject) jsonArray.get(i)).getString("clockSpeed"));
-                    cpuEntity.CoreCount = Integer.parseInt(((JSONObject) jsonArray.get(i)).getString("coreCount"));
-                    cpuEntity.ThreadCount = Integer.parseInt(((JSONObject) jsonArray.get(i)).getString("clockSpeed"));
+                    //
+                    cpuEntity.ClockSpeed = (int) Double.parseDouble(((JSONObject) jsonArray.get(i)).getString("clockSpeed"));
+                    cpuEntity.CoreCount = (int) Double.parseDouble(((JSONObject) jsonArray.get(i)).getString("coreCount"));
+                    cpuEntity.ThreadCount = (int) Double.parseDouble(((JSONObject) jsonArray.get(i)).getString("clockSpeed"));
 
                     SyskiCache.GetDatabase().CPUDao().InsertAll(cpuEntity);
 

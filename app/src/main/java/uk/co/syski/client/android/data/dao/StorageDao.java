@@ -13,7 +13,7 @@ import uk.co.syski.client.android.data.entity.StorageEntity;
 @Dao
 public interface StorageDao {
 
-    @Query("SELECT Id, ModelName, ManufacturerName, MemoryTypeName, MemoryBytes FROM StorageEntity INNER JOIN SystemStorageEntity WHERE SystemId == :Id")
+    @Query("SELECT Id, ModelName, ManufacturerName, MemoryTypeName, MemoryBytes FROM StorageEntity WHERE Id == :Id")
     StorageEntity GetStorage(UUID Id);
 
     @Query("SELECT Id, ModelName, ManufacturerName, MemoryTypeName, MemoryBytes FROM StorageEntity" +

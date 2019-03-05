@@ -13,7 +13,7 @@ import uk.co.syski.client.android.data.entity.GPUEntity;
 @Dao
 public interface GPUDao {
 
-    @Query("SELECT Id, ModelName, ManufacturerName, ArchitectureName, ClockSpeed, CoreCount, ThreadCount, MemoryTypeName, MemoryBytes FROM GPUEntity INNER JOIN SystemGPUEntity WHERE SystemId IN (:Id)")
+    @Query("SELECT Id, ModelName, ManufacturerName, ArchitectureName, ClockSpeed, CoreCount, ThreadCount, MemoryTypeName, MemoryBytes FROM GPUEntity WHERE Id IN (:Id)")
     GPUEntity GetGPU(UUID Id);
 
     @Query("SELECT Id, ModelName, ManufacturerName, ArchitectureName, ClockSpeed, CoreCount, " +

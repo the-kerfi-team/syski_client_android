@@ -3,6 +3,7 @@ package uk.co.syski.client.android.api;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -71,9 +72,10 @@ public class APIThread extends Thread {
                 }
             }
             int defaultRefreshTime = Integer.parseInt(mContext.getString(R.string.pref_api_refreshinterval_default));
-            //int refreshTime = mSharedPreferences.getInt("pref_api_refreshinterval", defaultRefreshTime);
+            int refreshTime = (int) Double.parseDouble(mSharedPreferences.getString("pref_api_refreshinterval", Integer.toString(defaultRefreshTime)));
+            Log.d("Syski_Interval_Time", Integer.toString(refreshTime));
             try {
-                Thread.sleep(defaultRefreshTime * 1000);
+                Thread.sleep(refreshTime * 1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
