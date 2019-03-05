@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             if (SyskiCacheThread.getInstance().UserThreads.HasData())
             {
-                VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(new APISystemsRequest(getApplicationContext()));
+                APIThread.getInstance(getApplicationContext()).start();
                 startActivity(new Intent(this, SysListMenu.class));
                 finish();
             }
