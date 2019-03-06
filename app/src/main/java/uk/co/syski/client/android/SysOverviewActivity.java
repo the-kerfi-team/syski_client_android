@@ -10,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -91,6 +92,14 @@ public class SysOverviewActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void shutdownOnClick(View v) {
+        // TODO Shutdown button Click
+    }
+
+    public void restartOnClick(View v) {
+        // TODO Restart button Click
     }
 
     private SystemEntity getSystem(String sysId){

@@ -91,16 +91,18 @@
             <Button
                 android:id="@+id/btnShutdown"
                 android:layout_width="wrap_content"
-                android:layout_height="69dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@string/button_shutdown" />
+                android:text="@string/button_shutdown"
+                android:onClick="shutdownOnClick" />
 
             <Button
                 android:id="@+id/btnRestart"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@string/button_restart" />
+                android:text="@string/button_restart"
+                android:onClick="restartOnClick" />
         </LinearLayout>
     </FrameLayout>
 
