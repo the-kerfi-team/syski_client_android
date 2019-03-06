@@ -23,7 +23,6 @@ public class APIAuthorizationRequest<T> extends APIRequest<T> {
     @Override
     public Map<String, String> getHeaders() throws AuthFailureError {
         Map<String, String>  params = new HashMap<String, String>();
-        params.put("User-Agent", "Syski APP");
         params.put("Authorization", "Bearer " + SyskiCache.GetDatabase().UserDao().getAccessToken());
         return params;
     }
