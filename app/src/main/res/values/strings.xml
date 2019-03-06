@@ -126,4 +126,5 @@
     <string name="sys_gpu_lbl">GPU</string>
     <string name="sys_mobo_lbl">Motherboard</string>
     <string name="sys_os_lbl">Operating System</string>
+    <string name="txtName">Name</string>
 </resources>
