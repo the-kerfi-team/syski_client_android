@@ -44,7 +44,8 @@ public class SysOverviewActivity extends AppCompatActivity {
             "RAM",
             "Storage",
             "GPU",
-            "Motherboard"
+            "Motherboard",
+            "Operating System"
     };
 
     //TODO: Replace placeholders with corresponding icons
@@ -55,7 +56,8 @@ public class SysOverviewActivity extends AppCompatActivity {
             R.drawable.ic_storage,
             R.drawable.ic_gpu,
             //TODO: Find better Icon
-            R.drawable.ic_gpu
+            R.drawable.ic_gpu,
+            R.drawable.ic_pc
     };
 
     SharedPreferences prefs;
@@ -98,6 +100,8 @@ public class SysOverviewActivity extends AppCompatActivity {
                     case 3: dest = GPUActivity.class;
                             break;
                     case 4: dest = MOBOActivity.class;
+                            break;
+                    case 5: dest = OSActivity.class;
                             break;
                     default: dest = null;
                 }

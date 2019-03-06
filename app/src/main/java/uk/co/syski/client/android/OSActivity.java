@@ -40,8 +40,6 @@ public class OSActivity extends AppCompatActivity {
             arch.setText(sysOS.ArchitectureName);
             vers.setText(sysOS.Version);
         }else {
-            //TODO: Once test data is available, change to remove views based on OS fields
-            gridLayout.removeAllViewsInLayout();
             Toast.makeText(this,"OS not found",Toast.LENGTH_SHORT).show();
         }
 
