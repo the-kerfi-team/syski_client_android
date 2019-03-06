@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -34,6 +35,7 @@ public class SysOverviewActivity extends AppCompatActivity {
     SystemEntity systemEntity;
     ListView listView;
     OperatingSystemModel sysOS;
+    LinearLayout linearLayout;
 
     List<OperatingSystemModel> osList;
 
@@ -75,6 +77,8 @@ public class SysOverviewActivity extends AppCompatActivity {
 
         if(sysOS != null) {
             os.setText(sysOS.Name);
+        } else {
+            linearLayout.removeView(os);
         }
 
         SysListOverviewAdapter adapter = new SysListOverviewAdapter(this, images, listItems);
@@ -130,6 +134,7 @@ public class SysOverviewActivity extends AppCompatActivity {
         os = findViewById(R.id.txtOS);
         //TODO: Add actual logic, todo with OS
         img.setImageResource(R.drawable.ic_pc);
+        linearLayout = findViewById(R.id.linOverview);
     }
 
     private void getOS() {
