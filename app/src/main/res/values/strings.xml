@@ -125,4 +125,5 @@
     <string name="txtVersion">Version</string>
     <string name="sys_gpu_lbl">GPU</string>
     <string name="sys_mobo_lbl">Motherboard</string>
+    <string name="sys_os_lbl">Operating System</string>
 </resources>
