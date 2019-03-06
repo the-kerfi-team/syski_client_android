@@ -72,8 +72,10 @@ public class SysOverviewActivity extends AppCompatActivity {
         host.setText(system.HostName);
         manufacturer.setText(system.ManufacturerName);
         model.setText(system.ModelName);
-        
-        os.setText(sysOS.Name);
+
+        if(sysOS != null) {
+            os.setText(sysOS.Name);
+        }
 
         SysListOverviewAdapter adapter = new SysListOverviewAdapter(this, images, listItems);
         listView.setAdapter(adapter);
