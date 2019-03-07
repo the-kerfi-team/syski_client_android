@@ -26,7 +26,7 @@ public class APISystemRAMRequest extends APIAuthorizationRequest<JSONArray> {
     private UUID mSystemId;
 
     public APISystemRAMRequest(Context context, UUID systemId) {
-        super(context, Method.GET, "api/rams/" + systemId.toString(), null, null, null);
+        super(context, Method.GET, "system/" + systemId.toString() + "/ram", null, null, null);
         mSystemId = systemId;
     }
 

@@ -26,7 +26,7 @@ public class APISystemStorageRequest extends APIAuthorizationRequest<JSONArray> 
     private UUID mSystemId;
 
     public APISystemStorageRequest(Context context, UUID systemId) {
-        super(context, Method.GET, "api/storages/" + systemId.toString(), null, null, null);
+        super(context, Method.GET, "system/" + systemId.toString() + "/storage" + systemId.toString(), null, null, null);
         mSystemId = systemId;
     }
 

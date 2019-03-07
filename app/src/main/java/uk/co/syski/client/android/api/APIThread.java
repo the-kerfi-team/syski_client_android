@@ -71,7 +71,7 @@ public class APIThread extends Thread {
                     VolleySingleton.getInstance(mContext).addToRequestQueue(new APISystemMotherboardRequest(mContext, system.Id));
                 }
             }
-            int refreshTime = (int) Double.parseDouble(mSharedPreferences.getString("pref_api_refreshinterval", "30"));
+            int refreshTime = (int) Double.parseDouble(mSharedPreferences.getString("pref_api_refreshinterval", mContext.getString(R.string.pref_api_refreshinterval_default)));
             Log.d("Syski_Interval_Time", Integer.toString(refreshTime));
             try {
                 Thread.sleep(refreshTime * 1000);

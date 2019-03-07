@@ -30,7 +30,7 @@ public class APISystemCPURequest extends APIAuthorizationRequest<JSONArray> {
     private UUID mSystemId;
 
     public APISystemCPURequest(Context context, UUID systemId) {
-        super(context, Method.GET, "api/cpus/" + systemId.toString(), null, null, null);
+        super(context, Method.GET, "system/" + systemId.toString() + "/cpu", null, null, null);
         mSystemId = systemId;
     }
 
@@ -49,7 +49,6 @@ public class APISystemCPURequest extends APIAuthorizationRequest<JSONArray> {
                     cpuEntity.ManufacturerName = ((JSONObject) jsonArray.get(i)).getString("manufacturerName");
                     cpuEntity.ModelName = ((JSONObject) jsonArray.get(i)).getString("modelName");
                     cpuEntity.ArchitectureName = ((JSONObject) jsonArray.get(i)).getString("architectureName");
-                    //
                     cpuEntity.ClockSpeed = (int) Double.parseDouble(((JSONObject) jsonArray.get(i)).getString("clockSpeed"));
                     cpuEntity.CoreCount = (int) Double.parseDouble(((JSONObject) jsonArray.get(i)).getString("coreCount"));
                     cpuEntity.ThreadCount = (int) Double.parseDouble(((JSONObject) jsonArray.get(i)).getString("clockSpeed"));

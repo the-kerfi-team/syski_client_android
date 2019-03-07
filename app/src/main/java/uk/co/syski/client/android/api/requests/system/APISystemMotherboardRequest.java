@@ -26,7 +26,7 @@ public class APISystemMotherboardRequest extends APIAuthorizationRequest<JSONObj
     private UUID mSystemId;
 
     public APISystemMotherboardRequest(Context context, UUID systemId) {
-        super(context, Method.GET, "api/motherboards/" + systemId.toString(), null, null, null);
+        super(context, Method.GET, "system/" + systemId.toString() + "/motherboard", null, null, null);
         mSystemId = systemId;
     }
 
