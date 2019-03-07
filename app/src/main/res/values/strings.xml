@@ -127,4 +127,6 @@
     <string name="sys_mobo_lbl">Motherboard</string>
     <string name="sys_os_lbl">Operating System</string>
     <string name="txtName">Name</string>
+    <string name="button_shutdown">Shutdown</string>
+    <string name="button_restart">Restart</string>
 </resources>

@@ -11,18 +11,28 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 import uk.co.syski.client.android.adapters.SysListOverviewAdapter;
 import uk.co.syski.client.android.data.entity.OperatingSystemEntity;
+import uk.co.syski.client.android.api.VolleySingleton;
+import uk.co.syski.client.android.api.requests.auth.APITokenRequest;
+import uk.co.syski.client.android.api.requests.system.APISystemRestartRequest;
+import uk.co.syski.client.android.api.requests.system.APISystemShutdownRequest;
+import uk.co.syski.client.android.data.SyskiCache;
+import uk.co.syski.client.android.data.dao.UserDao;
 import uk.co.syski.client.android.data.entity.SystemEntity;
+import uk.co.syski.client.android.data.entity.UserEntity;
 import uk.co.syski.client.android.data.thread.SyskiCacheThread;
 import uk.co.syski.client.android.model.OperatingSystemModel;
 
@@ -112,6 +122,38 @@ public class SysOverviewActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void shutdownOnClick(View v) {
+        UserEntity user = null;
+        try {
+            user = SyskiCacheThread.getInstance().UserThreads.getUser();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if (user == null || user.TokenExpiry == null || Calendar.getInstance().getTime().after(user.TokenExpiry))
+        {
+            VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(new APITokenRequest(getApplicationContext(), user.Id));
+        }
+        VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(new APISystemShutdownRequest(getApplicationContext(), system.Id));
+    }
+
+    public void restartOnClick(View v) {
+        UserEntity user = null;
+        try {
+            user = SyskiCacheThread.getInstance().UserThreads.getUser();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if (user == null || user.TokenExpiry == null || Calendar.getInstance().getTime().after(user.TokenExpiry))
+        {
+            VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(new APITokenRequest(getApplicationContext(), user.Id));
+        }
+        VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(new APISystemRestartRequest(getApplicationContext(), system.Id));
     }
 
     private SystemEntity getSystem(String sysId){
