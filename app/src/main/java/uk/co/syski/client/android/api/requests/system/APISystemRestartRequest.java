@@ -11,7 +11,7 @@ import uk.co.syski.client.android.api.requests.APIAuthorizationRequest;
 public class APISystemRestartRequest extends APIAuthorizationRequest<JSONArray> {
 
     public APISystemRestartRequest(Context context, UUID systemId) {
-        super(context, Method.POST, "api/commands/restart/" + systemId, null, null, null);
+        super(context, Method.POST, "system/" + systemId + "/restart", null, null, null);
     }
 
 }
