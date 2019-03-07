@@ -30,7 +30,7 @@ public class APISystemCPURequest extends APIAuthorizationRequest<JSONArray> {
     private UUID mSystemId;
 
     public APISystemCPURequest(Context context, UUID systemId) {
-        super(context, Method.GET, "api/cpus/" + systemId.toString(), null, null, null);
+        super(context, Method.GET, "system/" + systemId.toString() + "/cpu", null, null, null);
         mSystemId = systemId;
     }
 

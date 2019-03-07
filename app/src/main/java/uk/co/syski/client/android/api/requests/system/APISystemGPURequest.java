@@ -26,7 +26,7 @@ public class APISystemGPURequest extends APIAuthorizationRequest<JSONArray> {
     private UUID mSystemId;
 
     public APISystemGPURequest(Context context, UUID systemId) {
-        super(context, Method.GET, "api/gpus/" + systemId.toString(), null, null, null);
+        super(context, Method.GET, "system/" + systemId.toString() + "/gpu", null, null, null);
         mSystemId = systemId;
     }
 
