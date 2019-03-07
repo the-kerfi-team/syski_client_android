@@ -23,7 +23,7 @@ import uk.co.syski.client.android.data.entity.SystemEntity;
 public class APISystemsRequest extends APIAuthorizationRequest<JSONArray> {
 
     public APISystemsRequest(Context context) {
-        super(context, Method.GET, "api/systems", null, null, null);
+        super(context, Method.GET, "system", null, null, null);
     }
 
     @Override
