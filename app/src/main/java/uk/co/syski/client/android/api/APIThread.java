@@ -15,6 +15,7 @@ import uk.co.syski.client.android.api.requests.auth.APITokenRequest;
 import uk.co.syski.client.android.api.requests.system.APISystemCPURequest;
 import uk.co.syski.client.android.api.requests.system.APISystemGPURequest;
 import uk.co.syski.client.android.api.requests.system.APISystemMotherboardRequest;
+import uk.co.syski.client.android.api.requests.system.APISystemOperatingSystemRequest;
 import uk.co.syski.client.android.api.requests.system.APISystemRAMRequest;
 import uk.co.syski.client.android.api.requests.system.APISystemStorageRequest;
 import uk.co.syski.client.android.api.requests.system.APISystemsRequest;
@@ -69,6 +70,7 @@ public class APIThread extends Thread {
                     VolleySingleton.getInstance(mContext).addToRequestQueue(new APISystemStorageRequest(mContext, system.Id));
                     VolleySingleton.getInstance(mContext).addToRequestQueue(new APISystemGPURequest(mContext, system.Id));
                     VolleySingleton.getInstance(mContext).addToRequestQueue(new APISystemMotherboardRequest(mContext, system.Id));
+                    VolleySingleton.getInstance(mContext).addToRequestQueue(new APISystemOperatingSystemRequest(mContext, system.Id));
                 }
             }
             int refreshTime = (int) Double.parseDouble(mSharedPreferences.getString("pref_api_refreshinterval", mContext.getString(R.string.pref_api_refreshinterval_default)));
