@@ -16,8 +16,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:theme="@style/AppTheme.Splash"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,8 +28,8 @@
             android:name=".SysListMenu"
             android:label="@string/title_activity_sys_list_menu"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="uk.co.syski.client.android.MainActivity" />
@@ -38,12 +38,12 @@
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
             android:parentActivityName=".SysListMenu"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".SysOverviewActivity"
             android:label="@string/sys_overview_lbl"
             android:parentActivityName=".SysListMenu"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
             android:screenOrientation="fullSensor"
@@ -52,26 +52,30 @@
             android:name=".CPUActivity"
             android:label="@string/sys_cpu_lbl"
             android:parentActivityName=".SysOverviewActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".RAMActivity"
             android:label="@string/sys_ram_lbl"
             android:parentActivityName=".SysOverviewActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".StorageActivity"
             android:label="@string/sys_stg_lbl"
             android:parentActivityName=".SysOverviewActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".GPUActivity"
-            android:parentActivityName=".SysOverviewActivity"
             android:label="@string/sys_gpu_lbl"
-            android:screenOrientation="portrait"/>
+            android:parentActivityName=".SysOverviewActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MOBOActivity"
-            android:parentActivityName=".SysOverviewActivity"
             android:label="@string/sys_mobo_lbl"
+            android:parentActivityName=".SysOverviewActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".OSActivity"
+            android:label="@string/sys_os_lbl"
+            android:parentActivityName=".SysOverviewActivity"
             android:screenOrientation="portrait"/>
     </application>
 

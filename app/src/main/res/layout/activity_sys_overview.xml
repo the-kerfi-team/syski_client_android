@@ -9,7 +9,7 @@
     <FrameLayout
         android:id="@+id/frameLayout"
         android:layout_width="0dp"
-        android:layout_height="97dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
@@ -32,6 +32,7 @@
                 app:srcCompat="@drawable/placeholder" />
 
             <LinearLayout
+                android:id="@+id/linOverview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -57,6 +58,13 @@
                     android:layout_height="wrap_content"
                     android:text="TextView"
                     android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/txtOS"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:textSize="18sp" />
             </LinearLayout>
 
         </LinearLayout>
@@ -64,7 +72,7 @@
 
     <ListView
         android:id="@+id/compList"
-        android:layout_width="344dp"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"

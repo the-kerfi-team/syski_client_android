@@ -5,12 +5,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -19,22 +21,31 @@ import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 import uk.co.syski.client.android.adapters.SysListOverviewAdapter;
+import uk.co.syski.client.android.data.entity.OperatingSystemEntity;
 import uk.co.syski.client.android.data.entity.SystemEntity;
 import uk.co.syski.client.android.data.thread.SyskiCacheThread;
+import uk.co.syski.client.android.model.OperatingSystemModel;
 
 public class SysOverviewActivity extends AppCompatActivity {
 
-    TextView host,manufacturer,model;
+    private static final String TAG = "SysOverviewActivity";
+
+    TextView host,manufacturer,model,os;
     ImageView img;
     SystemEntity systemEntity;
     ListView listView;
+    OperatingSystemModel sysOS;
+    LinearLayout linearLayout;
+
+    List<OperatingSystemModel> osList;
 
     String[] listItems = {
             "CPU",
             "RAM",
             "Storage",
             "GPU",
-            "Motherboard"
+            "Motherboard",
+            "Operating System"
     };
 
     //TODO: Replace placeholders with corresponding icons
@@ -45,7 +56,8 @@ public class SysOverviewActivity extends AppCompatActivity {
             R.drawable.ic_storage,
             R.drawable.ic_gpu,
             //TODO: Find better Icon
-            R.drawable.ic_gpu
+            R.drawable.ic_gpu,
+            R.drawable.ic_pc
     };
 
     SharedPreferences prefs;
@@ -56,13 +68,20 @@ public class SysOverviewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sys_overview);
         initViews();
-
+        getOS();
         String sysId = prefs.getString(getString(R.string.preference_sysID_key), null);
         system = getSystem(sysId);
+
 
         host.setText(system.HostName);
         manufacturer.setText(system.ManufacturerName);
         model.setText(system.ModelName);
+
+        if(sysOS != null) {
+            os.setText(sysOS.Name);
+        } else {
+            linearLayout.removeView(os);
+        }
 
         SysListOverviewAdapter adapter = new SysListOverviewAdapter(this, images, listItems);
         listView.setAdapter(adapter);
@@ -81,6 +100,8 @@ public class SysOverviewActivity extends AppCompatActivity {
                     case 3: dest = GPUActivity.class;
                             break;
                     case 4: dest = MOBOActivity.class;
+                            break;
+                    case 5: dest = OSActivity.class;
                             break;
                     default: dest = null;
                 }
@@ -114,8 +135,29 @@ public class SysOverviewActivity extends AppCompatActivity {
         prefs = this.getSharedPreferences(
                 getString(R.string.preference_sysID_key), Context.MODE_PRIVATE);
         img = findViewById(R.id.imgOverview);
+        os = findViewById(R.id.txtOS);
         //TODO: Add actual logic, todo with OS
         img.setImageResource(R.drawable.ic_pc);
+        linearLayout = findViewById(R.id.linOverview);
+    }
+
+    private void getOS() {
+        String sysId = prefs.getString(getString(R.string.preference_sysID_key), null);
+
+        try {
+            Log.d(TAG, "Querying database");
+            osList = SyskiCacheThread.getInstance().OperatingSystemThreads.GetOperatingSystems(UUID.fromString(sysId));
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        if(osList.size() > 0) {
+            sysOS = osList.get(0);
+        } else {
+            Log.i(TAG, "Query returned no OS Entity");
+        }
     }
 
     @Override
