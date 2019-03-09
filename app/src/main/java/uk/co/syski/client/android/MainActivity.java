@@ -129,13 +129,7 @@ public class MainActivity extends AppCompatActivity {
         GPUEntity gpu = new GPUEntity();
         gpu.Id = UUID.randomUUID();
         gpu.ModelName = "GPU Model";
-        gpu.ThreadCount = 1;
-        gpu.MemoryTypeName = "GPU Type";
-        gpu.MemoryBytes = 0;
         gpu.ManufacturerName = "GPU Manufacturer";
-        gpu.CoreCount = 1;
-        gpu.ClockSpeed = 1;
-        gpu.ArchitectureName = "GPU Architecture";
 
         SystemCPUEntity systemCPU = new SystemCPUEntity();
         systemCPU.CPUId = cpu.Id;
