@@ -16,8 +16,7 @@ public interface CPUDao {
     @Query("SELECT Id, ModelName, ManufacturerName, ArchitectureName, ClockSpeed, CoreCount, ThreadCount FROM CPUEntity WHERE Id == :Id")
     CPUEntity getCPU(UUID Id);
 
-    @Query("SELECT Id, ModelName, ManufacturerName, ArchitectureName, ClockSpeed, CoreCount, ThreadCount" +
-            " FROM CPUEntity INNER JOIN SystemCPUEntity WHERE SystemId IN (:Ids)")
+    @Query("SELECT Id, ModelName, ManufacturerName, ArchitectureName, ClockSpeed, CoreCount, ThreadCount FROM CPUEntity INNER JOIN SystemCPUEntity ON Id = CPUId WHERE SystemId IN (:Ids)")
     List<CPUEntity> getCPUs(UUID... Ids);
 
     @Insert
