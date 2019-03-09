@@ -14,7 +14,7 @@ import uk.co.syski.client.android.data.entity.SystemEntity;
 @Dao
 public interface SystemDao {
 
-    @Query("SELECT * FROM SystemEntity WHERE Id = :uuid")
+    @Query("SELECT Id, HostName, ModelName, ManufacturerName FROM SystemEntity WHERE Id = :uuid")
     SystemEntity getSystem(UUID uuid);
 
     @Query("UPDATE SystemEntity SET HostName=:hostName ,ModelName=:modelName, ManufacturerName=:manufacturerName, LastUpdated=:lastUpdated WHERE Id = :uuid")
