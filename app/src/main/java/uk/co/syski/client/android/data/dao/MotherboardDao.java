@@ -16,7 +16,7 @@ public interface MotherboardDao {
     @Query("SELECT * FROM MotherboardEntity WHERE Id == :Id")
     MotherboardEntity GetMotherboard(UUID Id);
 
-    @Query("SELECT * FROM MotherboardEntity WHERE Id IN (:Ids)")
+    @Query("SELECT MotherboardEntity.Id, MotherboardEntity.ManufacturerName, MotherboardEntity.ModelName, MotherboardEntity.Version FROM MotherboardEntity INNER JOIN SystemEntity ON MotherboardEntity.Id = MotherboardId  WHERE SystemEntity.Id IN (:Ids)")
     List<MotherboardEntity> GetMotherboards(UUID... Ids);
 
     @Insert
