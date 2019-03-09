@@ -16,8 +16,7 @@ public interface StorageDao {
     @Query("SELECT Id, ModelName, ManufacturerName, MemoryTypeName, MemoryBytes FROM StorageEntity WHERE Id == :Id")
     StorageEntity GetStorage(UUID Id);
 
-    @Query("SELECT Id, ModelName, ManufacturerName, MemoryTypeName, MemoryBytes FROM StorageEntity" +
-            " INNER JOIN SystemStorageEntity WHERE SystemId IN (:Ids)")
+    @Query("SELECT Id, ModelName, ManufacturerName, MemoryTypeName, MemoryBytes FROM StorageEntity INNER JOIN SystemStorageEntity ON Id = StorageId WHERE SystemId IN (:Ids)")
     List<StorageEntity> GetStorages(UUID... Ids);
 
     @Insert
