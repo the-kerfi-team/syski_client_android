@@ -11,7 +11,7 @@ public final class InsertAll extends AsyncTask<SystemRAMEntity, Void, Void> {
     @Override
     protected Void doInBackground(SystemRAMEntity... systemRAMEntities) {
         SystemRAMDao SystemRAMDao = SyskiCache.GetDatabase().SystemRAMDao();
-        SystemRAMDao.InsertAll(systemRAMEntities);
+        SystemRAMDao.Insert(systemRAMEntities);
         return null;
     }
 

@@ -11,30 +11,26 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 import uk.co.syski.client.android.adapters.SysListOverviewAdapter;
-import uk.co.syski.client.android.data.entity.OperatingSystemEntity;
 import uk.co.syski.client.android.api.VolleySingleton;
 import uk.co.syski.client.android.api.requests.auth.APITokenRequest;
 import uk.co.syski.client.android.api.requests.system.APISystemRestartRequest;
 import uk.co.syski.client.android.api.requests.system.APISystemShutdownRequest;
-import uk.co.syski.client.android.data.SyskiCache;
-import uk.co.syski.client.android.data.dao.UserDao;
 import uk.co.syski.client.android.data.entity.SystemEntity;
 import uk.co.syski.client.android.data.entity.UserEntity;
 import uk.co.syski.client.android.data.thread.SyskiCacheThread;
 import uk.co.syski.client.android.model.OperatingSystemModel;
+import uk.co.syski.client.android.view.SystemListMenu;
 
 public class SysOverviewActivity extends AppCompatActivity {
 
@@ -214,7 +210,7 @@ public class SysOverviewActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_syslist) {
-            Intent settings = new Intent(this, SysListMenu.class);
+            Intent settings = new Intent(this, SystemListMenu.class);
             startActivity(settings);
             return true;
         }

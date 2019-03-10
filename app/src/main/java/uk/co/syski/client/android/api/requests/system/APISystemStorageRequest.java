@@ -45,16 +45,17 @@ public class APISystemStorageRequest extends APIAuthorizationRequest<JSONArray> 
                     storageEntity.ModelName = ((JSONObject) jsonArray.get(i)).getString("modelName");
                     storageEntity.MemoryTypeName = ((JSONObject) jsonArray.get(i)).getString("memoryTypeName");
                     storageEntity.MemoryBytes = Long.parseLong(((JSONObject) jsonArray.get(i)).getString("memoryBytes"));
-
                     SyskiCache.GetDatabase().StorageDao().InsertAll(storageEntity);
-
-                    SystemStorageEntity systemStorageEntity = new SystemStorageEntity();
-                    systemStorageEntity.StorageId = storageEntity.Id;
-                    systemStorageEntity.SystemId = mSystemId;
-                    SyskiCache.GetDatabase().SystemStorageDao().InsertAll(systemStorageEntity);
                 } else {
                     // TODO Update Storage method
                 }
+
+                SystemStorageEntity systemStorageEntity = new SystemStorageEntity();
+                systemStorageEntity.StorageId = storageEntity.Id;
+                systemStorageEntity.SystemId = mSystemId;
+                systemStorageEntity.Slot = i;
+                SyskiCache.GetDatabase().SystemStorageDao().InsertAll(systemStorageEntity);
+
             }
 
             return Response.success(jsonArray, HttpHeaderParser.parseCacheHeaders(response));

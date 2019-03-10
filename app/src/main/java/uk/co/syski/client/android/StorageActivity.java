@@ -9,23 +9,17 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.GridLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
-import uk.co.syski.client.android.adapters.RAMAdapter;
 import uk.co.syski.client.android.adapters.StorageAdapter;
-import uk.co.syski.client.android.data.entity.RAMEntity;
 import uk.co.syski.client.android.data.entity.StorageEntity;
 import uk.co.syski.client.android.data.thread.SyskiCacheThread;
+import uk.co.syski.client.android.view.SystemListMenu;
 
 public class StorageActivity extends AppCompatActivity {
 
@@ -99,7 +93,7 @@ public class StorageActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_syslist) {
-            Intent settings = new Intent(this, SysListMenu.class);
+            Intent settings = new Intent(this, SystemListMenu.class);
             startActivity(settings);
             return true;
         }

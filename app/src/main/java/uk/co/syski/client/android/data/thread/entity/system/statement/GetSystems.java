@@ -14,7 +14,7 @@ public final class GetSystems extends AsyncTask<UUID, Void, List<SystemEntity>> 
     @Override
     protected List<SystemEntity> doInBackground(UUID... uuids) {
         SystemDao SystemDao = SyskiCache.GetDatabase().SystemDao();
-        return SystemDao.getSystems(uuids);
+        return SystemDao.get(uuids);
     }
 
 }

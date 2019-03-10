@@ -47,14 +47,15 @@ public class APISystemRAMRequest extends APIAuthorizationRequest<JSONArray> {
                     ramEntity.MemoryBytes = Long.parseLong(((JSONObject) jsonArray.get(i)).getString("memoryBytes"));
 
                     SyskiCache.GetDatabase().RAMDao().InsertAll(ramEntity);
-
-                    SystemRAMEntity systemRAMEntity = new SystemRAMEntity();
-                    systemRAMEntity.RAMId = ramEntity.Id;
-                    systemRAMEntity.SystemId = mSystemId;
-                    SyskiCache.GetDatabase().SystemRAMDao().InsertAll(systemRAMEntity);
                 } else {
                     // TODO Update RAM method
                 }
+
+                SystemRAMEntity systemRAMEntity = new SystemRAMEntity();
+                systemRAMEntity.RAMId = ramEntity.Id;
+                systemRAMEntity.SystemId = mSystemId;
+                systemRAMEntity.DimmSlot = i;
+                SyskiCache.GetDatabase().SystemRAMDao().Insert(systemRAMEntity);
             }
 
             return Response.success(jsonArray, HttpHeaderParser.parseCacheHeaders(response));

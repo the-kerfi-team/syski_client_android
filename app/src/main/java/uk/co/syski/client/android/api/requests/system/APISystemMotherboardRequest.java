@@ -44,10 +44,11 @@ public class APISystemMotherboardRequest extends APIAuthorizationRequest<JSONObj
                     motherboardEntity.Version = jsonObject.getString("version");
                     SyskiCache.GetDatabase().MotherboardDao().InsertAll(motherboardEntity);
 
-                    SystemEntity systemEntity = SyskiCache.GetDatabase().SystemDao().getSystem(mSystemId);
+                    SystemEntity systemEntity = SyskiCache.GetDatabase().SystemDao().get(mSystemId);
                     if (systemEntity != null)
                     {
-                        SyskiCache.GetDatabase().SystemDao().setSystemMotherboard(mSystemId, motherboardEntity.Id);
+                        systemEntity.MotherboardId = motherboardEntity.Id;
+                        SyskiCache.GetDatabase().SystemDao().update(systemEntity);
                     }
 
             }

@@ -14,7 +14,8 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
 @Entity(
     primaryKeys = {
         "SystemId",
-        "RAMId"
+        "RAMId",
+        "DimmSlot"
     },
     foreignKeys = {
         @ForeignKey(
@@ -37,4 +38,7 @@ public class SystemRAMEntity {
 
     @NonNull
     public UUID RAMId;
+
+    @NonNull
+    public int DimmSlot;
 }

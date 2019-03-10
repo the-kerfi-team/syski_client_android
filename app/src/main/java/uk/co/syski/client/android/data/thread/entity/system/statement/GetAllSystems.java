@@ -13,6 +13,6 @@ public final class GetAllSystems extends AsyncTask<Void, Void, List<SystemEntity
     @Override
     protected List<SystemEntity> doInBackground(Void... voids) {
         SystemDao SystemDao = SyskiCache.GetDatabase().SystemDao();
-        return SystemDao.getAllSystems();
+        return SystemDao.get();
     }
 }

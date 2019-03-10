@@ -55,6 +55,11 @@ public class APIThread extends Thread {
     public void run() {
         while (true)
         {
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             Date expiryDate = SyskiCache.GetDatabase().UserDao().getUser().TokenExpiry;
             if (expiryDate == null || Calendar.getInstance().getTime().after(expiryDate))
             {
@@ -63,14 +68,14 @@ public class APIThread extends Thread {
             expiryDate = SyskiCache.GetDatabase().UserDao().getUser().TokenExpiry;
             if (expiryDate != null && Calendar.getInstance().getTime().before(expiryDate)) {
                 VolleySingleton.getInstance(mContext).addToRequestQueue(new APISystemsRequest(mContext));
-                List<SystemEntity> systemEntities = SyskiCache.GetDatabase().SystemDao().getAllSystems();
+                List<SystemEntity> systemEntities = SyskiCache.GetDatabase().SystemDao().get();
                 for (SystemEntity system : systemEntities) {
-                    VolleySingleton.getInstance(mContext).addToRequestQueue(new APISystemCPURequest(mContext, system.Id));
-                    VolleySingleton.getInstance(mContext).addToRequestQueue(new APISystemRAMRequest(mContext, system.Id));
-                    VolleySingleton.getInstance(mContext).addToRequestQueue(new APISystemStorageRequest(mContext, system.Id));
-                    VolleySingleton.getInstance(mContext).addToRequestQueue(new APISystemGPURequest(mContext, system.Id));
-                    VolleySingleton.getInstance(mContext).addToRequestQueue(new APISystemMotherboardRequest(mContext, system.Id));
-                    VolleySingleton.getInstance(mContext).addToRequestQueue(new APISystemOperatingSystemRequest(mContext, system.Id));
+            //        VolleySingleton.getInstance(mContext).addToRequestQueue(new APISystemCPURequest(mContext, system.Id));
+            //        VolleySingleton.getInstance(mContext).addToRequestQueue(new APISystemRAMRequest(mContext, system.Id));
+            //        VolleySingleton.getInstance(mContext).addToRequestQueue(new APISystemStorageRequest(mContext, system.Id));
+            //        VolleySingleton.getInstance(mContext).addToRequestQueue(new APISystemGPURequest(mContext, system.Id));
+            //        VolleySingleton.getInstance(mContext).addToRequestQueue(new APISystemMotherboardRequest(mContext, system.Id));
+           //         VolleySingleton.getInstance(mContext).addToRequestQueue(new APISystemOperatingSystemRequest(mContext, system.Id));
                 }
             }
             int refreshTime = (int) Double.parseDouble(mSharedPreferences.getString("pref_api_refreshinterval", mContext.getString(R.string.pref_api_refreshinterval_default)));

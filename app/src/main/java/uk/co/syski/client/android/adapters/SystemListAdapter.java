@@ -14,24 +14,24 @@ import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.data.entity.SystemEntity;
 
 /**
- * SysListAdapter - An ArrayAdapter class used for listing systems from an array in the system list
+ * SystemListAdapter - An ArrayAdapter class used for listing systems from an array in the system list
  */
-public class SysListAdapter extends ArrayAdapter {
+public class SystemListAdapter extends ArrayAdapter {
 
     //to reference the Activity
     private final Activity context;
 
     //to store images
-    private final Integer[] imageIDarray;
+    private final Integer image;
 
     private List<SystemEntity> mSystemEntityList;
 
-    public SysListAdapter(Activity context, Integer[] images, List<SystemEntity> systemEntityList)
+    public SystemListAdapter(Activity context, Integer images, List<SystemEntity> systemEntityList)
     {
         super(context, R.layout.list_item, systemEntityList);
 
         this.context=context;
-        this.imageIDarray = images;
+        this.image = images;
         mSystemEntityList = systemEntityList;
     }
 
@@ -48,7 +48,7 @@ public class SysListAdapter extends ArrayAdapter {
         //sets display values from arrays
         sysNameTextField.setText(mSystemEntityList.get(position).HostName);
         hostTextField.setText(mSystemEntityList.get(position).HostName);
-        imageView.setImageResource(imageIDarray[0]);
+        imageView.setImageResource(image);
 
         return rowView;
     }

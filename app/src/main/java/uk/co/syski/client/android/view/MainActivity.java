@@ -1,4 +1,4 @@
-package uk.co.syski.client.android;
+package uk.co.syski.client.android.view;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -32,12 +32,13 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
+import uk.co.syski.client.android.R;
+import uk.co.syski.client.android.SettingsActivity;
 import uk.co.syski.client.android.api.APIThread;
 import uk.co.syski.client.android.api.VolleySingleton;
 import uk.co.syski.client.android.api.requests.APIRequest;
 import uk.co.syski.client.android.api.requests.auth.APILoginRequest;
 import uk.co.syski.client.android.api.requests.auth.APIRegisterRequest;
-import uk.co.syski.client.android.api.requests.system.APISystemsRequest;
 import uk.co.syski.client.android.data.SyskiCache;
 import uk.co.syski.client.android.data.entity.CPUEntity;
 import uk.co.syski.client.android.data.entity.GPUEntity;
@@ -66,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
             if (SyskiCacheThread.getInstance().UserThreads.HasData())
             {
                 APIThread.getInstance(getApplicationContext()).start();
-                startActivity(new Intent(this, SysListMenu.class));
+                startActivity(new Intent(this, SystemListMenu.class));
                 finish();
             }
             else
@@ -242,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
 
         protected void RequestSuccessful(JSONObject response) {
             APIThread.getInstance(getContext()).start();
-            startActivity(new Intent(getActivity(), SysListMenu.class));
+            startActivity(new Intent(getActivity(), SystemListMenu.class));
             getActivity().finish();
         }
 

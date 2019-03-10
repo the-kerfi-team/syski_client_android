@@ -11,7 +11,7 @@ public final class InsertAll extends AsyncTask<SystemEntity, Void, Void> {
     @Override
     protected Void doInBackground(SystemEntity... systemEntities) {
         SystemDao SystemDao = SyskiCache.GetDatabase().SystemDao();
-        SystemDao.InsertAll(systemEntities);
+        SystemDao.insert(systemEntities);
         return null;
     }
 

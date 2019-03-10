@@ -1,10 +1,14 @@
-package uk.co.syski.client.android;
+package uk.co.syski.client.android.view;
 
+import android.app.Activity;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -13,8 +17,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -25,20 +27,17 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
-import uk.co.syski.client.android.adapters.SysListAdapter;
+import uk.co.syski.client.android.R;
+import uk.co.syski.client.android.SettingsActivity;
+import uk.co.syski.client.android.SysOverviewActivity;
+import uk.co.syski.client.android.adapters.SystemListAdapter;
 import uk.co.syski.client.android.data.SyskiCache;
 import uk.co.syski.client.android.data.entity.SystemEntity;
 import uk.co.syski.client.android.data.thread.SyskiCacheThread;
+import uk.co.syski.client.android.viewmodel.SystemListViewModel;
 
-public class SysListMenu extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class SystemListMenu extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    Integer[] imageArray = {
-            R.drawable.ic_pc
-    };
-
-    ListView listView;
-    List<SystemEntity> systemList;
     SharedPreferences prefs;
     SharedPreferences.Editor prefEditor;
 
@@ -53,47 +52,29 @@ public class SysListMenu extends AppCompatActivity
 
         //Setup drawer
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        prefs = this.getSharedPreferences(
-                getString(R.string.preference_sysID_key), Context.MODE_PRIVATE);
+        prefs = this.getSharedPreferences(getString(R.string.preference_sysID_key), Context.MODE_PRIVATE);
         prefEditor = prefs.edit();
-
 
         //Setup list
 
-        try {
-            systemList = SyskiCacheThread.getInstance().SystemThreads.IndexSystems();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        SysListAdapter adapter = new SysListAdapter(this, imageArray, systemList);
-        listView = findViewById(R.id.sysList);
-        listView.setAdapter(adapter);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        final Activity thisActivity = this;
+        SystemListViewModel model = ViewModelProviders.of(this).get(SystemListViewModel.class);
+        model.get().observe(this, new Observer<List<SystemEntity>>() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(SysListMenu.this, SysOverviewActivity.class);
-
-                String extra = systemList.get(position).Id.toString();
-
-                prefEditor.putString(getString(R.string.preference_sysID_key), extra);
-                prefEditor.apply();
-
-                startActivity(intent);
+            public void onChanged(@Nullable final List<SystemEntity> systemEntities) {
+                SystemListAdapter adapter = new SystemListAdapter(thisActivity, R.drawable.ic_pc, systemEntities);
+                ListView listView = (ListView) findViewById(R.id.sysList);
+                listView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
             }
         });
-
     }
 
     @Override

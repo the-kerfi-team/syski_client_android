@@ -11,7 +11,7 @@ public final class DeleteAll extends AsyncTask<SystemEntity, Void, Void> {
     @Override
     protected Void doInBackground(SystemEntity... systemEntities) {
         SystemDao SystemDao = SyskiCache.GetDatabase().SystemDao();
-        SystemDao.DeleteAll(systemEntities);
+        SystemDao.delete(systemEntities);
         return null;
     }
 }

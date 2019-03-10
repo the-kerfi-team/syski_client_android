@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.GridLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,8 +18,8 @@ import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 import uk.co.syski.client.android.data.entity.GPUEntity;
-import uk.co.syski.client.android.data.entity.RAMEntity;
 import uk.co.syski.client.android.data.thread.SyskiCacheThread;
+import uk.co.syski.client.android.view.SystemListMenu;
 
 public class GPUActivity extends AppCompatActivity {
 
@@ -104,7 +103,7 @@ public class GPUActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_syslist) {
-            Intent settings = new Intent(this, SysListMenu.class);
+            Intent settings = new Intent(this, SystemListMenu.class);
             startActivity(settings);
             return true;
         }
