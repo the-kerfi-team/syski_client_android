@@ -9,4 +9,11 @@ public class Repository {
         return mSystemRepository;
     }
 
+    private static CPURepository mCPURepository = new CPURepository();
+
+    public static CPURepository getCPURepository()
+    {
+        return mCPURepository;
+    }
+
 }
