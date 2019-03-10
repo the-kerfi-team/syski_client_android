@@ -35,16 +35,16 @@ public class SystemRepository {
     public void insert(SystemEntity systemEntity)
     {
         new insertAsyncTask(mSystemDao).execute(systemEntity);
-        update();
+        updateData();
     }
 
-    public void create(SystemEntity systemEntity)
+    public void update(SystemEntity systemEntity)
     {
-        new createAsyncTask(mSystemDao).execute(systemEntity);
-        update();
+        new updateAsyncTask(mSystemDao).execute(systemEntity);
+        updateData();
     }
 
-    public void update()
+    public void updateData()
     {
         try {
             mSystemEntities.postValue(new getAsyncTask(mSystemDao).execute().get());
@@ -65,7 +65,8 @@ public class SystemRepository {
 
         @Override
         protected List<SystemEntity> doInBackground(final Void... voids) {
-            return mAsyncTaskDao.get();
+            List<SystemEntity> result = mAsyncTaskDao.get();
+            return result;
         }
 
     }
@@ -79,27 +80,26 @@ public class SystemRepository {
         }
 
         @Override
-        protected Void doInBackground(final SystemEntity... params) {
-            mAsyncTaskDao.insert(params[0]);
+        protected Void doInBackground(final SystemEntity... systemEntities) {
+            mAsyncTaskDao.insert(systemEntities);
             return null;
         }
 
     }
 
-    private static class createAsyncTask extends AsyncTask<SystemEntity, Void, Void> {
+    private static class updateAsyncTask extends AsyncTask<SystemEntity, Void, Void> {
 
         private SystemDao mAsyncTaskDao;
 
-        createAsyncTask(SystemDao dao) {
+        updateAsyncTask(SystemDao dao) {
             mAsyncTaskDao = dao;
         }
 
         @Override
-        protected Void doInBackground(final SystemEntity... params) {
-            mAsyncTaskDao.update(params[0]);
+        protected Void doInBackground(final SystemEntity... systemEntities) {
+            mAsyncTaskDao.update(systemEntities);
             return null;
         }
-
     }
 
 }

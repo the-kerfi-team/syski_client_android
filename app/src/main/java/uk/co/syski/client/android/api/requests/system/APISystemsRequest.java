@@ -43,7 +43,7 @@ public class APISystemsRequest extends APIAuthorizationRequest<JSONArray> {
                     systemEntity.ModelName = ((JSONObject) jsonArray.get(i)).getString("modelName");
                     systemEntity.ManufacturerName = ((JSONObject) jsonArray.get(i)).getString("manufacturerName");
                     systemEntity.LastUpdated = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS").parse(((JSONObject) jsonArray.get(i)).getString("lastUpdated"));
-                    Repository.getSystemRepository().create(systemEntity);
+                    Repository.getSystemRepository().insert(systemEntity);
                 }
                 else
                 {
@@ -51,17 +51,9 @@ public class APISystemsRequest extends APIAuthorizationRequest<JSONArray> {
                     systemEntity.ModelName = ((JSONObject) jsonArray.get(i)).getString("modelName");
                     systemEntity.ManufacturerName = ((JSONObject) jsonArray.get(i)).getString("manufacturerName");
                     systemEntity.LastUpdated = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS").parse(((JSONObject) jsonArray.get(i)).getString("lastUpdated"));
-                    Repository.getSystemRepository().insert(systemEntity);
+                    Repository.getSystemRepository().update(systemEntity);
                 }
             }
-
-            SystemEntity system = new SystemEntity();
-            UUID uuid = UUID.fromString("38400000-8cf0-11bd-b23e-10b96e4ef00d");
-            system.Id = uuid.randomUUID();
-            system.HostName = "Earth";
-            system.ManufacturerName = "Not Dell";
-            system.ModelName = "Mega Thinkpad";
-            Repository.getSystemRepository().insert(system);
 
             return Response.success(jsonArray, HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException | JSONException e) {
