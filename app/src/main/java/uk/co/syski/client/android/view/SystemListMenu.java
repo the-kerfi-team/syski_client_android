@@ -17,6 +17,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -73,6 +75,16 @@ public class SystemListMenu extends AppCompatActivity implements NavigationView.
                 ListView listView = (ListView) findViewById(R.id.sysList);
                 listView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Intent intent = new Intent(SystemListMenu.this,SysOverviewActivity.class);
+                        String sysId = systemEntities.get(position).Id.toString();
+                        prefEditor.putString(getString(R.string.preference_sysID_key),sysId);
+                        prefEditor.apply();
+                        startActivity(intent);
+                    }
+                });
             }
         });
     }
