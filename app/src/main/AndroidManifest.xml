@@ -49,7 +49,7 @@
             android:screenOrientation="fullSensor"
             tools:replace="screenOrientation" />
         <activity
-            android:name=".CPUActivity"
+            android:name=".view.CPUActivity"
             android:label="@string/sys_cpu_lbl"
             android:parentActivityName=".SysOverviewActivity"
             android:screenOrientation="portrait" />

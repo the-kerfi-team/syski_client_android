@@ -30,6 +30,7 @@ import uk.co.syski.client.android.data.entity.SystemEntity;
 import uk.co.syski.client.android.data.entity.UserEntity;
 import uk.co.syski.client.android.data.thread.SyskiCacheThread;
 import uk.co.syski.client.android.model.OperatingSystemModel;
+import uk.co.syski.client.android.view.CPUActivity;
 import uk.co.syski.client.android.view.SystemListMenu;
 
 public class SysOverviewActivity extends AppCompatActivity {
