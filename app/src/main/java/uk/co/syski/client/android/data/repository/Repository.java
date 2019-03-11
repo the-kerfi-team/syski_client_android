@@ -14,6 +14,10 @@ public enum Repository {
 
     private CPURepository mCPURepository = new CPURepository();
 
+    private GPURepository mGPURepository = new GPURepository();
+
+    private RAMRepository mRAMRepository = new RAMRepository();
+
     public synchronized UserRepository getUserRepository() { return mUserRepository; }
 
     public synchronized SystemRepository getSystemRepository()
@@ -26,11 +30,14 @@ public enum Repository {
         return mCPURepository;
     }
 
-    private static GPURepository mGPURepository = new GPURepository();
-
-    public static GPURepository getGPURepository()
+    public synchronized GPURepository getGPURepository()
     {
         return mGPURepository;
+    }
+
+    public synchronized RAMRepository getRAMRepository()
+    {
+        return mRAMRepository;
     }
 
 }
