@@ -11,7 +11,7 @@ import uk.co.syski.client.android.api.requests.APIAuthorizationRequest;
 public class APISystemShutdownRequest extends APIAuthorizationRequest<JSONArray> {
 
     public APISystemShutdownRequest(Context context, UUID systemId) {
-        super(context, Method.POST, "system/" + systemId + "shutdown", null, null, null);
+        super(context, Method.POST, "system/" + systemId + "/shutdown", null, null, null);
     }
 
 }

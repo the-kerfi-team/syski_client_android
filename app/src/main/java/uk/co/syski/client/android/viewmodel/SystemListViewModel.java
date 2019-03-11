@@ -26,9 +26,4 @@ public class SystemListViewModel extends ViewModel {
 
     public LiveData<List<SystemEntity>> get() { return mSystemList; }
 
-    public void update()
-    {
-        mSystemList = mSystemRepository.get();
-    }
-
 }

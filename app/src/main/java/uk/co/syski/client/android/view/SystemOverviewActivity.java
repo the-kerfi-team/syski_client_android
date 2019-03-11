@@ -1,8 +1,11 @@
-package uk.co.syski.client.android;
+package uk.co.syski.client.android.view;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +22,11 @@ import android.widget.TextView;
 import java.util.Calendar;
 import java.util.List;
 
+import uk.co.syski.client.android.MOBOActivity;
+import uk.co.syski.client.android.OSActivity;
+import uk.co.syski.client.android.R;
+import uk.co.syski.client.android.RAMActivity;
+import uk.co.syski.client.android.StorageActivity;
 import uk.co.syski.client.android.adapters.SysListOverviewAdapter;
 import uk.co.syski.client.android.api.VolleySingleton;
 import uk.co.syski.client.android.api.requests.auth.APITokenRequest;
@@ -29,15 +37,14 @@ import uk.co.syski.client.android.data.entity.UserEntity;
 
 import uk.co.syski.client.android.data.repository.Repository;
 import uk.co.syski.client.android.model.OperatingSystemModel;
-import uk.co.syski.client.android.view.CPUActivity;
-import uk.co.syski.client.android.view.GPUActivity;
-import uk.co.syski.client.android.view.SystemListMenu;
+import uk.co.syski.client.android.viewmodel.SystemListViewModel;
+import uk.co.syski.client.android.viewmodel.SystemSummaryViewModel;
 
-public class SysOverviewActivity extends AppCompatActivity {
+public class SystemOverviewActivity extends AppCompatActivity {
 
-    private static final String TAG = "SysOverviewActivity";
+    private static final String TAG = "SystemOverviewActivity";
 
-    TextView host,manufacturer,model,os;
+    TextView host, manufacturer, model, os;
     ImageView img;
     SystemEntity systemEntity;
     ListView listView;
@@ -48,11 +55,6 @@ public class SysOverviewActivity extends AppCompatActivity {
 
     String[] listItems = {
             "CPU",
-            "RAM",
-            "Storage",
-            "GPU",
-            "Motherboard",
-            "Operating System"
     };
 
     //TODO: Replace placeholders with corresponding icons
@@ -67,28 +69,21 @@ public class SysOverviewActivity extends AppCompatActivity {
             R.drawable.ic_pc
     };
 
-    SharedPreferences prefs;
-    SystemEntity system;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sys_overview);
         initViews();
-        getOS();
-        String sysId = prefs.getString(getString(R.string.preference_sysID_key), null);
-        system = getSystem(sysId);
 
-
-        host.setText(system.HostName);
-        manufacturer.setText(system.ManufacturerName);
-        model.setText(system.ModelName);
-
-        if(sysOS != null) {
-            os.setText(sysOS.Name);
-        } else {
-            linearLayout.removeView(os);
-        }
+        SystemSummaryViewModel viewModel = ViewModelProviders.of(this).get(SystemSummaryViewModel.class);
+        viewModel.get().observe(this, new Observer<SystemEntity>() {
+            @Override
+            public void onChanged(@Nullable SystemEntity systemEntity) {
+                host.setText(systemEntity.HostName);
+                manufacturer.setText(systemEntity.ManufacturerName);
+                model.setText(systemEntity.ModelName);
+            }
+        });
 
         SysListOverviewAdapter adapter = new SysListOverviewAdapter(this, images, listItems);
         listView.setAdapter(adapter);
@@ -113,8 +108,7 @@ public class SysOverviewActivity extends AppCompatActivity {
                     default: dest = null;
                 }
 
-                Intent intent = new Intent(SysOverviewActivity.this, dest);
-
+                Intent intent = new Intent(SystemOverviewActivity.this, dest);
                 startActivity(intent);
             }
         });
@@ -128,7 +122,7 @@ public class SysOverviewActivity extends AppCompatActivity {
         {
             VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(new APITokenRequest(getApplicationContext(), user.Id));
         }
-        VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(new APISystemShutdownRequest(getApplicationContext(), system.Id));
+        //VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(new APISystemShutdownRequest(getApplicationContext(), system.Id));
     }
 
     public void restartOnClick(View v) {
@@ -138,14 +132,7 @@ public class SysOverviewActivity extends AppCompatActivity {
         {
             VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(new APITokenRequest(getApplicationContext(), user.Id));
         }
-        VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(new APISystemRestartRequest(getApplicationContext(), system.Id));
-    }
-
-    private SystemEntity getSystem(String sysId){
-        List<SystemEntity> sysList = null;
-
-        systemEntity = sysList.get(0);
-        return systemEntity;
+        //VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(new APISystemRestartRequest(getApplicationContext(), system.Id));
     }
 
     private void initViews(){
@@ -153,23 +140,10 @@ public class SysOverviewActivity extends AppCompatActivity {
         manufacturer = findViewById(R.id.txtManufacturer);
         model = findViewById(R.id.txtModel);
         listView = findViewById(R.id.compList);
-        prefs = this.getSharedPreferences(
-                getString(R.string.preference_sysID_key), Context.MODE_PRIVATE);
         img = findViewById(R.id.imgOverview);
-        os = findViewById(R.id.txtOS);
         //TODO: Add actual logic, todo with OS
         img.setImageResource(R.drawable.ic_pc);
         linearLayout = findViewById(R.id.linOverview);
-    }
-
-    private void getOS() {
-        String sysId = prefs.getString(getString(R.string.preference_sysID_key), null);
-
-        if(osList.size() > 0) {
-            sysOS = osList.get(0);
-        } else {
-            Log.i(TAG, "Query returned no OS Entity");
-        }
     }
 
     @Override

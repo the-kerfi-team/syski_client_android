@@ -45,11 +45,11 @@ public class CPURepository {
     }
 
     public MutableLiveData<List<CPUEntity>> get(final UUID systemId) {
-        if (mDataUpdated || !mActiveSystemId.equals(systemId))
+        if (mDataUpdated || mActiveSystemId == null || !mActiveSystemId.equals(systemId))
         {
-            mDataUpdated = false;
             mActiveSystemId = systemId;
-            updateSyetmCPUData();
+            updateSystemCPUData();
+            mDataUpdated = false;
         }
         return mSystemCPUEntities;
     }
@@ -64,9 +64,10 @@ public class CPURepository {
         updateData();
     }
 
-    public void updateSyetmCPUData() {
+    public void updateSystemCPUData() {
         try {
-            mCPUEntities.postValue(new getSystemCPUAsyncTask(mCPUDao).execute(mActiveSystemId).get());
+            mSystemCPUEntities.postValue(new getSystemCPUAsyncTask(mCPUDao).execute(mActiveSystemId).get());
+            mDataUpdated = true;
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -93,6 +94,7 @@ public class CPURepository {
         }
 
         protected List<CPUEntity> doInBackground(final UUID... uuids) {
+            List<CPUEntity> result = mAsyncTaskDao.getSystemCPUs(uuids);
             return mAsyncTaskDao.getSystemCPUs(uuids);
         }
     }

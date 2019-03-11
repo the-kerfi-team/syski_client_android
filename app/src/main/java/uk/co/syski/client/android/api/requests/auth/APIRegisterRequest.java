@@ -62,7 +62,7 @@ public class APIRegisterRequest extends APIRequest<JSONObject> {
             userEntity.Email = jsonObject.getString("email");
             userEntity.AccessToken = jsonObject.getString("access_token");
             userEntity.RefreshToken = jsonObject.getString("refresh_token");
-            userEntity.TokenExpiry = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSSXXX").parse(jsonObject.getString("expiry"));
+            userEntity.TokenExpiry = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSSZ").parse(jsonObject.getString("expiry"));
             Repository.getInstance().getUserRepository().insert(userEntity);
             Repository.getInstance().getUserRepository().setActiveUserId(userEntity.Id);
             mContext.getSharedPreferences(mContext.getString(R.string.preference_sysID_key), Context.MODE_PRIVATE).edit().putString(mContext.getString(R.string.preference_sysID_key), userEntity.Id.toString()).commit();

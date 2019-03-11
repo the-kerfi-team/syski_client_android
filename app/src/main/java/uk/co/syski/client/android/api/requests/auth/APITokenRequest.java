@@ -69,7 +69,7 @@ public class APITokenRequest extends APIRequest<JSONObject> {
             UserEntity userEntity = Repository.getInstance().getUserRepository().getUser();
             userEntity.AccessToken = jsonObject.getString("access_token");
             userEntity.RefreshToken = jsonObject.getString("refresh_token");
-            userEntity.TokenExpiry = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSSXXX").parse(jsonObject.getString("expiry"));
+            userEntity.TokenExpiry = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSSZ").parse(jsonObject.getString("expiry"));
             Repository.getInstance().getUserRepository().update(userEntity);
             return Response.success(jsonObject, HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException e) {

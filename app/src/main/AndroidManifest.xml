@@ -40,7 +40,7 @@
             android:parentActivityName=".view.SystemListMenu"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".SysOverviewActivity"
+            android:name=".view.SystemOverviewActivity"
             android:label="@string/sys_overview_lbl"
             android:parentActivityName=".view.SystemListMenu"
             android:screenOrientation="portrait" />
@@ -51,31 +51,31 @@
         <activity
             android:name=".view.CPUActivity"
             android:label="@string/sys_cpu_lbl"
-            android:parentActivityName=".SysOverviewActivity"
+            android:parentActivityName=".view.SystemOverviewActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".RAMActivity"
             android:label="@string/sys_ram_lbl"
-            android:parentActivityName=".SysOverviewActivity"
+            android:parentActivityName=".view.SystemOverviewActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".StorageActivity"
             android:label="@string/sys_stg_lbl"
-            android:parentActivityName=".SysOverviewActivity"
+            android:parentActivityName=".view.SystemOverviewActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.GPUActivity"
             android:label="@string/sys_gpu_lbl"
-            android:parentActivityName=".SysOverviewActivity"
+            android:parentActivityName=".view.SystemOverviewActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".MOBOActivity"
             android:label="@string/sys_mobo_lbl"
-            android:parentActivityName=".SysOverviewActivity"
+            android:parentActivityName=".view.SystemOverviewActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".OSActivity"
             android:label="@string/sys_os_lbl"
-            android:parentActivityName=".SysOverviewActivity"
+            android:parentActivityName=".view.SystemOverviewActivity"
             android:screenOrientation="portrait"/>
     </application>
 

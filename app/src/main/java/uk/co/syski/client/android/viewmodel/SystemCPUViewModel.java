@@ -17,15 +17,15 @@ import uk.co.syski.client.android.data.repository.Repository;
 
 public class SystemCPUViewModel extends AndroidViewModel {
 
-    private CPURepository mSystemRepository;
+    private CPURepository mCPURepository;
     private MutableLiveData<List<CPUEntity>> mSystemCPUList;
     private UUID systemId;
 
     public SystemCPUViewModel(@NonNull Application application) {
         super(application);
         systemId = UUID.fromString(application.getSharedPreferences(application.getString(R.string.preference_sysID_key), Context.MODE_PRIVATE).getString(application.getString(R.string.preference_sysID_key), null));
-        mSystemRepository = Repository.getInstance().getCPURepository();
-        mSystemCPUList = mSystemRepository.get(systemId);
+        mCPURepository = Repository.getInstance().getCPURepository();
+        mSystemCPUList = mCPURepository.get(systemId);
     }
 
     public LiveData<List<CPUEntity>> get() { return mSystemCPUList; }

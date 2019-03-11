@@ -24,11 +24,7 @@ public class CPUActivity extends AppCompatActivity {
 
     private static final String TAG = "CPUActivity";
     TextView model,manufacturer,architecture,clock,core,thread;
-    CPUEntity cpu;
     GridLayout gridLayout;
-
-    SharedPreferences prefs;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,13 +37,12 @@ public class CPUActivity extends AppCompatActivity {
         viewModel.get().observe(this, new Observer<List<CPUEntity>>() {
             @Override
             public void onChanged(@Nullable List<CPUEntity> cpuEntities) {
-                cpu = cpuEntities.get(0);
-                model.setText(cpu.ModelName);
-                manufacturer.setText(cpu.ManufacturerName);
-                architecture.setText(cpu.ArchitectureName);
-                clock.setText("" + cpu.ClockSpeed);
-                core.setText("" + cpu.CoreCount);
-                thread.setText("" + cpu.ThreadCount);
+                model.setText(cpuEntities.get(0).ModelName);
+                manufacturer.setText(cpuEntities.get(0).ManufacturerName);
+                architecture.setText(cpuEntities.get(0).ArchitectureName);
+                clock.setText("" + cpuEntities.get(0).ClockSpeed);
+                core.setText("" + cpuEntities.get(0).CoreCount);
+                thread.setText("" + cpuEntities.get(0).ThreadCount);
             }
         });
     }
@@ -59,8 +54,6 @@ public class CPUActivity extends AppCompatActivity {
         clock = findViewById(R.id.cpuClock);
         core = findViewById(R.id.cpuCore);
         thread = findViewById(R.id.cpuThread);
-        prefs = this.getSharedPreferences(
-                getString(R.string.preference_sysID_key), Context.MODE_PRIVATE);
         gridLayout = findViewById(R.id.grdCPU);
     }
 

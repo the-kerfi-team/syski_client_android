@@ -27,11 +27,9 @@ import com.google.zxing.integration.android.IntentResult;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 
 import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.SettingsActivity;
-import uk.co.syski.client.android.SysOverviewActivity;
 import uk.co.syski.client.android.adapters.SystemListAdapter;
 import uk.co.syski.client.android.api.APIThread;
 import uk.co.syski.client.android.data.SyskiCache;
@@ -79,7 +77,7 @@ public class SystemListMenu extends AppCompatActivity implements NavigationView.
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Intent intent = new Intent(SystemListMenu.this,SysOverviewActivity.class);
+                        Intent intent = new Intent(SystemListMenu.this,SystemOverviewActivity.class);
                         String sysId = systemEntities.get(position).Id.toString();
                         prefEditor.putString(getString(R.string.preference_sysID_key),sysId);
                         prefEditor.apply();
@@ -182,7 +180,7 @@ public class SystemListMenu extends AppCompatActivity implements NavigationView.
 
 
                     if (!systemNotFound) {
-                        Intent intent = new Intent(this, SysOverviewActivity.class);
+                        Intent intent = new Intent(this, SystemOverviewActivity.class);
                         intent.putExtra("SYSTEMID", systemId.toString());
                         startActivity(intent);
                     } else {

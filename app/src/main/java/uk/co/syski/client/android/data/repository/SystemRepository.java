@@ -18,12 +18,13 @@ public class SystemRepository {
     private SystemDao mSystemDao;
     private MutableLiveData<List<SystemEntity>> mSystemEntities;
     private boolean mDataUpdated;
-    private UUID mActiveSystemId;
-    private MutableLiveData<List<CPUEntity>> mSystemCPUEntities;
+    private UUID mSystemId;
+    private MutableLiveData<SystemEntity> mSystem;
 
     public SystemRepository() {
         mSystemDao = SyskiCache.GetDatabase().SystemDao();
         mSystemEntities = new MutableLiveData();
+        mSystem = new MutableLiveData<>();
         try {
             mSystemEntities.postValue(new getAsyncTask(mSystemDao).execute().get());
         } catch (InterruptedException e) {
@@ -35,6 +36,16 @@ public class SystemRepository {
 
     public MutableLiveData<List<SystemEntity>> get() {
         return mSystemEntities;
+    }
+
+    public MutableLiveData<SystemEntity> get(final UUID systemId) {
+        if (mDataUpdated || mSystemId == null|| !mSystemId.equals(systemId))
+        {
+            mSystemId = systemId;
+            updateSystem();
+            mDataUpdated = false;
+        }
+        return mSystem;
     }
 
     public void insert(SystemEntity systemEntity)
@@ -49,15 +60,42 @@ public class SystemRepository {
         updateData();
     }
 
-    public void updateData()
-    {
+    public void updateSystem() {
         try {
-            mSystemEntities.postValue(new getAsyncTask(mSystemDao).execute().get());
+            mSystem.postValue(new getSystemAsyncTask(mSystemDao).execute(mSystemId).get());
+            mDataUpdated = true;
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+    }
+
+    public void updateData()
+    {
+        try {
+            mSystemEntities.postValue(new getAsyncTask(mSystemDao).execute().get());
+            mDataUpdated = true;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static class getSystemAsyncTask extends AsyncTask<UUID, Void, SystemEntity> {
+
+        private SystemDao mAsyncTaskDao;
+
+        getSystemAsyncTask(SystemDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected SystemEntity doInBackground(final UUID... uuids) {
+            return mAsyncTaskDao.get(uuids[0]);
+        }
+
     }
 
     private static class getAsyncTask extends AsyncTask<Void, Void, List<SystemEntity>> {
@@ -70,8 +108,7 @@ public class SystemRepository {
 
         @Override
         protected List<SystemEntity> doInBackground(final Void... voids) {
-            List<SystemEntity> result = mAsyncTaskDao.get();
-            return result;
+            return mAsyncTaskDao.get();
         }
 
     }
