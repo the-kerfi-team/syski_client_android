@@ -1,14 +1,20 @@
 package uk.co.syski.client.android;
 
+import android.app.Activity;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -17,8 +23,12 @@ import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 import uk.co.syski.client.android.adapters.RAMAdapter;
+import uk.co.syski.client.android.adapters.SystemListAdapter;
 import uk.co.syski.client.android.data.entity.RAMEntity;
+import uk.co.syski.client.android.data.entity.SystemEntity;
 import uk.co.syski.client.android.view.SystemListMenu;
+import uk.co.syski.client.android.viewmodel.SystemListViewModel;
+import uk.co.syski.client.android.viewmodel.SystemRAMViewModel;
 
 public class RAMActivity extends AppCompatActivity {
 
@@ -34,30 +44,17 @@ public class RAMActivity extends AppCompatActivity {
 
 
         initViews();
-        getRAM();
 
-
-//        if (ram != null) {
-//            model.setText(ram.ModelName);
-//            manufacturer.setText(ram.ManufacturerName);
-//            type.setText(ram.MemoryTypeName);
-//            size.setText(""+ram.MemoryBytes);
-//        } else {
-//            model.setVisibility(View.INVISIBLE);
-//            manufacturer.setVisibility(View.INVISIBLE);
-//            type.setVisibility(View.INVISIBLE);
-//            size.setVisibility(View.INVISIBLE);
-//            Toast.makeText(this,"RAM not found",Toast.LENGTH_SHORT).show();
-//        }
-
-        if(ramList.size() > 0) {
-            RAMAdapter adapter = new RAMAdapter(this, ramList);
-            listView.setAdapter(adapter);
-        } else{
-            Toast.makeText(this,"RAM not found",Toast.LENGTH_SHORT).show();
-        }
-
-
+        final Activity thisActivity = this;
+        SystemRAMViewModel model = ViewModelProviders.of(this).get(SystemRAMViewModel.class);
+        model.get().observe(this, new Observer<List<RAMEntity>>() {
+            @Override
+            public void onChanged(@Nullable List<RAMEntity> ramEntities) {
+                RAMAdapter adapter = new RAMAdapter(thisActivity,ramEntities);
+                listView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+            }
+        });
 
     }
 
