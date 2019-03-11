@@ -18,8 +18,6 @@ import android.widget.TextView;
 
 import java.util.Calendar;
 import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 
 import uk.co.syski.client.android.adapters.SysListOverviewAdapter;
 import uk.co.syski.client.android.api.VolleySingleton;
@@ -32,6 +30,7 @@ import uk.co.syski.client.android.data.entity.UserEntity;
 import uk.co.syski.client.android.data.repository.Repository;
 import uk.co.syski.client.android.model.OperatingSystemModel;
 import uk.co.syski.client.android.view.CPUActivity;
+import uk.co.syski.client.android.view.GPUActivity;
 import uk.co.syski.client.android.view.SystemListMenu;
 
 public class SysOverviewActivity extends AppCompatActivity {

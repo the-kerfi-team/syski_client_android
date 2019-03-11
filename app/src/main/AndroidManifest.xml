@@ -64,7 +64,7 @@
             android:parentActivityName=".SysOverviewActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".GPUActivity"
+            android:name=".view.GPUActivity"
             android:label="@string/sys_gpu_lbl"
             android:parentActivityName=".SysOverviewActivity"
             android:screenOrientation="portrait" />
