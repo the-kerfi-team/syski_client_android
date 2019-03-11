@@ -39,7 +39,7 @@ public class RAMRepository {
     }
 
     public MutableLiveData<List<RAMEntity>> get(final UUID systemId) {
-        if (mDataUpdated || !mActiveSystemId.equals(systemId))
+        if (mDataUpdated || mActiveSystemId == null || !mActiveSystemId.equals(systemId))
         {
             mDataUpdated = false;
             mActiveSystemId = systemId;
