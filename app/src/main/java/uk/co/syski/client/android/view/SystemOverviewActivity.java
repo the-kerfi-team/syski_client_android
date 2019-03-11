@@ -2,13 +2,10 @@ package uk.co.syski.client.android.view;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -25,19 +22,15 @@ import java.util.List;
 import uk.co.syski.client.android.MOBOActivity;
 import uk.co.syski.client.android.OSActivity;
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.RAMActivity;
 import uk.co.syski.client.android.StorageActivity;
 import uk.co.syski.client.android.adapters.SysListOverviewAdapter;
 import uk.co.syski.client.android.api.VolleySingleton;
 import uk.co.syski.client.android.api.requests.auth.APITokenRequest;
-import uk.co.syski.client.android.api.requests.system.APISystemRestartRequest;
-import uk.co.syski.client.android.api.requests.system.APISystemShutdownRequest;
 import uk.co.syski.client.android.data.entity.SystemEntity;
 import uk.co.syski.client.android.data.entity.UserEntity;
 
 import uk.co.syski.client.android.data.repository.Repository;
 import uk.co.syski.client.android.model.OperatingSystemModel;
-import uk.co.syski.client.android.viewmodel.SystemListViewModel;
 import uk.co.syski.client.android.viewmodel.SystemSummaryViewModel;
 
 public class SystemOverviewActivity extends AppCompatActivity {

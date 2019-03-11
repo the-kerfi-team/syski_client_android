@@ -54,7 +54,7 @@
             android:parentActivityName=".view.SystemOverviewActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".RAMActivity"
+            android:name=".view.RAMActivity"
             android:label="@string/sys_ram_lbl"
             android:parentActivityName=".view.SystemOverviewActivity"
             android:screenOrientation="portrait" />

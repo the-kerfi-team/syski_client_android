@@ -1,4 +1,4 @@
-package uk.co.syski.client.android;
+package uk.co.syski.client.android.view;
 
 import android.app.Activity;
 import android.arch.lifecycle.Observer;
@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
+import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.adapters.RAMAdapter;
 import uk.co.syski.client.android.adapters.SystemListAdapter;
 import uk.co.syski.client.android.data.entity.RAMEntity;
