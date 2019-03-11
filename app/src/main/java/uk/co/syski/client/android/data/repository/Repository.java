@@ -26,4 +26,11 @@ public enum Repository {
         return mCPURepository;
     }
 
+    private static GPURepository mGPURepository = new GPURepository();
+
+    public static GPURepository getGPURepository()
+    {
+        return mGPURepository;
+    }
+
 }
