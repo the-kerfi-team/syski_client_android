@@ -3,6 +3,7 @@ package uk.co.syski.client.android.data.dao;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
+import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
@@ -15,18 +16,23 @@ import uk.co.syski.client.android.data.entity.SystemEntity;
 @Dao
 public interface CPUDao {
 
-    @Query("SELECT Id, ModelName, ManufacturerName, ArchitectureName, ClockSpeed, CoreCount, ThreadCount FROM CPUEntity WHERE Id == :Id")
-    CPUEntity getCPU(UUID Id);
-
-    @Query("SELECT Id, ModelName, ManufacturerName, ArchitectureName, ClockSpeed, CoreCount, ThreadCount" +
-            " FROM CPUEntity INNER JOIN SystemCPUEntity WHERE SystemId IN (:Ids)")
-    List<CPUEntity> getCPUs(UUID... Ids);
+    @Insert
+    void insert(CPUEntity cpuEntity);
 
     @Insert
-    void InsertAll(CPUEntity... cpuEntities);
+    void insert(CPUEntity... cpuEntities);
 
-    @Delete
-    void DeleteAll(CPUEntity... cpuEntities);
+    @Query("SELECT * FROM CPUEntity")
+    List<CPUEntity> get();
+
+    @Query("SELECT * FROM CPUEntity WHERE Id == :Id")
+    CPUEntity get(UUID Id);
+
+    @Query("SELECT * FROM CPUEntity WHERE Id in (:Id)")
+    List<CPUEntity> get(UUID... Ids);
+
+    @Query("SELECT * FROM CPUEntity INNER JOIN SystemCPUEntity ON Id = CPUId WHERE SystemId IN (:Ids)")
+    List<CPUEntity> getSystemCPUs(UUID... Ids);
 
     @Update
     void update (CPUEntity cpuEntity);

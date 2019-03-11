@@ -30,7 +30,7 @@ public class GPUActivity extends AppCompatActivity {
     GridLayout gridLayout;
 
     //Views
-    TextView model,man,arch,clock,core,thread,type,size;
+    TextView model,man;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,12 +43,6 @@ public class GPUActivity extends AppCompatActivity {
         if(gpu != null) {
             model.setText(gpu.ModelName);
             man.setText(gpu.ManufacturerName);
-            arch.setText(gpu.ArchitectureName);
-            clock.setText("" + gpu.ClockSpeed);
-            core.setText("" + gpu.CoreCount);
-            thread.setText("" + gpu.ThreadCount);
-            type.setText(gpu.MemoryTypeName);
-            size.setText("" + gpu.MemoryBytes);
         }else {
             //TODO: Once test data is available, change to remove views based on cpu fields
             gridLayout.removeAllViewsInLayout();
@@ -62,12 +56,6 @@ public class GPUActivity extends AppCompatActivity {
                 getString(R.string.preference_sysID_key), Context.MODE_PRIVATE);
         model = findViewById(R.id.txtGPUModel);
         man = findViewById(R.id.txtGPUMan);
-        arch = findViewById(R.id.txtGPUArch);
-        clock = findViewById(R.id.txtGPUClock);
-        core = findViewById(R.id.txtGPUCore);
-        thread = findViewById(R.id.txtGPUThread);
-        type = findViewById(R.id.txtGPUType);
-        size = findViewById(R.id.txtGPUSize);
         gridLayout = findViewById(R.id.grdGPU);
     }
 

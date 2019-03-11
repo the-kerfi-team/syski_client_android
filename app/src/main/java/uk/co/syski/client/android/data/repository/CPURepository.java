@@ -1,11 +1,15 @@
 package uk.co.syski.client.android.data.repository;
 
 import android.app.Application;
+import android.arch.core.util.Function;
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.Transformations;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
@@ -18,13 +22,14 @@ public class CPURepository {
 
     private CPUDao mCPUDao;
     private MutableLiveData<List<CPUEntity>> mCPUEntities;
-    UUID sysId;
-
+    private boolean mDataUpdated;
+    private UUID mActiveSystemId;
+    private MutableLiveData<List<CPUEntity>> mSystemCPUEntities;
 
     public CPURepository() {
-        this.mCPUDao = SyskiCache.GetDatabase().CPUDao();
-        this.mCPUEntities = new MutableLiveData();
-
+        mCPUDao = SyskiCache.GetDatabase().CPUDao();
+        mCPUEntities = new MutableLiveData();
+        mSystemCPUEntities = new MutableLiveData();
         try {
             mCPUEntities.setValue(new getAsyncTask(mCPUDao).execute().get());
         } catch (InterruptedException e) {
@@ -39,6 +44,16 @@ public class CPURepository {
         return mCPUEntities;
     }
 
+    public MutableLiveData<List<CPUEntity>> get(final UUID systemId) {
+        if (mDataUpdated || !mActiveSystemId.equals(systemId))
+        {
+            mDataUpdated = false;
+            mActiveSystemId = systemId;
+            updateSyetmCPUData();
+        }
+        return mSystemCPUEntities;
+    }
+
     public void insert(CPUEntity cpuEntity) {
         new insertAsyncTask(mCPUDao).execute(cpuEntity);
         updateData();
@@ -49,13 +64,36 @@ public class CPURepository {
         updateData();
     }
 
-    public void updateData() {
+    public void updateSyetmCPUData() {
         try {
-            mCPUEntities.postValue(new getAsyncTask(mCPUDao).execute().get());
+            mCPUEntities.postValue(new getSystemCPUAsyncTask(mCPUDao).execute(mActiveSystemId).get());
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void updateData() {
+        try {
+            mCPUEntities.postValue(new getAsyncTask(mCPUDao).execute().get());
+            mDataUpdated = true;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static class getSystemCPUAsyncTask extends AsyncTask<UUID, Void, List<CPUEntity>> {
+        private CPUDao mAsyncTaskDao;
+
+        getSystemCPUAsyncTask(CPUDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        protected List<CPUEntity> doInBackground(final UUID... uuids) {
+            return mAsyncTaskDao.getSystemCPUs(uuids);
         }
     }
 
@@ -67,8 +105,7 @@ public class CPURepository {
         }
 
         protected List<CPUEntity> doInBackground(final Void... voids) {
-            List<CPUEntity> result = mAsyncTaskDao.getCPUs(UUID.fromString());
-            return result;
+            return mAsyncTaskDao.get();
         }
     }
 
@@ -82,7 +119,7 @@ public class CPURepository {
 
         @Override
         protected Void doInBackground(final CPUEntity... cpuEntities) {
-            mAsyncTaskDao.InsertAll(cpuEntities);
+            mAsyncTaskDao.insert(cpuEntities);
             return null;
         }
 

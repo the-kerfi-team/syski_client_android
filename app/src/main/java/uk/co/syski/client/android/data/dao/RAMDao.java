@@ -16,8 +16,7 @@ public interface RAMDao {
     @Query("SELECT Id, ModelName, ManufacturerName, MemoryTypeName, MemoryBytes FROM RAMEntity WHERE Id == :Id")
     RAMEntity GetRAM(UUID Id);
 
-    @Query("SELECT Id, ModelName, ManufacturerName, MemoryTypeName, MemoryBytes FROM RAMEntity INNER JOIN SystemRAM" +
-            "Entity WHERE SystemId IN (:Ids)")
+    @Query("SELECT Id, ModelName, ManufacturerName, MemoryTypeName, MemoryBytes FROM RAMEntity INNER JOIN SystemRAMEntity ON Id = RAMId WHERE SystemId IN (:Ids)")
     List<RAMEntity> GetRAMs(UUID... Ids);
 
     @Insert

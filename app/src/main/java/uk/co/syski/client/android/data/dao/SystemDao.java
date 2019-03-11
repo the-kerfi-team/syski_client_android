@@ -18,20 +18,22 @@ import uk.co.syski.client.android.data.entity.SystemEntity;
 @Dao
 public interface SystemDao {
 
+    @Query("SELECT Id, HostName, ModelName, ManufacturerName FROM SystemEntity WHERE Id = :uuid")
+    SystemEntity getSystem(UUID uuid);
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(SystemEntity systemEntity);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(SystemEntity... systemEntities);
 
-    @Query("SELECT * FROM SystemEntity WHERE Id IN (:Ids)")
-    List<SystemEntity> get(UUID... Ids);
-
-    @Query("SELECT Id, HostName, ModelName, ManufacturerName FROM SystemEntity WHERE Id = :uuid")
-    SystemEntity get(UUID uuid);
-
     @Query("SELECT * FROM SystemEntity")
     List<SystemEntity> get();
+
+    @Query("SELECT * FROM SystemEntity WHERE Id = :uuid")
+    SystemEntity get(UUID uuid);
+
+    @Query("SELECT * FROM SystemEntity WHERE Id IN (:Ids)")
+    List<SystemEntity> get(UUID... Ids);
 
     @Update
     void update (SystemEntity systemEntity);
