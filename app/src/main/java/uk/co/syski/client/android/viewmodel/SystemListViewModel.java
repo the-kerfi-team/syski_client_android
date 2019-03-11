@@ -20,7 +20,7 @@ public class SystemListViewModel extends ViewModel {
 
     public SystemListViewModel()
     {
-        mSystemRepository = Repository.getSystemRepository();
+        mSystemRepository = Repository.getInstance().getSystemRepository();
         mSystemList = mSystemRepository.get();
     }
 

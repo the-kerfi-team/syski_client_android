@@ -13,8 +13,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
-import uk.co.syski.client.android.data.entity.GPUEntity;
-import uk.co.syski.client.android.data.thread.SyskiCacheThread;
 import uk.co.syski.client.android.model.OperatingSystemModel;
 
 public class OSActivity extends AppCompatActivity {
@@ -55,14 +53,7 @@ public class OSActivity extends AppCompatActivity {
 
     private void getOS(){
         String sysId = prefs.getString(getString(R.string.preference_sysID_key), null);
-        try {
-            Log.d(TAG, "Querying database");
-            osList = SyskiCacheThread.getInstance().OperatingSystemThreads.GetOperatingSystems(UUID.fromString(sysId));
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
 
         if(osList.size() > 0){
             sysOS = osList.get(0);

@@ -18,8 +18,7 @@ import java.util.List;
 
 import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.data.entity.CPUEntity;
-import uk.co.syski.client.android.view.SystemListMenu;
-import uk.co.syski.client.android.viewmodel.CPUViewModel;
+import uk.co.syski.client.android.viewmodel.SystemCPUViewModel;
 
 public class CPUActivity extends AppCompatActivity {
 
@@ -37,9 +36,8 @@ public class CPUActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cpu);
 
         initViews();
-        //getCPU();
 
-        CPUViewModel viewModel = ViewModelProviders.of(this).get(CPUViewModel.class);
+        SystemCPUViewModel viewModel = ViewModelProviders.of(this).get(SystemCPUViewModel.class);
         viewModel.get().observe(this, new Observer<List<CPUEntity>>() {
             @Override
             public void onChanged(@Nullable List<CPUEntity> cpuEntities) {

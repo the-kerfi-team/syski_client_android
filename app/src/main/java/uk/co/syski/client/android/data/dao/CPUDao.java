@@ -28,7 +28,7 @@ public interface CPUDao {
     @Query("SELECT * FROM CPUEntity WHERE Id == :Id")
     CPUEntity get(UUID Id);
 
-    @Query("SELECT * FROM CPUEntity WHERE Id in (:Id)")
+    @Query("SELECT * FROM CPUEntity WHERE Id in (:Ids)")
     List<CPUEntity> get(UUID... Ids);
 
     @Query("SELECT * FROM CPUEntity INNER JOIN SystemCPUEntity ON Id = CPUId WHERE SystemId IN (:Ids)")

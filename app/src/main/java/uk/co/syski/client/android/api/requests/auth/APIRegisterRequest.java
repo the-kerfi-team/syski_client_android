@@ -16,17 +16,21 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.UUID;
 
+import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.api.requests.APIRequest;
 import uk.co.syski.client.android.data.SyskiCache;
 import uk.co.syski.client.android.data.entity.UserEntity;
+import uk.co.syski.client.android.data.repository.Repository;
 
 public class APIRegisterRequest extends APIRequest<JSONObject> {
 
     private String mEmail;
     private String mPassword;
+    private Context mContext;
 
     public APIRegisterRequest(Context context, String email, String password, Response.Listener<JSONObject> listener, @Nullable Response.ErrorListener errorListener) {
         super(context, Method.POST, "auth/user/register", null, listener, errorListener);
+        mContext = context;
         mEmail = email;
         mPassword = password;
     }
@@ -59,7 +63,9 @@ public class APIRegisterRequest extends APIRequest<JSONObject> {
             userEntity.AccessToken = jsonObject.getString("access_token");
             userEntity.RefreshToken = jsonObject.getString("refresh_token");
             userEntity.TokenExpiry = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSSXXX").parse(jsonObject.getString("expiry"));
-            SyskiCache.GetDatabase().UserDao().InsertAll(userEntity);
+            Repository.getInstance().getUserRepository().insert(userEntity);
+            Repository.getInstance().getUserRepository().setActiveUserId(userEntity.Id);
+            mContext.getSharedPreferences(mContext.getString(R.string.preference_sysID_key), Context.MODE_PRIVATE).edit().putString(mContext.getString(R.string.preference_sysID_key), userEntity.Id.toString()).commit();
             return Response.success(jsonObject, HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException e) {
             return Response.error(new ParseError(e));

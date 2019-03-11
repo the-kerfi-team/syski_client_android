@@ -5,22 +5,27 @@ import android.arch.lifecycle.MutableLiveData;
 import android.os.AsyncTask;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 import uk.co.syski.client.android.data.SyskiCache;
 import uk.co.syski.client.android.data.dao.SystemDao;
+import uk.co.syski.client.android.data.entity.CPUEntity;
 import uk.co.syski.client.android.data.entity.SystemEntity;
 
 public class SystemRepository {
 
     private SystemDao mSystemDao;
     private MutableLiveData<List<SystemEntity>> mSystemEntities;
+    private boolean mDataUpdated;
+    private UUID mActiveSystemId;
+    private MutableLiveData<List<CPUEntity>> mSystemCPUEntities;
 
     public SystemRepository() {
         mSystemDao = SyskiCache.GetDatabase().SystemDao();
         mSystemEntities = new MutableLiveData();
         try {
-            mSystemEntities.setValue(new getAsyncTask(mSystemDao).execute().get());
+            mSystemEntities.postValue(new getAsyncTask(mSystemDao).execute().get());
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {

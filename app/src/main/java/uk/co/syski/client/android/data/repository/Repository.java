@@ -1,17 +1,27 @@
 package uk.co.syski.client.android.data.repository;
 
-public class Repository {
+public enum Repository {
+    INSTANCE;
 
-    private static SystemRepository mSystemRepository = new SystemRepository();
+    public static Repository getInstance() {
+        return INSTANCE;
+    }
 
-    public static SystemRepository getSystemRepository()
+
+    private UserRepository mUserRepository = new UserRepository();
+
+    private SystemRepository mSystemRepository = new SystemRepository();
+
+    private CPURepository mCPURepository = new CPURepository();
+
+    public synchronized UserRepository getUserRepository() { return mUserRepository; }
+
+    public synchronized SystemRepository getSystemRepository()
     {
         return mSystemRepository;
     }
 
-    private static CPURepository mCPURepository = new CPURepository();
-
-    public static CPURepository getCPURepository()
+    public synchronized CPURepository getCPURepository()
     {
         return mCPURepository;
     }

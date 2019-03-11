@@ -18,7 +18,6 @@ import java.util.concurrent.ExecutionException;
 
 import uk.co.syski.client.android.adapters.RAMAdapter;
 import uk.co.syski.client.android.data.entity.RAMEntity;
-import uk.co.syski.client.android.data.thread.SyskiCacheThread;
 import uk.co.syski.client.android.view.SystemListMenu;
 
 public class RAMActivity extends AppCompatActivity {
@@ -72,13 +71,6 @@ public class RAMActivity extends AppCompatActivity {
     private void getRAM(){
         Log.d(TAG, "Querying database");
         String sysId = prefs.getString(getString(R.string.preference_sysID_key), null);
-        try {
-            ramList = SyskiCacheThread.getInstance().RAMThreads.GetRAMs(UUID.fromString(sysId));
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
         if(ramList.size() == 0){
             Log.i(TAG, "Query returned no RAM entity");

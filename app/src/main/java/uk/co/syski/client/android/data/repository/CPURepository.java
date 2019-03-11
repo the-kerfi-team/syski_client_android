@@ -31,7 +31,7 @@ public class CPURepository {
         mCPUEntities = new MutableLiveData();
         mSystemCPUEntities = new MutableLiveData();
         try {
-            mCPUEntities.setValue(new getAsyncTask(mCPUDao).execute().get());
+            mCPUEntities.postValue(new getAsyncTask(mCPUDao).execute().get());
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {

@@ -1,6 +1,8 @@
 package uk.co.syski.client.android.view;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -27,10 +29,10 @@ import com.android.volley.VolleyError;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.ref.Reference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 
 import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.SettingsActivity;
@@ -49,48 +51,44 @@ import uk.co.syski.client.android.data.entity.linking.SystemCPUEntity;
 import uk.co.syski.client.android.data.entity.linking.SystemGPUEntity;
 import uk.co.syski.client.android.data.entity.linking.SystemRAMEntity;
 import uk.co.syski.client.android.data.entity.linking.SystemStorageEntity;
-import uk.co.syski.client.android.data.thread.SyskiCacheThread;
+import uk.co.syski.client.android.data.repository.Repository;
 
 
 public class MainActivity extends AppCompatActivity {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
-
     private ViewPager mViewPager;
+    private SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         SyskiCache.BuildDatabase(getApplicationContext());
-        try {
-            if (SyskiCacheThread.getInstance().UserThreads.HasData())
-            {
-                APIThread.getInstance(getApplicationContext()).start();
-                startActivity(new Intent(this, SystemListMenu.class));
-                finish();
-            }
-            else
-            {
-                setTheme(R.style.AppTheme);
-                setContentView(R.layout.activity_main);
+        prefs = getApplicationContext().getSharedPreferences(getString(R.string.preference_sysID_key), Context.MODE_PRIVATE);
+        String userId = prefs.getString(getString(R.string.preference_sysID_key), null);
+        if (userId != null)
+        {
+            Repository.getInstance().getUserRepository().setActiveUserId(UUID.fromString(userId));
+            APIThread.getInstance(getApplicationContext()).enable();
+            startActivity(new Intent(this, SystemListMenu.class));
+            finish();
+        }
+        else
+        {
+            setTheme(R.style.AppTheme);
+            setContentView(R.layout.activity_main);
 
-                mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-                mSectionsPagerAdapter.addFragment(new Tab_Login(), "Login");
-                mSectionsPagerAdapter.addFragment(new Tab_Register(), "Register");
+            mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+            mSectionsPagerAdapter.addFragment(new Tab_Login(), "Login");
+            mSectionsPagerAdapter.addFragment(new Tab_Register(), "Register");
 
-                mViewPager = (ViewPager) findViewById(R.id.container);
-                mViewPager.setAdapter(mSectionsPagerAdapter);
+            mViewPager = (ViewPager) findViewById(R.id.container);
+            mViewPager.setAdapter(mSectionsPagerAdapter);
 
-                TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+            TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
 
-                mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-                tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
-            }
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+            tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
         }
     }
 
@@ -148,21 +146,6 @@ public class MainActivity extends AppCompatActivity {
         systemGPU.SystemId = system.Id;
         systemGPU.GPUId = gpu.Id;
 
-        try {
-            SyskiCacheThread.getInstance().SystemThreads.InsertAll(system);
-            SyskiCacheThread.getInstance().CPUThreads.InsertAll(cpu);
-            SyskiCacheThread.getInstance().SystemCPUThreads.InsertAll(systemCPU);
-            SyskiCacheThread.getInstance().RAMThreads.InsertAll(ram);
-            SyskiCacheThread.getInstance().SystemRAMThreads.InsertAll(systemRAM);
-            SyskiCacheThread.getInstance().StorageThreads.InsertAll(storage);
-            SyskiCacheThread.getInstance().SystemStorageThreads.InsertAll(systemStore);
-            SyskiCacheThread.getInstance().GPUThreads.InsertAll(gpu);
-            SyskiCacheThread.getInstance().SystemGPUThreads.InsertAll(systemGPU);
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -236,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         protected void RequestSuccessful(JSONObject response) {
-            APIThread.getInstance(getContext()).start();
+            APIThread.getInstance(getContext()).enable();
             startActivity(new Intent(getActivity(), SystemListMenu.class));
             getActivity().finish();
         }

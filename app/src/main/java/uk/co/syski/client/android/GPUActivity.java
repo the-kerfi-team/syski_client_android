@@ -18,7 +18,6 @@ import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 import uk.co.syski.client.android.data.entity.GPUEntity;
-import uk.co.syski.client.android.data.thread.SyskiCacheThread;
 import uk.co.syski.client.android.view.SystemListMenu;
 
 public class GPUActivity extends AppCompatActivity {
@@ -52,8 +51,7 @@ public class GPUActivity extends AppCompatActivity {
     }
 
     private void initViews(){
-        prefs = this.getSharedPreferences(
-                getString(R.string.preference_sysID_key), Context.MODE_PRIVATE);
+        prefs = this.getSharedPreferences(getString(R.string.preference_sysID_key), Context.MODE_PRIVATE);
         model = findViewById(R.id.txtGPUModel);
         man = findViewById(R.id.txtGPUMan);
         gridLayout = findViewById(R.id.grdGPU);
@@ -62,14 +60,6 @@ public class GPUActivity extends AppCompatActivity {
     private void getGPU(){
 
         String sysId = prefs.getString(getString(R.string.preference_sysID_key), null);
-        try {
-            Log.d(TAG, "Querying database");
-            gpuList = SyskiCacheThread.getInstance().GPUThreads.GetGPUs(UUID.fromString(sysId));
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
         if(gpuList.size() > 0){
             gpu = gpuList.get(0);

@@ -43,7 +43,7 @@ public class APISystemsRequest extends APIAuthorizationRequest<JSONArray> {
                     systemEntity.ModelName = ((JSONObject) jsonArray.get(i)).getString("modelName");
                     systemEntity.ManufacturerName = ((JSONObject) jsonArray.get(i)).getString("manufacturerName");
                     systemEntity.LastUpdated = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS").parse(((JSONObject) jsonArray.get(i)).getString("lastUpdated"));
-                    Repository.getSystemRepository().insert(systemEntity);
+                    Repository.getInstance().getSystemRepository().insert(systemEntity);
                 }
                 else
                 {
@@ -51,7 +51,7 @@ public class APISystemsRequest extends APIAuthorizationRequest<JSONArray> {
                     systemEntity.ModelName = ((JSONObject) jsonArray.get(i)).getString("modelName");
                     systemEntity.ManufacturerName = ((JSONObject) jsonArray.get(i)).getString("manufacturerName");
                     systemEntity.LastUpdated = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS").parse(((JSONObject) jsonArray.get(i)).getString("lastUpdated"));
-                    Repository.getSystemRepository().update(systemEntity);
+                    Repository.getInstance().getSystemRepository().update(systemEntity);
                 }
             }
 

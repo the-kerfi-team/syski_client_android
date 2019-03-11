@@ -18,7 +18,6 @@ import java.util.concurrent.ExecutionException;
 
 import uk.co.syski.client.android.adapters.StorageAdapter;
 import uk.co.syski.client.android.data.entity.StorageEntity;
-import uk.co.syski.client.android.data.thread.SyskiCacheThread;
 import uk.co.syski.client.android.view.SystemListMenu;
 
 public class StorageActivity extends AppCompatActivity {
@@ -67,14 +66,7 @@ public class StorageActivity extends AppCompatActivity {
 
     private void getStorage() {
         String sysId = prefs.getString(getString(R.string.preference_sysID_key), null);
-        try {
-            Log.d(TAG, "Querying database");
-            storageList = SyskiCacheThread.getInstance().StorageThreads.GetStorages(UUID.fromString(sysId));
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
 
         if(storageList.size() <= 0){
             Log.i(TAG,"Query returned no storage entitity");

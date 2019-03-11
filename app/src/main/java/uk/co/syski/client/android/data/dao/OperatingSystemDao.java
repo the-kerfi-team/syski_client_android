@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.UUID;
 
 import uk.co.syski.client.android.data.entity.OperatingSystemEntity;
-import uk.co.syski.client.android.data.thread.entity.operatingsystem.statement.GetOperatingSystems;
 import uk.co.syski.client.android.model.OperatingSystemModel;
 
 @Dao

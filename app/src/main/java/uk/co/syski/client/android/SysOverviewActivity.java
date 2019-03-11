@@ -28,7 +28,8 @@ import uk.co.syski.client.android.api.requests.system.APISystemRestartRequest;
 import uk.co.syski.client.android.api.requests.system.APISystemShutdownRequest;
 import uk.co.syski.client.android.data.entity.SystemEntity;
 import uk.co.syski.client.android.data.entity.UserEntity;
-import uk.co.syski.client.android.data.thread.SyskiCacheThread;
+
+import uk.co.syski.client.android.data.repository.Repository;
 import uk.co.syski.client.android.model.OperatingSystemModel;
 import uk.co.syski.client.android.view.CPUActivity;
 import uk.co.syski.client.android.view.SystemListMenu;
@@ -123,13 +124,7 @@ public class SysOverviewActivity extends AppCompatActivity {
 
     public void shutdownOnClick(View v) {
         UserEntity user = null;
-        try {
-            user = SyskiCacheThread.getInstance().UserThreads.getUser();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        user = Repository.getInstance().getUserRepository().getUser();
         if (user == null || user.TokenExpiry == null || Calendar.getInstance().getTime().after(user.TokenExpiry))
         {
             VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(new APITokenRequest(getApplicationContext(), user.Id));
@@ -139,13 +134,7 @@ public class SysOverviewActivity extends AppCompatActivity {
 
     public void restartOnClick(View v) {
         UserEntity user = null;
-        try {
-            user = SyskiCacheThread.getInstance().UserThreads.getUser();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        user = Repository.getInstance().getUserRepository().getUser();
         if (user == null || user.TokenExpiry == null || Calendar.getInstance().getTime().after(user.TokenExpiry))
         {
             VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(new APITokenRequest(getApplicationContext(), user.Id));
@@ -155,13 +144,7 @@ public class SysOverviewActivity extends AppCompatActivity {
 
     private SystemEntity getSystem(String sysId){
         List<SystemEntity> sysList = null;
-        try {
-            sysList = SyskiCacheThread.getInstance().SystemThreads.GetSystems(UUID.fromString(sysId));
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
         systemEntity = sysList.get(0);
         return systemEntity;
     }
@@ -182,15 +165,6 @@ public class SysOverviewActivity extends AppCompatActivity {
 
     private void getOS() {
         String sysId = prefs.getString(getString(R.string.preference_sysID_key), null);
-
-        try {
-            Log.d(TAG, "Querying database");
-            osList = SyskiCacheThread.getInstance().OperatingSystemThreads.GetOperatingSystems(UUID.fromString(sysId));
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
         if(osList.size() > 0) {
             sysOS = osList.get(0);

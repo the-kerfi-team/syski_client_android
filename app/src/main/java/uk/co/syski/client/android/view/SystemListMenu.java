@@ -33,9 +33,10 @@ import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.SettingsActivity;
 import uk.co.syski.client.android.SysOverviewActivity;
 import uk.co.syski.client.android.adapters.SystemListAdapter;
+import uk.co.syski.client.android.api.APIThread;
 import uk.co.syski.client.android.data.SyskiCache;
 import uk.co.syski.client.android.data.entity.SystemEntity;
-import uk.co.syski.client.android.data.thread.SyskiCacheThread;
+import uk.co.syski.client.android.data.repository.Repository;
 import uk.co.syski.client.android.viewmodel.SystemListViewModel;
 
 public class SystemListMenu extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -148,6 +149,9 @@ public class SystemListMenu extends AppCompatActivity implements NavigationView.
                     SyskiCache.GetDatabase().clearAllTables();
                 }
             }).start();
+            Repository.getInstance().getUserRepository().setActiveUserId(null);
+            APIThread.getInstance(getApplicationContext()).disable();
+            prefEditor.remove(getString(R.string.preference_sysID_key)).commit();
             finish();
             startActivity(new Intent(this, MainActivity.class));
         }
@@ -175,13 +179,7 @@ public class SystemListMenu extends AppCompatActivity implements NavigationView.
                 try {
                     boolean systemNotFound = true;
                     UUID systemId = UUID.fromString(result.getContents());
-                    try {
-                        systemNotFound = SyskiCacheThread.getInstance().SystemThreads.GetSystems(systemId).isEmpty();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+
 
                     if (!systemNotFound) {
                         Intent intent = new Intent(this, SysOverviewActivity.class);

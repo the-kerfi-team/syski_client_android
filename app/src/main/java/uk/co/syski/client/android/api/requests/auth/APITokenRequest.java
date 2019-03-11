@@ -21,6 +21,8 @@ import java.util.UUID;
 
 import uk.co.syski.client.android.api.requests.APIRequest;
 import uk.co.syski.client.android.data.SyskiCache;
+import uk.co.syski.client.android.data.entity.UserEntity;
+import uk.co.syski.client.android.data.repository.Repository;
 
 public class APITokenRequest extends APIRequest<JSONObject> {
 
@@ -35,7 +37,7 @@ public class APITokenRequest extends APIRequest<JSONObject> {
     public Map<String, String> getHeaders() throws AuthFailureError {
         Map<String, String> params = new HashMap<String, String>();
         params.put("User-Agent", "Syski APP");
-        params.put("Authorization", "Bearer " + SyskiCache.GetDatabase().UserDao().getAccessToken());
+        params.put("Authorization", "Bearer " + Repository.getInstance().getUserRepository().getUser().AccessToken);
         return params;
     }
 
@@ -45,7 +47,7 @@ public class APITokenRequest extends APIRequest<JSONObject> {
             JSONObject jsonBody = null;
             try {
                 jsonBody = new JSONObject();
-                jsonBody.put("refresh_token", SyskiCache.GetDatabase().UserDao().getRefreshToken());
+                jsonBody.put("refresh_token", Repository.getInstance().getUserRepository().getUser().RefreshToken);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -64,7 +66,11 @@ public class APITokenRequest extends APIRequest<JSONObject> {
             {
                 return Response.error(new VolleyError());
             }
-            SyskiCache.GetDatabase().UserDao().setToken(mUUID, jsonObject.getString("access_token"), jsonObject.getString("refresh_token"), new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSSXXX").parse(jsonObject.getString("expiry")));
+            UserEntity userEntity = Repository.getInstance().getUserRepository().getUser();
+            userEntity.AccessToken = jsonObject.getString("access_token");
+            userEntity.RefreshToken = jsonObject.getString("refresh_token");
+            userEntity.TokenExpiry = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSSXXX").parse(jsonObject.getString("expiry"));
+            Repository.getInstance().getUserRepository().update(userEntity);
             return Response.success(jsonObject, HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException e) {
             return Response.error(new ParseError(e));

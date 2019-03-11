@@ -24,6 +24,7 @@ import uk.co.syski.client.android.data.dao.linking.SystemCPUDao;
 import uk.co.syski.client.android.data.entity.CPUEntity;
 import uk.co.syski.client.android.data.entity.SystemEntity;
 import uk.co.syski.client.android.data.entity.linking.SystemCPUEntity;
+import uk.co.syski.client.android.data.repository.Repository;
 
 public class APISystemCPURequest extends APIAuthorizationRequest<JSONArray> {
 
@@ -40,7 +41,7 @@ public class APISystemCPURequest extends APIAuthorizationRequest<JSONArray> {
             JSONArray jsonArray = new JSONArray(new String(response.data, HttpHeaderParser.parseCharset(response.headers, PROTOCOL_CHARSET)));
 
             for (int i = 0; i < jsonArray.length(); i++) {
-                CPUEntity cpuEntity = SyskiCache.GetDatabase().CPUDao().getCPU(UUID.fromString(((JSONObject) jsonArray.get(i)).getString("id")));
+                CPUEntity cpuEntity = SyskiCache.GetDatabase().CPUDao().get(UUID.fromString(((JSONObject) jsonArray.get(i)).getString("id")));
                 if (cpuEntity == null)
                 {
                     cpuEntity = new CPUEntity();
@@ -51,8 +52,7 @@ public class APISystemCPURequest extends APIAuthorizationRequest<JSONArray> {
                     cpuEntity.ClockSpeed = (int) Double.parseDouble(((JSONObject) jsonArray.get(i)).getString("clockSpeed"));
                     cpuEntity.CoreCount = (int) Double.parseDouble(((JSONObject) jsonArray.get(i)).getString("coreCount"));
                     cpuEntity.ThreadCount = (int) Double.parseDouble(((JSONObject) jsonArray.get(i)).getString("clockSpeed"));
-
-                    SyskiCache.GetDatabase().CPUDao().InsertAll(cpuEntity);
+                    Repository.getInstance().getCPURepository().insert(cpuEntity);
 
                     SystemCPUEntity systemCPUEntity = new SystemCPUEntity();
                     systemCPUEntity.CPUId = cpuEntity.Id;

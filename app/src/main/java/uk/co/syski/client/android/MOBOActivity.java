@@ -15,8 +15,6 @@ import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 import uk.co.syski.client.android.data.entity.MotherboardEntity;
-import uk.co.syski.client.android.data.entity.RAMEntity;
-import uk.co.syski.client.android.data.thread.SyskiCacheThread;
 
 public class MOBOActivity extends AppCompatActivity {
 
@@ -62,14 +60,6 @@ public class MOBOActivity extends AppCompatActivity {
     private void getMOBO()
     {
         String sysId = prefs.getString(getString(R.string.preference_sysID_key), null);
-        try {
-            Log.d(TAG, "Querying database");
-            moboList = SyskiCacheThread.getInstance().MotherboardThreads.GetMotherboards(UUID.fromString(sysId));
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
         if(moboList.size() > 0){
             mobo = moboList.get(0);
