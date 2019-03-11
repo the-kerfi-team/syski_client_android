@@ -4,10 +4,12 @@ import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Update;
 
 import java.util.List;
 import java.util.UUID;
 
+import uk.co.syski.client.android.data.entity.CPUEntity;
 import uk.co.syski.client.android.data.entity.RAMEntity;
 
 @Dao
@@ -24,5 +26,19 @@ public interface RAMDao {
 
     @Delete
     void DeleteAll(RAMEntity... RAMEntities);
+
+    @Query("SELECT * FROM RAMEntity INNER JOIN SystemRAMEntity ON Id = RAMId WHERE SystemId IN (:Ids)")
+    List<RAMEntity> getSystemRAMs(UUID... Ids);
+
+    @Query("SELECT * FROM RAMEntity")
+    List<RAMEntity> get();
+
+    @Insert
+    void insert(RAMEntity... ramEntities);
+
+    @Update
+    void update (RAMEntity... ramEntities);
+
+
 }
 
