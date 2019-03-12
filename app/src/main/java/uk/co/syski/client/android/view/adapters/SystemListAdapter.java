@@ -18,21 +18,25 @@ import uk.co.syski.client.android.data.entity.SystemEntity;
  */
 public class SystemListAdapter extends ArrayAdapter {
 
-    //to reference the Activity
     private final Activity context;
 
-    //to store images
     private final Integer image;
 
     private List<SystemEntity> mSystemEntityList;
 
-    public SystemListAdapter(Activity context, Integer images, List<SystemEntity> systemEntityList)
+    public SystemListAdapter(Activity context, Integer images)
     {
-        super(context, R.layout.list_item, systemEntityList);
-
+        super(context, R.layout.list_item);
         this.context=context;
         this.image = images;
-        mSystemEntityList = systemEntityList;
+    }
+
+    public void setData(List<SystemEntity> SystemEntityList)
+    {
+        mSystemEntityList = SystemEntityList;
+        clear();
+        addAll(SystemEntityList);
+        notifyDataSetChanged();
     }
 
     @Override

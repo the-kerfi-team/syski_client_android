@@ -64,25 +64,28 @@ public class SystemListMenu extends AppCompatActivity implements NavigationView.
 
         //Setup list
 
-        final Activity thisActivity = this;
+        final SystemListAdapter adapter = new SystemListAdapter(this, R.drawable.ic_pc);
+        final ListView listView = (ListView) findViewById(R.id.sysList);
+        listView.setAdapter(adapter);
+
         SystemListViewModel model = ViewModelProviders.of(this).get(SystemListViewModel.class);
         model.get().observe(this, new Observer<List<SystemEntity>>() {
             @Override
             public void onChanged(@Nullable final List<SystemEntity> systemEntities) {
-                SystemListAdapter adapter = new SystemListAdapter(thisActivity, R.drawable.ic_pc, systemEntities);
-                ListView listView = (ListView) findViewById(R.id.sysList);
-                listView.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Intent intent = new Intent(SystemListMenu.this,SystemOverviewActivity.class);
-                        String sysId = systemEntities.get(position).Id.toString();
-                        prefEditor.putString(getString(R.string.preference_sysID_key),sysId);
-                        prefEditor.apply();
-                        startActivity(intent);
-                    }
-                });
+                adapter.setData(systemEntities);
+                if (listView.getOnItemClickListener() == null)
+                {
+                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            Intent intent = new Intent(SystemListMenu.this,SystemOverviewActivity.class);
+                            String sysId = systemEntities.get(position).Id.toString();
+                            prefEditor.putString(getString(R.string.preference_sysID_key),sysId);
+                            prefEditor.apply();
+                            startActivity(intent);
+                        }
+                    });
+                }
             }
         });
     }
