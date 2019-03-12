@@ -8,10 +8,10 @@ import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 import uk.co.syski.client.android.data.SyskiCache;
-import uk.co.syski.client.android.data.dao.CPUDao;
 import uk.co.syski.client.android.data.dao.GPUDao;
-import uk.co.syski.client.android.data.entity.CPUEntity;
+import uk.co.syski.client.android.data.dao.linking.SystemGPUDao;
 import uk.co.syski.client.android.data.entity.GPUEntity;
+import uk.co.syski.client.android.data.entity.linking.SystemGPUEntity;
 
 public class GPURepository {
 
@@ -20,9 +20,11 @@ public class GPURepository {
     private boolean mDataUpdated;
     private UUID mActiveSystemId;
     private MutableLiveData<List<GPUEntity>> mSystemGPUEntities;
+    private SystemGPUDao mSystemGPUDao;
 
     public GPURepository() {
         mGPUDao = SyskiCache.GetDatabase().GPUDao();
+        mSystemGPUDao = SyskiCache.GetDatabase().SystemGPUDao();
         mGPUEntities = new MutableLiveData();
         mSystemGPUEntities = new MutableLiveData();
         try {
@@ -55,6 +57,15 @@ public class GPURepository {
         updateSystemGPUData();
     }
 
+    public void insert(GPUEntity gpuEntity, UUID systemId) {
+        new GPURepository.insertSystemGPUAsyncTask(mGPUDao, mSystemGPUDao, systemId).execute(gpuEntity);
+        updateData();
+        if (mActiveSystemId != null && mActiveSystemId.equals(systemId))
+        {
+            updateSystemGPUData();
+        }
+    }
+
     public void update(GPUEntity gpuEntity) {
         new GPURepository.updateAsyncTask(mGPUDao).execute(gpuEntity);
         updateData();
@@ -81,20 +92,6 @@ public class GPURepository {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-    }
-
-    private static class getSystemGPUAsyncTask extends AsyncTask<UUID, Void, List<GPUEntity>> {
-
-        private GPUDao mAsyncTaskDao;
-
-        getSystemGPUAsyncTask(GPUDao dao) {
-            mAsyncTaskDao = dao;
-        }
-
-        protected List<GPUEntity> doInBackground(final UUID... uuids) {
-            return mAsyncTaskDao.getSystemGPUs(uuids);
-        }
-
     }
 
     private static class getAsyncTask extends AsyncTask<Void, Void, List<GPUEntity>> {
@@ -141,6 +138,42 @@ public class GPURepository {
             return null;
         }
 
+    }
+
+    private static class getSystemGPUAsyncTask extends AsyncTask<UUID, Void, List<GPUEntity>> {
+        private GPUDao mAsyncTaskDao;
+
+        getSystemGPUAsyncTask(GPUDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        protected List<GPUEntity> doInBackground(final UUID... uuids) {
+            List<GPUEntity> result = mAsyncTaskDao.getSystemGPUs(uuids);
+            return mAsyncTaskDao.getSystemGPUs(uuids);
+        }
+    }
+
+    private static class insertSystemGPUAsyncTask extends AsyncTask<GPUEntity, Void, Void> {
+        private GPUDao mAsyncTaskGPUDao;
+        private SystemGPUDao mAsyncTaskSystemGPUDao;
+        private UUID mSystemId;
+
+        insertSystemGPUAsyncTask(GPUDao gpuDao, SystemGPUDao systemDao, UUID systemId) {
+            mAsyncTaskGPUDao = gpuDao;
+            mAsyncTaskSystemGPUDao = systemDao;
+            mSystemId = systemId;
+        }
+
+        protected Void doInBackground(final GPUEntity... gpuEntities) {
+            mAsyncTaskGPUDao.insert(gpuEntities);
+            SystemGPUEntity systemGPUEntity = new SystemGPUEntity();
+            for (GPUEntity gpuEntity: gpuEntities) {
+                systemGPUEntity.GPUId = gpuEntity.Id;
+                systemGPUEntity.SystemId = mSystemId;
+                mAsyncTaskSystemGPUDao.insert(systemGPUEntity);
+            }
+            return null;
+        }
     }
 
 }

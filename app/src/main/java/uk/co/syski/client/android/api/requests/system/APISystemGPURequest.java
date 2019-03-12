@@ -44,12 +44,7 @@ public class APISystemGPURequest extends APIAuthorizationRequest<JSONArray> {
                     gpuEntity.Id = UUID.fromString(((JSONObject) jsonArray.get(i)).getString("id"));
                     gpuEntity.ManufacturerName = ((JSONObject) jsonArray.get(i)).getString("manufacturerName");
                     gpuEntity.ModelName = ((JSONObject) jsonArray.get(i)).getString("modelName");
-                    Repository.getInstance().getGPURepository().insert(gpuEntity);
-
-                    SystemGPUEntity systemGPUEntity = new SystemGPUEntity();
-                    systemGPUEntity.GPUId = gpuEntity.Id;
-                    systemGPUEntity.SystemId = mSystemId;
-                    SyskiCache.GetDatabase().SystemGPUDao().InsertAll(systemGPUEntity);
+                    Repository.getInstance().getGPURepository().insert(gpuEntity,mSystemId);
                 } else {
                     // TODO Update CPU method
                 }
