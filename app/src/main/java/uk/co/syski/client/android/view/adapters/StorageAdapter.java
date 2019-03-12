@@ -23,9 +23,10 @@ public class StorageAdapter extends ArrayAdapter{
     TextView model,manufacturer,type,size;
     View storageItem;
 
-    public StorageAdapter(Activity context){
-        super(context, R.layout.storage_item);
+    public StorageAdapter(Activity context, List<StorageEntity> storageEntities){
+        super(context, R.layout.storage_item, storageEntities);
         this.context = context;
+        this.listItems = storageEntities;
     }
 
     public void setDataSet(List<StorageEntity> storageEntities)
