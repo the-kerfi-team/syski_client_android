@@ -25,10 +25,8 @@ import uk.co.syski.client.android.viewmodel.SystemGPUViewModel;
 public class GPUActivity extends AppCompatActivity {
 
     private static final String TAG = "GPUActivity";
-    List<GPUEntity> gpuList;
     GPUEntity gpu;
     SharedPreferences prefs;
-    GridLayout gridLayout;
 
     //Views
     TextView model,man;
@@ -52,17 +50,6 @@ public class GPUActivity extends AppCompatActivity {
                 }
             }
         });
-
-        /*
-
-        if(gpu != null) {
-            model.setText(gpu.ModelName);
-            man.setText(gpu.ManufacturerName);
-        }else {
-            //TODO: Once test data is available, change to remove views based on cpu fields
-            gridLayout.removeAllViewsInLayout();
-            Toast.makeText(this,"GPU not found",Toast.LENGTH_SHORT).show();
-        }*/
 
     }
 
