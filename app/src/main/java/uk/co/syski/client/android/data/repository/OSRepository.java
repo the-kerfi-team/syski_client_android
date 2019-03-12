@@ -9,7 +9,9 @@ import java.util.concurrent.ExecutionException;
 
 import uk.co.syski.client.android.data.SyskiCache;
 import uk.co.syski.client.android.data.dao.OperatingSystemDao;
+import uk.co.syski.client.android.data.dao.linking.SystemOSDao;
 import uk.co.syski.client.android.data.entity.OperatingSystemEntity;
+import uk.co.syski.client.android.data.entity.linking.SystemOSEntity;
 
 public class OSRepository {
 
@@ -18,9 +20,11 @@ public class OSRepository {
     private boolean mDataUpdated;
     private UUID mActiveSystemId;
     private MutableLiveData<List<OperatingSystemEntity>> mSystemOSEntities;
+    private SystemOSDao mSystemOSDao;
 
     public OSRepository() {
         mOperatingSystemDao = SyskiCache.GetDatabase().OperatingSystemDao();
+        mSystemOSDao = SyskiCache.GetDatabase().SystemOSDao();
         mOSEntities = new MutableLiveData();
         mSystemOSEntities = new MutableLiveData();
         try {
@@ -52,6 +56,15 @@ public class OSRepository {
         updateData();
     }
 
+    public void insert(OperatingSystemEntity osEntity, UUID systemId) {
+        new OSRepository.insertSystemOSAsyncTask(mOperatingSystemDao, mSystemOSDao, systemId).execute(osEntity);
+        updateData();
+        if (mActiveSystemId != null && mActiveSystemId.equals(systemId))
+        {
+            updateSystemOSData();
+        }
+    }
+
     public void update(OperatingSystemEntity operatingSystemEntity) {
         new OSRepository.updateAsyncTask(mOperatingSystemDao).execute(operatingSystemEntity);
         updateData();
@@ -76,19 +89,6 @@ public class OSRepository {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
-        }
-    }
-
-    private static class getSystemOSAsyncTask extends AsyncTask<UUID, Void, List<OperatingSystemEntity>> {
-        private OperatingSystemDao mAsyncTaskDao;
-
-        getSystemOSAsyncTask(OperatingSystemDao dao) {
-            mAsyncTaskDao = dao;
-        }
-
-        protected List<OperatingSystemEntity> doInBackground(final UUID... uuids) {
-            List<OperatingSystemEntity> result = mAsyncTaskDao.getSystemOperatingSystems(uuids);
-            return mAsyncTaskDao.getSystemOperatingSystems(uuids);
         }
     }
 
@@ -131,6 +131,42 @@ public class OSRepository {
         @Override
         protected Void doInBackground(final OperatingSystemEntity... osEntities) {
             mAsyncTaskDao.update(osEntities);
+            return null;
+        }
+    }
+
+    private static class getSystemOSAsyncTask extends AsyncTask<UUID, Void, List<OperatingSystemEntity>> {
+        private OperatingSystemDao mAsyncTaskDao;
+
+        getSystemOSAsyncTask(OperatingSystemDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        protected List<OperatingSystemEntity> doInBackground(final UUID... uuids) {
+            List<OperatingSystemEntity> result = mAsyncTaskDao.getSystemOperatingSystems(uuids);
+            return mAsyncTaskDao.getSystemOperatingSystems(uuids);
+        }
+    }
+
+    private static class insertSystemOSAsyncTask extends AsyncTask<OperatingSystemEntity, Void, Void> {
+        private OperatingSystemDao mAsyncTaskOSDao;
+        private SystemOSDao mAsyncTaskSystemOSDao;
+        private UUID mSystemId;
+
+        insertSystemOSAsyncTask(OperatingSystemDao osDao, SystemOSDao systemDao, UUID systemId) {
+            mAsyncTaskOSDao = osDao;
+            mAsyncTaskSystemOSDao = systemDao;
+            mSystemId = systemId;
+        }
+
+        protected Void doInBackground(final OperatingSystemEntity... osEntities) {
+            mAsyncTaskOSDao.insert(osEntities);
+            SystemOSEntity systemOSEntity = new SystemOSEntity();
+            for (OperatingSystemEntity osEntity: osEntities) {
+                systemOSEntity.OSId = osEntity.Id;
+                systemOSEntity.SystemId = mSystemId;
+                mAsyncTaskSystemOSDao.insert(systemOSEntity);
+            }
             return null;
         }
     }
