@@ -1,15 +1,8 @@
 package uk.co.syski.client.android.data.repository;
 
-import android.app.Application;
-import android.arch.core.util.Function;
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.Transformations;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
