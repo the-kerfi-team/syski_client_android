@@ -18,6 +18,8 @@ public enum Repository {
 
     private RAMRepository mRAMRepository = new RAMRepository();
 
+    private StorageRepository mStorageRepository = new StorageRepository();
+
     public synchronized UserRepository getUserRepository() { return mUserRepository; }
 
     public synchronized SystemRepository getSystemRepository()
@@ -38,6 +40,11 @@ public enum Repository {
     public synchronized RAMRepository getRAMRepository()
     {
         return mRAMRepository;
+    }
+
+    public synchronized StorageRepository getStorageRepository()
+    {
+        return mStorageRepository;
     }
 
 }

@@ -20,6 +20,7 @@ import uk.co.syski.client.android.data.entity.RAMEntity;
 import uk.co.syski.client.android.data.entity.StorageEntity;
 import uk.co.syski.client.android.data.entity.linking.SystemRAMEntity;
 import uk.co.syski.client.android.data.entity.linking.SystemStorageEntity;
+import uk.co.syski.client.android.data.repository.Repository;
 
 public class APISystemStorageRequest extends APIAuthorizationRequest<JSONArray> {
 
@@ -37,7 +38,7 @@ public class APISystemStorageRequest extends APIAuthorizationRequest<JSONArray> 
             JSONArray jsonArray = new JSONArray(new String(response.data, HttpHeaderParser.parseCharset(response.headers, PROTOCOL_CHARSET)));
 
             for (int i = 0; i < jsonArray.length(); i++) {
-                StorageEntity storageEntity = SyskiCache.GetDatabase().StorageDao().GetStorage(UUID.fromString(((JSONObject) jsonArray.get(i)).getString("id")));
+                StorageEntity storageEntity = SyskiCache.GetDatabase().StorageDao().get(UUID.fromString(((JSONObject) jsonArray.get(i)).getString("id")));
                 if (storageEntity == null) {
                     storageEntity = new StorageEntity();
                     storageEntity.Id = UUID.fromString(((JSONObject) jsonArray.get(i)).getString("id"));
@@ -45,7 +46,7 @@ public class APISystemStorageRequest extends APIAuthorizationRequest<JSONArray> 
                     storageEntity.ModelName = ((JSONObject) jsonArray.get(i)).getString("modelName");
                     storageEntity.MemoryTypeName = ((JSONObject) jsonArray.get(i)).getString("memoryTypeName");
                     storageEntity.MemoryBytes = Long.parseLong(((JSONObject) jsonArray.get(i)).getString("memoryBytes"));
-                    SyskiCache.GetDatabase().StorageDao().InsertAll(storageEntity);
+                    Repository.getInstance().getStorageRepository().insert(storageEntity);
                 } else {
                     // TODO Update Storage method
                 }

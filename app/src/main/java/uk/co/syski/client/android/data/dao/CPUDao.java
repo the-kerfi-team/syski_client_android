@@ -45,4 +45,5 @@ public interface CPUDao {
 
     @Delete
     void delete(CPUEntity... cpuEntities);
+
 }

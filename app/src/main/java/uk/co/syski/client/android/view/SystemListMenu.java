@@ -30,7 +30,7 @@ import java.util.UUID;
 
 import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.SettingsActivity;
-import uk.co.syski.client.android.adapters.SystemListAdapter;
+import uk.co.syski.client.android.view.adapters.SystemListAdapter;
 import uk.co.syski.client.android.api.APIThread;
 import uk.co.syski.client.android.data.SyskiCache;
 import uk.co.syski.client.android.data.entity.SystemEntity;

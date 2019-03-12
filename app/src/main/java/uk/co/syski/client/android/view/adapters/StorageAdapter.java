@@ -1,4 +1,4 @@
-package uk.co.syski.client.android.adapters;
+package uk.co.syski.client.android.view.adapters;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -7,48 +7,51 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-
 import java.util.List;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.data.entity.RAMEntity;
+import uk.co.syski.client.android.data.entity.StorageEntity;
 
-public class RAMAdapter extends ArrayAdapter{
+public class StorageAdapter extends ArrayAdapter{
 
     private final Activity context;
 
     //List Items
-    private List<RAMEntity> listItems;
+    private List<StorageEntity> listItems;
 
     //Views
     TextView model,manufacturer,type,size;
-    View ramItem;
+    View storageItem;
 
-    public RAMAdapter(Activity context, List<RAMEntity> listItems){
-        super(context, R.layout.component_list_item, listItems);
+    public StorageAdapter(Activity context){
+        super(context, R.layout.storage_item);
         this.context = context;
-        this.listItems = listItems;
+    }
+
+    public void setDataSet(List<StorageEntity> storageEntities)
+    {
+        listItems = storageEntities;
+        notifyDataSetChanged();
     }
 
     @Override
     public View getView(int position, View view, ViewGroup parent) {
         initViews();
-
         model.setText(listItems.get(position).ModelName);
         manufacturer.setText(listItems.get(position).ManufacturerName);
         type.setText(listItems.get(position).MemoryTypeName);
         size.setText(""+listItems.get(position).MemoryBytes);
 
-        return ramItem;
+        return storageItem;
     }
 
     public void initViews(){
         LayoutInflater inflater = context.getLayoutInflater();
-        ramItem = inflater.inflate(R.layout.ram_item, null, true);
-        model = ramItem.findViewById(R.id.i_txtRAMModel);
-        manufacturer = ramItem.findViewById(R.id.i_txtRAMMan);
-        type = ramItem.findViewById(R.id.i_txtRAMType);
-        size = ramItem.findViewById(R.id.i_txtRAMSize);
+        storageItem = inflater.inflate(R.layout.storage_item, null, true);
+        model = storageItem.findViewById(R.id.i_txtStgModel);
+        manufacturer = storageItem.findViewById(R.id.i_txtStgMan);
+        type = storageItem.findViewById(R.id.i_txtStgType);
+        size = storageItem.findViewById(R.id.i_txtStgSize);
     }
 
 }

@@ -1,33 +1,34 @@
-package uk.co.syski.client.android;
+package uk.co.syski.client.android.view;
 
-import android.content.Context;
+import android.app.Activity;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 
-import uk.co.syski.client.android.adapters.StorageAdapter;
+import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.data.entity.StorageEntity;
-import uk.co.syski.client.android.view.SystemListMenu;
+import uk.co.syski.client.android.view.adapters.RAMAdapter;
+import uk.co.syski.client.android.view.adapters.StorageAdapter;
+import uk.co.syski.client.android.viewmodel.SystemStorageViewModel;
 
-public class StorageActivity extends AppCompatActivity {
+public class SystemStorageActivity extends AppCompatActivity {
 
-    private static final String TAG = "StorageActivity";
+    private static final String TAG = "SystemStorageActivity";
 
     List<StorageEntity> storageList;
     SharedPreferences prefs;
     ListView listView;
-
+    StorageAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +36,17 @@ public class StorageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_storage);
 
         initViews();
-        getStorage();
+        adapter = new StorageAdapter(this);
+        listView.setAdapter(adapter);
 
+        final Activity thisActivity = this;
+        SystemStorageViewModel model = ViewModelProviders.of(this).get(SystemStorageViewModel.class);
+        model.get().observe(this, new Observer<List<StorageEntity>>() {
+            @Override
+            public void onChanged(@Nullable List<StorageEntity> storageEntities) {
+                adapter.setDataSet(storageEntities);
+            }
+        });
 
 //        if(storage != null) {
 //            manufacturer.setText(storage.ManufacturerName);
@@ -49,29 +59,12 @@ public class StorageActivity extends AppCompatActivity {
 //            Toast.makeText(this,"Storage Info not found",Toast.LENGTH_SHORT).show();
 //        }
 
-        if(storageList.size() > 0) {
-            StorageAdapter adapter = new StorageAdapter(this, storageList);
-            listView.setAdapter(adapter);
-        } else{
-            Toast.makeText(this,"Storage not found",Toast.LENGTH_SHORT).show();
-        }
-
     }
 
     private void initViews() {
-        prefs = this.getSharedPreferences(
-                getString(R.string.preference_sysID_key), Context.MODE_PRIVATE);
         listView = findViewById(R.id.stgListView);
     }
 
-    private void getStorage() {
-        String sysId = prefs.getString(getString(R.string.preference_sysID_key), null);
-
-
-        if(storageList.size() <= 0){
-            Log.i(TAG,"Query returned no storage entitity");
-        }
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

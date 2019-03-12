@@ -59,7 +59,7 @@
             android:parentActivityName=".view.SystemOverviewActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".StorageActivity"
+            android:name=".view.SystemStorageActivity"
             android:label="@string/sys_stg_lbl"
             android:parentActivityName=".view.SystemOverviewActivity"
             android:screenOrientation="portrait" />

@@ -13,22 +13,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.adapters.RAMAdapter;
-import uk.co.syski.client.android.adapters.SystemListAdapter;
+import uk.co.syski.client.android.view.adapters.RAMAdapter;
 import uk.co.syski.client.android.data.entity.RAMEntity;
-import uk.co.syski.client.android.data.entity.SystemEntity;
-import uk.co.syski.client.android.view.SystemListMenu;
-import uk.co.syski.client.android.viewmodel.SystemListViewModel;
 import uk.co.syski.client.android.viewmodel.SystemRAMViewModel;
 
 public class RAMActivity extends AppCompatActivity {
@@ -43,7 +34,6 @@ public class RAMActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ram);
 
-
         initViews();
 
         final Activity thisActivity = this;
@@ -51,7 +41,7 @@ public class RAMActivity extends AppCompatActivity {
         model.get().observe(this, new Observer<List<RAMEntity>>() {
             @Override
             public void onChanged(@Nullable List<RAMEntity> ramEntities) {
-                RAMAdapter adapter = new RAMAdapter(thisActivity,ramEntities);
+                RAMAdapter adapter = new RAMAdapter(thisActivity, ramEntities);
                 listView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
             }
@@ -60,19 +50,9 @@ public class RAMActivity extends AppCompatActivity {
     }
 
     private void initViews(){
-        prefs = this.getSharedPreferences(
-                getString(R.string.preference_sysID_key), Context.MODE_PRIVATE);
+        prefs = this.getSharedPreferences(getString(R.string.preference_sysID_key), Context.MODE_PRIVATE);
         listView = findViewById(R.id.ramListView);
 
-    }
-
-    private void getRAM(){
-        Log.d(TAG, "Querying database");
-        String sysId = prefs.getString(getString(R.string.preference_sysID_key), null);
-
-        if(ramList.size() == 0){
-            Log.i(TAG, "Query returned no RAM entity");
-        }
     }
 
     @Override

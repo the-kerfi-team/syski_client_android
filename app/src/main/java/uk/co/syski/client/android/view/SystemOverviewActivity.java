@@ -22,8 +22,7 @@ import java.util.List;
 import uk.co.syski.client.android.MOBOActivity;
 import uk.co.syski.client.android.OSActivity;
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.StorageActivity;
-import uk.co.syski.client.android.adapters.SysListOverviewAdapter;
+import uk.co.syski.client.android.view.adapters.SysListOverviewAdapter;
 import uk.co.syski.client.android.api.VolleySingleton;
 import uk.co.syski.client.android.api.requests.auth.APITokenRequest;
 import uk.co.syski.client.android.data.entity.SystemEntity;
@@ -93,7 +92,7 @@ public class SystemOverviewActivity extends AppCompatActivity {
                             break;
                     case 1: dest = RAMActivity.class;
                             break;
-                    case 2: dest = StorageActivity.class;
+                    case 2: dest = SystemStorageActivity.class;
                             break;
                     case 3: dest = GPUActivity.class;
                             break;
