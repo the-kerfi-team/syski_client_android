@@ -46,7 +46,7 @@ public class APISystemRAMRequest extends APIAuthorizationRequest<JSONArray> {
                     ramEntity.ModelName = ((JSONObject) jsonArray.get(i)).getString("modelName");
                     ramEntity.MemoryTypeName = ((JSONObject) jsonArray.get(i)).getString("memoryTypeName");
                     ramEntity.MemoryBytes = Long.parseLong(((JSONObject) jsonArray.get(i)).getString("memoryBytes"));
-                    Repository.getInstance().getRAMRepository().insert(ramEntity);
+                    Repository.getInstance().getRAMRepository().insert(ramEntity,mSystemId);
                 } else {
                     ramEntity.Id = UUID.fromString(((JSONObject) jsonArray.get(i)).getString("id"));
                     ramEntity.ManufacturerName = ((JSONObject) jsonArray.get(i)).getString("manufacturerName");
@@ -59,11 +59,7 @@ public class APISystemRAMRequest extends APIAuthorizationRequest<JSONArray> {
                 SystemRAMEntity systemRAMEntity = SyskiCache.GetDatabase().SystemRAMDao().get(mSystemId, i);
                 if (systemRAMEntity == null)
                 {
-                    systemRAMEntity = new SystemRAMEntity();
-                    systemRAMEntity.RAMId = ramEntity.Id;
-                    systemRAMEntity.SystemId = mSystemId;
-                    systemRAMEntity.DimmSlot = i;
-                    SyskiCache.GetDatabase().SystemRAMDao().insert(systemRAMEntity);
+                    Repository.getInstance().getRAMRepository().insert(ramEntity,mSystemId);
                 }
                 else
                 {
