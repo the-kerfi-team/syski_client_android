@@ -28,6 +28,8 @@ public class SystemCPUViewModel extends AndroidViewModel {
         mSystemCPUList = mCPURepository.get(systemId);
     }
 
-    public LiveData<List<CPUEntity>> get() { return mSystemCPUList; }
+    public LiveData<List<CPUEntity>> get() {
+        return mSystemCPUList;
+    }
 
 }

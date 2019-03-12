@@ -45,10 +45,12 @@ public class GPUActivity extends AppCompatActivity {
         viewModel.get().observe(this, new Observer<List<GPUEntity>>() {
             @Override
             public void onChanged(@Nullable List<GPUEntity> gpuEntities) {
-                gpu = gpuEntities.get(0);
-                model.setText(gpu.ModelName);
-                man.setText(gpu.ManufacturerName);
+                if (gpuEntities.size() > 0) {
+                    gpu = gpuEntities.get(0);
+                    model.setText(gpu.ModelName);
+                    man.setText(gpu.ManufacturerName);
                 }
+            }
         });
 
         /*

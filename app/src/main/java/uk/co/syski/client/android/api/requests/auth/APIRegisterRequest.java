@@ -65,7 +65,7 @@ public class APIRegisterRequest extends APIRequest<JSONObject> {
             userEntity.TokenExpiry = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSSZ").parse(jsonObject.getString("expiry"));
             Repository.getInstance().getUserRepository().insert(userEntity);
             Repository.getInstance().getUserRepository().setActiveUserId(userEntity.Id);
-            mContext.getSharedPreferences(mContext.getString(R.string.preference_sysID_key), Context.MODE_PRIVATE).edit().putString(mContext.getString(R.string.preference_sysID_key), userEntity.Id.toString()).commit();
+            mContext.getSharedPreferences(mContext.getString(R.string.preference_usrID_key), Context.MODE_PRIVATE).edit().putString(mContext.getString(R.string.preference_usrID_key), userEntity.Id.toString()).apply();
             return Response.success(jsonObject, HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException e) {
             return Response.error(new ParseError(e));

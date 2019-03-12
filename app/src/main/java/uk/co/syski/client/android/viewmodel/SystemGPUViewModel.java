@@ -20,15 +20,15 @@ import uk.co.syski.client.android.data.repository.Repository;
 
 public class SystemGPUViewModel extends AndroidViewModel {
 
-    private GPURepository mSystemRepository;
+    private GPURepository mGPURepository;
     private MutableLiveData<List<GPUEntity>> mSystemGPUList;
     private UUID systemId;
 
     public SystemGPUViewModel(@NonNull Application application) {
         super(application);
         systemId = UUID.fromString(application.getSharedPreferences(application.getString(R.string.preference_sysID_key), Context.MODE_PRIVATE).getString(application.getString(R.string.preference_sysID_key), null));
-        mSystemRepository = Repository.getInstance().getGPURepository();
-        mSystemGPUList = mSystemRepository.get(systemId);
+        mGPURepository = Repository.getInstance().getGPURepository();
+        mSystemGPUList = mGPURepository.get(systemId);
     }
 
     public LiveData<List<GPUEntity>> get() { return mSystemGPUList; }

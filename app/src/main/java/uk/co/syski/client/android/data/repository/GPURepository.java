@@ -40,11 +40,11 @@ public class GPURepository {
     }
 
     public MutableLiveData<List<GPUEntity>> get(final UUID systemId) {
-        if (mDataUpdated || !mActiveSystemId.equals(systemId))
+        if (mDataUpdated || mActiveSystemId == null || !mActiveSystemId.equals(systemId))
         {
             mDataUpdated = false;
-            mActiveSystemId = systemId;
             updateSystemGPUData();
+            mActiveSystemId = systemId;
         }
         return mSystemGPUEntities;
     }
@@ -52,16 +52,19 @@ public class GPURepository {
     public void insert(GPUEntity gpuEntity) {
         new GPURepository.insertAsyncTask(mGPUDao).execute(gpuEntity);
         updateData();
+        updateSystemGPUData();
     }
 
     public void update(GPUEntity gpuEntity) {
         new GPURepository.updateAsyncTask(mGPUDao).execute(gpuEntity);
         updateData();
+        updateSystemGPUData();
     }
 
     public void updateSystemGPUData() {
         try {
-            mGPUEntities.postValue(new GPURepository.getSystemGPUAsyncTask(mGPUDao).execute(mActiveSystemId).get());
+            mSystemGPUEntities.postValue(new GPURepository.getSystemGPUAsyncTask(mGPUDao).execute(mActiveSystemId).get());
+            mDataUpdated = true;
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -81,6 +84,7 @@ public class GPURepository {
     }
 
     private static class getSystemGPUAsyncTask extends AsyncTask<UUID, Void, List<GPUEntity>> {
+
         private GPUDao mAsyncTaskDao;
 
         getSystemGPUAsyncTask(GPUDao dao) {
@@ -90,9 +94,11 @@ public class GPURepository {
         protected List<GPUEntity> doInBackground(final UUID... uuids) {
             return mAsyncTaskDao.getSystemGPUs(uuids);
         }
+
     }
 
     private static class getAsyncTask extends AsyncTask<Void, Void, List<GPUEntity>> {
+
         private GPUDao mAsyncTaskDao;
 
         getAsyncTask(GPUDao dao) {
@@ -102,6 +108,7 @@ public class GPURepository {
         protected List<GPUEntity> doInBackground(final Void... voids) {
             return mAsyncTaskDao.get();
         }
+
     }
 
     private static class insertAsyncTask extends AsyncTask<GPUEntity, Void, Void> {
@@ -133,6 +140,7 @@ public class GPURepository {
             mAsyncTaskDao.update(gpuEntities);
             return null;
         }
+
     }
 
 }

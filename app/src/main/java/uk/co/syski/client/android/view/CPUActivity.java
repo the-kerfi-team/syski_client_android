@@ -37,12 +37,15 @@ public class CPUActivity extends AppCompatActivity {
         viewModel.get().observe(this, new Observer<List<CPUEntity>>() {
             @Override
             public void onChanged(@Nullable List<CPUEntity> cpuEntities) {
-                model.setText(cpuEntities.get(0).ModelName);
-                manufacturer.setText(cpuEntities.get(0).ManufacturerName);
-                architecture.setText(cpuEntities.get(0).ArchitectureName);
-                clock.setText("" + cpuEntities.get(0).ClockSpeed);
-                core.setText("" + cpuEntities.get(0).CoreCount);
-                thread.setText("" + cpuEntities.get(0).ThreadCount);
+                if (cpuEntities.size() > 0)
+                {
+                    model.setText(cpuEntities.get(0).ModelName);
+                    manufacturer.setText(cpuEntities.get(0).ManufacturerName);
+                    architecture.setText(cpuEntities.get(0).ArchitectureName);
+                    clock.setText("" + cpuEntities.get(0).ClockSpeed);
+                    core.setText("" + cpuEntities.get(0).CoreCount);
+                    thread.setText("" + cpuEntities.get(0).ThreadCount);
+                }
             }
         });
     }

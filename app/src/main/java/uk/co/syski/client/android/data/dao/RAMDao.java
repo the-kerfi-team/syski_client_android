@@ -18,20 +18,11 @@ public interface RAMDao {
     @Query("SELECT Id, ModelName, ManufacturerName, MemoryTypeName, MemoryBytes FROM RAMEntity WHERE Id == :Id")
     RAMEntity GetRAM(UUID Id);
 
-    @Query("SELECT Id, ModelName, ManufacturerName, MemoryTypeName, MemoryBytes FROM RAMEntity INNER JOIN SystemRAMEntity ON Id = RAMId WHERE SystemId IN (:Ids)")
-    List<RAMEntity> GetRAMs(UUID... Ids);
-
-    @Insert
-    void InsertAll(RAMEntity... RAMEntities);
-
-    @Delete
-    void DeleteAll(RAMEntity... RAMEntities);
-
-    @Query("SELECT * FROM RAMEntity INNER JOIN SystemRAMEntity ON Id = RAMId WHERE SystemId IN (:Ids)")
-    List<RAMEntity> getSystemRAMs(UUID... Ids);
-
     @Query("SELECT * FROM RAMEntity")
     List<RAMEntity> get();
+
+    @Query("SELECT Id, ModelName, ManufacturerName, MemoryTypeName, MemoryBytes FROM RAMEntity INNER JOIN SystemRAMEntity ON Id = RAMId WHERE SystemId IN (:Ids)")
+    List<RAMEntity> getSystemRAMs(UUID... Ids);
 
     @Insert
     void insert(RAMEntity... ramEntities);
@@ -39,6 +30,8 @@ public interface RAMDao {
     @Update
     void update (RAMEntity... ramEntities);
 
+    @Delete
+    void delete(RAMEntity... RAMEntities);
 
 }
 

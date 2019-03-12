@@ -150,6 +150,7 @@ public class SystemListMenu extends AppCompatActivity implements NavigationView.
             Repository.getInstance().getUserRepository().setActiveUserId(null);
             APIThread.getInstance(getApplicationContext()).disable();
             prefEditor.remove(getString(R.string.preference_sysID_key)).commit();
+            getSharedPreferences(getString(R.string.preference_usrID_key), Context.MODE_PRIVATE).edit().remove(getString(R.string.preference_usrID_key)).commit();
             finish();
             startActivity(new Intent(this, MainActivity.class));
         }

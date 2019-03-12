@@ -12,6 +12,8 @@ import java.util.List;
 import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.api.requests.auth.APITokenRequest;
 import uk.co.syski.client.android.api.requests.system.APISystemCPURequest;
+import uk.co.syski.client.android.api.requests.system.APISystemGPURequest;
+import uk.co.syski.client.android.api.requests.system.APISystemRAMRequest;
 import uk.co.syski.client.android.api.requests.system.APISystemsRequest;
 import uk.co.syski.client.android.data.SyskiCache;
 import uk.co.syski.client.android.data.entity.SystemEntity;
@@ -54,9 +56,9 @@ public class APIThread extends Thread {
                     List<SystemEntity> systemEntities = SyskiCache.GetDatabase().SystemDao().get();
                     for (SystemEntity system : systemEntities) {
                         VolleySingleton.getInstance(mContext).addToRequestQueue(new APISystemCPURequest(mContext, system.Id));
-                        //        VolleySingleton.getInstance(mContext).addToRequestQueue(new APISystemRAMRequest(mContext, system.Id));
+                        VolleySingleton.getInstance(mContext).addToRequestQueue(new APISystemRAMRequest(mContext, system.Id));
                         //        VolleySingleton.getInstance(mContext).addToRequestQueue(new APISystemStorageRequest(mContext, system.Id));
-                        //        VolleySingleton.getInstance(mContext).addToRequestQueue(new APISystemGPURequest(mContext, system.Id));
+                        VolleySingleton.getInstance(mContext).addToRequestQueue(new APISystemGPURequest(mContext, system.Id));
                         //        VolleySingleton.getInstance(mContext).addToRequestQueue(new APISystemMotherboardRequest(mContext, system.Id));
                         //         VolleySingleton.getInstance(mContext).addToRequestQueue(new APISystemOperatingSystemRequest(mContext, system.Id));
                         //}
@@ -76,7 +78,7 @@ public class APIThread extends Thread {
     public void enable()
     {
         mRunning = true;
-        start();
+        super.start();
     }
 
     public void disable()

@@ -38,10 +38,10 @@ public class UserRepository {
     }
 
     public MutableLiveData<UserEntity> get(UUID userId) {
-        if (mDataUpdated || !mActiveUserId.equals(userId)) {
-            mDataUpdated = false;
+        if (mDataUpdated || mActiveUserId == null || !mActiveUserId.equals(userId)) {
             mActiveUserId = userId;
             updateUserData();
+            mDataUpdated = false;
         }
         return mUserEntity;
     }

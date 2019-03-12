@@ -64,8 +64,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SyskiCache.BuildDatabase(getApplicationContext());
-        prefs = getApplicationContext().getSharedPreferences(getString(R.string.preference_sysID_key), Context.MODE_PRIVATE);
-        String userId = prefs.getString(getString(R.string.preference_sysID_key), null);
+        prefs = getApplicationContext().getSharedPreferences(getString(R.string.preference_usrID_key), Context.MODE_PRIVATE);
+        String userId = prefs.getString(getString(R.string.preference_usrID_key), null);
         if (userId != null)
         {
             Repository.getInstance().getUserRepository().setActiveUserId(UUID.fromString(userId));

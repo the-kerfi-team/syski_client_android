@@ -48,6 +48,9 @@ public class SystemOverviewActivity extends AppCompatActivity {
 
     String[] listItems = {
             "CPU",
+            "RAM",
+            "Storage",
+            "GPU"
     };
 
     //TODO: Replace placeholders with corresponding icons

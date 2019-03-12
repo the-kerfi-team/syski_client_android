@@ -57,11 +57,13 @@ public class CPURepository {
     public void insert(CPUEntity cpuEntity) {
         new insertAsyncTask(mCPUDao).execute(cpuEntity);
         updateData();
+        updateSystemCPUData();
     }
 
     public void update(CPUEntity cpuEntity) {
         new updateAsyncTask(mCPUDao).execute(cpuEntity);
         updateData();
+        updateSystemCPUData();
     }
 
     public void updateSystemCPUData() {

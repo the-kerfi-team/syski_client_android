@@ -41,9 +41,9 @@ public class RAMRepository {
     public MutableLiveData<List<RAMEntity>> get(final UUID systemId) {
         if (mDataUpdated || mActiveSystemId == null || !mActiveSystemId.equals(systemId))
         {
-            mDataUpdated = false;
             mActiveSystemId = systemId;
             updateSystemRAMData();
+            mDataUpdated = false;
         }
         return mSystemRAMEntities;
     }
@@ -60,7 +60,8 @@ public class RAMRepository {
 
     public void updateSystemRAMData() {
         try {
-            mRAMEntities.postValue(new RAMRepository.getSystemRAMAsyncTask(mRAMDao).execute(mActiveSystemId).get());
+            mSystemRAMEntities.postValue(new RAMRepository.getSystemRAMAsyncTask(mRAMDao).execute(mActiveSystemId).get());
+            mDataUpdated = true;
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
