@@ -171,7 +171,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 || DataSyncPreferenceFragment.class.getName().equals(fragmentName)
                 || NotificationPreferenceFragment.class.getName().equals(fragmentName)
                 || APIPreferenceFragment.class.getName().equals(fragmentName)
-                || DeveloperPreferenceFragment.class.getName().equals(fragmentName);
+                || DeveloperPreferenceFragment.class.getName().equals(fragmentName)
+                || GenPreferenceFragment.class.getName().equals(fragmentName);
     }
 
     /**
@@ -202,6 +203,23 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 return true;
             }
             return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public static class GenPreferenceFragment extends PreferenceFragment {
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.pref_gen);
+            setHasOptionsMenu(true);
+
+            // Bind the summaries of EditText/List/Dialog/Ringtone preferences
+            // to their values. When their values change, their summaries are
+            // updated to reflect the new value, per the Android Design
+            // guidelines.
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_general_ram_unit)));
+            bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_general_storage_unit)));
         }
     }
 

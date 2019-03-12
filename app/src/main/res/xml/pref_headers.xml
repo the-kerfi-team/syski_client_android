@@ -19,6 +19,11 @@
         android:title="@string/pref_header_data_sync" />
     -->
     <header
+        android:fragment="uk.co.syski.client.android.view.SettingsActivity$GenPreferenceFragment"
+        android:icon="@drawable/ic_info_black_24dp"
+        android:title="@string/pref_header_general" />
+
+    <header
         android:fragment="uk.co.syski.client.android.view.SettingsActivity$APIPreferenceFragment"
         android:icon="@drawable/ic_backup_black_24dp"
         android:title="@string/pref_title_api" />
