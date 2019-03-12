@@ -68,6 +68,14 @@
         <item>3</item>
     </string-array>
 
+    <string-array name="pref_general_storage_value_list">
+        <item>B</item>
+        <item>KB</item>
+        <item>MB</item>
+        <item>GB</item>
+        <item>TB</item>
+    </string-array>
+
     <string-array name="multi_select_list_preference_default_value" />
 
     <string name="pref_title_system_sync_settings">System sync settings</string>
@@ -130,4 +138,7 @@
     <string name="txtName">Name</string>
     <string name="button_shutdown">Shutdown</string>
     <string name="button_restart">Restart</string>
+    <string name="pref_general_storage_value_title">Storage Value Displayed</string>
+    <string name="pref_general_ram_value_title">RAM Value Displayed</string>
+    <string name="pref_general_value_choice_heading">Unit Choices</string>
 </resources>
