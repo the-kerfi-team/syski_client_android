@@ -73,10 +73,15 @@
             android:label="@string/sys_mobo_lbl"
             android:parentActivityName=".view.SystemOverviewActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".view.SystemOSActivity"
+        <activity
+            android:name=".view.SystemOSActivity"
             android:label="@string/sys_os_lbl"
             android:parentActivityName=".view.SystemOverviewActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
+        <activity android:name=".view.graph.VariableCPUGraph" />
+        <activity android:name=".view.graph.VariableGPUGraph" />
+        <activity android:name=".view.graph.VariableStorageGraph" />
+        <activity android:name=".view.graph.VariableNetworkGraph"></activity>
     </application>
 
 </manifest>
