@@ -1,4 +1,4 @@
-package uk.co.syski.client.android;
+package uk.co.syski.client.android.view;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
+import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.data.entity.MotherboardEntity;
 
 public class MOBOActivity extends AppCompatActivity {

@@ -69,7 +69,7 @@
             android:parentActivityName=".view.SystemOverviewActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".MOBOActivity"
+            android:name=".view.MOBOActivity"
             android:label="@string/sys_mobo_lbl"
             android:parentActivityName=".view.SystemOverviewActivity"
             android:screenOrientation="portrait" />

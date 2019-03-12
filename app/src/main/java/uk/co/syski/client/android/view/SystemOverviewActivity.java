@@ -19,7 +19,6 @@ import android.widget.TextView;
 import java.util.Calendar;
 import java.util.List;
 
-import uk.co.syski.client.android.MOBOActivity;
 import uk.co.syski.client.android.OSActivity;
 import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.view.adapters.SysListOverviewAdapter;
