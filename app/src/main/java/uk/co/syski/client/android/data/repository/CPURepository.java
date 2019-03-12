@@ -1,6 +1,7 @@
 package uk.co.syski.client.android.data.repository;
 
 import android.arch.lifecycle.MutableLiveData;
+import android.arch.persistence.room.Dao;
 import android.os.AsyncTask;
 
 import java.util.List;
@@ -9,11 +10,14 @@ import java.util.concurrent.ExecutionException;
 
 import uk.co.syski.client.android.data.SyskiCache;
 import uk.co.syski.client.android.data.dao.CPUDao;
+import uk.co.syski.client.android.data.dao.linking.SystemCPUDao;
 import uk.co.syski.client.android.data.entity.CPUEntity;
+import uk.co.syski.client.android.data.entity.linking.SystemCPUEntity;
 
 public class CPURepository {
 
     private CPUDao mCPUDao;
+    private SystemCPUDao mSystemCPUDao;
     private MutableLiveData<List<CPUEntity>> mCPUEntities;
     private boolean mDataUpdated;
     private UUID mActiveSystemId;
@@ -21,6 +25,7 @@ public class CPURepository {
 
     public CPURepository() {
         mCPUDao = SyskiCache.GetDatabase().CPUDao();
+        mSystemCPUDao = SyskiCache.GetDatabase().SystemCPUDao();
         mCPUEntities = new MutableLiveData();
         mSystemCPUEntities = new MutableLiveData();
         try {
@@ -52,6 +57,15 @@ public class CPURepository {
         updateData();
     }
 
+    public void insert(CPUEntity cpuEntity, UUID systemId) {
+        new insertSystemCPUAsyncTask(mCPUDao, mSystemCPUDao, systemId).execute(cpuEntity);
+        updateData();
+        if (mActiveSystemId != null && mActiveSystemId.equals(systemId))
+        {
+            updateSystemCPUData();
+        }
+    }
+
     public void update(CPUEntity cpuEntity) {
         new updateAsyncTask(mCPUDao).execute(cpuEntity);
         updateData();
@@ -79,19 +93,6 @@ public class CPURepository {
         }
     }
 
-    private static class getSystemCPUAsyncTask extends AsyncTask<UUID, Void, List<CPUEntity>> {
-        private CPUDao mAsyncTaskDao;
-
-        getSystemCPUAsyncTask(CPUDao dao) {
-            mAsyncTaskDao = dao;
-        }
-
-        protected List<CPUEntity> doInBackground(final UUID... uuids) {
-            List<CPUEntity> result = mAsyncTaskDao.getSystemCPUs(uuids);
-            return mAsyncTaskDao.getSystemCPUs(uuids);
-        }
-    }
-
     private static class getAsyncTask extends AsyncTask<Void, Void, List<CPUEntity>> {
         private CPUDao mAsyncTaskDao;
 
@@ -105,7 +106,6 @@ public class CPURepository {
     }
 
     private static class insertAsyncTask extends AsyncTask<CPUEntity, Void, Void> {
-
         private CPUDao mAsyncTaskDao;
 
         insertAsyncTask(CPUDao dao) {
@@ -117,11 +117,9 @@ public class CPURepository {
             mAsyncTaskDao.insert(cpuEntities);
             return null;
         }
-
     }
 
     private static class updateAsyncTask extends AsyncTask<CPUEntity, Void, Void> {
-
         private CPUDao mAsyncTaskDao;
 
         updateAsyncTask(CPUDao dao) {
@@ -135,5 +133,40 @@ public class CPURepository {
         }
     }
 
+    private static class getSystemCPUAsyncTask extends AsyncTask<UUID, Void, List<CPUEntity>> {
+        private CPUDao mAsyncTaskDao;
+
+        getSystemCPUAsyncTask(CPUDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        protected List<CPUEntity> doInBackground(final UUID... uuids) {
+            List<CPUEntity> result = mAsyncTaskDao.getSystemCPUs(uuids);
+            return mAsyncTaskDao.getSystemCPUs(uuids);
+        }
+    }
+
+    private static class insertSystemCPUAsyncTask extends AsyncTask<CPUEntity, Void, Void> {
+        private CPUDao mAsyncTaskCPUDao;
+        private SystemCPUDao mAsyncTaskSystemCPUDao;
+        private UUID mSystemId;
+
+        insertSystemCPUAsyncTask(CPUDao cpuDao, SystemCPUDao systemDao, UUID systemId) {
+            mAsyncTaskCPUDao = cpuDao;
+            mAsyncTaskSystemCPUDao = systemDao;
+            mSystemId = systemId;
+        }
+
+        protected Void doInBackground(final CPUEntity... cpuEntities) {
+            mAsyncTaskCPUDao.insert(cpuEntities);
+            SystemCPUEntity systemCPUEntity = new SystemCPUEntity();
+            for (CPUEntity cpuEntity: cpuEntities) {
+                systemCPUEntity.CPUId = cpuEntity.Id;
+                systemCPUEntity.SystemId = mSystemId;
+                mAsyncTaskSystemCPUDao.insert(systemCPUEntity);
+            }
+            return null;
+        }
+    }
 
 }

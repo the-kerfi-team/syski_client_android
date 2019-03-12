@@ -52,12 +52,7 @@ public class APISystemCPURequest extends APIAuthorizationRequest<JSONArray> {
                     cpuEntity.ClockSpeed = (int) Double.parseDouble(((JSONObject) jsonArray.get(i)).getString("clockSpeed"));
                     cpuEntity.CoreCount = (int) Double.parseDouble(((JSONObject) jsonArray.get(i)).getString("coreCount"));
                     cpuEntity.ThreadCount = (int) Double.parseDouble(((JSONObject) jsonArray.get(i)).getString("clockSpeed"));
-                    Repository.getInstance().getCPURepository().insert(cpuEntity);
-
-                    SystemCPUEntity systemCPUEntity = new SystemCPUEntity();
-                    systemCPUEntity.CPUId = cpuEntity.Id;
-                    systemCPUEntity.SystemId = mSystemId;
-                    SyskiCache.GetDatabase().SystemCPUDao().InsertAll(systemCPUEntity);
+                    Repository.getInstance().getCPURepository().insert(cpuEntity, mSystemId);
                 }
                 else
                 {
