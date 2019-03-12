@@ -20,6 +20,8 @@ public enum Repository {
 
     private StorageRepository mStorageRepository = new StorageRepository();
 
+    private MOBORepository mMOBORepository = new MOBORepository();
+
     public synchronized UserRepository getUserRepository() { return mUserRepository; }
 
     public synchronized SystemRepository getSystemRepository()
@@ -46,5 +48,7 @@ public enum Repository {
     {
         return mStorageRepository;
     }
+
+    public synchronized MOBORepository getMOBORepository() { return mMOBORepository;}
 
 }
