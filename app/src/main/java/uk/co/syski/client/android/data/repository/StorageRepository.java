@@ -1,6 +1,7 @@
 package uk.co.syski.client.android.data.repository;
 
 import android.arch.lifecycle.MutableLiveData;
+import android.arch.persistence.room.Dao;
 import android.os.AsyncTask;
 
 import java.util.List;
@@ -8,8 +9,16 @@ import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 import uk.co.syski.client.android.data.SyskiCache;
+import uk.co.syski.client.android.data.dao.GPUDao;
 import uk.co.syski.client.android.data.dao.StorageDao;
+import uk.co.syski.client.android.data.dao.SystemDao;
+import uk.co.syski.client.android.data.dao.linking.SystemGPUDao;
+import uk.co.syski.client.android.data.dao.linking.SystemStorageDao;
+import uk.co.syski.client.android.data.entity.GPUEntity;
 import uk.co.syski.client.android.data.entity.StorageEntity;
+import uk.co.syski.client.android.data.entity.SystemEntity;
+import uk.co.syski.client.android.data.entity.linking.SystemGPUEntity;
+import uk.co.syski.client.android.data.entity.linking.SystemStorageEntity;
 
 public class StorageRepository {
 
@@ -18,11 +27,13 @@ public class StorageRepository {
     private boolean mDataUpdated;
     private UUID mActiveSystemId;
     private MutableLiveData<List<StorageEntity>> mSystemStorageEntities;
+    private SystemStorageDao mSystemStorageDao;
 
     public StorageRepository() {
         mStorageDao = SyskiCache.GetDatabase().StorageDao();
         mStorageEntities = new MutableLiveData();
         mSystemStorageEntities = new MutableLiveData();
+        mSystemStorageDao = SyskiCache.GetDatabase().SystemStorageDao();
         try {
             mStorageEntities.postValue(new getAsyncTask(mStorageDao).execute().get());
         } catch (InterruptedException e) {
@@ -53,6 +64,15 @@ public class StorageRepository {
         updateSystemStorageData();
     }
 
+    public void insert(StorageEntity storageEntity, UUID systemId) {
+        new StorageRepository.insertSystemStorageAsyncTask(mStorageDao, mSystemStorageDao, systemId).execute(storageEntity);
+        updateData();
+        if (mActiveSystemId != null && mActiveSystemId.equals(systemId))
+        {
+            updateSystemStorageData();
+        }
+    }
+
     public void update(StorageEntity storageEntity) {
         new updateAsyncTask(mStorageDao).execute(storageEntity);
         updateData();
@@ -78,19 +98,6 @@ public class StorageRepository {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
-        }
-    }
-
-    private static class getSystemStorageAsyncTask extends AsyncTask<UUID, Void, List<StorageEntity>> {
-        private StorageDao mAsyncTaskDao;
-
-        getSystemStorageAsyncTask(StorageDao dao) {
-            mAsyncTaskDao = dao;
-        }
-
-        protected List<StorageEntity> doInBackground(final UUID... uuids) {
-            List<StorageEntity> result = mAsyncTaskDao.getSystemCPUs(uuids);
-            return mAsyncTaskDao.getSystemCPUs(uuids);
         }
     }
 
@@ -133,6 +140,42 @@ public class StorageRepository {
         @Override
         protected Void doInBackground(final StorageEntity... cpuEntities) {
             mAsyncTaskDao.update(cpuEntities);
+            return null;
+        }
+    }
+
+    private static class getSystemStorageAsyncTask extends AsyncTask<UUID, Void, List<StorageEntity>> {
+        private StorageDao mAsyncTaskDao;
+
+        getSystemStorageAsyncTask(StorageDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        protected List<StorageEntity> doInBackground(final UUID... uuids) {
+            List<StorageEntity> result = mAsyncTaskDao.getSystemStorages(uuids);
+            return mAsyncTaskDao.getSystemStorages(uuids);
+        }
+    }
+
+    private static class insertSystemStorageAsyncTask extends AsyncTask<StorageEntity, Void, Void> {
+        private StorageDao mAsyncTaskStorageDao;
+        private SystemStorageDao mAsyncTaskSystemStorageDao;
+        private UUID mSystemId;
+
+        insertSystemStorageAsyncTask(StorageDao storageDao, SystemStorageDao systemDao, UUID systemId) {
+            mAsyncTaskStorageDao = storageDao;
+            mAsyncTaskSystemStorageDao = systemDao;
+            mSystemId = systemId;
+        }
+
+        protected Void doInBackground(final StorageEntity... storageEntities) {
+            mAsyncTaskStorageDao.insert(storageEntities);
+            SystemStorageEntity systemStorageEntity = new SystemStorageEntity();
+            for (StorageEntity storageEntity: storageEntities) {
+                systemStorageEntity.StorageId = storageEntity.Id;
+                systemStorageEntity.SystemId = mSystemId;
+                mAsyncTaskSystemStorageDao.insert(systemStorageEntity);
+            }
             return null;
         }
     }

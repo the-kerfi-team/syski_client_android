@@ -30,7 +30,7 @@ public interface StorageDao {
     List<StorageEntity> get(UUID... Ids);
 
     @Query("SELECT * FROM StorageEntity INNER JOIN SystemStorageEntity ON Id = StorageId WHERE SystemId IN (:Ids)")
-    List<StorageEntity> getSystemCPUs(UUID... Ids);
+    List<StorageEntity> getSystemStorages(UUID... Ids);
 
     @Update
     void update (StorageEntity storageEntity);
@@ -43,5 +43,7 @@ public interface StorageDao {
 
     @Delete
     void delete(StorageEntity... storageEntities);
+
+
     
 }
