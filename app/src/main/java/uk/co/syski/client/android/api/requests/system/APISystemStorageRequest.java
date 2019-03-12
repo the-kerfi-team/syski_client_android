@@ -51,11 +51,7 @@ public class APISystemStorageRequest extends APIAuthorizationRequest<JSONArray> 
                     // TODO Update Storage method
                 }
 
-                SystemStorageEntity systemStorageEntity = new SystemStorageEntity();
-                systemStorageEntity.StorageId = storageEntity.Id;
-                systemStorageEntity.SystemId = mSystemId;
-                systemStorageEntity.Slot = i;
-                SyskiCache.GetDatabase().SystemStorageDao().InsertAll(systemStorageEntity);
+                Repository.getInstance().getStorageRepository().insert(storageEntity,mSystemId);
 
             }
 
