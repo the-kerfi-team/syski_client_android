@@ -13,6 +13,8 @@ import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.api.requests.auth.APITokenRequest;
 import uk.co.syski.client.android.api.requests.system.APISystemCPURequest;
 import uk.co.syski.client.android.api.requests.system.APISystemGPURequest;
+import uk.co.syski.client.android.api.requests.system.APISystemMotherboardRequest;
+import uk.co.syski.client.android.api.requests.system.APISystemOperatingSystemRequest;
 import uk.co.syski.client.android.api.requests.system.APISystemRAMRequest;
 import uk.co.syski.client.android.api.requests.system.APISystemStorageRequest;
 import uk.co.syski.client.android.api.requests.system.APISystemsRequest;
@@ -60,9 +62,8 @@ public class APIThread extends Thread {
                         VolleySingleton.getInstance(mContext).addToRequestQueue(new APISystemRAMRequest(mContext, system.Id));
                         VolleySingleton.getInstance(mContext).addToRequestQueue(new APISystemStorageRequest(mContext, system.Id));
                         VolleySingleton.getInstance(mContext).addToRequestQueue(new APISystemGPURequest(mContext, system.Id));
-                        //        VolleySingleton.getInstance(mContext).addToRequestQueue(new APISystemMotherboardRequest(mContext, system.Id));
-                        //         VolleySingleton.getInstance(mContext).addToRequestQueue(new APISystemOperatingSystemRequest(mContext, system.Id));
-                        //}
+                        VolleySingleton.getInstance(mContext).addToRequestQueue(new APISystemMotherboardRequest(mContext, system.Id));
+                        VolleySingleton.getInstance(mContext).addToRequestQueue(new APISystemOperatingSystemRequest(mContext, system.Id));
                     }
                 }
             }

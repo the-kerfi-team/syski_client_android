@@ -49,6 +49,7 @@ public class SystemOverviewActivity extends AppCompatActivity {
             "RAM",
             "Storage",
             "GPU",
+            "Motherboard",
             "OS"
     };
 
@@ -60,7 +61,7 @@ public class SystemOverviewActivity extends AppCompatActivity {
             R.drawable.ic_storage,
             R.drawable.ic_gpu,
             //TODO: Find better Icon
-           // R.drawable.ic_gpu,
+            R.drawable.ic_gpu,
             R.drawable.ic_pc
     };
 
@@ -96,9 +97,9 @@ public class SystemOverviewActivity extends AppCompatActivity {
                             break;
                     case 3: dest = GPUActivity.class;
                             break;
-//                    case 4: dest = MOBOActivity.class;
-//                            break;
-                    case 4: dest = OSActivity.class;
+                    case 4: dest = MOBOActivity.class;
+                            break;
+                    case 5: dest = OSActivity.class;
                             break;
                     default: dest = null;
                 }
