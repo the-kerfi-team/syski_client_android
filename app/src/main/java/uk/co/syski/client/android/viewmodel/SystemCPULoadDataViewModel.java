@@ -22,10 +22,20 @@ public class SystemCPULoadDataViewModel extends AndroidViewModel {
     public SystemCPULoadDataViewModel(@NonNull Application application) {
         super(application);
         systemId = UUID.fromString(application.getSharedPreferences(application.getString(R.string.preference_sysID_key), Context.MODE_PRIVATE).getString(application.getString(R.string.preference_sysID_key), null));
+        mCPUDataRepository = new SystemCPUDataRepository(application, systemId);
+        mSystemDataCPUList = mCPUDataRepository.get();
+        mCPUDataRepository.start();
     }
 
     public MutableLiveData<List<CPUDataEntity>> get() {
         return mSystemDataCPUList;
     }
+
+    @Override
+    public void onCleared()
+    {
+        mCPUDataRepository.stop();
+    }
+
 
 }

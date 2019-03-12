@@ -18,13 +18,13 @@ import java.util.List;
 
 import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.data.entity.CPUEntity;
+import uk.co.syski.client.android.view.graph.VariableCPUGraph;
 import uk.co.syski.client.android.viewmodel.SystemCPUViewModel;
 
 public class CPUActivity extends AppCompatActivity {
 
     private static final String TAG = "CPUActivity";
     TextView model,manufacturer,architecture,clock,core,thread;
-    GridLayout gridLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +48,12 @@ public class CPUActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void loadGraphOnClick()
+    {
+        Intent cpuGraph = new Intent(this, VariableCPUGraph.class);
+        startActivity(cpuGraph);
     }
 
     private void initViews() {

@@ -253,11 +253,13 @@
             android:layout_marginBottom="8dp"
             android:layout_marginStart="8dp"
             android:text="View Graph"
+            android:onClick="loadGraphOnClick"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/button2"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/loadHeading" />
+
 
         <Button
             android:id="@+id/button2"
