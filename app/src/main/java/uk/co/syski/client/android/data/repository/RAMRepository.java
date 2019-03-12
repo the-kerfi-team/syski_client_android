@@ -10,7 +10,13 @@ import java.util.concurrent.ExecutionException;
 
 import uk.co.syski.client.android.data.SyskiCache;
 import uk.co.syski.client.android.data.dao.RAMDao;
+import uk.co.syski.client.android.data.dao.RAMDao;
+import uk.co.syski.client.android.data.dao.linking.SystemRAMDao;
+import uk.co.syski.client.android.data.dao.linking.SystemRAMDao;
 import uk.co.syski.client.android.data.entity.RAMEntity;
+import uk.co.syski.client.android.data.entity.RAMEntity;
+import uk.co.syski.client.android.data.entity.RAMEntity;
+import uk.co.syski.client.android.data.entity.linking.SystemRAMEntity;
 
 public class RAMRepository {
 
@@ -19,9 +25,11 @@ public class RAMRepository {
     private boolean mDataUpdated;
     private UUID mActiveSystemId;
     private MutableLiveData<List<RAMEntity>> mSystemRAMEntities;
+    private SystemRAMDao mSystemRamDao;
 
     public RAMRepository() {
         mRAMDao = SyskiCache.GetDatabase().RAMDao();
+        mSystemRamDao = SyskiCache.GetDatabase().SystemRAMDao();
         mRAMEntities = new MutableLiveData();
         mSystemRAMEntities = new MutableLiveData();
         try {
@@ -53,6 +61,15 @@ public class RAMRepository {
         updateData();
     }
 
+    public void insert(RAMEntity ramEntity, UUID systemId) {
+        new RAMRepository.insertSystemRAMAsyncTask(mRAMDao, mSystemRamDao, systemId).execute(ramEntity);
+        updateData();
+        if (mActiveSystemId != null && mActiveSystemId.equals(systemId))
+        {
+            updateSystemRAMData();
+        }
+    }
+
     public void update(RAMEntity ramEntity) {
         new RAMRepository.updateAsyncTask(mRAMDao).execute(ramEntity);
         updateData();
@@ -78,19 +95,7 @@ public class RAMRepository {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-    }
-
-    private static class getSystemRAMAsyncTask extends AsyncTask<UUID, Void, List<RAMEntity>> {
-        private RAMDao mAsyncTaskDao;
-
-        getSystemRAMAsyncTask(RAMDao dao) {
-            mAsyncTaskDao = dao;
-        }
-
-        protected List<RAMEntity> doInBackground(final UUID... uuids) {
-            return mAsyncTaskDao.getSystemRAMs(uuids);
-        }
-    }
+    }    
 
     private static class getAsyncTask extends AsyncTask<Void, Void, List<RAMEntity>> {
         private RAMDao mAsyncTaskDao;
@@ -131,6 +136,42 @@ public class RAMRepository {
         @Override
         protected Void doInBackground(final RAMEntity... ramEntities) {
             mAsyncTaskDao.update(ramEntities);
+            return null;
+        }
+    }
+
+    private static class getSystemRAMAsyncTask extends AsyncTask<UUID, Void, List<RAMEntity>> {
+        private RAMDao mAsyncTaskDao;
+
+        getSystemRAMAsyncTask(RAMDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        protected List<RAMEntity> doInBackground(final UUID... uuids) {
+            List<RAMEntity> result = mAsyncTaskDao.getSystemRAMs(uuids);
+            return mAsyncTaskDao.getSystemRAMs(uuids);
+        }
+    }
+
+    private static class insertSystemRAMAsyncTask extends AsyncTask<RAMEntity, Void, Void> {
+        private RAMDao mAsyncTaskRAMDao;
+        private SystemRAMDao mAsyncTaskSystemRAMDao;
+        private UUID mSystemId;
+
+        insertSystemRAMAsyncTask(RAMDao ramDao, SystemRAMDao systemDao, UUID systemId) {
+            mAsyncTaskRAMDao = ramDao;
+            mAsyncTaskSystemRAMDao = systemDao;
+            mSystemId = systemId;
+        }
+
+        protected Void doInBackground(final RAMEntity... ramEntities) {
+            mAsyncTaskRAMDao.insert(ramEntities);
+            SystemRAMEntity systemRAMEntity = new SystemRAMEntity();
+            for (RAMEntity ramEntity: ramEntities) {
+                systemRAMEntity.RAMId = ramEntity.Id;
+                systemRAMEntity.SystemId = mSystemId;
+                mAsyncTaskSystemRAMDao.insert(systemRAMEntity);
+            }
             return null;
         }
     }
