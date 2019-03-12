@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.GridLayout;
 import android.widget.TextView;
 
@@ -83,5 +84,10 @@ public class CPUActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void showGraph(View view) {
+        Intent intent = new Intent(this, VariableCPUGraph.class);
+        startActivity(intent);
     }
 }
