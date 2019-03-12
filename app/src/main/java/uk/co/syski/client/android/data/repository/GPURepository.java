@@ -42,9 +42,9 @@ public class GPURepository {
     public MutableLiveData<List<GPUEntity>> get(final UUID systemId) {
         if (mDataUpdated || mActiveSystemId == null || !mActiveSystemId.equals(systemId))
         {
-            mDataUpdated = false;
-            updateSystemGPUData();
             mActiveSystemId = systemId;
+            updateSystemGPUData();
+            mDataUpdated = false;
         }
         return mSystemGPUEntities;
     }
