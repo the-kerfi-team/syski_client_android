@@ -35,7 +35,7 @@
                 android:value="uk.co.syski.client.android.view.MainActivity" />
         </activity>
         <activity
-            android:name=".SettingsActivity"
+            android:name=".view.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:parentActivityName=".view.SystemListMenu"
             android:screenOrientation="portrait" />
