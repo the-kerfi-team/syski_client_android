@@ -70,19 +70,6 @@ public class GPUActivity extends AppCompatActivity {
         prefs = this.getSharedPreferences(getString(R.string.preference_sysID_key), Context.MODE_PRIVATE);
         model = findViewById(R.id.txtGPUModel);
         man = findViewById(R.id.txtGPUMan);
-        gridLayout = findViewById(R.id.grdGPU);
-    }
-
-    private void getGPU(){
-
-        String sysId = prefs.getString(getString(R.string.preference_sysID_key), null);
-
-        if(gpuList.size() > 0){
-            gpu = gpuList.get(0);
-        } else{
-            Log.i(TAG, "Query returned no storage entity");
-        }
-
     }
 
     @Override

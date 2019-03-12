@@ -56,6 +56,5 @@ public class MOBOActivity extends AppCompatActivity {
         model = findViewById(R.id.txtMoboModel);
         manufacturer = findViewById(R.id.txtMoboManufacturer);
         version = findViewById(R.id.txtMoboVersion);
-        gridLayout = findViewById(R.id.grdMobo);
     }
 }

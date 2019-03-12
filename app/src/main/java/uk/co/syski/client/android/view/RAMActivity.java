@@ -26,7 +26,6 @@ public class RAMActivity extends AppCompatActivity {
 
     private static final String TAG = "RAMActivity";
     ListView listView;
-    List<RAMEntity> ramList;
     SharedPreferences prefs;
 
     @Override

@@ -5,13 +5,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.data.entity.RAMEntity;
+import uk.co.syski.client.android.model.HeadedValueModel;
 
 public class RAMAdapter extends ArrayAdapter{
 
@@ -21,7 +25,9 @@ public class RAMAdapter extends ArrayAdapter{
     private List<RAMEntity> listItems;
 
     //Views
-    TextView model,manufacturer,type,size;
+    ImageView image;
+    TextView model,manufacturer;
+    ListView listView;
     View ramItem;
 
     public RAMAdapter(Activity context, List<RAMEntity> listItems){
@@ -34,21 +40,28 @@ public class RAMAdapter extends ArrayAdapter{
     public View getView(int position, View view, ViewGroup parent) {
         initViews();
 
+        image.setImageResource(R.drawable.ic_gpu);
+
         model.setText(listItems.get(position).ModelName);
         manufacturer.setText(listItems.get(position).ManufacturerName);
-        type.setText(listItems.get(position).MemoryTypeName);
-        size.setText(""+listItems.get(position).MemoryBytes);
+
+        HeadedValueModel size = new HeadedValueModel("Size", Long.toString(listItems.get(position).MemoryBytes), R.drawable.ic_memory_size);
+
+        List<HeadedValueModel> dataValues = new ArrayList<>();
+        dataValues.add(size);
+
+        listView.setAdapter(new ComponentListAdapter(context, dataValues));
 
         return ramItem;
     }
 
     public void initViews(){
         LayoutInflater inflater = context.getLayoutInflater();
-        ramItem = inflater.inflate(R.layout.ram_item, null, true);
-        model = ramItem.findViewById(R.id.i_txtRAMModel);
-        manufacturer = ramItem.findViewById(R.id.i_txtRAMMan);
-        type = ramItem.findViewById(R.id.i_txtRAMType);
-        size = ramItem.findViewById(R.id.i_txtRAMSize);
+        ramItem = inflater.inflate(R.layout.component_overview_base, null, true);
+        model = ramItem.findViewById(R.id.valueModel);
+        manufacturer = ramItem.findViewById(R.id.valueManufacturer);
+        listView = ramItem.findViewById(R.id.dataList);
+        image = ramItem.findViewById(R.id.imageComponent);
     }
 
 }

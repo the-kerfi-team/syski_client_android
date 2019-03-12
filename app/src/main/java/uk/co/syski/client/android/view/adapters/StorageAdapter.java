@@ -5,12 +5,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.data.entity.StorageEntity;
+import uk.co.syski.client.android.model.HeadedValueModel;
+import uk.co.syski.client.android.view.adapters.ComponentListAdapter;
 
 public class StorageAdapter extends ArrayAdapter{
 
@@ -20,39 +25,43 @@ public class StorageAdapter extends ArrayAdapter{
     private List<StorageEntity> listItems;
 
     //Views
-    TextView model,manufacturer,type,size;
-    View storageItem;
+    ImageView image;
+    TextView model,manufacturer;
+    ListView listView;
+    View ramItem;
 
-    public StorageAdapter(Activity context, List<StorageEntity> storageEntities){
-        super(context, R.layout.storage_item, storageEntities);
+    public StorageAdapter(Activity context, List<StorageEntity> listItems){
+        super(context, R.layout.component_list_item, listItems);
         this.context = context;
-        this.listItems = storageEntities;
-    }
-
-    public void setDataSet(List<StorageEntity> storageEntities)
-    {
-        listItems = storageEntities;
-        notifyDataSetChanged();
+        this.listItems = listItems;
     }
 
     @Override
     public View getView(int position, View view, ViewGroup parent) {
         initViews();
+
+        image.setImageResource(R.drawable.ic_storage);
+
         model.setText(listItems.get(position).ModelName);
         manufacturer.setText(listItems.get(position).ManufacturerName);
-        type.setText(listItems.get(position).MemoryTypeName);
-        size.setText(""+listItems.get(position).MemoryBytes);
 
-        return storageItem;
+        HeadedValueModel size = new HeadedValueModel("Size", Long.toString(listItems.get(position).MemoryBytes), R.drawable.ic_memory_size);
+
+        List<HeadedValueModel> dataValues = new ArrayList<>();
+        dataValues.add(size);
+
+        listView.setAdapter(new ComponentListAdapter(context, dataValues));
+
+        return ramItem;
     }
 
     public void initViews(){
         LayoutInflater inflater = context.getLayoutInflater();
-        storageItem = inflater.inflate(R.layout.storage_item, null, true);
-        model = storageItem.findViewById(R.id.i_txtStgModel);
-        manufacturer = storageItem.findViewById(R.id.i_txtStgMan);
-        type = storageItem.findViewById(R.id.i_txtStgType);
-        size = storageItem.findViewById(R.id.i_txtStgSize);
+        ramItem = inflater.inflate(R.layout.component_overview_base, null, false);
+        model = ramItem.findViewById(R.id.valueModel);
+        manufacturer = ramItem.findViewById(R.id.valueManufacturer);
+        listView = ramItem.findViewById(R.id.dataList);
+        image = ramItem.findViewById(R.id.imageComponent);
     }
 
 }

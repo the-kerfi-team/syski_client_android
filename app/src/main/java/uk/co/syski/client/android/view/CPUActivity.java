@@ -57,7 +57,6 @@ public class CPUActivity extends AppCompatActivity {
         clock = findViewById(R.id.cpuClock);
         core = findViewById(R.id.cpuCore);
         thread = findViewById(R.id.cpuThread);
-        gridLayout = findViewById(R.id.grdCPU);
     }
 
     @Override
