@@ -1,19 +1,21 @@
 package uk.co.syski.client.android;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.GridLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 
+import uk.co.syski.client.android.data.entity.OperatingSystemEntity;
 import uk.co.syski.client.android.model.OperatingSystemModel;
+import uk.co.syski.client.android.viewmodel.OperatingSystemViewModel;
 
 public class OSActivity extends AppCompatActivity {
 
@@ -22,6 +24,7 @@ public class OSActivity extends AppCompatActivity {
     TextView name,arch,vers;
     List<OperatingSystemModel> osList;
     OperatingSystemModel sysOS;
+    OperatingSystemEntity os;
     GridLayout gridLayout;
     SharedPreferences prefs;
 
@@ -31,16 +34,17 @@ public class OSActivity extends AppCompatActivity {
         setContentView(R.layout.activity_os);
 
         initViews();
-        getOS();
 
-        if(sysOS != null) {
-            name.setText(sysOS.Name);
-            arch.setText(sysOS.ArchitectureName);
-            vers.setText(sysOS.Version);
-        }else {
-            Toast.makeText(this,"OS not found",Toast.LENGTH_SHORT).show();
-        }
-
+        OperatingSystemViewModel viewModel = ViewModelProviders.of(this).get(OperatingSystemViewModel.class);
+        viewModel.get().observe(this, new Observer<List<OperatingSystemEntity>>() {
+            @Override
+            public void onChanged(@Nullable List<OperatingSystemEntity> osEntities) {
+                if (osEntities.size() > 0) {
+                    os = osEntities.get(0);
+                    name.setText(os.Name);
+                }
+            }
+        });
     }
 
     private void initViews(){
