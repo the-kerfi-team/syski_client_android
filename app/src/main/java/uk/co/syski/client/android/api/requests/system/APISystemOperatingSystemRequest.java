@@ -22,6 +22,7 @@ import uk.co.syski.client.android.data.entity.OperatingSystemEntity;
 import uk.co.syski.client.android.data.entity.SystemEntity;
 import uk.co.syski.client.android.data.entity.linking.SystemGPUEntity;
 import uk.co.syski.client.android.data.entity.linking.SystemOSEntity;
+import uk.co.syski.client.android.data.repository.Repository;
 
 public class APISystemOperatingSystemRequest extends APIAuthorizationRequest<JSONArray> {
 
@@ -43,14 +44,9 @@ public class APISystemOperatingSystemRequest extends APIAuthorizationRequest<JSO
                     osEntity = new OperatingSystemEntity();
                     osEntity.Id = UUID.fromString(((JSONObject) jsonArray.get(i)).getString("id"));
                     osEntity.Name = ((JSONObject) jsonArray.get(i)).getString("name");
-                    SyskiCache.GetDatabase().OperatingSystemDao().InsertAll(osEntity);
+                    Repository.getInstance().getOSRepository().insert(osEntity);
 
-                    SystemOSEntity systemOSEntity = new SystemOSEntity();
-                    systemOSEntity.OSId = osEntity.Id;
-                    systemOSEntity.SystemId = mSystemId;
-                    systemOSEntity.ArchitectureName = ((JSONObject) jsonArray.get(i)).getString("architectureName");
-                    systemOSEntity.Version = ((JSONObject) jsonArray.get(i)).getString("version");
-                    SyskiCache.GetDatabase().SystemOSDao().InsertAll(systemOSEntity);
+                    Repository.getInstance().getOSRepository().insert(osEntity,mSystemId);
                 } else {
                     // TODO Update OS method
                 }
