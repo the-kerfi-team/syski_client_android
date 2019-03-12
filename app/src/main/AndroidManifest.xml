@@ -73,7 +73,7 @@
             android:label="@string/sys_mobo_lbl"
             android:parentActivityName=".view.SystemOverviewActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".OSActivity"
+        <activity android:name=".view.SystemOSActivity"
             android:label="@string/sys_os_lbl"
             android:parentActivityName=".view.SystemOverviewActivity"
             android:screenOrientation="portrait"/>

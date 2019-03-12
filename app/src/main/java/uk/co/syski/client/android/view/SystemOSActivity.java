@@ -1,4 +1,4 @@
-package uk.co.syski.client.android;
+package uk.co.syski.client.android.view;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -13,13 +13,14 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.data.entity.OperatingSystemEntity;
 import uk.co.syski.client.android.model.OperatingSystemModel;
 import uk.co.syski.client.android.viewmodel.OperatingSystemViewModel;
 
-public class OSActivity extends AppCompatActivity {
+public class SystemOSActivity extends AppCompatActivity {
 
-    private static final String TAG = "OSActivity";
+    private static final String TAG = "SystemOSActivity";
 
     TextView name,arch,vers;
     List<OperatingSystemModel> osList;

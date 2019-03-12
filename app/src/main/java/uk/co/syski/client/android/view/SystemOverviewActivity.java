@@ -19,7 +19,6 @@ import android.widget.TextView;
 import java.util.Calendar;
 import java.util.List;
 
-import uk.co.syski.client.android.OSActivity;
 import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.view.adapters.SysListOverviewAdapter;
 import uk.co.syski.client.android.api.VolleySingleton;
@@ -99,7 +98,7 @@ public class SystemOverviewActivity extends AppCompatActivity {
                             break;
                     case 4: dest = MOBOActivity.class;
                             break;
-                    case 5: dest = OSActivity.class;
+                    case 5: dest = SystemOSActivity.class;
                             break;
                     default: dest = null;
                 }
