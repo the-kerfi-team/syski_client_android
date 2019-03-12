@@ -1,21 +1,20 @@
 package uk.co.syski.client.android.view;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.GridLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 
 import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.data.entity.MotherboardEntity;
+import uk.co.syski.client.android.viewmodel.MotherboardViewModel;
 
 public class MOBOActivity extends AppCompatActivity {
 
@@ -32,18 +31,20 @@ public class MOBOActivity extends AppCompatActivity {
         setContentView(R.layout.activity_mobo);
 
         initViews();
-        getMOBO();
 
 
-        if(mobo != null){
-            model.setText(mobo.ModelName);
-            manufacturer.setText(mobo.ManufacturerName);
-            version.setText(mobo.Version);
-        } else {
-            //TODO: Once test data is available, change to remove views based on cpu fields
-            gridLayout.removeAllViewsInLayout();
-            Toast.makeText(this,"Motherboard not found",Toast.LENGTH_SHORT).show();
-        }
+        MotherboardViewModel viewModel = ViewModelProviders.of(this).get(MotherboardViewModel.class);
+        viewModel.get().observe(this, new Observer<List<MotherboardEntity>>() {
+            @Override
+            public void onChanged(@Nullable List<MotherboardEntity> moboEntities) {
+                if (moboEntities.size() > 0)
+                {
+                    model.setText(moboEntities.get(0).ModelName);
+                    manufacturer.setText(moboEntities.get(0).ManufacturerName);
+                    version.setText(moboEntities.get(0).Version);
+                }
+            }
+        });
 
 
     }
@@ -56,16 +57,5 @@ public class MOBOActivity extends AppCompatActivity {
         manufacturer = findViewById(R.id.txtMoboManufacturer);
         version = findViewById(R.id.txtMoboVersion);
         gridLayout = findViewById(R.id.grdMobo);
-    }
-
-    private void getMOBO()
-    {
-        String sysId = prefs.getString(getString(R.string.preference_sysID_key), null);
-
-        if(moboList.size() > 0){
-            mobo = moboList.get(0);
-        } else {
-            Log.i(TAG, "Query returned no motherboard entity");
-        }
     }
 }
