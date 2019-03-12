@@ -73,19 +73,16 @@ public class SystemListMenu extends AppCompatActivity implements NavigationView.
             @Override
             public void onChanged(@Nullable final List<SystemEntity> systemEntities) {
                 adapter.setData(systemEntities);
-                if (listView.getOnItemClickListener() == null)
-                {
-                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            Intent intent = new Intent(SystemListMenu.this,SystemOverviewActivity.class);
-                            String sysId = systemEntities.get(position).Id.toString();
-                            prefEditor.putString(getString(R.string.preference_sysID_key),sysId);
-                            prefEditor.apply();
-                            startActivity(intent);
-                        }
-                    });
-                }
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent intent = new Intent(SystemListMenu.this,SystemOverviewActivity.class);
+                    String sysId = systemEntities.get(position).Id.toString();
+                    prefEditor.putString(getString(R.string.preference_sysID_key),sysId);
+                    prefEditor.apply();
+                    startActivity(intent);
+                    }
+                });
             }
         });
     }
