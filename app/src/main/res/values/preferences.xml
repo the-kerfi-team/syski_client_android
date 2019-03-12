@@ -2,6 +2,14 @@
     tools:ignore="MissingTranslation">
     <!-- Strings related to global preferences within the app -->
 
+    <!-- General Preferences -->
+        <!-- Keys -->
+        <string name="pref_general_ram_unit">pref_general_ram_unit</string>
+        <string name="pref_general_storage_unit">pref_general_storage_unit</string>
+
+        <!-- Default Values -->
+        <string name="pref_general_ram_unit_default">MB</string>
+        <string name="pref_general_storage_unit_default">GB</string>
     <!-- API Preferences -->
         <!-- Keys -->
         <string name="pref_api_url">pref_api_url</string>
