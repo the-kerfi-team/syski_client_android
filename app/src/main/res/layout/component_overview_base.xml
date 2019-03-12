@@ -69,6 +69,6 @@
     <ListView
         android:id="@+id/dataList"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="wrap_content"
         android:headerDividersEnabled="false" />
 </LinearLayout>
