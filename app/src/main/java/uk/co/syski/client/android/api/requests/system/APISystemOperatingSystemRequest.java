@@ -44,9 +44,7 @@ public class APISystemOperatingSystemRequest extends APIAuthorizationRequest<JSO
                     osEntity = new OperatingSystemEntity();
                     osEntity.Id = UUID.fromString(((JSONObject) jsonArray.get(i)).getString("id"));
                     osEntity.Name = ((JSONObject) jsonArray.get(i)).getString("name");
-                    Repository.getInstance().getOSRepository().insert(osEntity);
-
-                    Repository.getInstance().getOSRepository().insert(osEntity,mSystemId);
+                    Repository.getInstance().getOSRepository().insert(osEntity, mSystemId);
                 } else {
                     // TODO Update OS method
                 }

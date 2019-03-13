@@ -24,8 +24,6 @@ public class SystemOSActivity extends AppCompatActivity {
 
     TextView name,arch,vers;
     List<OperatingSystemModel> osList;
-    OperatingSystemModel sysOS;
-    OperatingSystemEntity os;
     GridLayout gridLayout;
     SharedPreferences prefs;
 
@@ -37,12 +35,13 @@ public class SystemOSActivity extends AppCompatActivity {
         initViews();
 
         OperatingSystemViewModel viewModel = ViewModelProviders.of(this).get(OperatingSystemViewModel.class);
-        viewModel.get().observe(this, new Observer<List<OperatingSystemEntity>>() {
+        viewModel.get().observe(this, new Observer<List<OperatingSystemModel>>() {
             @Override
-            public void onChanged(@Nullable List<OperatingSystemEntity> osEntities) {
+            public void onChanged(@Nullable List<OperatingSystemModel> osEntities) {
                 if (osEntities.size() > 0) {
-                    os = osEntities.get(0);
-                    name.setText(os.Name);
+                    name.setText(osEntities.get(0).Name);
+                    arch.setText(osEntities.get(0).ArchitectureName);
+                    vers.setText(osEntities.get(0).Version);
                 }
             }
         });
@@ -54,16 +53,5 @@ public class SystemOSActivity extends AppCompatActivity {
         vers = findViewById(R.id.txtOSVers);
         prefs = this.getSharedPreferences(
                 getString(R.string.preference_sysID_key), Context.MODE_PRIVATE);
-    }
-
-    private void getOS(){
-        String sysId = prefs.getString(getString(R.string.preference_sysID_key), null);
-
-
-        if(osList.size() > 0){
-            sysOS = osList.get(0);
-        } else{
-            Log.w(TAG, "Query returned no OS entity");
-        }
     }
 }

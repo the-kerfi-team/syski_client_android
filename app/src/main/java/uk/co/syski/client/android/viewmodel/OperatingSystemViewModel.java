@@ -13,11 +13,12 @@ import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.data.entity.OperatingSystemEntity;
 import uk.co.syski.client.android.data.repository.OSRepository;
 import uk.co.syski.client.android.data.repository.Repository;
+import uk.co.syski.client.android.model.OperatingSystemModel;
 
 public class OperatingSystemViewModel extends AndroidViewModel{
 
     private OSRepository mOSRepository;
-    private MutableLiveData<List<OperatingSystemEntity>> mSystemOSList;
+    private MutableLiveData<List<OperatingSystemModel>> mSystemOSList;
     private UUID systemId;
 
     public OperatingSystemViewModel(@NonNull Application application) {
@@ -27,7 +28,7 @@ public class OperatingSystemViewModel extends AndroidViewModel{
         mSystemOSList = mOSRepository.get(systemId);
     }
 
-    public MutableLiveData<List<OperatingSystemEntity>> get() {
+    public MutableLiveData<List<OperatingSystemModel>> get() {
         return mSystemOSList;
     }
 

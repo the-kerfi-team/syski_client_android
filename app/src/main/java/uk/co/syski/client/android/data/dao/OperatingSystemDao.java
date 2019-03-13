@@ -43,7 +43,7 @@ public interface OperatingSystemDao {
     List<OperatingSystemEntity> get(UUID... Ids);
 
     @Query("SELECT * FROM OperatingSystemEntity INNER JOIN SystemOSEntity ON Id = OSId WHERE SystemId IN (:Ids)")
-    List<OperatingSystemEntity> getSystemOperatingSystems(UUID... Ids);
+    List<OperatingSystemModel> getSystemOperatingSystems(UUID... Ids);
 
     @Update
     void update (OperatingSystemEntity osEntity);

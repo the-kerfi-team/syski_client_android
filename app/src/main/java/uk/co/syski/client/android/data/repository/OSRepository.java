@@ -12,6 +12,7 @@ import uk.co.syski.client.android.data.dao.OperatingSystemDao;
 import uk.co.syski.client.android.data.dao.linking.SystemOSDao;
 import uk.co.syski.client.android.data.entity.OperatingSystemEntity;
 import uk.co.syski.client.android.data.entity.linking.SystemOSEntity;
+import uk.co.syski.client.android.model.OperatingSystemModel;
 
 public class OSRepository {
 
@@ -19,7 +20,7 @@ public class OSRepository {
     private MutableLiveData<List<OperatingSystemEntity>> mOSEntities;
     private boolean mDataUpdated;
     private UUID mActiveSystemId;
-    private MutableLiveData<List<OperatingSystemEntity>> mSystemOSEntities;
+    private MutableLiveData<List<OperatingSystemModel>> mSystemOSEntities;
     private SystemOSDao mSystemOSDao;
 
     public OSRepository() {
@@ -41,7 +42,7 @@ public class OSRepository {
         return mOSEntities;
     }
 
-    public MutableLiveData<List<OperatingSystemEntity>> get(final UUID systemId) {
+    public MutableLiveData<List<OperatingSystemModel>> get(final UUID systemId) {
         if (mDataUpdated || mActiveSystemId == null || !mActiveSystemId.equals(systemId))
         {
             mActiveSystemId = systemId;
@@ -135,15 +136,15 @@ public class OSRepository {
         }
     }
 
-    private static class getSystemOSAsyncTask extends AsyncTask<UUID, Void, List<OperatingSystemEntity>> {
+    private static class getSystemOSAsyncTask extends AsyncTask<UUID, Void, List<OperatingSystemModel>> {
         private OperatingSystemDao mAsyncTaskDao;
 
         getSystemOSAsyncTask(OperatingSystemDao dao) {
             mAsyncTaskDao = dao;
         }
 
-        protected List<OperatingSystemEntity> doInBackground(final UUID... uuids) {
-            List<OperatingSystemEntity> result = mAsyncTaskDao.getSystemOperatingSystems(uuids);
+        protected List<OperatingSystemModel> doInBackground(final UUID... uuids) {
+            List<OperatingSystemModel> result = mAsyncTaskDao.getSystemOperatingSystems(uuids);
             return mAsyncTaskDao.getSystemOperatingSystems(uuids);
         }
     }

@@ -13,13 +13,13 @@ import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.data.entity.data.CPUDataEntity;
 import uk.co.syski.client.android.data.repository.SystemCPUDataRepository;
 
-public class SystemCPULoadDataViewModel extends AndroidViewModel {
+public class SystemCPUDataViewModel extends AndroidViewModel {
 
     private SystemCPUDataRepository mCPUDataRepository;
     private MutableLiveData<List<CPUDataEntity>> mSystemDataCPUList;
     private UUID systemId;
 
-    public SystemCPULoadDataViewModel(@NonNull Application application) {
+    public SystemCPUDataViewModel(@NonNull Application application) {
         super(application);
         systemId = UUID.fromString(application.getSharedPreferences(application.getString(R.string.preference_sysID_key), Context.MODE_PRIVATE).getString(application.getString(R.string.preference_sysID_key), null));
         mCPUDataRepository = new SystemCPUDataRepository(application, systemId);

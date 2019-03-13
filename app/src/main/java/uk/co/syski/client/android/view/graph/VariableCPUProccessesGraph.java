@@ -10,13 +10,12 @@ import android.support.v7.app.AppCompatActivity;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.util.List;
 
 import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.data.entity.data.CPUDataEntity;
-import uk.co.syski.client.android.viewmodel.SystemCPULoadDataViewModel;
+import uk.co.syski.client.android.viewmodel.SystemCPUDataViewModel;
 
 public class VariableCPUProccessesGraph extends AppCompatActivity {
 
@@ -48,7 +47,7 @@ public class VariableCPUProccessesGraph extends AppCompatActivity {
         graph.getGridLabelRenderer().setNumHorizontalLabels(6);
         graph.getGridLabelRenderer().setHumanRounding(false);
 
-        SystemCPULoadDataViewModel viewModel = ViewModelProviders.of(this).get(SystemCPULoadDataViewModel.class);
+        SystemCPUDataViewModel viewModel = ViewModelProviders.of(this).get(SystemCPUDataViewModel.class);
         viewModel.get().observe(this, new Observer<List<CPUDataEntity>>() {
             @Override
             public void onChanged(@Nullable List<CPUDataEntity> cpuEntities) {
