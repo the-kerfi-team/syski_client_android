@@ -11,6 +11,7 @@ import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.util.List;
+import java.util.Random;
 
 import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.data.entity.CPUEntity;
@@ -23,6 +24,7 @@ public class VariableCPUGraph extends AppCompatActivity {
 
     GraphView graph;
     LineGraphSeries<DataPoint> loadSeries;
+    private int graph2LastXValue = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +32,14 @@ public class VariableCPUGraph extends AppCompatActivity {
         setContentView(R.layout.activity_variable_cpugraph);
         graph = findViewById(R.id.graph);
 
-        loadSeries = new LineGraphSeries<>();
+        loadSeries = new LineGraphSeries<DataPoint>(generateData());
         graph.addSeries(loadSeries);
+        graph.getViewport().setYAxisBoundsManual(true);
+        graph.getViewport().setMinY(0);
+        graph.getViewport().setMaxY(100);
+        graph.getViewport().setXAxisBoundsManual(true);
+        graph.getViewport().setMinX(0);
+        graph.getViewport().setMaxX(100);
 
         SystemCPULoadDataViewModel viewModel = ViewModelProviders.of(this).get(SystemCPULoadDataViewModel.class);
         viewModel.get().observe(this, new Observer<List<CPUDataEntity>>() {
@@ -40,13 +48,33 @@ public class VariableCPUGraph extends AppCompatActivity {
                 if (cpuEntities.size() > 0)
                 {
                     for (int i = 0; i < cpuEntities.size(); i++) {
+                        graph2LastXValue += 10;
                         CPUDataEntity current = cpuEntities.get(i);
-                        loadSeries.appendData(new DataPoint(current.Load, current.CollectionDateTime.getTime()), true, 40);
+                        loadSeries.appendData(new DataPoint(current.Load, graph2LastXValue), true, 40);
                     }
-
                 }
             }
         });
 
     }
+
+    private DataPoint[] generateData() {
+        int count = 30;
+        DataPoint[] values = new DataPoint[count];
+        for (int i=0; i<count; i++) {
+            double x = i;
+            double f = mRand.nextDouble()*0.15+0.3;
+            double y = Math.sin(i*f+2) + mRand.nextDouble()*0.3;
+            DataPoint v = new DataPoint(x, y);
+            values[i] = v;
+        }
+        return values;
+    }
+
+    double mLastRandom = 2;
+    Random mRand = new Random();
+    private double getRandom() {
+        return mLastRandom += mRand.nextDouble()*0.5 - 0.25;
+    }
+
 }
