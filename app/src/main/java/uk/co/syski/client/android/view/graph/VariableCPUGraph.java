@@ -22,7 +22,6 @@ import uk.co.syski.client.android.viewmodel.SystemCPUViewModel;
 public class VariableCPUGraph extends AppCompatActivity {
 
     GraphView graph;
-    DataPoint[] load;
     LineGraphSeries<DataPoint> loadSeries;
 
     @Override
@@ -31,21 +30,20 @@ public class VariableCPUGraph extends AppCompatActivity {
         setContentView(R.layout.activity_variable_cpugraph);
         graph = findViewById(R.id.graph);
 
+        loadSeries = new LineGraphSeries<>();
+        graph.addSeries(loadSeries);
+
         SystemCPULoadDataViewModel viewModel = ViewModelProviders.of(this).get(SystemCPULoadDataViewModel.class);
         viewModel.get().observe(this, new Observer<List<CPUDataEntity>>() {
             @Override
             public void onChanged(@Nullable List<CPUDataEntity> cpuEntities) {
                 if (cpuEntities.size() > 0)
                 {
-                    load = new DataPoint[cpuEntities.size()];
-
                     for (int i = 0; i < cpuEntities.size(); i++) {
                         CPUDataEntity current = cpuEntities.get(i);
-                        load[i] = new DataPoint(current.Load, current.CollectionDateTime.getTime());
+                        loadSeries.appendData(new DataPoint(current.Load, current.CollectionDateTime.getTime()), true, 40);
                     }
 
-                    loadSeries = new LineGraphSeries<>(load);
-                    graph.addSeries(loadSeries);
                 }
             }
         });

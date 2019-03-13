@@ -27,7 +27,7 @@ public class SystemCPUDataRepository {
     private Timer mTimer;
     private TimerTask mTimerTask;
     private Handler mTimerHandler = new Handler();
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSSZ");
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS");
 
     private Application mApplication;
     private final MutableLiveData<List<CPUDataEntity>> mCPUDataEntity;
