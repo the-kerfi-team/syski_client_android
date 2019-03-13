@@ -61,8 +61,8 @@ public class RAMRepository {
         updateData();
     }
 
-    public void insert(RAMEntity ramEntity, UUID systemId) {
-        new RAMRepository.insertSystemRAMAsyncTask(mRAMDao, mSystemRamDao, systemId).execute(ramEntity);
+    public void insert(RAMEntity ramEntity, UUID systemId, int slot) {
+        new RAMRepository.insertSystemRAMAsyncTask(mRAMDao, mSystemRamDao, systemId, slot).execute(ramEntity);
         updateData();
         if (mActiveSystemId != null && mActiveSystemId.equals(systemId))
         {
@@ -157,11 +157,13 @@ public class RAMRepository {
         private RAMDao mAsyncTaskRAMDao;
         private SystemRAMDao mAsyncTaskSystemRAMDao;
         private UUID mSystemId;
+        private int mSlot;
 
-        insertSystemRAMAsyncTask(RAMDao ramDao, SystemRAMDao systemDao, UUID systemId) {
+        insertSystemRAMAsyncTask(RAMDao ramDao, SystemRAMDao systemDao, UUID systemId, int slot) {
             mAsyncTaskRAMDao = ramDao;
             mAsyncTaskSystemRAMDao = systemDao;
             mSystemId = systemId;
+            mSlot = slot;
         }
 
         protected Void doInBackground(final RAMEntity... ramEntities) {
@@ -170,6 +172,7 @@ public class RAMRepository {
             for (RAMEntity ramEntity: ramEntities) {
                 systemRAMEntity.RAMId = ramEntity.Id;
                 systemRAMEntity.SystemId = mSystemId;
+                systemRAMEntity.DimmSlot = mSlot;
                 mAsyncTaskSystemRAMDao.insert(systemRAMEntity);
             }
             return null;

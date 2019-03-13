@@ -64,8 +64,8 @@ public class StorageRepository {
         updateSystemStorageData();
     }
 
-    public void insert(StorageEntity storageEntity, UUID systemId) {
-        new StorageRepository.insertSystemStorageAsyncTask(mStorageDao, mSystemStorageDao, systemId).execute(storageEntity);
+    public void insert(StorageEntity storageEntity, UUID systemId, int slot) {
+        new StorageRepository.insertSystemStorageAsyncTask(mStorageDao, mSystemStorageDao, systemId, slot).execute(storageEntity);
         updateData();
         if (mActiveSystemId != null && mActiveSystemId.equals(systemId))
         {
@@ -161,11 +161,13 @@ public class StorageRepository {
         private StorageDao mAsyncTaskStorageDao;
         private SystemStorageDao mAsyncTaskSystemStorageDao;
         private UUID mSystemId;
+        private int mSlot;
 
-        insertSystemStorageAsyncTask(StorageDao storageDao, SystemStorageDao systemDao, UUID systemId) {
+        insertSystemStorageAsyncTask(StorageDao storageDao, SystemStorageDao systemDao, UUID systemId, int slot) {
             mAsyncTaskStorageDao = storageDao;
             mAsyncTaskSystemStorageDao = systemDao;
             mSystemId = systemId;
+            mSlot = slot;
         }
 
         protected Void doInBackground(final StorageEntity... storageEntities) {
@@ -173,6 +175,7 @@ public class StorageRepository {
             for (StorageEntity storageEntity: storageEntities) {
                 systemStorageEntity.StorageId = storageEntity.Id;
                 systemStorageEntity.SystemId = mSystemId;
+                systemStorageEntity.Slot = mSlot;
                 mAsyncTaskSystemStorageDao.insert(systemStorageEntity);
             }
             return null;

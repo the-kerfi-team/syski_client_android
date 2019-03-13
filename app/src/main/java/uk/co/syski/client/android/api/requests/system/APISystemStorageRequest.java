@@ -57,16 +57,13 @@ public class APISystemStorageRequest extends APIAuthorizationRequest<JSONArray> 
                 SystemStorageEntity systemStorageEntity = SyskiCache.GetDatabase().SystemStorageDao().get(mSystemId, i);
                 if (systemStorageEntity == null)
                 {
-                    Repository.getInstance().getStorageRepository().insert(storageEntity, mSystemId);
+                    Repository.getInstance().getStorageRepository().insert(storageEntity, mSystemId, i);
                 }
                 else
                 {
                     systemStorageEntity.StorageId = storageEntity.Id;
                     systemStorageEntity.Slot = i;
                 }
-
-
-                Repository.getInstance().getStorageRepository().insert(storageEntity,mSystemId);
 
             }
 

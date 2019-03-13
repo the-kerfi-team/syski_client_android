@@ -2,9 +2,7 @@ package uk.co.syski.client.android.view;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,14 +10,14 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.GridLayout;
 import android.widget.TextView;
 
 import java.util.List;
 
 import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.data.entity.CPUEntity;
-import uk.co.syski.client.android.view.graph.VariableCPUGraph;
+import uk.co.syski.client.android.view.graph.VariableCPULoadGraph;
+import uk.co.syski.client.android.view.graph.VariableCPUProccessesGraph;
 import uk.co.syski.client.android.viewmodel.SystemCPUViewModel;
 
 public class CPUActivity extends AppCompatActivity {
@@ -51,9 +49,15 @@ public class CPUActivity extends AppCompatActivity {
         });
     }
 
-    public void loadGraphOnClick()
+    public void loadGraphOnClick(View view)
     {
-        Intent cpuGraph = new Intent(this, VariableCPUGraph.class);
+        Intent cpuGraph = new Intent(this, VariableCPULoadGraph.class);
+        startActivity(cpuGraph);
+    }
+
+    public void processesGraphOnClick(View view)
+    {
+        Intent cpuGraph = new Intent(this, VariableCPUProccessesGraph.class);
         startActivity(cpuGraph);
     }
 
@@ -86,8 +90,4 @@ public class CPUActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void showGraph(View view) {
-        Intent intent = new Intent(this, VariableCPUGraph.class);
-        startActivity(intent);
-    }
 }
