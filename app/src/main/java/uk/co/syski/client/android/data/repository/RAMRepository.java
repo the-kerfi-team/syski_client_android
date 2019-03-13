@@ -1,7 +1,6 @@
 package uk.co.syski.client.android.data.repository;
 
 import android.arch.lifecycle.MutableLiveData;
-import android.arch.persistence.room.Dao;
 import android.os.AsyncTask;
 
 import java.util.List;
@@ -10,11 +9,7 @@ import java.util.concurrent.ExecutionException;
 
 import uk.co.syski.client.android.data.SyskiCache;
 import uk.co.syski.client.android.data.dao.RAMDao;
-import uk.co.syski.client.android.data.dao.RAMDao;
 import uk.co.syski.client.android.data.dao.linking.SystemRAMDao;
-import uk.co.syski.client.android.data.dao.linking.SystemRAMDao;
-import uk.co.syski.client.android.data.entity.RAMEntity;
-import uk.co.syski.client.android.data.entity.RAMEntity;
 import uk.co.syski.client.android.data.entity.RAMEntity;
 import uk.co.syski.client.android.data.entity.linking.SystemRAMEntity;
 
@@ -173,7 +168,7 @@ public class RAMRepository {
                 systemRAMEntity.RAMId = ramEntity.Id;
                 systemRAMEntity.SystemId = mSystemId;
                 systemRAMEntity.DimmSlot = mSlot;
-                mAsyncTaskSystemRAMDao.insert(systemRAMEntity);
+                mAsyncTaskSystemRAMDao.upsert(systemRAMEntity);
             }
             return null;
         }

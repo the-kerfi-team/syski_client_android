@@ -1,7 +1,6 @@
 package uk.co.syski.client.android.data.repository;
 
 import android.arch.lifecycle.MutableLiveData;
-import android.arch.persistence.room.Dao;
 import android.os.AsyncTask;
 
 import java.util.List;
@@ -9,15 +8,9 @@ import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 import uk.co.syski.client.android.data.SyskiCache;
-import uk.co.syski.client.android.data.dao.GPUDao;
 import uk.co.syski.client.android.data.dao.StorageDao;
-import uk.co.syski.client.android.data.dao.SystemDao;
-import uk.co.syski.client.android.data.dao.linking.SystemGPUDao;
 import uk.co.syski.client.android.data.dao.linking.SystemStorageDao;
-import uk.co.syski.client.android.data.entity.GPUEntity;
 import uk.co.syski.client.android.data.entity.StorageEntity;
-import uk.co.syski.client.android.data.entity.SystemEntity;
-import uk.co.syski.client.android.data.entity.linking.SystemGPUEntity;
 import uk.co.syski.client.android.data.entity.linking.SystemStorageEntity;
 
 public class StorageRepository {
@@ -176,7 +169,7 @@ public class StorageRepository {
                 systemStorageEntity.StorageId = storageEntity.Id;
                 systemStorageEntity.SystemId = mSystemId;
                 systemStorageEntity.Slot = mSlot;
-                mAsyncTaskSystemStorageDao.insert(systemStorageEntity);
+                mAsyncTaskSystemStorageDao.upsert(systemStorageEntity);
             }
             return null;
         }
