@@ -1,6 +1,8 @@
 package uk.co.syski.client.android.view.adapters;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +47,7 @@ public class StorageAdapter extends ArrayAdapter{
         model.setText(listItems.get(position).ModelName);
         manufacturer.setText(listItems.get(position).ManufacturerName);
 
-        HeadedValueModel size = new HeadedValueModel("Size", Long.toString(listItems.get(position).MemoryBytes), R.drawable.ic_memory_size);
+        HeadedValueModel size = new HeadedValueModel("Size", formatBytes(listItems.get(position).MemoryBytes), R.drawable.ic_memory_size);
 
         List<HeadedValueModel> dataValues = new ArrayList<>();
         dataValues.add(size);
@@ -62,6 +64,24 @@ public class StorageAdapter extends ArrayAdapter{
         manufacturer = ramItem.findViewById(R.id.valueManufacturer);
         listView = ramItem.findViewById(R.id.dataList);
         image = ramItem.findViewById(R.id.imageComponent);
+    }
+
+    public String formatBytes(long bytes) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        String storageUnits = sp.getString("pref_general_storage_unit", context.getString(R.string.pref_general_storage_unit));
+        switch (storageUnits) {
+            case "TB":
+                bytes /= 1000;
+            case "GB":
+                bytes /= 1000;
+            case "MB":
+                bytes /= 1000;
+            case "KB":
+                bytes /= 1000;
+                break;
+        }
+
+        return bytes + storageUnits;
     }
 
 }
