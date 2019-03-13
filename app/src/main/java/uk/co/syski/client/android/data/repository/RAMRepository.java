@@ -167,7 +167,7 @@ public class RAMRepository {
         }
 
         protected Void doInBackground(final RAMEntity... ramEntities) {
-            mAsyncTaskRAMDao.insert(ramEntities);
+           // mAsyncTaskRAMDao.insert(ramEntities);
             SystemRAMEntity systemRAMEntity = new SystemRAMEntity();
             for (RAMEntity ramEntity: ramEntities) {
                 systemRAMEntity.RAMId = ramEntity.Id;
