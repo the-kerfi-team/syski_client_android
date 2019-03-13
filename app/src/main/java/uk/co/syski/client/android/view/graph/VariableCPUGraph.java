@@ -32,7 +32,7 @@ public class VariableCPUGraph extends AppCompatActivity {
         setContentView(R.layout.activity_variable_cpugraph);
         graph = findViewById(R.id.graph);
 
-        loadSeries = new LineGraphSeries<DataPoint>(generateData());
+        loadSeries = new LineGraphSeries<DataPoint>();
         graph.addSeries(loadSeries);
         graph.getViewport().setYAxisBoundsManual(true);
         graph.getViewport().setMinY(0);
@@ -48,33 +48,14 @@ public class VariableCPUGraph extends AppCompatActivity {
                 if (cpuEntities.size() > 0)
                 {
                     for (int i = 0; i < cpuEntities.size(); i++) {
-                        graph2LastXValue += 10;
                         CPUDataEntity current = cpuEntities.get(i);
-                        loadSeries.appendData(new DataPoint(current.Load, graph2LastXValue), true, 40);
+                        loadSeries.appendData(new DataPoint(graph2LastXValue, current.Load), true, 40);
+                        graph2LastXValue += 10;
                     }
                 }
             }
         });
 
     }
-
-    private DataPoint[] generateData() {
-        int count = 30;
-        DataPoint[] values = new DataPoint[count];
-        for (int i=0; i<count; i++) {
-            double x = i;
-            double f = mRand.nextDouble()*0.15+0.3;
-            double y = Math.sin(i*f+2) + mRand.nextDouble()*0.3;
-            DataPoint v = new DataPoint(x, y);
-            values[i] = v;
-        }
-        return values;
-    }
-
-    double mLastRandom = 2;
-    Random mRand = new Random();
-    private double getRandom() {
-        return mLastRandom += mRand.nextDouble()*0.5 - 0.25;
-    }
-
+    
 }

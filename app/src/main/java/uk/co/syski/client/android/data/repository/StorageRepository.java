@@ -169,7 +169,6 @@ public class StorageRepository {
         }
 
         protected Void doInBackground(final StorageEntity... storageEntities) {
-            mAsyncTaskStorageDao.insert(storageEntities);
             SystemStorageEntity systemStorageEntity = new SystemStorageEntity();
             for (StorageEntity storageEntity: storageEntities) {
                 systemStorageEntity.StorageId = storageEntity.Id;
