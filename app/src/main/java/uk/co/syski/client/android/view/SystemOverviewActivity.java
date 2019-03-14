@@ -20,6 +20,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import uk.co.syski.client.android.R;
+import uk.co.syski.client.android.api.requests.system.APISystemShutdownRequest;
 import uk.co.syski.client.android.view.adapters.SysListOverviewAdapter;
 import uk.co.syski.client.android.api.VolleySingleton;
 import uk.co.syski.client.android.api.requests.auth.APITokenRequest;
@@ -40,6 +41,7 @@ public class SystemOverviewActivity extends AppCompatActivity {
     ListView listView;
     OperatingSystemModel sysOS;
     LinearLayout linearLayout;
+    SystemSummaryViewModel viewModel;
 
     List<OperatingSystemModel> osList;
 
@@ -70,7 +72,7 @@ public class SystemOverviewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sys_overview);
         initViews();
 
-        SystemSummaryViewModel viewModel = ViewModelProviders.of(this).get(SystemSummaryViewModel.class);
+        viewModel = ViewModelProviders.of(this).get(SystemSummaryViewModel.class);
         viewModel.get().observe(this, new Observer<SystemEntity>() {
             @Override
             public void onChanged(@Nullable SystemEntity systemEntity) {
@@ -111,23 +113,11 @@ public class SystemOverviewActivity extends AppCompatActivity {
     }
 
     public void shutdownOnClick(View v) {
-        UserEntity user = null;
-        user = Repository.getInstance().getUserRepository().getUser();
-        if (user == null || user.TokenExpiry == null || Calendar.getInstance().getTime().after(user.TokenExpiry))
-        {
-            VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(new APITokenRequest(getApplicationContext(), user.Id));
-        }
-        //VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(new APISystemShutdownRequest(getApplicationContext(), system.Id));
+        viewModel.shutdownOnClick();
     }
 
     public void restartOnClick(View v) {
-        UserEntity user = null;
-        user = Repository.getInstance().getUserRepository().getUser();
-        if (user == null || user.TokenExpiry == null || Calendar.getInstance().getTime().after(user.TokenExpiry))
-        {
-            VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(new APITokenRequest(getApplicationContext(), user.Id));
-        }
-        //VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(new APISystemRestartRequest(getApplicationContext(), system.Id));
+        viewModel.restartOnClick();
     }
 
     private void initViews(){
