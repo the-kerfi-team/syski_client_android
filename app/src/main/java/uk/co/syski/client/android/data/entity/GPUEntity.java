@@ -14,16 +14,4 @@ public class GPUEntity {
     public String ModelName;
 
     public String ManufacturerName;
-
-    public String ArchitectureName;
-
-    public int ClockSpeed;
-
-    public int CoreCount;
-
-    public int ThreadCount;
-
-    public String MemoryTypeName;
-
-    public long MemoryBytes;
 }

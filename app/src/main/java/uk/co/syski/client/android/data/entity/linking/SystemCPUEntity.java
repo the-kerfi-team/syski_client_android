@@ -2,6 +2,7 @@ package uk.co.syski.client.android.data.entity.linking;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
 import java.util.UUID;

@@ -19,6 +19,7 @@ import java.util.UUID;
 import uk.co.syski.client.android.api.requests.APIAuthorizationRequest;
 import uk.co.syski.client.android.data.SyskiCache;
 import uk.co.syski.client.android.data.entity.SystemEntity;
+import uk.co.syski.client.android.data.repository.Repository;
 
 public class APISystemsRequest extends APIAuthorizationRequest<JSONArray> {
 
@@ -33,7 +34,7 @@ public class APISystemsRequest extends APIAuthorizationRequest<JSONArray> {
             JSONArray jsonArray = new JSONArray(new String(response.data, HttpHeaderParser.parseCharset(response.headers, PROTOCOL_CHARSET)));
 
             for (int i = 0; i < jsonArray.length(); i++) {
-                SystemEntity systemEntity = SyskiCache.GetDatabase().SystemDao().getSystem(UUID.fromString(((JSONObject) jsonArray.get(i)).getString("id")));
+                SystemEntity systemEntity = SyskiCache.GetDatabase().SystemDao().get(UUID.fromString(((JSONObject) jsonArray.get(i)).getString("id")));
                 if (systemEntity == null)
                 {
                     systemEntity = new SystemEntity();
@@ -42,15 +43,15 @@ public class APISystemsRequest extends APIAuthorizationRequest<JSONArray> {
                     systemEntity.ModelName = ((JSONObject) jsonArray.get(i)).getString("modelName");
                     systemEntity.ManufacturerName = ((JSONObject) jsonArray.get(i)).getString("manufacturerName");
                     systemEntity.LastUpdated = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS").parse(((JSONObject) jsonArray.get(i)).getString("lastUpdated"));
-                    SyskiCache.GetDatabase().SystemDao().InsertAll(systemEntity);
+                    Repository.getInstance().getSystemRepository().insert(systemEntity);
                 }
                 else
                 {
-                    SyskiCache.GetDatabase().SystemDao().setSystem(UUID.fromString(((JSONObject) jsonArray.get(i)).getString("id")),
-                            ((JSONObject) jsonArray.get(i)).getString("hostName"),
-                            ((JSONObject) jsonArray.get(i)).getString("modelName"),
-                            ((JSONObject) jsonArray.get(i)).getString("manufacturerName"),
-                            new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS").parse(((JSONObject) jsonArray.get(i)).getString("lastUpdated")));
+                    systemEntity.HostName = ((JSONObject) jsonArray.get(i)).getString("hostName");
+                    systemEntity.ModelName = ((JSONObject) jsonArray.get(i)).getString("modelName");
+                    systemEntity.ManufacturerName = ((JSONObject) jsonArray.get(i)).getString("manufacturerName");
+                    systemEntity.LastUpdated = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS").parse(((JSONObject) jsonArray.get(i)).getString("lastUpdated"));
+                    Repository.getInstance().getSystemRepository().update(systemEntity);
                 }
             }
 

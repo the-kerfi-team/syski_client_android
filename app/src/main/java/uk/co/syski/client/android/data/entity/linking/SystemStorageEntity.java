@@ -14,7 +14,8 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
 @Entity(
     primaryKeys = {
         "SystemId",
-        "StorageId"
+        "StorageId",
+        "Slot"
     },
     foreignKeys = {
         @ForeignKey(
@@ -37,4 +38,7 @@ public class SystemStorageEntity {
 
     @NonNull
     public UUID StorageId;
+
+    @NonNull
+    public int Slot;
 }

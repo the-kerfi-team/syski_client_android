@@ -8,5 +8,5 @@ import uk.co.syski.client.android.data.entity.linking.SystemGPUEntity;
 @Dao
 public interface SystemGPUDao {
     @Insert
-    void InsertAll(SystemGPUEntity... systemGPUEntities);
+    void insert(SystemGPUEntity... systemGPUEntities);
 }

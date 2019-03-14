@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".view.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Splash">
             <intent-filter>
@@ -25,58 +25,63 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SysListMenu"
+            android:name=".view.SystemListMenu"
             android:label="@string/title_activity_sys_list_menu"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".view.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="uk.co.syski.client.android.MainActivity" />
+                android:value="uk.co.syski.client.android.view.MainActivity" />
         </activity>
         <activity
-            android:name=".SettingsActivity"
+            android:name=".view.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".SysListMenu"
+            android:parentActivityName=".view.SystemListMenu"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".SysOverviewActivity"
+            android:name=".view.SystemOverviewActivity"
             android:label="@string/sys_overview_lbl"
-            android:parentActivityName=".SysListMenu"
+            android:parentActivityName=".view.SystemListMenu"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
             android:screenOrientation="fullSensor"
             tools:replace="screenOrientation" />
         <activity
-            android:name=".CPUActivity"
+            android:name=".view.CPUActivity"
             android:label="@string/sys_cpu_lbl"
-            android:parentActivityName=".SysOverviewActivity"
+            android:parentActivityName=".view.SystemOverviewActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".RAMActivity"
+            android:name=".view.RAMActivity"
             android:label="@string/sys_ram_lbl"
-            android:parentActivityName=".SysOverviewActivity"
+            android:parentActivityName=".view.SystemOverviewActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".StorageActivity"
+            android:name=".view.SystemStorageActivity"
             android:label="@string/sys_stg_lbl"
-            android:parentActivityName=".SysOverviewActivity"
+            android:parentActivityName=".view.SystemOverviewActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".GPUActivity"
+            android:name=".view.GPUActivity"
             android:label="@string/sys_gpu_lbl"
-            android:parentActivityName=".SysOverviewActivity"
+            android:parentActivityName=".view.SystemOverviewActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".MOBOActivity"
+            android:name=".view.MOBOActivity"
             android:label="@string/sys_mobo_lbl"
-            android:parentActivityName=".SysOverviewActivity"
+            android:parentActivityName=".view.SystemOverviewActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".OSActivity"
+        <activity
+            android:name=".view.SystemOSActivity"
             android:label="@string/sys_os_lbl"
-            android:parentActivityName=".SysOverviewActivity"
-            android:screenOrientation="portrait"/>
+            android:parentActivityName=".view.SystemOverviewActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".view.graph.VariableCPULoadGraph" />
+        <activity android:name=".view.graph.VariableStorageGraph" />
+        <activity android:name=".view.graph.VariableNetworkGraph"></activity>
+        <activity android:name=".view.graph.VariableCPUProccessesGraph" />
     </application>
 
 </manifest>

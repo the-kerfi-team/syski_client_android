@@ -1,0 +1,26 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- NOTE: EditTextPreference accepts EditText attributes. -->
+    <!-- NOTE: EditTextPreference's summary should be set to its value by the activity code. -->
+
+    <PreferenceCategory
+        android:title="@string/pref_general_value_choice_heading">
+        <ListPreference
+            android:defaultValue="@string/pref_general_storage_unit_default"
+            android:entries="@array/pref_general_storage_value_list"
+            android:entryValues="@array/pref_general_storage_value_list"
+            android:key="@string/pref_general_storage_unit"
+            android:title="@string/pref_general_storage_value_title" />
+        <ListPreference
+            android:defaultValue="@string/pref_general_ram_unit_default"
+            android:entries="@array/pref_general_storage_value_list"
+            android:entryValues="@array/pref_general_storage_value_list"
+            android:key="@string/pref_general_ram_unit"
+            android:title="@string/pref_general_ram_value_title" />
+</PreferenceCategory>
+
+    <!-- NOTE: Hide buttons to simplify the userEntitiessers can touch outside the dialog to
+         dismiss it. -->
+    <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->
+
+</PreferenceScreen>

@@ -16,10 +16,9 @@ import java.util.UUID;
 
 import uk.co.syski.client.android.api.requests.APIAuthorizationRequest;
 import uk.co.syski.client.android.data.SyskiCache;
-import uk.co.syski.client.android.data.entity.CPUEntity;
 import uk.co.syski.client.android.data.entity.RAMEntity;
-import uk.co.syski.client.android.data.entity.linking.SystemCPUEntity;
 import uk.co.syski.client.android.data.entity.linking.SystemRAMEntity;
+import uk.co.syski.client.android.data.repository.Repository;
 
 public class APISystemRAMRequest extends APIAuthorizationRequest<JSONArray> {
 
@@ -45,15 +44,24 @@ public class APISystemRAMRequest extends APIAuthorizationRequest<JSONArray> {
                     ramEntity.ModelName = ((JSONObject) jsonArray.get(i)).getString("modelName");
                     ramEntity.MemoryTypeName = ((JSONObject) jsonArray.get(i)).getString("memoryTypeName");
                     ramEntity.MemoryBytes = Long.parseLong(((JSONObject) jsonArray.get(i)).getString("memoryBytes"));
-
-                    SyskiCache.GetDatabase().RAMDao().InsertAll(ramEntity);
-
-                    SystemRAMEntity systemRAMEntity = new SystemRAMEntity();
-                    systemRAMEntity.RAMId = ramEntity.Id;
-                    systemRAMEntity.SystemId = mSystemId;
-                    SyskiCache.GetDatabase().SystemRAMDao().InsertAll(systemRAMEntity);
+                    Repository.getInstance().getRAMRepository().insert(ramEntity);
                 } else {
-                    // TODO Update RAM method
+                    ramEntity.Id = UUID.fromString(((JSONObject) jsonArray.get(i)).getString("id"));
+                    ramEntity.ManufacturerName = ((JSONObject) jsonArray.get(i)).getString("manufacturerName");
+                    ramEntity.ModelName = ((JSONObject) jsonArray.get(i)).getString("modelName");
+                    ramEntity.MemoryTypeName = ((JSONObject) jsonArray.get(i)).getString("memoryTypeName");
+                    ramEntity.MemoryBytes = Long.parseLong(((JSONObject) jsonArray.get(i)).getString("memoryBytes"));
+                    Repository.getInstance().getRAMRepository().update(ramEntity);
+                }
+
+                SystemRAMEntity systemRAMEntity = SyskiCache.GetDatabase().SystemRAMDao().get(mSystemId, i);
+                if (systemRAMEntity == null)
+                {
+                    Repository.getInstance().getRAMRepository().insert(ramEntity, mSystemId, i);
+                }
+                else
+                {
+                    systemRAMEntity.RAMId = ramEntity.Id;
                 }
             }
 
