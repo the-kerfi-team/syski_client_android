@@ -1,6 +1,5 @@
 package uk.co.syski.client.android.view;
 
-import android.app.Activity;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
@@ -29,11 +28,11 @@ import java.util.List;
 import java.util.UUID;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.view.adapters.SystemListAdapter;
 import uk.co.syski.client.android.api.APIThread;
 import uk.co.syski.client.android.data.SyskiCache;
 import uk.co.syski.client.android.data.entity.SystemEntity;
 import uk.co.syski.client.android.data.repository.Repository;
+import uk.co.syski.client.android.view.adapters.SystemListAdapter;
 import uk.co.syski.client.android.viewmodel.SystemListViewModel;
 
 public class SystemListMenu extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -178,10 +177,21 @@ public class SystemListMenu extends AppCompatActivity implements NavigationView.
                     boolean systemNotFound = true;
                     UUID systemId = UUID.fromString(result.getContents());
 
+                    SystemListViewModel model = ViewModelProviders.of(this).get(SystemListViewModel.class);
+                    List<SystemEntity> sys = model.get().getValue();
+                    for(SystemEntity system : sys){
+                        if(system.Id.equals(systemId)){
+                            systemNotFound = false;
+                        }
+                    }
+
+
+
 
                     if (!systemNotFound) {
                         Intent intent = new Intent(this, SystemOverviewActivity.class);
-                        intent.putExtra("SYSTEMID", systemId.toString());
+                        prefEditor.putString(getString(R.string.preference_sysID_key),systemId.toString());
+                        prefEditor.apply();
                         startActivity(intent);
                     } else {
                         Toast.makeText(this, "Error: System does not exist", Toast.LENGTH_SHORT).show();
