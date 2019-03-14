@@ -12,18 +12,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 import uk.co.syski.client.android.api.requests.APIAuthorizationRequest;
 import uk.co.syski.client.android.data.SyskiCache;
-import uk.co.syski.client.android.data.dao.linking.SystemCPUDao;
 import uk.co.syski.client.android.data.entity.CPUEntity;
-import uk.co.syski.client.android.data.entity.SystemEntity;
-import uk.co.syski.client.android.data.entity.linking.SystemCPUEntity;
 import uk.co.syski.client.android.data.repository.Repository;
 
 public class APISystemCPURequest extends APIAuthorizationRequest<JSONArray> {
@@ -51,7 +44,7 @@ public class APISystemCPURequest extends APIAuthorizationRequest<JSONArray> {
                     cpuEntity.ArchitectureName = ((JSONObject) jsonArray.get(i)).getString("architectureName");
                     cpuEntity.ClockSpeed = (int) Double.parseDouble(((JSONObject) jsonArray.get(i)).getString("clockSpeed"));
                     cpuEntity.CoreCount = (int) Double.parseDouble(((JSONObject) jsonArray.get(i)).getString("coreCount"));
-                    cpuEntity.ThreadCount = (int) Double.parseDouble(((JSONObject) jsonArray.get(i)).getString("clockSpeed"));
+                    cpuEntity.ThreadCount = (int) Double.parseDouble(((JSONObject) jsonArray.get(i)).getString("threadCount"));
                     Repository.getInstance().getCPURepository().insert(cpuEntity, mSystemId);
                 }
                 else
