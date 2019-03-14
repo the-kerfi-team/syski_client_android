@@ -38,7 +38,7 @@ public class VariableCPULoadGraph extends AppCompatActivity {
         graph.getViewport().setMinX(0);
         graph.getViewport().setMaxX(15);
         graph.getGridLabelRenderer().setNumHorizontalLabels(6);
-        graph.getGridLabelRenderer().setHumanRounding(false);
+        graph.getGridLabelRenderer().setHumanRounding(true);
 
         SystemCPUDataViewModel viewModel = ViewModelProviders.of(this).get(SystemCPUDataViewModel.class);
         viewModel.get().observe(this, new Observer<List<CPUDataEntity>>() {
@@ -48,9 +48,15 @@ public class VariableCPULoadGraph extends AppCompatActivity {
                 {
                     for (int i = 0; i < cpuEntities.size(); i++) {
                         CPUDataEntity current = cpuEntities.get(i);
-                        loadSeries.appendData(new DataPoint(mLastXValue, current.Load), true, 10);
+                        loadSeries.appendData(new DataPoint(mLastXValue, current.Load), true, (mLastXValue / 3 + 1));
                         mLastXValue += 3;
                     }
+
+                    graph.getViewport().setMinX(0);
+                    if (mLastXValue > 15)
+                        graph.getViewport().setMaxX(mLastXValue - 3);
+
+                    graph.getGridLabelRenderer().setNumHorizontalLabels(6);
                 }
             }
         });

@@ -78,10 +78,16 @@
             android:label="@string/sys_os_lbl"
             android:parentActivityName=".view.SystemOverviewActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".view.graph.VariableCPULoadGraph" />
+        <activity
+            android:name=".view.graph.VariableCPULoadGraph"
+            android:label="CPU Load"
+            android:parentActivityName=".view.CPUActivity" />
         <activity android:name=".view.graph.VariableStorageGraph" />
         <activity android:name=".view.graph.VariableNetworkGraph"></activity>
-        <activity android:name=".view.graph.VariableCPUProccessesGraph" />
+        <activity
+            android:name=".view.graph.VariableCPUProccessesGraph"
+            android:label="CPU Processes"
+            android:parentActivityName=".view.CPUActivity" />/>
     </application>
 
 </manifest>
