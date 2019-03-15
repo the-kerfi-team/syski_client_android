@@ -30,15 +30,18 @@ public class VariableCPULoadGraph extends AppCompatActivity {
 
         loadSeries = new LineGraphSeries<DataPoint>();
         graph.addSeries(loadSeries);
+
         graph.getViewport().setYAxisBoundsManual(true);
         graph.getViewport().setMinY(0);
         graph.getViewport().setMaxY(100);
 
         graph.getViewport().setXAxisBoundsManual(true);
         graph.getViewport().setMinX(0);
-        graph.getViewport().setMaxX(15);
-        graph.getGridLabelRenderer().setNumHorizontalLabels(6);
+        graph.getViewport().setMaxX(3);
         graph.getGridLabelRenderer().setHumanRounding(true);
+
+        graph.getGridLabelRenderer().setVerticalAxisTitle("CPU Load (%)");
+        graph.getGridLabelRenderer().setHorizontalAxisTitle("Time (s)");
 
         SystemCPUDataViewModel viewModel = ViewModelProviders.of(this).get(SystemCPUDataViewModel.class);
         viewModel.get().observe(this, new Observer<List<CPUDataEntity>>() {
@@ -53,8 +56,7 @@ public class VariableCPULoadGraph extends AppCompatActivity {
                     }
 
                     graph.getViewport().setMinX(0);
-                    if (mLastXValue > 15)
-                        graph.getViewport().setMaxX(mLastXValue - 3);
+                    graph.getViewport().setMaxX(mLastXValue - 3);
 
                     graph.getGridLabelRenderer().setNumHorizontalLabels(6);
                 }
