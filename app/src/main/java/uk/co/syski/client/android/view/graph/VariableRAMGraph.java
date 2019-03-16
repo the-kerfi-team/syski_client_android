@@ -14,10 +14,12 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 import java.util.List;
 
 import uk.co.syski.client.android.R;
+import uk.co.syski.client.android.data.entity.RAMEntity;
 import uk.co.syski.client.android.data.entity.data.CPUDataEntity;
 import uk.co.syski.client.android.data.entity.data.RAMDataEntity;
 import uk.co.syski.client.android.view.RAMActivity;
 import uk.co.syski.client.android.viewmodel.SystemRAMDataViewModel;
+import uk.co.syski.client.android.viewmodel.SystemRAMViewModel;
 
 public class VariableRAMGraph extends AppCompatActivity {
 
@@ -37,17 +39,29 @@ public class VariableRAMGraph extends AppCompatActivity {
         graph.getViewport().setYAxisBoundsManual(true);
         graph.getViewport().setMinY(0);
 
-        Intent intent = getIntent();
-        long totalRAM = intent.getLongExtra(RAMActivity.TAG, 4000);
-        graph.getViewport().setMaxY(totalRAM);
-
         graph.getViewport().setXAxisBoundsManual(true);
         graph.getViewport().setMinX(0);
         graph.getViewport().setMaxX(3);
         graph.getGridLabelRenderer().setHumanRounding(true);
 
-        graph.getGridLabelRenderer().setVerticalAxisTitle("RAM Free");
+        graph.getGridLabelRenderer().setVerticalAxisTitle("Free RAM (MB)");
         graph.getGridLabelRenderer().setHorizontalAxisTitle("Time (s)");
+
+        SystemRAMViewModel staticViewModel = ViewModelProviders.of(this).get(SystemRAMViewModel.class);
+        staticViewModel.get().observe(this, new Observer<List<RAMEntity>>() {
+            @Override
+            public void onChanged(@Nullable List<RAMEntity> ramEntities) {
+                if (ramEntities.size() > 0)
+                {
+                    long totalRAM = 0;
+                    for (int i = 0; i < ramEntities.size(); i++) {
+                        totalRAM += ramEntities.get(i).MemoryBytes;
+                    }
+
+                    graph.getViewport().setMaxY(totalRAM / (1024 * 1024));
+                }
+            }
+        });
 
         SystemRAMDataViewModel viewModel = ViewModelProviders.of(this).get(SystemRAMDataViewModel.class);
         viewModel.get().observe(this, new Observer<List<RAMDataEntity>>() {

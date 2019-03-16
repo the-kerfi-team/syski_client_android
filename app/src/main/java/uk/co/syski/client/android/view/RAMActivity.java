@@ -82,12 +82,6 @@ public class RAMActivity extends AppCompatActivity {
     public void graphOnClick(View view)
     {
         Intent ramGraph = new Intent(this, VariableRAMGraph.class);
-        long totalRAM = 0;
-        List<RAMEntity> entities = this.entities;
-        for (int i = 0; i <  entities.size(); i++) {
-            totalRAM += entities.get(i).MemoryBytes;
-        }
-        getIntent().putExtra(TAG, totalRAM / (1024 * 1024));
         startActivity(ramGraph);
     }
 

@@ -91,7 +91,7 @@
         />
         <activity
             android:name=".view.graph.VariableRAMGraph"
-            android:label="RAM Free"
+            android:label="Free RAM"
             android:parentActivityName=".view.RAMActivity" />
     </application>
 
