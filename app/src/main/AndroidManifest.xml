@@ -83,11 +83,16 @@
             android:label="CPU Load"
             android:parentActivityName=".view.CPUActivity" />
         <activity android:name=".view.graph.VariableStorageGraph" />
-        <activity android:name=".view.graph.VariableNetworkGraph"></activity>
+        <activity android:name=".view.graph.VariableNetworkGraph" />
         <activity
             android:name=".view.graph.VariableCPUProccessesGraph"
             android:label="CPU Processes"
-            android:parentActivityName=".view.CPUActivity" />/>
+            android:parentActivityName=".view.CPUActivity" />
+        />
+        <activity
+            android:name=".view.graph.VariableRAMGraph"
+            android:label="RAM Free"
+            android:parentActivityName=".view.RAMActivity" />
     </application>
 
 </manifest>
