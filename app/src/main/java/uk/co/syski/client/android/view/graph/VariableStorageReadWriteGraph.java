@@ -13,15 +13,14 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 import java.util.List;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.data.entity.data.CPUDataEntity;
 import uk.co.syski.client.android.data.entity.data.StorageDataEntity;
-import uk.co.syski.client.android.viewmodel.SystemCPUDataViewModel;
 import uk.co.syski.client.android.viewmodel.SystemStorageDataViewModel;
 
-public class VariableStorageTimeGraph extends AppCompatActivity {
+public class VariableStorageReadWriteGraph extends AppCompatActivity {
 
     GraphView graph;
-    LineGraphSeries<DataPoint> loadSeries;
+    LineGraphSeries<DataPoint> readSeries;
+    LineGraphSeries<DataPoint> writeSeries;
     private int mLastXValue = 0;
     private float currentMaxY = 100;
 
@@ -31,8 +30,11 @@ public class VariableStorageTimeGraph extends AppCompatActivity {
         setContentView(R.layout.activity_variable_cpugraph);
         graph = findViewById(R.id.graph);
 
-        loadSeries = new LineGraphSeries<DataPoint>();
-        graph.addSeries(loadSeries);
+        readSeries = new LineGraphSeries<DataPoint>();
+        graph.addSeries(readSeries);
+
+        writeSeries = new LineGraphSeries<DataPoint>();
+        graph.addSeries(writeSeries);
 
         graph.getViewport().setYAxisBoundsManual(true);
         graph.getViewport().setMinY(0);
@@ -43,7 +45,7 @@ public class VariableStorageTimeGraph extends AppCompatActivity {
         graph.getViewport().setMaxX(3);
         graph.getGridLabelRenderer().setHumanRounding(true);
 
-        graph.getGridLabelRenderer().setVerticalAxisTitle("Storage Time (s)");
+        graph.getGridLabelRenderer().setVerticalAxisTitle("Storage Reads and Writes)");
         graph.getGridLabelRenderer().setHorizontalAxisTitle("Time (s)");
 
         SystemStorageDataViewModel viewModel = ViewModelProviders.of(this).get(SystemStorageDataViewModel.class);
@@ -54,10 +56,13 @@ public class VariableStorageTimeGraph extends AppCompatActivity {
                 {
                     for (int i = 0; i < storageEntities.size(); i++) {
                         StorageDataEntity current = storageEntities.get(i);
-                        if(current.Time > currentMaxY) {
-                            currentMaxY = current.Time;
+                        if (current.Reads > currentMaxY) {
+                            currentMaxY = current.Reads;
+                        } else if (current.Writes > currentMaxY) {
+                            currentMaxY = current.Writes;
                         }
-                        loadSeries.appendData(new DataPoint(mLastXValue, current.Time), true, (mLastXValue / 3 + 1));
+                        readSeries.appendData(new DataPoint(mLastXValue, current.Reads), true, (mLastXValue / 3 + 1));
+                        writeSeries.appendData(new DataPoint(mLastXValue, current.Writes), true, (mLastXValue / 3 + 1));
                         mLastXValue += 3;
                     }
 

@@ -21,7 +21,7 @@ public class VariableStorageTransfersGraph extends AppCompatActivity {
     GraphView graph;
     LineGraphSeries<DataPoint> loadSeries;
     private int mLastXValue = 0;
-    private float currentMaxY = 0;
+    private float currentMaxY = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +41,7 @@ public class VariableStorageTransfersGraph extends AppCompatActivity {
         graph.getViewport().setMaxX(3);
         graph.getGridLabelRenderer().setHumanRounding(true);
 
-        graph.getGridLabelRenderer().setVerticalAxisTitle("Storage Time (s)");
+        graph.getGridLabelRenderer().setVerticalAxisTitle("Storage Transfers");
         graph.getGridLabelRenderer().setHorizontalAxisTitle("Time (s)");
 
         SystemStorageDataViewModel viewModel = ViewModelProviders.of(this).get(SystemStorageDataViewModel.class);

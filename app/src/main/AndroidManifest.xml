@@ -98,7 +98,12 @@
         <activity
             android:name=".view.graph.VariableStorageTransfersGraph"
             android:label="Storage Transfers"
-            android:parentActivityName=".view.SystemStorageActivity" ></activity>
+            android:parentActivityName=".view.SystemStorageActivity" />
+        <activity
+            android:name=".view.graph.VariableStorageReadWriteGraph"
+            android:label="Storage Reads and Writes"
+            android:parentActivityName=".view.SystemStorageActivity"
+            />
     </application>
 
 </manifest>
