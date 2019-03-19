@@ -62,5 +62,4 @@ public class MOBOActivity extends AppCompatActivity {
         ListView dataList = findViewById(R.id.listView);
         dataList.setAdapter(new ComponentDataListAdapter(this, motherboardData));
     }
-
 }
