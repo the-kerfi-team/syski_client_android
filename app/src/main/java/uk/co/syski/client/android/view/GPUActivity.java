@@ -12,6 +12,6 @@ public class GPUActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_gpu);
+        setContentView(R.layout.activity_cpu);
     }
 }
