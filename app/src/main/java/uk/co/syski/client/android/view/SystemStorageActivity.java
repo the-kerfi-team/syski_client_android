@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 
 import java.util.List;
@@ -18,6 +19,10 @@ import java.util.List;
 import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.data.entity.StorageEntity;
 import uk.co.syski.client.android.view.adapters.StorageAdapter;
+import uk.co.syski.client.android.view.graph.VariableStorageByteReadWriteGraph;
+import uk.co.syski.client.android.view.graph.VariableStorageReadWriteGraph;
+import uk.co.syski.client.android.view.graph.VariableStorageTimeGraph;
+import uk.co.syski.client.android.view.graph.VariableStorageTransfersGraph;
 import uk.co.syski.client.android.viewmodel.SystemStorageViewModel;
 
 public class SystemStorageActivity extends AppCompatActivity {
@@ -73,5 +78,25 @@ public class SystemStorageActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void timeGraphOnClick(View view) {
+        Intent timeGraph = new Intent(this, VariableStorageTimeGraph.class);
+        startActivity(timeGraph);
+    }
+
+    public void transfersGraphOnClick(View view) {
+        Intent timeGraph = new Intent(this, VariableStorageTransfersGraph.class);
+        startActivity(timeGraph);
+    }
+
+    public void readWriteGraphOnClick(View view) {
+        Intent readWriteGraph = new Intent(this, VariableStorageReadWriteGraph.class);
+        startActivity(readWriteGraph);
+    }
+
+    public void byteReadWriteGraphOnClick(View view) {
+        Intent byteReadWriteGraph = new Intent(this, VariableStorageByteReadWriteGraph.class);
+        startActivity(byteReadWriteGraph);
     }
 }
