@@ -19,6 +19,7 @@ import java.util.List;
 import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.data.entity.StorageEntity;
 import uk.co.syski.client.android.view.adapters.StorageAdapter;
+import uk.co.syski.client.android.view.graph.VariableStorageByteReadWriteGraph;
 import uk.co.syski.client.android.view.graph.VariableStorageReadWriteGraph;
 import uk.co.syski.client.android.view.graph.VariableStorageTimeGraph;
 import uk.co.syski.client.android.view.graph.VariableStorageTransfersGraph;
@@ -92,5 +93,10 @@ public class SystemStorageActivity extends AppCompatActivity {
     public void readWriteGraphOnClick(View view) {
         Intent readWriteGraph = new Intent(this, VariableStorageReadWriteGraph.class);
         startActivity(readWriteGraph);
+    }
+
+    public void byteReadWriteGraphOnClick(View view) {
+        Intent byteReadWriteGraph = new Intent(this, VariableStorageByteReadWriteGraph.class);
+        startActivity(byteReadWriteGraph);
     }
 }

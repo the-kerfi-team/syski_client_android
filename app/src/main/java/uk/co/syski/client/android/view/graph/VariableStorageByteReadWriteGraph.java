@@ -16,7 +16,7 @@ import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.data.entity.data.StorageDataEntity;
 import uk.co.syski.client.android.viewmodel.SystemStorageDataViewModel;
 
-public class VariableStorageReadWriteGraph extends AppCompatActivity {
+public class VariableStorageByteReadWriteGraph extends AppCompatActivity {
 
     GraphView graph;
     LineGraphSeries<DataPoint> readSeries;
@@ -45,7 +45,7 @@ public class VariableStorageReadWriteGraph extends AppCompatActivity {
         graph.getViewport().setMaxX(3);
         graph.getGridLabelRenderer().setHumanRounding(true);
 
-        graph.getGridLabelRenderer().setVerticalAxisTitle("Storage Reads and Writes");
+        graph.getGridLabelRenderer().setVerticalAxisTitle("Storage Byte Reads and Writes");
         graph.getGridLabelRenderer().setHorizontalAxisTitle("Time (s)");
 
         SystemStorageDataViewModel viewModel = ViewModelProviders.of(this).get(SystemStorageDataViewModel.class);
@@ -56,13 +56,13 @@ public class VariableStorageReadWriteGraph extends AppCompatActivity {
                 {
                     for (int i = 0; i < storageEntities.size(); i++) {
                         StorageDataEntity current = storageEntities.get(i);
-                        if (current.Reads > currentMaxY) {
-                            currentMaxY = current.Reads;
-                        } else if (current.Writes > currentMaxY) {
-                            currentMaxY = current.Writes;
+                        if (current.ByteReads > currentMaxY) {
+                            currentMaxY = current.ByteReads;
+                        } else if (current.ByteWrites > currentMaxY) {
+                            currentMaxY = current.ByteWrites;
                         }
-                        readSeries.appendData(new DataPoint(mLastXValue, current.Reads), true, (mLastXValue / 3 + 1));
-                        writeSeries.appendData(new DataPoint(mLastXValue, current.Writes), true, (mLastXValue / 3 + 1));
+                        readSeries.appendData(new DataPoint(mLastXValue, current.ByteReads), true, (mLastXValue / 3 + 1));
+                        writeSeries.appendData(new DataPoint(mLastXValue, current.ByteWrites), true, (mLastXValue / 3 + 1));
                         mLastXValue += 3;
                     }
 
