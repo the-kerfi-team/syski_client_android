@@ -25,7 +25,7 @@ public class MOBOActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_motherboard);
+        setContentView(R.layout.fragment_overview);
 
         MotherboardViewModel viewModel = ViewModelProviders.of(this).get(MotherboardViewModel.class);
         viewModel.get().observe(this, new Observer<List<MotherboardEntity>>() {
