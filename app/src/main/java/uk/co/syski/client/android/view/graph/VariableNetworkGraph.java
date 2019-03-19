@@ -14,7 +14,7 @@ public class VariableNetworkGraph extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_variable_network_graph);
+        setContentView(R.layout.activity_graph);
 
         graph = findViewById(R.id.graph);
     }
