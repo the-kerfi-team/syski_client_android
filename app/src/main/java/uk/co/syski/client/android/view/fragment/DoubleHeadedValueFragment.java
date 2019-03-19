@@ -14,10 +14,10 @@ import uk.co.syski.client.android.R;
 public class DoubleHeadedValueFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_IMAGE = "image";
-    private static final String ARG_FIRSTHEADING = "firstHeading";
-    private static final String ARG_FIRSTVALUE = "firstValue";
-    private static final String ARG_SECONDHEADING = "secondHeading";
-    private static final String ARG_SECONDVALUE = "secondValue";
+    private static final String ARG_FIRST_HEADING = "firstHeading";
+    private static final String ARG_FIRST_VALUE = "firstValue";
+    private static final String ARG_SECOND_HEADING = "secondHeading";
+    private static final String ARG_SECOND_VALUE = "secondValue";
 
     private Integer image;
     private String firstHeading, firstValue, secondHeading, secondValue;
@@ -30,14 +30,14 @@ public class DoubleHeadedValueFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static HeadedValueFragment newInstance(Integer image, String firstHeading, String firstValue, String secondHeading, String secondValue) {
-        HeadedValueFragment fragment = new HeadedValueFragment();
+    public static DoubleHeadedValueFragment newInstance(Integer image, String firstHeading, String firstValue, String secondHeading, String secondValue) {
+        DoubleHeadedValueFragment fragment = new DoubleHeadedValueFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_IMAGE, image);
-        args.putString(ARG_FIRSTHEADING, firstHeading);
-        args.putString(ARG_FIRSTVALUE, firstValue);
-        args.putString(ARG_SECONDHEADING, secondHeading);
-        args.putString(ARG_SECONDVALUE, secondValue);
+        args.putString(ARG_FIRST_HEADING, firstHeading);
+        args.putString(ARG_FIRST_VALUE, firstValue);
+        args.putString(ARG_SECOND_HEADING, secondHeading);
+        args.putString(ARG_SECOND_VALUE, secondValue);
         fragment.setArguments(args);
         return fragment;
     }
@@ -47,23 +47,11 @@ public class DoubleHeadedValueFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             image = getArguments().getInt(ARG_IMAGE);
-            firstHeading = getArguments().getString(ARG_FIRSTHEADING);
-            firstValue = getArguments().getString(ARG_FIRSTVALUE);
-            secondHeading = getArguments().getString(ARG_SECONDHEADING);
-            secondValue = getArguments().getString(ARG_SECONDVALUE);
+            firstHeading = getArguments().getString(ARG_FIRST_HEADING);
+            firstValue = getArguments().getString(ARG_FIRST_VALUE);
+            secondHeading = getArguments().getString(ARG_SECOND_HEADING);
+            secondValue = getArguments().getString(ARG_SECOND_VALUE);
         }
-
-        imageView = getActivity().findViewById(R.id.imageView);
-        firstHeadingView = getActivity().findViewById(R.id.firstHeadingView);
-        firstValueView = getActivity().findViewById(R.id.firstValueView);
-        secondHeadingView = getActivity().findViewById(R.id.secondHeadingView);
-        secondValueView = getActivity().findViewById(R.id.secondValueView);
-
-        imageView.setImageResource(image);
-        firstHeadingView.setText(firstHeading);
-        firstValueView.setText(firstValue);
-        secondHeadingView.setText(secondHeading);
-        secondValueView.setText(secondValue);
     }
 
     @Override
@@ -71,6 +59,23 @@ public class DoubleHeadedValueFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_double_headed_value, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        imageView = view.findViewById(R.id.imageView);
+        firstHeadingView = view.findViewById(R.id.firstHeadingView);
+        firstValueView = view.findViewById(R.id.firstValueView);
+        secondHeadingView = view.findViewById(R.id.secondHeadingView);
+        secondValueView = view.findViewById(R.id.secondValueView);
+
+        if (image != null)
+            imageView.setImageResource(image);
+
+        firstHeadingView.setText(firstHeading);
+        firstValueView.setText(firstValue);
+        secondHeadingView.setText(secondHeading);
+        secondValueView.setText(secondValue);
     }
 
 }
