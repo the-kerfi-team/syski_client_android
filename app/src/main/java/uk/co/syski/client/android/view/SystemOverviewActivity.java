@@ -28,24 +28,12 @@ import uk.co.syski.client.android.data.entity.UserEntity;
 import uk.co.syski.client.android.data.repository.Repository;
 import uk.co.syski.client.android.model.HeadedValueModel;
 import uk.co.syski.client.android.view.adapters.ComponentDataListAdapter;
-import uk.co.syski.client.android.view.fragment.OverviewFragment;
+import uk.co.syski.client.android.view.fragment.HeadedValueFragment;
 import uk.co.syski.client.android.viewmodel.SystemSummaryViewModel;
 
 public class SystemOverviewActivity extends AppCompatActivity {
 
     private static final String TAG = "SystemOverviewActivity";
-
-    //TODO: Replace placeholders with corresponding icons
-    Integer[] images = {
-            R.drawable.ic_cpu,
-            //TODO: Find better Icon
-            R.drawable.ic_gpu,
-            R.drawable.ic_storage,
-            R.drawable.ic_gpu,
-            //TODO: Find better Icon
-            R.drawable.ic_gpu,
-            R.drawable.ic_pc
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +45,38 @@ public class SystemOverviewActivity extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable SystemEntity systemEntity) {
                 updateStaticUI(systemEntity);
+            }
+        });
+
+        HeadedValueFragment shutdownModel = HeadedValueFragment.newInstance(
+            R.drawable.placeholder,
+            "Shutdown System",
+            "Tap here"
+        );
+
+        View shutdownFragment = findViewById(R.id.shutdownFragment);
+        shutdownFragment.setOnClickListener(new AdapterView.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shutdownOnClick(v);
+            }
+        });
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.shutdownFragment, shutdownModel).commit();
+
+        HeadedValueFragment restartModel = HeadedValueFragment.newInstance(
+            R.drawable.placeholder,
+            "Restart System",
+            "Tap here"
+        );
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.restartFragment, restartModel).commit();
+
+        View restartFragment = findViewById(R.id.restartFragment);
+        restartFragment.setOnClickListener(new AdapterView.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                restartOnClick(v);
             }
         });
     }
