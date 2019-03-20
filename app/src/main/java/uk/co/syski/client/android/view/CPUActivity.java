@@ -2,10 +2,12 @@ package uk.co.syski.client.android.view;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -18,6 +20,8 @@ import uk.co.syski.client.android.model.HeadedValueModel;
 import uk.co.syski.client.android.view.adapters.ComponentDataListAdapter;
 import uk.co.syski.client.android.view.fragment.DoubleHeadedValueFragment;
 import uk.co.syski.client.android.view.fragment.HeadedValueFragment;
+import uk.co.syski.client.android.view.graph.VariableCPULoadGraph;
+import uk.co.syski.client.android.view.graph.VariableCPUProcessesGraph;
 import uk.co.syski.client.android.viewmodel.SystemCPUDataViewModel;
 import uk.co.syski.client.android.viewmodel.SystemCPUViewModel;
 
@@ -47,6 +51,24 @@ public class CPUActivity extends AppCompatActivity {
                 if (cpuEntities.size() > 0) {
                     updateRealTimeUI(cpuEntities.get(cpuEntities.size() - 1));
                 }
+            }
+        });
+
+        View loadFragment = findViewById(R.id.loadFragment);
+        loadFragment.setOnClickListener(new AdapterView.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent cpuGraph = new Intent(v.getContext(), VariableCPULoadGraph.class);
+                startActivity(cpuGraph);
+            }
+        });
+
+        View processesFragment = findViewById(R.id.processesFragment);
+        processesFragment.setOnClickListener(new AdapterView.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent cpuGraph = new Intent(v.getContext(), VariableCPUProcessesGraph.class);
+                startActivity(cpuGraph);
             }
         });
     }
