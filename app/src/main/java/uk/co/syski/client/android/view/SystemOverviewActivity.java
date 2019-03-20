@@ -12,45 +12,28 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.view.adapters.SysListOverviewAdapter;
 import uk.co.syski.client.android.api.VolleySingleton;
 import uk.co.syski.client.android.api.requests.auth.APITokenRequest;
 import uk.co.syski.client.android.data.entity.SystemEntity;
 import uk.co.syski.client.android.data.entity.UserEntity;
 
 import uk.co.syski.client.android.data.repository.Repository;
-import uk.co.syski.client.android.model.OperatingSystemModel;
+import uk.co.syski.client.android.model.HeadedValueModel;
+import uk.co.syski.client.android.view.adapters.ComponentDataListAdapter;
+import uk.co.syski.client.android.view.fragment.OverviewFragment;
 import uk.co.syski.client.android.viewmodel.SystemSummaryViewModel;
 
 public class SystemOverviewActivity extends AppCompatActivity {
 
     private static final String TAG = "SystemOverviewActivity";
-
-    TextView host, manufacturer, model, os;
-    ImageView img;
-    SystemEntity systemEntity;
-    ListView listView;
-    OperatingSystemModel sysOS;
-    LinearLayout linearLayout;
-
-    List<OperatingSystemModel> osList;
-
-    String[] listItems = {
-            "CPU",
-            "RAM",
-            "Storage",
-            "GPU",
-            "Motherboard",
-            "OS"
-    };
 
     //TODO: Replace placeholders with corresponding icons
     Integer[] images = {
@@ -68,38 +51,75 @@ public class SystemOverviewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sys_overview);
-        initViews();
 
         SystemSummaryViewModel viewModel = ViewModelProviders.of(this).get(SystemSummaryViewModel.class);
         viewModel.get().observe(this, new Observer<SystemEntity>() {
             @Override
             public void onChanged(@Nullable SystemEntity systemEntity) {
-                host.setText(systemEntity.HostName);
-                manufacturer.setText(systemEntity.ManufacturerName);
-                model.setText(systemEntity.ModelName);
+                updateStaticUI(systemEntity);
             }
         });
+    }
 
-        SysListOverviewAdapter adapter = new SysListOverviewAdapter(this, images, listItems);
-        listView.setAdapter(adapter);
+    private void updateStaticUI(SystemEntity systemEntity) {
+        View topFragment = findViewById(R.id.topFragment);
 
+        ImageView imageView = topFragment.findViewById(R.id.imageView);
+        TextView firstHeadingView = topFragment.findViewById(R.id.firstHeadingView);
+        TextView firstValueView = topFragment.findViewById(R.id.firstValueView);
+        TextView secondHeadingView = topFragment.findViewById(R.id.secondHeadingView);
+        TextView secondValueView = topFragment.findViewById(R.id.secondValueView);
+
+        imageView.setImageResource(R.drawable.ic_pc);
+        firstHeadingView.setText("Model");
+        firstValueView.setText(systemEntity.ModelName);
+        secondHeadingView.setText("Manufacturer");
+        secondValueView.setText(systemEntity.ManufacturerName);
+
+        ArrayList<HeadedValueModel> systemData = new ArrayList<>();
+
+        systemData.add(
+            new HeadedValueModel(
+                R.drawable.placeholder,
+                "Host Name",
+                systemEntity.HostName
+            )
+        );
+        systemData.add(
+            new HeadedValueModel(
+                R.drawable.ic_version,
+                "Last Updated",
+                systemEntity.LastUpdated.toString()
+            )
+        );
+
+        ListView listView = findViewById(R.id.listView);
+        listView.setAdapter(new ComponentDataListAdapter(this, systemData));
+
+        listView = findViewById(R.id.compList);
+        listView.setAdapter(new ComponentDataListAdapter(this, getComponentList()));
+
+        setComponentOnClickListeners(listView);
+    }
+
+    private void setComponentOnClickListeners(ListView listView) {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Class dest;
                 switch (position) {
                     case 0: dest = CPUActivity.class;
-                            break;
+                        break;
                     case 1: dest = RAMActivity.class;
-                            break;
+                        break;
                     case 2: dest = SystemStorageActivity.class;
-                            break;
+                        break;
                     case 3: dest = GPUActivity.class;
-                            break;
+                        break;
                     case 4: dest = MOBOActivity.class;
-                            break;
+                        break;
                     case 5: dest = SystemOSActivity.class;
-                            break;
+                        break;
                     default: dest = null;
                 }
 
@@ -107,7 +127,55 @@ public class SystemOverviewActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
 
+    private List<HeadedValueModel> getComponentList() {
+        ArrayList<HeadedValueModel> listItems = new ArrayList<>();
+
+        listItems.add(
+            new HeadedValueModel(
+                R.drawable.ic_cpu,
+                "View details for",
+                "CPU"
+            )
+        );
+        listItems.add(
+            new HeadedValueModel(
+                R.drawable.ic_gpu,
+                "View details for",
+                "RAM"
+            )
+        );
+        listItems.add(
+            new HeadedValueModel(
+                R.drawable.ic_storage,
+                "View details for",
+                "Storage"
+            )
+        );
+        listItems.add(
+            new HeadedValueModel(
+                R.drawable.ic_gpu,
+                "View details for",
+                "GPU"
+            )
+        );
+        listItems.add(
+            new HeadedValueModel(
+                R.drawable.ic_gpu,
+                "View details for",
+                "Motherboard"
+            )
+        );
+        listItems.add(
+            new HeadedValueModel(
+                R.drawable.ic_pc,
+                "View details for",
+                "Operating System"
+            )
+        );
+
+        return listItems;
     }
 
     public void shutdownOnClick(View v) {
@@ -128,17 +196,6 @@ public class SystemOverviewActivity extends AppCompatActivity {
             VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(new APITokenRequest(getApplicationContext(), user.Id));
         }
         //VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(new APISystemRestartRequest(getApplicationContext(), system.Id));
-    }
-
-    private void initViews(){
-        host = findViewById(R.id.txtHostname);
-        manufacturer = findViewById(R.id.txtManufacturer);
-        model = findViewById(R.id.txtModel);
-        listView = findViewById(R.id.compList);
-        img = findViewById(R.id.imgOverview);
-        //TODO: Add actual logic, todo with OS
-        img.setImageResource(R.drawable.ic_pc);
-        linearLayout = findViewById(R.id.linOverview);
     }
 
     @Override

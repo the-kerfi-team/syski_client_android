@@ -6,80 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".view.SystemOverviewActivity">
 
-    <FrameLayout
-        android:id="@+id/frameLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/compList"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/imgOverview"
-                android:layout_width="217dp"
-                android:layout_height="99dp"
-                android:layout_weight="1"
-                app:srcCompat="@drawable/placeholder" />
-
-            <LinearLayout
-                android:id="@+id/linOverview"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/txtHostname"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="TextView"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/txtModel"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="TextView"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/txtManufacturer"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="TextView"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/txtOS"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="TextView"
-                    android:textSize="18sp" />
-            </LinearLayout>
-
-        </LinearLayout>
-    </FrameLayout>
-
     <ListView
         android:id="@+id/compList"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         app:layout_constraintBottom_toTopOf="@+id/frameLayout5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayout" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/overviewFragment" />
 
     <FrameLayout
         android:id="@+id/frameLayout5"
@@ -87,8 +27,10 @@
         android:layout_height="69dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/compList">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -100,17 +42,29 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@string/button_shutdown"
-                android:onClick="shutdownOnClick" />
+                android:onClick="shutdownOnClick"
+                android:text="@string/button_shutdown" />
 
             <Button
                 android:id="@+id/btnRestart"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="@string/button_restart"
-                android:onClick="restartOnClick" />
+                android:onClick="restartOnClick"
+                android:text="@string/button_restart" />
         </LinearLayout>
     </FrameLayout>
+
+    <fragment
+        android:id="@+id/overviewFragment"
+        android:name="uk.co.syski.client.android.view.fragment.OverviewFragment"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/compList"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
