@@ -1,4 +1,4 @@
-package uk.co.syski.client.android.view.adapters;
+package uk.co.syski.client.android.view.adapter;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -14,19 +14,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.data.entity.RAMEntity;
+import uk.co.syski.client.android.data.entity.StorageEntity;
 
-public class RAMAdapter extends ArrayAdapter {
+public class StorageAdapter extends ArrayAdapter {
 
     private final Activity context;
-    private final List<RAMEntity> listItems;
+    private final List<StorageEntity> listItems;
 
     private View listItem;
 
-    public RAMAdapter(Activity context, List<RAMEntity> listItems) {
-        super(context, R.layout.activity_ram);
+    public StorageAdapter(Activity context, List<StorageEntity> listItems) {
+        super(context, R.layout.activity_storage);
 
-        ArrayList<RAMEntity> listWithRepeats = new ArrayList<>();
+        ArrayList<StorageEntity> listWithRepeats = new ArrayList<>();
 
         for (int i = 0; i < listItems.size(); i++) {
             listWithRepeats.add(listItems.get(i));
@@ -77,16 +77,16 @@ public class RAMAdapter extends ArrayAdapter {
 
     public String formatBytes(long bytes) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        String storageUnits = sp.getString("pref_general_ram_unit", context.getString(R.string.pref_general_storage_unit));
+        String storageUnits = sp.getString("pref_general_Storage_unit", context.getString(R.string.pref_general_storage_unit));
         switch (storageUnits) {
             case "TB":
-                bytes /= 1024;
+                bytes /= 1000;
             case "GB":
-                bytes /= 1024;
+                bytes /= 1000;
             case "MB":
-                bytes /= 1024;
+                bytes /= 1000;
             case "KB":
-                bytes /= 1024;
+                bytes /= 1000;
                 break;
             default:
                 return bytes + "B";
@@ -95,3 +95,4 @@ public class RAMAdapter extends ArrayAdapter {
         return bytes + storageUnits;
     }
 }
+

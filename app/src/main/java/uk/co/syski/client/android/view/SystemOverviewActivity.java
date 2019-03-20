@@ -27,7 +27,7 @@ import uk.co.syski.client.android.data.entity.UserEntity;
 
 import uk.co.syski.client.android.data.repository.Repository;
 import uk.co.syski.client.android.model.HeadedValueModel;
-import uk.co.syski.client.android.view.adapters.ComponentDataListAdapter;
+import uk.co.syski.client.android.view.adapter.HeadedValueListAdapter;
 import uk.co.syski.client.android.view.fragment.HeadedValueFragment;
 import uk.co.syski.client.android.viewmodel.SystemSummaryViewModel;
 
@@ -114,10 +114,10 @@ public class SystemOverviewActivity extends AppCompatActivity {
         );
 
         ListView listView = findViewById(R.id.listView);
-        listView.setAdapter(new ComponentDataListAdapter(this, systemData));
+        listView.setAdapter(new HeadedValueListAdapter(this, systemData));
 
         listView = findViewById(R.id.compList);
-        listView.setAdapter(new ComponentDataListAdapter(this, getComponentList()));
+        listView.setAdapter(new HeadedValueListAdapter(this, getComponentList()));
 
         setComponentOnClickListeners(listView);
     }

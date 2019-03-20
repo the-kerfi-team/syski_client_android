@@ -15,11 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.data.entity.StorageEntity;
 import uk.co.syski.client.android.model.HeadedValueModel;
 import uk.co.syski.client.android.model.OperatingSystemModel;
-import uk.co.syski.client.android.view.adapters.ComponentDataListAdapter;
-import uk.co.syski.client.android.view.adapters.StorageAdapter;
+import uk.co.syski.client.android.view.adapter.HeadedValueListAdapter;
 import uk.co.syski.client.android.viewmodel.OperatingSystemViewModel;
 
 public class SystemOSActivity extends AppCompatActivity {
@@ -60,7 +58,7 @@ public class SystemOSActivity extends AppCompatActivity {
         ));
 
         ListView listView = findViewById(R.id.listView);
-        listView.setAdapter(new ComponentDataListAdapter(this, osData));
+        listView.setAdapter(new HeadedValueListAdapter(this, osData));
     }
 
     @Override

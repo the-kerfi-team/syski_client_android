@@ -1,4 +1,4 @@
-package uk.co.syski.client.android.view.adapters;
+package uk.co.syski.client.android.view.adapter;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -13,7 +13,7 @@ import java.util.List;
 import uk.co.syski.client.android.model.HeadedValueModel;
 import uk.co.syski.client.android.R;
 
-public class ComponentDataListAdapter extends ArrayAdapter {
+public class HeadedValueListAdapter extends ArrayAdapter {
 
     private final Activity context;
     private final List<HeadedValueModel> listItems;
@@ -22,7 +22,7 @@ public class ComponentDataListAdapter extends ArrayAdapter {
     TextView heading, value;
     View listView;
 
-    public ComponentDataListAdapter(Activity context, List<HeadedValueModel> listItems) {
+    public HeadedValueListAdapter(Activity context, List<HeadedValueModel> listItems) {
         super(context, R.layout.fragment_overview, listItems);
         this.context = context;
         this.listItems = listItems;

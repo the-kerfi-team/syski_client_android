@@ -21,8 +21,7 @@ import java.util.List;
 import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.data.entity.MotherboardEntity;
 import uk.co.syski.client.android.model.HeadedValueModel;
-import uk.co.syski.client.android.view.adapters.ComponentDataListAdapter;
-import uk.co.syski.client.android.view.fragment.DoubleHeadedValueFragment;
+import uk.co.syski.client.android.view.adapter.HeadedValueListAdapter;
 import uk.co.syski.client.android.viewmodel.MotherboardViewModel;
 
 public class MOBOActivity extends AppCompatActivity {
@@ -71,7 +70,7 @@ public class MOBOActivity extends AppCompatActivity {
         );
 
         ListView dataList = findViewById(R.id.listView);
-        dataList.setAdapter(new ComponentDataListAdapter(this, motherboardData));
+        dataList.setAdapter(new HeadedValueListAdapter(this, motherboardData));
     }
 
     @Override

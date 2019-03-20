@@ -22,10 +22,8 @@ import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.data.entity.CPUEntity;
 import uk.co.syski.client.android.data.entity.data.CPUDataEntity;
 import uk.co.syski.client.android.model.HeadedValueModel;
-import uk.co.syski.client.android.view.adapters.ComponentDataListAdapter;
-import uk.co.syski.client.android.view.fragment.DoubleHeadedValueFragment;
+import uk.co.syski.client.android.view.adapter.HeadedValueListAdapter;
 import uk.co.syski.client.android.view.fragment.HeadedValueFragment;
-import uk.co.syski.client.android.view.fragment.OverviewFragment;
 import uk.co.syski.client.android.view.graph.VariableCPULoadGraph;
 import uk.co.syski.client.android.view.graph.VariableCPUProcessesGraph;
 import uk.co.syski.client.android.viewmodel.SystemCPUDataViewModel;
@@ -126,7 +124,7 @@ public class CPUActivity extends AppCompatActivity {
         );
 
         ListView dataList = findViewById(R.id.listView);
-        dataList.setAdapter(new ComponentDataListAdapter(this, cpuData));
+        dataList.setAdapter(new HeadedValueListAdapter(this, cpuData));
     }
 
     private void updateRealTimeUI(CPUDataEntity cpuDataEntity) {
