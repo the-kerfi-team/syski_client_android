@@ -18,6 +18,10 @@ import uk.co.syski.client.android.data.entity.data.RAMDataEntity;
 import uk.co.syski.client.android.view.adapters.RAMAdapter;
 import uk.co.syski.client.android.view.fragment.HeadedValueFragment;
 import uk.co.syski.client.android.view.graph.VariableRAMGraph;
+import uk.co.syski.client.android.view.graph.VariableStorageByteReadWriteGraph;
+import uk.co.syski.client.android.view.graph.VariableStorageReadWriteGraph;
+import uk.co.syski.client.android.view.graph.VariableStorageTimeGraph;
+import uk.co.syski.client.android.view.graph.VariableStorageTransfersGraph;
 import uk.co.syski.client.android.viewmodel.SystemRAMDataViewModel;
 import uk.co.syski.client.android.viewmodel.SystemRAMViewModel;
 
