@@ -11,7 +11,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,15 +80,19 @@ public class CPUActivity extends AppCompatActivity {
     }
 
     private void updateStaticUI(CPUEntity cpuEntity) {
-        OverviewFragment mainFragment = OverviewFragment.newInstance(
-            R.drawable.ic_cpu,
-            "Model",
-            cpuEntity.ModelName,
-            "Manufacturer",
-            cpuEntity.ManufacturerName
-        );
+        View topFragment = findViewById(R.id.topFragment);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment, mainFragment).commit();
+        ImageView imageView = topFragment.findViewById(R.id.imageView);
+        TextView firstHeadingView = topFragment.findViewById(R.id.firstHeadingView);
+        TextView firstValueView = topFragment.findViewById(R.id.firstValueView);
+        TextView secondHeadingView = topFragment.findViewById(R.id.secondHeadingView);
+        TextView secondValueView = topFragment.findViewById(R.id.secondValueView);
+
+        imageView.setImageResource(R.drawable.ic_cpu);
+        firstHeadingView.setText("Model");
+        firstValueView.setText(cpuEntity.ModelName);
+        secondHeadingView.setText("Manufacturer");
+        secondValueView.setText(cpuEntity.ManufacturerName);
 
         ArrayList<HeadedValueModel> cpuData = new ArrayList<>();
 

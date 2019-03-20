@@ -9,7 +9,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -39,15 +42,19 @@ public class GPUActivity extends AppCompatActivity {
     }
 
     private void updateStaticUI(GPUEntity gpuEntity) {
-        DoubleHeadedValueFragment topFragment = DoubleHeadedValueFragment.newInstance(
-            R.drawable.ic_gpu,
-            "Model",
-            gpuEntity.ModelName,
-            "Manufacturer",
-            gpuEntity.ManufacturerName
-        );
+        View topFragment = findViewById(R.id.topFragment);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.topFragment, topFragment).commit();
+        ImageView imageView = topFragment.findViewById(R.id.imageView);
+        TextView firstHeadingView = topFragment.findViewById(R.id.firstHeadingView);
+        TextView firstValueView = topFragment.findViewById(R.id.firstValueView);
+        TextView secondHeadingView = topFragment.findViewById(R.id.secondHeadingView);
+        TextView secondValueView = topFragment.findViewById(R.id.secondValueView);
+
+        imageView.setImageResource(R.drawable.ic_gpu);
+        firstHeadingView.setText("Model");
+        firstValueView.setText(gpuEntity.ModelName);
+        secondHeadingView.setText("Manufacturer");
+        secondValueView.setText(gpuEntity.ManufacturerName);
     }
 
     @Override

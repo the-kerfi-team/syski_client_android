@@ -10,7 +10,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +46,20 @@ public class MOBOActivity extends AppCompatActivity {
     }
 
     private void updateStaticUI(MotherboardEntity motherboardEntity) {
+        View topFragment = findViewById(R.id.topFragment);
+
+        ImageView imageView = topFragment.findViewById(R.id.imageView);
+        TextView firstHeadingView = topFragment.findViewById(R.id.firstHeadingView);
+        TextView firstValueView = topFragment.findViewById(R.id.firstValueView);
+        TextView secondHeadingView = topFragment.findViewById(R.id.secondHeadingView);
+        TextView secondValueView = topFragment.findViewById(R.id.secondValueView);
+
+        imageView.setImageResource(R.drawable.ic_gpu);
+        firstHeadingView.setText("Model");
+        firstValueView.setText(motherboardEntity.ModelName);
+        secondHeadingView.setText("Manufacturer");
+        secondValueView.setText(motherboardEntity.ManufacturerName);
+
         ArrayList<HeadedValueModel> motherboardData = new ArrayList<>();
 
         motherboardData.add(
@@ -52,16 +69,6 @@ public class MOBOActivity extends AppCompatActivity {
                 motherboardEntity.Version
             )
         );
-
-        DoubleHeadedValueFragment topFragment = DoubleHeadedValueFragment.newInstance(
-            R.drawable.ic_gpu,
-            "Model",
-            motherboardEntity.ModelName,
-            "Manufacturer",
-            motherboardEntity.ManufacturerName
-        );
-
-        getSupportFragmentManager().beginTransaction().replace(R.id.topFragment, topFragment).commit();
 
         ListView dataList = findViewById(R.id.listView);
         dataList.setAdapter(new ComponentDataListAdapter(this, motherboardData));
