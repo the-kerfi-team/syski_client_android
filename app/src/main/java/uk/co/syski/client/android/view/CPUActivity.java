@@ -20,6 +20,7 @@ import uk.co.syski.client.android.model.HeadedValueModel;
 import uk.co.syski.client.android.view.adapters.ComponentDataListAdapter;
 import uk.co.syski.client.android.view.fragment.DoubleHeadedValueFragment;
 import uk.co.syski.client.android.view.fragment.HeadedValueFragment;
+import uk.co.syski.client.android.view.fragment.OverviewFragment;
 import uk.co.syski.client.android.view.graph.VariableCPULoadGraph;
 import uk.co.syski.client.android.view.graph.VariableCPUProcessesGraph;
 import uk.co.syski.client.android.viewmodel.SystemCPUDataViewModel;
@@ -74,6 +75,16 @@ public class CPUActivity extends AppCompatActivity {
     }
 
     private void updateStaticUI(CPUEntity cpuEntity) {
+        OverviewFragment mainFragment = OverviewFragment.newInstance(
+            R.drawable.ic_cpu,
+            "Model",
+            cpuEntity.ModelName,
+            "Manufacturer",
+            cpuEntity.ManufacturerName
+        );
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment, mainFragment).commit();
+
         ArrayList<HeadedValueModel> cpuData = new ArrayList<>();
 
         cpuData.add(
@@ -105,16 +116,6 @@ public class CPUActivity extends AppCompatActivity {
             )
         );
 
-        DoubleHeadedValueFragment topFragment = DoubleHeadedValueFragment.newInstance(
-            R.drawable.ic_cpu,
-            "Model",
-            cpuEntity.ModelName,
-            "Manufacturer",
-            cpuEntity.ManufacturerName
-        );
-
-        getSupportFragmentManager().beginTransaction().replace(R.id.topFragment, topFragment).commit();
-
         ListView dataList = findViewById(R.id.listView);
         dataList.setAdapter(new ComponentDataListAdapter(this, cpuData));
     }
@@ -131,7 +132,7 @@ public class CPUActivity extends AppCompatActivity {
         HeadedValueFragment processesModel = HeadedValueFragment.newInstance(
             R.drawable.placeholder,
             "CPU Processes",
-            Float.toString(cpuDataEntity.Processes));
+            Integer.toString(Math.round(cpuDataEntity.Processes)));
 
         getSupportFragmentManager().beginTransaction().replace(R.id.processesFragment, processesModel).commit();
     }
