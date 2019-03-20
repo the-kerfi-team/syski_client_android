@@ -32,7 +32,6 @@ public class OverviewFragment extends Fragment {
 
     private ImageView imageView;
     private TextView firstHeadingView, firstValueView, secondHeadingView, secondValueView;
-    private ListView listView;
 
     public OverviewFragment() {
         // Required empty public constructor
