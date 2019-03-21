@@ -11,43 +11,22 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import uk.co.syski.client.android.R;
+import uk.co.syski.client.android.model.fragment.HeadedValueModel;
 
 public class HeadedValueFragment extends Fragment {
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_IMAGE = "image";
-    private static final String ARG_HEADING = "heading";
-    private static final String ARG_VALUE = "value";
 
-    private Integer image;
-    private String heading;
-    private String value;
+    private HeadedValueModel model;
 
     private ImageView imageView;
     private TextView headingView;
     private TextView valueView;
 
-    public HeadedValueFragment() {
-        // Required empty public constructor
-    }
+    public HeadedValueFragment() {}
 
-    public static HeadedValueFragment newInstance(Integer image, String heading, String value) {
+    public static HeadedValueFragment newInstance(HeadedValueModel model) {
         HeadedValueFragment fragment = new HeadedValueFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_IMAGE, image);
-        args.putString(ARG_HEADING, heading);
-        args.putString(ARG_VALUE, value);
-        fragment.setArguments(args);
+        fragment.setModel(model);
         return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            image = getArguments().getInt(ARG_IMAGE);
-            heading = getArguments().getString(ARG_HEADING);
-            value = getArguments().getString(ARG_VALUE);
-        }
     }
 
     @Override
@@ -63,9 +42,14 @@ public class HeadedValueFragment extends Fragment {
         headingView = view.findViewById(R.id.headingView);
         valueView = view.findViewById(R.id.valueView);
 
-        if (image != null)
-            imageView.setImageResource(image);
-        headingView.setText(heading);
-        valueView.setText(value);
+        if (model.image != null)
+            imageView.setImageResource(model.image);
+
+        headingView.setText(model.heading);
+        valueView.setText(model.value);
+    }
+
+    private void setModel(HeadedValueModel model) {
+        this.model = model;
     }
 }

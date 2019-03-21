@@ -1,4 +1,4 @@
-package uk.co.syski.client.android.model;
+package uk.co.syski.client.android.model.fragment;
 
 public class HeadedValueModel {
     public final Integer image;

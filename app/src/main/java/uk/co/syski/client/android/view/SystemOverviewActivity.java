@@ -4,7 +4,6 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,9 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -27,9 +24,9 @@ import uk.co.syski.client.android.data.entity.SystemEntity;
 import uk.co.syski.client.android.data.entity.UserEntity;
 
 import uk.co.syski.client.android.data.repository.Repository;
-import uk.co.syski.client.android.model.HeadedValueModel;
+import uk.co.syski.client.android.model.fragment.DoubleHeadedValueModel;
+import uk.co.syski.client.android.model.fragment.HeadedValueModel;
 import uk.co.syski.client.android.view.adapter.HeadedValueListAdapter;
-import uk.co.syski.client.android.view.fragment.HeadedValueFragment;
 import uk.co.syski.client.android.view.fragment.OverviewFragment;
 import uk.co.syski.client.android.viewmodel.SystemSummaryViewModel;
 
@@ -85,14 +82,6 @@ public class SystemOverviewActivity extends AppCompatActivity {
     }
 
     private void updateStaticUI(SystemEntity systemEntity) {
-        OverviewFragment overviewFragment = OverviewFragment.newInstance(
-            R.drawable.ic_pc,
-            "Model",
-            systemEntity.ModelName,
-            "Manufacturer",
-            systemEntity.ManufacturerName
-        );
-
         ArrayList<HeadedValueModel> systemData = new ArrayList<>();
 
         systemData.add(
@@ -103,7 +92,16 @@ public class SystemOverviewActivity extends AppCompatActivity {
             )
         );
 
-        overviewFragment.setListViewData(systemData);
+        OverviewFragment overviewFragment = OverviewFragment.newInstance(
+            new DoubleHeadedValueModel (
+                R.drawable.ic_pc,
+                "Model",
+                systemEntity.ModelName,
+                "Manufacturer",
+                systemEntity.ManufacturerName
+            ),
+            systemData
+        );
 
         getSupportFragmentManager().beginTransaction().add(R.id.overviewFragment, overviewFragment).commit();
 

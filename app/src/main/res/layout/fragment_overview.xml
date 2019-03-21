@@ -11,10 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <fragment
+        <FrameLayout
             android:id="@+id/topFragment"
-            android:name="uk.co.syski.client.android.view.fragment.DoubleHeadedValueFragment"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
@@ -24,7 +23,9 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+        </FrameLayout>
 
         <ListView
             android:id="@+id/listView"
@@ -38,5 +39,6 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/topFragment" />
+
     </android.support.constraint.ConstraintLayout>
 </FrameLayout>

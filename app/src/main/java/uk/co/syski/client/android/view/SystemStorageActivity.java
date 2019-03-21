@@ -18,6 +18,8 @@ import java.util.List;
 import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.data.entity.StorageEntity;
 import uk.co.syski.client.android.data.entity.data.StorageDataEntity;
+import uk.co.syski.client.android.model.fragment.DoubleHeadedValueModel;
+import uk.co.syski.client.android.model.fragment.HeadedValueModel;
 import uk.co.syski.client.android.view.adapter.StorageAdapter;
 import uk.co.syski.client.android.view.fragment.DoubleHeadedValueFragment;
 import uk.co.syski.client.android.view.fragment.HeadedValueFragment;
@@ -95,37 +97,45 @@ public class SystemStorageActivity extends AppCompatActivity {
 
     private void updateRealTimeUI(StorageDataEntity StorageDataEntity) {
         HeadedValueFragment timeFragment = HeadedValueFragment.newInstance(
-            R.drawable.placeholder,
-            "Time",
-            StorageDataEntity.Time + "s"
+                new HeadedValueModel(
+                R.drawable.placeholder,
+                "Time",
+                StorageDataEntity.Time + "s"
+            )
         );
 
         getSupportFragmentManager().beginTransaction().replace(R.id.timeFragment, timeFragment).commit();
 
         HeadedValueFragment transfersFragment = HeadedValueFragment.newInstance(
-            R.drawable.placeholder,
-            "Transfers",
-            Float.toString(StorageDataEntity.Transfers)
+                new HeadedValueModel(
+                R.drawable.placeholder,
+                "Transfers",
+                Float.toString(StorageDataEntity.Transfers)
+            )
         );
 
         getSupportFragmentManager().beginTransaction().replace(R.id.transfersFragment, transfersFragment).commit();
 
         DoubleHeadedValueFragment readsWritesFragment = DoubleHeadedValueFragment.newInstance(
-            R.drawable.placeholder,
-            "Reads",
-            Float.toString(StorageDataEntity.Reads),
-            "Writes",
-            Float.toString(StorageDataEntity.Writes)
+            new DoubleHeadedValueModel(
+                R.drawable.placeholder,
+                "Reads",
+                Float.toString(StorageDataEntity.Reads),
+                "Writes",
+                Float.toString(StorageDataEntity.Writes)
+            )
         );
 
         getSupportFragmentManager().beginTransaction().replace(R.id.readsWritesFragment, readsWritesFragment).commit();
 
         DoubleHeadedValueFragment byteReadsWritesFragment = DoubleHeadedValueFragment.newInstance(
-            R.drawable.placeholder,
-            "Byte Reads",
-            Float.toString(StorageDataEntity.ByteReads),
-            "Byte Writes",
-            Float.toString(StorageDataEntity.ByteWrites)
+            new DoubleHeadedValueModel(
+                R.drawable.placeholder,
+                "Byte Reads",
+                Float.toString(StorageDataEntity.ByteReads),
+                "Byte Writes",
+                Float.toString(StorageDataEntity.ByteWrites)
+            )
         );
 
         getSupportFragmentManager().beginTransaction().replace(R.id.byteReadsWritesFragment, byteReadsWritesFragment).commit();

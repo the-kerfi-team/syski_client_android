@@ -18,6 +18,7 @@ import java.util.List;
 
 import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.data.entity.GPUEntity;
+import uk.co.syski.client.android.model.fragment.DoubleHeadedValueModel;
 import uk.co.syski.client.android.view.fragment.DoubleHeadedValueFragment;
 import uk.co.syski.client.android.viewmodel.SystemGPUViewModel;
 
@@ -42,19 +43,17 @@ public class GPUActivity extends AppCompatActivity {
     }
 
     private void updateStaticUI(GPUEntity gpuEntity) {
-        View topFragment = findViewById(R.id.topFragment);
+        DoubleHeadedValueFragment topFragment = DoubleHeadedValueFragment.newInstance(
+            new DoubleHeadedValueModel(
+                R.drawable.ic_gpu,
+                "Model",
+                gpuEntity.ModelName,
+                "Manufacturer",
+                gpuEntity.ManufacturerName
+            )
+        );
 
-        ImageView imageView = topFragment.findViewById(R.id.imageView);
-        TextView firstHeadingView = topFragment.findViewById(R.id.firstHeadingView);
-        TextView firstValueView = topFragment.findViewById(R.id.firstValueView);
-        TextView secondHeadingView = topFragment.findViewById(R.id.secondHeadingView);
-        TextView secondValueView = topFragment.findViewById(R.id.secondValueView);
-
-        imageView.setImageResource(R.drawable.ic_gpu);
-        firstHeadingView.setText("Model");
-        firstValueView.setText(gpuEntity.ModelName);
-        secondHeadingView.setText("Manufacturer");
-        secondValueView.setText(gpuEntity.ManufacturerName);
+        getSupportFragmentManager().beginTransaction().add(R.id.topFragment, topFragment).commit();
     }
 
     @Override

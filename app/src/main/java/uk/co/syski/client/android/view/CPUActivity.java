@@ -21,9 +21,11 @@ import java.util.List;
 import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.data.entity.CPUEntity;
 import uk.co.syski.client.android.data.entity.data.CPUDataEntity;
-import uk.co.syski.client.android.model.HeadedValueModel;
+import uk.co.syski.client.android.model.fragment.DoubleHeadedValueModel;
+import uk.co.syski.client.android.model.fragment.HeadedValueModel;
 import uk.co.syski.client.android.view.adapter.HeadedValueListAdapter;
 import uk.co.syski.client.android.view.fragment.HeadedValueFragment;
+import uk.co.syski.client.android.view.fragment.OverviewFragment;
 import uk.co.syski.client.android.view.graph.VariableCPULoadGraph;
 import uk.co.syski.client.android.view.graph.VariableCPUProcessesGraph;
 import uk.co.syski.client.android.viewmodel.SystemCPUDataViewModel;
@@ -78,68 +80,45 @@ public class CPUActivity extends AppCompatActivity {
     }
 
     private void updateStaticUI(CPUEntity cpuEntity) {
-        View topFragment = findViewById(R.id.topFragment);
-
-        ImageView imageView = topFragment.findViewById(R.id.imageView);
-        TextView firstHeadingView = topFragment.findViewById(R.id.firstHeadingView);
-        TextView firstValueView = topFragment.findViewById(R.id.firstValueView);
-        TextView secondHeadingView = topFragment.findViewById(R.id.secondHeadingView);
-        TextView secondValueView = topFragment.findViewById(R.id.secondValueView);
-
-        imageView.setImageResource(R.drawable.ic_cpu);
-        firstHeadingView.setText("Model");
-        firstValueView.setText(cpuEntity.ModelName);
-        secondHeadingView.setText("Manufacturer");
-        secondValueView.setText(cpuEntity.ManufacturerName);
-
         ArrayList<HeadedValueModel> cpuData = new ArrayList<>();
 
-        cpuData.add(
-            new HeadedValueModel(
-                R.drawable.ic_architecture,
-                "Architecture",
-                cpuEntity.ArchitectureName
-            )
-        );
-        cpuData.add(
-            new HeadedValueModel(
-                R.drawable.ic_clock,
-                "Clock Speed",
-                cpuEntity.ClockSpeed + "Hz"
-            )
-        );
-        cpuData.add(
-            new HeadedValueModel(
-                R.drawable.ic_core,
-                "Core Count",
-                Integer.toString(cpuEntity.CoreCount)
-            )
-        );
-        cpuData.add(
-            new HeadedValueModel(
-                R.drawable.ic_thread,
-                "Thread Count",
-                Integer.toString(cpuEntity.ThreadCount)
-            )
+        cpuData.add(new HeadedValueModel(R.drawable.ic_architecture, "Architecture", cpuEntity.ArchitectureName));
+        cpuData.add(new HeadedValueModel(R.drawable.ic_clock, "Clock Speed", cpuEntity.ClockSpeed + " MHz"));
+        cpuData.add(new HeadedValueModel(R.drawable.ic_core, "Core Count", Integer.toString(cpuEntity.CoreCount)));
+        cpuData.add(new HeadedValueModel(R.drawable.ic_thread, "Thread Count", Integer.toString(cpuEntity.ThreadCount)));
+
+        OverviewFragment mainFragment = OverviewFragment.newInstance(
+            new DoubleHeadedValueModel(
+                R.drawable.ic_cpu,
+                "Model",
+                cpuEntity.ModelName,
+                "Manufacturer",
+                cpuEntity.ManufacturerName
+            ),
+            cpuData
         );
 
-        ListView dataList = findViewById(R.id.listView);
-        dataList.setAdapter(new HeadedValueListAdapter(this, cpuData));
+        getSupportFragmentManager().beginTransaction().add(R.id.mainFragment, mainFragment).commit();
     }
 
     private void updateRealTimeUI(CPUDataEntity cpuDataEntity) {
         HeadedValueFragment loadModel = HeadedValueFragment.newInstance(
-            R.drawable.placeholder,
-            "CPU Load",
-            cpuDataEntity.Load + "%"
+            new HeadedValueModel(
+                R.drawable.placeholder,
+                "CPU Load",
+                cpuDataEntity.Load + "%"
+            )
         );
 
         getSupportFragmentManager().beginTransaction().replace(R.id.loadFragment, loadModel).commit();
 
         HeadedValueFragment processesModel = HeadedValueFragment.newInstance(
-            R.drawable.placeholder,
-            "CPU Processes",
-            Integer.toString(Math.round(cpuDataEntity.Processes)));
+            new HeadedValueModel(
+                R.drawable.placeholder,
+                "CPU Processes",
+                Integer.toString(Math.round(cpuDataEntity.Processes))
+            )
+        );
 
         getSupportFragmentManager().beginTransaction().replace(R.id.processesFragment, processesModel).commit();
     }

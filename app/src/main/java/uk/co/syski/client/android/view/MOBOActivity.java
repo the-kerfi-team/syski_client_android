@@ -20,8 +20,10 @@ import java.util.List;
 
 import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.data.entity.MotherboardEntity;
-import uk.co.syski.client.android.model.HeadedValueModel;
+import uk.co.syski.client.android.model.fragment.DoubleHeadedValueModel;
+import uk.co.syski.client.android.model.fragment.HeadedValueModel;
 import uk.co.syski.client.android.view.adapter.HeadedValueListAdapter;
+import uk.co.syski.client.android.view.fragment.DoubleHeadedValueFragment;
 import uk.co.syski.client.android.viewmodel.MotherboardViewModel;
 
 public class MOBOActivity extends AppCompatActivity {
@@ -45,19 +47,17 @@ public class MOBOActivity extends AppCompatActivity {
     }
 
     private void updateStaticUI(MotherboardEntity motherboardEntity) {
-        View topFragment = findViewById(R.id.topFragment);
+        DoubleHeadedValueFragment topFragment = DoubleHeadedValueFragment.newInstance(
+            new DoubleHeadedValueModel(
+                R.drawable.ic_gpu,
+                "Model",
+                motherboardEntity.ModelName,
+                "Manufacturer",
+                motherboardEntity.ManufacturerName
+            )
+        );
 
-        ImageView imageView = topFragment.findViewById(R.id.imageView);
-        TextView firstHeadingView = topFragment.findViewById(R.id.firstHeadingView);
-        TextView firstValueView = topFragment.findViewById(R.id.firstValueView);
-        TextView secondHeadingView = topFragment.findViewById(R.id.secondHeadingView);
-        TextView secondValueView = topFragment.findViewById(R.id.secondValueView);
-
-        imageView.setImageResource(R.drawable.ic_gpu);
-        firstHeadingView.setText("Model");
-        firstValueView.setText(motherboardEntity.ModelName);
-        secondHeadingView.setText("Manufacturer");
-        secondValueView.setText(motherboardEntity.ManufacturerName);
+        getSupportFragmentManager().beginTransaction().add(R.id.topFragment, topFragment).commit();
 
         ArrayList<HeadedValueModel> motherboardData = new ArrayList<>();
 

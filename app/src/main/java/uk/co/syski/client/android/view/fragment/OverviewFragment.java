@@ -13,7 +13,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.model.HeadedValueModel;
+import uk.co.syski.client.android.model.fragment.DoubleHeadedValueModel;
+import uk.co.syski.client.android.model.fragment.HeadedValueModel;
 import uk.co.syski.client.android.view.adapter.HeadedValueListAdapter;
 
 
@@ -23,49 +24,21 @@ import uk.co.syski.client.android.view.adapter.HeadedValueListAdapter;
  * create an instance of this fragment.
  */
 public class OverviewFragment extends Fragment {
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_IMAGE = "image";
-    private static final String ARG_FIRST_HEADING = "firstHeading";
-    private static final String ARG_FIRST_VALUE = "firstValue";
-    private static final String ARG_SECOND_HEADING = "secondHeading";
-    private static final String ARG_SECOND_VALUE = "secondValue";
 
-    // TODO: Rename and change types of parameters
-    private Integer image;
-    private String firstHeading, firstValue, secondHeading, secondValue;
+    private DoubleHeadedValueModel model;
+    private ArrayList<HeadedValueModel> listItems;
 
-    private ArrayList<HeadedValueModel> headedValues;
-
-    private ImageView imageView;
-    private TextView firstHeadingView, firstValueView, secondHeadingView, secondValueView;
     private ListView listView;
 
     public OverviewFragment() {
         // Required empty public constructor
     }
 
-    public static OverviewFragment newInstance(Integer image, String firstHeading, String firstValue, String secondHeading, String secondValue) {
+    public static OverviewFragment newInstance(DoubleHeadedValueModel model, ArrayList<HeadedValueModel> listItems) {
         OverviewFragment fragment = new OverviewFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_IMAGE, image);
-        args.putString(ARG_FIRST_HEADING, firstHeading);
-        args.putString(ARG_FIRST_VALUE, firstValue);
-        args.putString(ARG_SECOND_HEADING, secondHeading);
-        args.putString(ARG_SECOND_VALUE, secondValue);
-        fragment.setArguments(args);
+        fragment.setModel(model);
+        fragment.setListViewData(listItems);
         return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            image = getArguments().getInt(ARG_IMAGE);
-            firstHeading = getArguments().getString(ARG_FIRST_HEADING);
-            firstValue = getArguments().getString(ARG_FIRST_VALUE);
-            secondHeading = getArguments().getString(ARG_SECOND_HEADING);
-            secondValue = getArguments().getString(ARG_SECOND_VALUE);
-        }
     }
 
     @Override
@@ -77,26 +50,19 @@ public class OverviewFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        imageView = view.findViewById(R.id.imageView);
-        firstHeadingView = view.findViewById(R.id.firstHeadingView);
-        firstValueView = view.findViewById(R.id.firstValueView);
-        secondHeadingView = view.findViewById(R.id.secondHeadingView);
-        secondValueView = view.findViewById(R.id.secondValueView);
+        DoubleHeadedValueFragment topFragment = DoubleHeadedValueFragment.newInstance(model);
+        getFragmentManager().beginTransaction().add(R.id.topFragment, topFragment).commit();
+
         listView = view.findViewById(R.id.listView);
-
-        if (image != null)
-            imageView.setImageResource(image);
-
-        firstHeadingView.setText(firstHeading);
-        firstValueView.setText(firstValue);
-        secondHeadingView.setText(secondHeading);
-        secondValueView.setText(secondValue);
-
-        if (headedValues != null)
-            listView.setAdapter(new HeadedValueListAdapter(getActivity(), headedValues));
+        if (listItems != null)
+            listView.setAdapter(new HeadedValueListAdapter(getActivity(), listItems));
     }
 
-    public void setListViewData(ArrayList<HeadedValueModel> headedValues) {
-        this.headedValues = headedValues;
+    private void setModel(DoubleHeadedValueModel model) {
+        this.model = model;
+    }
+
+    private void setListViewData(ArrayList<HeadedValueModel> listItems) {
+        this.listItems = listItems;
     }
 }

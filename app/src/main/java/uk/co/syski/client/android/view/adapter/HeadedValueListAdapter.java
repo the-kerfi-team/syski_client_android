@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import uk.co.syski.client.android.model.HeadedValueModel;
+import uk.co.syski.client.android.model.fragment.HeadedValueModel;
 import uk.co.syski.client.android.R;
 
 public class HeadedValueListAdapter extends ArrayAdapter {

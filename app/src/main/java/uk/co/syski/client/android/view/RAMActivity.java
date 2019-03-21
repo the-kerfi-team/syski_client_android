@@ -18,6 +18,7 @@ import java.util.List;
 import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.data.entity.RAMEntity;
 import uk.co.syski.client.android.data.entity.data.RAMDataEntity;
+import uk.co.syski.client.android.model.fragment.HeadedValueModel;
 import uk.co.syski.client.android.view.adapter.RAMAdapter;
 import uk.co.syski.client.android.view.fragment.HeadedValueFragment;
 import uk.co.syski.client.android.view.graph.VariableRAMGraph;
@@ -64,9 +65,11 @@ public class RAMActivity extends AppCompatActivity {
 
     private void updateRealTimeUI(RAMDataEntity ramDataEntity) {
         HeadedValueFragment freeRAMFragment = HeadedValueFragment.newInstance(
-            R.drawable.placeholder,
-            "Free RAM",
-            ramDataEntity.Free + "MB"
+            new HeadedValueModel(
+                R.drawable.placeholder,
+                "Free RAM",
+                ramDataEntity.Free + "MB"
+            )
         );
 
         getSupportFragmentManager().beginTransaction().replace(R.id.freeRAMFragment, freeRAMFragment).commit();
