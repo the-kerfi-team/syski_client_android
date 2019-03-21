@@ -77,7 +77,7 @@ public class StorageAdapter extends ArrayAdapter {
 
     public String formatBytes(long bytes) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        String storageUnits = sp.getString("pref_general_Storage_unit", context.getString(R.string.pref_general_storage_unit));
+        String storageUnits = sp.getString("pref_general_storage_unit", context.getString(R.string.pref_general_storage_unit));
         switch (storageUnits) {
             case "TB":
                 bytes /= 1000;
@@ -92,7 +92,7 @@ public class StorageAdapter extends ArrayAdapter {
                 return bytes + "B";
         }
 
-        return bytes + storageUnits;
+        return bytes + " " + storageUnits;
     }
 }
 

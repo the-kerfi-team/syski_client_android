@@ -77,8 +77,8 @@ public class RAMAdapter extends ArrayAdapter {
 
     public String formatBytes(long bytes) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        String storageUnits = sp.getString("pref_general_ram_unit", context.getString(R.string.pref_general_storage_unit));
-        switch (storageUnits) {
+        String ramUnits = sp.getString("pref_general_ram_unit", context.getString(R.string.pref_general_storage_unit));
+        switch (ramUnits) {
             case "TB":
                 bytes /= 1024;
             case "GB":
@@ -92,6 +92,6 @@ public class RAMAdapter extends ArrayAdapter {
                 return bytes + "B";
         }
 
-        return bytes + storageUnits;
+        return bytes + " " + ramUnits;
     }
 }
