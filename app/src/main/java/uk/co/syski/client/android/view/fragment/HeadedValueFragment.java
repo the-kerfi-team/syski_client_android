@@ -2,6 +2,7 @@ package uk.co.syski.client.android.view.fragment;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +26,6 @@ public class HeadedValueFragment extends Fragment {
     private TextView headingView;
     private TextView valueView;
 
-
     public HeadedValueFragment() {
         // Required empty public constructor
     }
@@ -48,14 +48,6 @@ public class HeadedValueFragment extends Fragment {
             heading = getArguments().getString(ARG_HEADING);
             value = getArguments().getString(ARG_VALUE);
         }
-
-        imageView = getActivity().findViewById(R.id.imageView);
-        headingView = getActivity().findViewById(R.id.headingView);
-        valueView = getActivity().findViewById(R.id.valueView);
-
-        imageView.setImageResource(image);
-        headingView.setText(heading);
-        valueView.setText(value);
     }
 
     @Override
@@ -65,4 +57,15 @@ public class HeadedValueFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_headed_value, container, false);
     }
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        imageView = view.findViewById(R.id.imageView);
+        headingView = view.findViewById(R.id.headingView);
+        valueView = view.findViewById(R.id.valueView);
+
+        if (image != null)
+            imageView.setImageResource(image);
+        headingView.setText(heading);
+        valueView.setText(value);
+    }
 }

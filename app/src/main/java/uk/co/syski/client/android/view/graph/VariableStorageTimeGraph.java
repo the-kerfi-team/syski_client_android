@@ -28,7 +28,7 @@ public class VariableStorageTimeGraph extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_variable_cpugraph);
+        setContentView(R.layout.activity_graph);
         graph = findViewById(R.id.graph);
 
         loadSeries = new LineGraphSeries<DataPoint>();

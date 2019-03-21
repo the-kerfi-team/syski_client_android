@@ -1,4 +1,4 @@
-package uk.co.syski.client.android.view.adapters;
+package uk.co.syski.client.android.view.adapter;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -13,7 +13,7 @@ import java.util.List;
 import uk.co.syski.client.android.model.HeadedValueModel;
 import uk.co.syski.client.android.R;
 
-public class ComponentListAdapter extends ArrayAdapter {
+public class HeadedValueListAdapter extends ArrayAdapter {
 
     private final Activity context;
     private final List<HeadedValueModel> listItems;
@@ -22,8 +22,8 @@ public class ComponentListAdapter extends ArrayAdapter {
     TextView heading, value;
     View listView;
 
-    public ComponentListAdapter(Activity context, List<HeadedValueModel> listItems) {
-        super(context, R.layout.component_overview_base, listItems);
+    public HeadedValueListAdapter(Activity context, List<HeadedValueModel> listItems) {
+        super(context, R.layout.fragment_overview, listItems);
         this.context = context;
         this.listItems = listItems;
     }
@@ -41,10 +41,9 @@ public class ComponentListAdapter extends ArrayAdapter {
 
     public void initViews(){
         LayoutInflater inflater = context.getLayoutInflater();
-        listView = inflater.inflate(R.layout.data_list_item, null, true);
-        heading = listView.findViewById(R.id.heading);
-        value = listView.findViewById(R.id.value);
-        image = listView.findViewById(R.id.image);
+        listView = inflater.inflate(R.layout.fragment_headed_value, null, true);
+        image = listView.findViewById(R.id.imageView);
+        heading = listView.findViewById(R.id.headingView);
+        value = listView.findViewById(R.id.valueView);
     }
 }
-

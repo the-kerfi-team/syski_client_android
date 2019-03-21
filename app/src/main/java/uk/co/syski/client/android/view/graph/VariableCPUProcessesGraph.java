@@ -18,7 +18,7 @@ import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.data.entity.data.CPUDataEntity;
 import uk.co.syski.client.android.viewmodel.SystemCPUDataViewModel;
 
-public class VariableCPUProccessesGraph extends AppCompatActivity {
+public class VariableCPUProcessesGraph extends AppCompatActivity {
 
     GraphView graph;
     LineGraphSeries<DataPoint> loadSeries;
@@ -27,7 +27,7 @@ public class VariableCPUProccessesGraph extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_variable_cpugraph);
+        setContentView(R.layout.activity_graph);
         graph = findViewById(R.id.graph);
 
         loadSeries = new LineGraphSeries<DataPoint>();

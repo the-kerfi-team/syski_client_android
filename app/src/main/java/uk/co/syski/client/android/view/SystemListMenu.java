@@ -32,7 +32,7 @@ import uk.co.syski.client.android.api.APIThread;
 import uk.co.syski.client.android.data.SyskiCache;
 import uk.co.syski.client.android.data.entity.SystemEntity;
 import uk.co.syski.client.android.data.repository.Repository;
-import uk.co.syski.client.android.view.adapters.SystemListAdapter;
+import uk.co.syski.client.android.view.adapter.SystemListAdapter;
 import uk.co.syski.client.android.viewmodel.SystemListViewModel;
 
 public class SystemListMenu extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {

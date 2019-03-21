@@ -1,4 +1,4 @@
-package uk.co.syski.client.android.view.adapters;
+package uk.co.syski.client.android.view.adapter;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
