@@ -43,51 +43,49 @@ public class SystemOverviewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_system_overview);
 
-        if (savedInstanceState == null) {
-            SystemSummaryViewModel viewModel = ViewModelProviders.of(this).get(SystemSummaryViewModel.class);
-            viewModel.get().observe(this, new Observer<SystemEntity>() {
-                @Override
-                public void onChanged(@Nullable SystemEntity systemEntity) {
-                    updateStaticUI(systemEntity);
-                }
-            });
+        buildBaseUI();
 
-            HeadedValueFragment shutdownModel = HeadedValueFragment.newInstance(
-                new HeadedValueModel(
-                    R.drawable.placeholder,
-                    "Shutdown System",
-                    "Tap here"
-                )
-            );
+        SystemSummaryViewModel viewModel = ViewModelProviders.of(this).get(SystemSummaryViewModel.class);
+        viewModel.get().observe(this, new Observer<SystemEntity>() {
+            @Override
+            public void onChanged(@Nullable SystemEntity systemEntity) {
+                updateStaticUI(systemEntity);
+            }
+        });
+    }
 
-            View shutdownFragment = findViewById(R.id.shutdownFragment);
-            shutdownFragment.setOnClickListener(new AdapterView.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    shutdownOnClick(v);
-                }
-            });
+    private void buildBaseUI() {
+        ListView listView = findViewById(R.id.compList);
+        listView.setAdapter(new HeadedValueListAdapter(this, getComponentList()));
 
-            getSupportFragmentManager().beginTransaction().replace(R.id.shutdownFragment, shutdownModel).commit();
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                openComponentOverview(position);
+            }
+        });
 
-            HeadedValueFragment restartModel = HeadedValueFragment.newInstance(
-                new HeadedValueModel(
-                    R.drawable.placeholder,
-                    "Restart System",
-                    "Tap here"
-                )
-            );
+        HeadedValueFragment shutdownModel = HeadedValueFragment.newInstance(new HeadedValueModel(R.drawable.placeholder, "Shutdown System", "Tap here"));
+        getSupportFragmentManager().beginTransaction().add(R.id.shutdownFragment, shutdownModel).commit();
 
-            getSupportFragmentManager().beginTransaction().replace(R.id.restartFragment, restartModel).commit();
+        View shutdownFragment = findViewById(R.id.shutdownFragment);
+        shutdownFragment.setOnClickListener(new AdapterView.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shutdownOnClick(v);
+            }
+        });
 
-            View restartFragment = findViewById(R.id.restartFragment);
-            restartFragment.setOnClickListener(new AdapterView.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    restartOnClick(v);
-                }
-            });
-        }
+        HeadedValueFragment restartModel = HeadedValueFragment.newInstance(new HeadedValueModel(R.drawable.placeholder, "Restart System", "Tap here"));
+        getSupportFragmentManager().beginTransaction().add(R.id.restartFragment, restartModel).commit();
+
+        View restartFragment = findViewById(R.id.restartFragment);
+        restartFragment.setOnClickListener(new AdapterView.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                restartOnClick(v);
+            }
+        });
     }
 
     private void updateStaticUI(SystemEntity systemEntity) {
@@ -115,23 +113,6 @@ public class SystemOverviewActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().add(R.id.overviewFragment, overviewFragment).commit();
 
         findViewById(R.id.overviewFragment).setLayoutParams(new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT));
-
-        View overviewFragmentView = findViewById(R.id.overviewFragment);
-
-        int visibility = overviewFragmentView.getVisibility();
-        overviewFragmentView.setVisibility(View.GONE);
-        overviewFragmentView.setVisibility(visibility);
-
-        ListView listView = findViewById(R.id.compList);
-        listView.setAdapter(new HeadedValueListAdapter(this, getComponentList()));
-
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                openComponentOverview(position);
-            }
-        });
     }
 
     private void openComponentOverview(int position) {
