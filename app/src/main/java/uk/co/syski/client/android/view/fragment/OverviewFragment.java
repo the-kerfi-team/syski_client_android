@@ -10,7 +10,11 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import uk.co.syski.client.android.R;
+import uk.co.syski.client.android.model.HeadedValueModel;
+import uk.co.syski.client.android.view.adapter.HeadedValueListAdapter;
 
 
 /**
@@ -30,8 +34,11 @@ public class OverviewFragment extends Fragment {
     private Integer image;
     private String firstHeading, firstValue, secondHeading, secondValue;
 
+    private ArrayList<HeadedValueModel> headedValues;
+
     private ImageView imageView;
     private TextView firstHeadingView, firstValueView, secondHeadingView, secondValueView;
+    private ListView listView;
 
     public OverviewFragment() {
         // Required empty public constructor
@@ -75,6 +82,7 @@ public class OverviewFragment extends Fragment {
         firstValueView = view.findViewById(R.id.firstValueView);
         secondHeadingView = view.findViewById(R.id.secondHeadingView);
         secondValueView = view.findViewById(R.id.secondValueView);
+        listView = view.findViewById(R.id.listView);
 
         if (image != null)
             imageView.setImageResource(image);
@@ -83,5 +91,12 @@ public class OverviewFragment extends Fragment {
         firstValueView.setText(firstValue);
         secondHeadingView.setText(secondHeading);
         secondValueView.setText(secondValue);
+
+        if (headedValues != null)
+            listView.setAdapter(new HeadedValueListAdapter(getActivity(), headedValues));
+    }
+
+    public void setListViewData(ArrayList<HeadedValueModel> headedValues) {
+        this.headedValues = headedValues;
     }
 }

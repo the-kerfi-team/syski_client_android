@@ -85,15 +85,13 @@ public class SystemOverviewActivity extends AppCompatActivity {
     }
 
     private void updateStaticUI(SystemEntity systemEntity) {
-        Fragment overviewFragment = OverviewFragment.newInstance(
+        OverviewFragment overviewFragment = OverviewFragment.newInstance(
             R.drawable.ic_pc,
             "Model",
             systemEntity.ModelName,
             "Manufacturer",
             systemEntity.ManufacturerName
         );
-
-        getSupportFragmentManager().beginTransaction().add(R.id.overviewFragment, overviewFragment).commit();
 
         ArrayList<HeadedValueModel> systemData = new ArrayList<>();
 
@@ -104,18 +102,12 @@ public class SystemOverviewActivity extends AppCompatActivity {
                 systemEntity.HostName
             )
         );
-        systemData.add(
-            new HeadedValueModel(
-                R.drawable.ic_version,
-                "Last Updated",
-                systemEntity.LastUpdated.toString()
-            )
-        );
 
-        ListView listView = findViewById(R.id.listView);
-        //listView.setAdapter(new HeadedValueListAdapter(this, systemData));
+        overviewFragment.setListViewData(systemData);
 
-        listView = findViewById(R.id.compList);
+        getSupportFragmentManager().beginTransaction().add(R.id.overviewFragment, overviewFragment).commit();
+
+        ListView listView = findViewById(R.id.compList);
         listView.setAdapter(new HeadedValueListAdapter(this, getComponentList()));
 
 
