@@ -108,7 +108,7 @@ public class NFCReceiverActivity extends AppCompatActivity {
                 Toast.makeText(this, "Error: System does not exist", Toast.LENGTH_SHORT).show();
             }
         } catch (IllegalArgumentException e) {
-            Toast.makeText(this, "Error: QR Code does not represent a system", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Error: NFC Tag does not represent a system", Toast.LENGTH_SHORT).show();
         }
     }
 
