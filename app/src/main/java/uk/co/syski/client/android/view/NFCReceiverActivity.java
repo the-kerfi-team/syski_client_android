@@ -20,7 +20,6 @@ import java.util.UUID;
 
 import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.data.entity.SystemEntity;
-import uk.co.syski.client.android.view.SystemOverviewActivity;
 import uk.co.syski.client.android.viewmodel.SystemListViewModel;
 
 public class NFCReceiverActivity extends AppCompatActivity {
@@ -79,6 +78,7 @@ public class NFCReceiverActivity extends AppCompatActivity {
             // Get the Text
             text = new String(payload, languageCodeLength + 1, payload.length - languageCodeLength - 1, textEncoding);
         } catch (UnsupportedEncodingException e) {
+            Log.e(TAG, "Error occurred when encoding NFC payload");
             Log.e("UnsupportedEncoding", e.toString());
         }
 
@@ -91,6 +91,7 @@ public class NFCReceiverActivity extends AppCompatActivity {
             boolean systemNotFound = true;
             UUID systemId = UUID.fromString(text);
 
+            Log.i(TAG, "Looking up SysID using NFC");
             SystemListViewModel model = ViewModelProviders.of(this).get(SystemListViewModel.class);
             List<SystemEntity> sys = model.get().getValue();
             for(SystemEntity system : sys){
@@ -106,9 +107,11 @@ public class NFCReceiverActivity extends AppCompatActivity {
                 startActivity(intent);
             } else {
                 Toast.makeText(this, "Error: System does not exist", Toast.LENGTH_SHORT).show();
+                Log.w(TAG,"NFC System Does Not Exist");
             }
         } catch (IllegalArgumentException e) {
             Toast.makeText(this, "Error: NFC Tag does not represent a system", Toast.LENGTH_SHORT).show();
+            Log.w(TAG, "NFC Tag does not represent a system");
         }
     }
 
