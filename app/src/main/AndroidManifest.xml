@@ -109,7 +109,7 @@
             android:name=".view.graph.VariableStorageByteReadWriteGraph"
             android:label="Storage Byte Reads and Writes"
             android:parentActivityName=".view.SystemStorageActivity" />
-        <activity android:name=".NFCReceiverActivity"
+        <activity android:name=".view.NFCReceiverActivity"
             android:label="@string/nfc_lbl"
             android:parentActivityName=".view.SystemListMenu">
             <intent-filter>

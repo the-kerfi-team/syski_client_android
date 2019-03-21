@@ -1,6 +1,5 @@
-package uk.co.syski.client.android;
+package uk.co.syski.client.android.view;
 
-import android.app.Activity;
 import android.app.PendingIntent;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
@@ -9,10 +8,9 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.nfc.NdefMessage;
 import android.nfc.NfcAdapter;
-import android.nfc.Tag;
+import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -20,12 +18,14 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.UUID;
 
+import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.data.entity.SystemEntity;
-import uk.co.syski.client.android.view.MainActivity;
 import uk.co.syski.client.android.view.SystemOverviewActivity;
 import uk.co.syski.client.android.viewmodel.SystemListViewModel;
 
 public class NFCReceiverActivity extends AppCompatActivity {
+
+    private static final String TAG = "CPUActivity";
 
     private NfcAdapter nfcAdapter;
     private PendingIntent pendingIntent;
@@ -41,12 +41,8 @@ public class NFCReceiverActivity extends AppCompatActivity {
         prefs = this.getSharedPreferences(getString(R.string.preference_sysID_key), Context.MODE_PRIVATE);
         prefEditor = prefs.edit();
 
+        Log.d(TAG,"Creating NFC Adapter");
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
-        if (nfcAdapter == null) {
-            // Stop here, we definitely need NFC
-            Toast.makeText(this, "This device doesn't support NFC.", Toast.LENGTH_LONG).show();
-            finish();
-        }
         readFromIntent(getIntent());
 
         pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);

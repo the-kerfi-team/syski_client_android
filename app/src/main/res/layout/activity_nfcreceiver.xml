@@ -4,6 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="uk.co.syski.client.android.NFCReceiverActivity">
+    tools:context="uk.co.syski.client.android.view.NFCReceiverActivity">
 
 </android.support.constraint.ConstraintLayout>
