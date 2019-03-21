@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -29,6 +30,7 @@ import uk.co.syski.client.android.data.repository.Repository;
 import uk.co.syski.client.android.model.HeadedValueModel;
 import uk.co.syski.client.android.view.adapter.HeadedValueListAdapter;
 import uk.co.syski.client.android.view.fragment.HeadedValueFragment;
+import uk.co.syski.client.android.view.fragment.OverviewFragment;
 import uk.co.syski.client.android.viewmodel.SystemSummaryViewModel;
 
 public class SystemOverviewActivity extends AppCompatActivity {
@@ -38,7 +40,7 @@ public class SystemOverviewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sys_overview);
+        setContentView(R.layout.activity_system_overview);
 
         SystemSummaryViewModel viewModel = ViewModelProviders.of(this).get(SystemSummaryViewModel.class);
         viewModel.get().observe(this, new Observer<SystemEntity>() {
@@ -47,7 +49,7 @@ public class SystemOverviewActivity extends AppCompatActivity {
                 updateStaticUI(systemEntity);
             }
         });
-        
+/*
         HeadedValueFragment shutdownModel = HeadedValueFragment.newInstance(
             R.drawable.placeholder,
             "Shutdown System",
@@ -79,22 +81,19 @@ public class SystemOverviewActivity extends AppCompatActivity {
                 restartOnClick(v);
             }
         });
+*/
     }
 
     private void updateStaticUI(SystemEntity systemEntity) {
-        View topFragment = findViewById(R.id.topFragment);
+        Fragment overviewFragment = OverviewFragment.newInstance(
+            R.drawable.ic_pc,
+            "Model",
+            systemEntity.ModelName,
+            "Manufacturer",
+            systemEntity.ManufacturerName
+        );
 
-        ImageView imageView = topFragment.findViewById(R.id.imageView);
-        TextView firstHeadingView = topFragment.findViewById(R.id.firstHeadingView);
-        TextView firstValueView = topFragment.findViewById(R.id.firstValueView);
-        TextView secondHeadingView = topFragment.findViewById(R.id.secondHeadingView);
-        TextView secondValueView = topFragment.findViewById(R.id.secondValueView);
-
-        imageView.setImageResource(R.drawable.ic_pc);
-        firstHeadingView.setText("Model");
-        firstValueView.setText(systemEntity.ModelName);
-        secondHeadingView.setText("Manufacturer");
-        secondValueView.setText(systemEntity.ManufacturerName);
+        getSupportFragmentManager().beginTransaction().add(R.id.overviewFragment, overviewFragment).commit();
 
         ArrayList<HeadedValueModel> systemData = new ArrayList<>();
 
@@ -114,7 +113,7 @@ public class SystemOverviewActivity extends AppCompatActivity {
         );
 
         ListView listView = findViewById(R.id.listView);
-        listView.setAdapter(new HeadedValueListAdapter(this, systemData));
+        //listView.setAdapter(new HeadedValueListAdapter(this, systemData));
 
         listView = findViewById(R.id.compList);
         listView.setAdapter(new HeadedValueListAdapter(this, getComponentList()));
