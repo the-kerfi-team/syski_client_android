@@ -108,11 +108,18 @@ public class NFCReceiverActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(this, "Error: System does not exist", Toast.LENGTH_SHORT).show();
                 Log.w(TAG,"NFC System Does Not Exist");
+                redirectHome();
             }
         } catch (IllegalArgumentException e) {
             Toast.makeText(this, "Error: NFC Tag does not represent a system", Toast.LENGTH_SHORT).show();
             Log.w(TAG, "NFC Tag does not represent a system");
+            redirectHome();
         }
+    }
+
+    private void redirectHome(){
+        Intent intent = new Intent(this, SystemListMenu.class);
+        startActivity(intent);
     }
 
 }
