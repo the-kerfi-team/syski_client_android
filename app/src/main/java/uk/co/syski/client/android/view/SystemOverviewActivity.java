@@ -47,7 +47,7 @@ public class SystemOverviewActivity extends AppCompatActivity {
                 updateStaticUI(systemEntity);
             }
         });
-
+        
         HeadedValueFragment shutdownModel = HeadedValueFragment.newInstance(
             R.drawable.placeholder,
             "Shutdown System",
@@ -119,34 +119,35 @@ public class SystemOverviewActivity extends AppCompatActivity {
         listView = findViewById(R.id.compList);
         listView.setAdapter(new HeadedValueListAdapter(this, getComponentList()));
 
-        setComponentOnClickListeners(listView);
-    }
 
-    private void setComponentOnClickListeners(ListView listView) {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Class dest;
-                switch (position) {
-                    case 0: dest = CPUActivity.class;
-                        break;
-                    case 1: dest = RAMActivity.class;
-                        break;
-                    case 2: dest = SystemStorageActivity.class;
-                        break;
-                    case 3: dest = GPUActivity.class;
-                        break;
-                    case 4: dest = MOBOActivity.class;
-                        break;
-                    case 5: dest = SystemOSActivity.class;
-                        break;
-                    default: dest = null;
-                }
-
-                Intent intent = new Intent(SystemOverviewActivity.this, dest);
-                startActivity(intent);
+                openComponentOverview(position);
             }
         });
+    }
+
+    private void openComponentOverview(int position) {
+        Class dest;
+        switch (position) {
+            case 0: dest = CPUActivity.class;
+                break;
+            case 1: dest = RAMActivity.class;
+                break;
+            case 2: dest = SystemStorageActivity.class;
+                break;
+            case 3: dest = GPUActivity.class;
+                break;
+            case 4: dest = MOBOActivity.class;
+                break;
+            case 5: dest = SystemOSActivity.class;
+                break;
+            default: dest = null;
+        }
+
+        Intent intent = new Intent(SystemOverviewActivity.this, dest);
+        startActivity(intent);
     }
 
     private List<HeadedValueModel> getComponentList() {
