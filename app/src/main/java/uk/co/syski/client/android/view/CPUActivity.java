@@ -98,7 +98,7 @@ public class CPUActivity extends AppCompatActivity {
             cpuData
         );
 
-        getSupportFragmentManager().beginTransaction().add(R.id.mainFragment, mainFragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment, mainFragment).commit();
     }
 
     private void updateRealTimeUI(CPUDataEntity cpuDataEntity) {

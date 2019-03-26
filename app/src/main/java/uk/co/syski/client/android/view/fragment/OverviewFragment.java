@@ -48,7 +48,7 @@ public class OverviewFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         DoubleHeadedValueFragment topFragment = DoubleHeadedValueFragment.newInstance(model);
-        getFragmentManager().beginTransaction().add(R.id.topFragment, topFragment).commit();
+        getFragmentManager().beginTransaction().replace(R.id.topFragment, topFragment).commit();
 
         listView = view.findViewById(R.id.listView);
         if (listItems != null)

@@ -53,7 +53,7 @@ public class GPUActivity extends AppCompatActivity {
             )
         );
 
-        getSupportFragmentManager().beginTransaction().add(R.id.topFragment, topFragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.topFragment, topFragment).commit();
     }
 
     @Override

@@ -110,7 +110,7 @@ public class SystemOverviewActivity extends AppCompatActivity {
             systemData
         );
 
-        getSupportFragmentManager().beginTransaction().add(R.id.overviewFragment, overviewFragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.overviewFragment, overviewFragment).commit();
 
         findViewById(R.id.overviewFragment).setLayoutParams(new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT));
     }
