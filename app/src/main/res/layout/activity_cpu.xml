@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout
-        android:id="@+id/mainFragment"
+    <ListView
+        android:id="@+id/cpuList"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"
@@ -16,7 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-    </FrameLayout>
+    </ListView>
 
     <FrameLayout
         android:id="@+id/loadFragment"
@@ -28,7 +28,7 @@
         app:layout_constraintEnd_toStartOf="@+id/processesFragment"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainFragment">
+        app:layout_constraintTop_toBottomOf="@+id/cpuList">
 
     </FrameLayout>
 

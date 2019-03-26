@@ -77,6 +77,8 @@ public class CPUAdapter extends ArrayAdapter {
                         Integer.toString(listItems.get(position).ThreadCount)
                 ));
         }
+
+        return null;
     }
 
     private View getDoubleHeadedValue(LayoutInflater inflater, DoubleHeadedValueModel model) {
@@ -107,5 +109,7 @@ public class CPUAdapter extends ArrayAdapter {
         image.setImageResource(model.image);
         heading.setText(model.heading);
         value.setText(model.value);
+
+        return view;
     }
 }
