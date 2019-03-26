@@ -38,6 +38,8 @@ public class SystemOverviewActivity extends AppCompatActivity {
 
     private static final String TAG = "SystemOverviewActivity";
 
+    SystemSummaryViewModel viewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +47,7 @@ public class SystemOverviewActivity extends AppCompatActivity {
 
         buildBaseUI();
 
-        SystemSummaryViewModel viewModel = ViewModelProviders.of(this).get(SystemSummaryViewModel.class);
+        viewModel = ViewModelProviders.of(this).get(SystemSummaryViewModel.class);
         viewModel.get().observe(this, new Observer<SystemEntity>() {
             @Override
             public void onChanged(@Nullable SystemEntity systemEntity) {
