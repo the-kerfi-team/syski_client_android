@@ -38,6 +38,8 @@ public class SystemOverviewActivity extends AppCompatActivity {
 
     private static final String TAG = "SystemOverviewActivity";
 
+    SystemSummaryViewModel viewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +47,7 @@ public class SystemOverviewActivity extends AppCompatActivity {
 
         buildBaseUI();
 
-        SystemSummaryViewModel viewModel = ViewModelProviders.of(this).get(SystemSummaryViewModel.class);
+        viewModel = ViewModelProviders.of(this).get(SystemSummaryViewModel.class);
         viewModel.get().observe(this, new Observer<SystemEntity>() {
             @Override
             public void onChanged(@Nullable SystemEntity systemEntity) {
@@ -187,23 +189,11 @@ public class SystemOverviewActivity extends AppCompatActivity {
     }
 
     public void shutdownOnClick(View v) {
-        UserEntity user = null;
-        user = Repository.getInstance().getUserRepository().getUser();
-        if (user == null || user.TokenExpiry == null || Calendar.getInstance().getTime().after(user.TokenExpiry))
-        {
-            VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(new APITokenRequest(getApplicationContext(), user.Id));
-        }
-        //VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(new APISystemShutdownRequest(getApplicationContext(), system.Id));
+        viewModel.shutdownOnClick();
     }
 
     public void restartOnClick(View v) {
-        UserEntity user = null;
-        user = Repository.getInstance().getUserRepository().getUser();
-        if (user == null || user.TokenExpiry == null || Calendar.getInstance().getTime().after(user.TokenExpiry))
-        {
-            VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(new APITokenRequest(getApplicationContext(), user.Id));
-        }
-        //VolleySingleton.getInstance(getApplicationContext()).addToRequestQueue(new APISystemRestartRequest(getApplicationContext(), system.Id));
+        viewModel.restartOnClick();
     }
 
     @Override
