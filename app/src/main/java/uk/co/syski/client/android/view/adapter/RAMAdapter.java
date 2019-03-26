@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.data.entity.RAMEntity;
+import uk.co.syski.client.android.model.database.entity.RAMEntity;
 
 public class RAMAdapter extends ArrayAdapter {
 

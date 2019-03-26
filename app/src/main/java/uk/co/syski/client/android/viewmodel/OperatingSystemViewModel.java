@@ -10,10 +10,9 @@ import java.util.List;
 import java.util.UUID;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.data.entity.OperatingSystemEntity;
-import uk.co.syski.client.android.data.repository.OSRepository;
-import uk.co.syski.client.android.data.repository.Repository;
-import uk.co.syski.client.android.model.OperatingSystemModel;
+import uk.co.syski.client.android.model.repository.OSRepository;
+import uk.co.syski.client.android.model.repository.Repository;
+import uk.co.syski.client.android.model.database.model.OperatingSystemModel;
 
 public class OperatingSystemViewModel extends AndroidViewModel{
 

@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.UUID;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.data.entity.data.CPUDataEntity;
-import uk.co.syski.client.android.data.repository.SystemCPUDataRepository;
+import uk.co.syski.client.android.model.database.entity.data.CPUDataEntity;
+import uk.co.syski.client.android.model.repository.SystemCPUDataRepository;
 
 public class SystemCPUDataViewModel extends AndroidViewModel {
 

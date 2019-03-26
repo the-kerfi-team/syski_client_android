@@ -2,7 +2,6 @@ package uk.co.syski.client.android.view.graph;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,10 +13,8 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 import java.util.List;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.data.entity.RAMEntity;
-import uk.co.syski.client.android.data.entity.data.CPUDataEntity;
-import uk.co.syski.client.android.data.entity.data.RAMDataEntity;
-import uk.co.syski.client.android.view.RAMActivity;
+import uk.co.syski.client.android.model.database.entity.RAMEntity;
+import uk.co.syski.client.android.model.database.entity.data.RAMDataEntity;
 import uk.co.syski.client.android.viewmodel.SystemRAMDataViewModel;
 import uk.co.syski.client.android.viewmodel.SystemRAMViewModel;
 

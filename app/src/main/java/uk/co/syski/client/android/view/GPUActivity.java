@@ -17,7 +17,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.data.entity.GPUEntity;
+import uk.co.syski.client.android.model.database.entity.GPUEntity;
 import uk.co.syski.client.android.model.fragment.DoubleHeadedValueModel;
 import uk.co.syski.client.android.view.fragment.DoubleHeadedValueFragment;
 import uk.co.syski.client.android.viewmodel.SystemGPUViewModel;

@@ -29,11 +29,11 @@ import java.util.List;
 import java.util.UUID;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.api.APIThread;
-import uk.co.syski.client.android.data.SyskiCache;
-import uk.co.syski.client.android.data.entity.SystemEntity;
-import uk.co.syski.client.android.data.repository.Repository;
+
+import uk.co.syski.client.android.model.database.SyskiCache;
+import uk.co.syski.client.android.model.database.entity.SystemEntity;
 import uk.co.syski.client.android.model.fragment.HeadedValueModel;
+import uk.co.syski.client.android.model.repository.Repository;
 import uk.co.syski.client.android.view.adapter.HeadedValueListAdapter;
 import uk.co.syski.client.android.viewmodel.SystemListViewModel;
 
@@ -41,6 +41,8 @@ public class SystemListMenu extends AppCompatActivity implements NavigationView.
 
     SharedPreferences prefs;
     SharedPreferences.Editor prefEditor;
+
+    private SystemListViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +96,13 @@ public class SystemListMenu extends AppCompatActivity implements NavigationView.
         prefEditor.putString(getString(R.string.preference_sysID_key),systemId);
         prefEditor.apply();
         startActivity(intent);
+    }
+
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+        viewModel.refreshData();
     }
 
     @Override
@@ -156,7 +165,6 @@ public class SystemListMenu extends AppCompatActivity implements NavigationView.
                 }
             }).start();
             Repository.getInstance().getUserRepository().setActiveUserId(null);
-            APIThread.getInstance(getApplicationContext()).disable();
             prefEditor.remove(getString(R.string.preference_sysID_key)).commit();
             getSharedPreferences(getString(R.string.preference_usrID_key), Context.MODE_PRIVATE).edit().remove(getString(R.string.preference_usrID_key)).commit();
             finish();

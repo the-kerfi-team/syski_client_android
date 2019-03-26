@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.data.entity.StorageEntity;
+import uk.co.syski.client.android.model.database.entity.StorageEntity;
 
 public class StorageAdapter extends ArrayAdapter {
 

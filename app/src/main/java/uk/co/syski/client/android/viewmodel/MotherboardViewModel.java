@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.UUID;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.data.entity.MotherboardEntity;
-import uk.co.syski.client.android.data.repository.MOBORepository;
-import uk.co.syski.client.android.data.repository.Repository;
+import uk.co.syski.client.android.model.database.entity.MotherboardEntity;
+import uk.co.syski.client.android.model.repository.MOBORepository;
+import uk.co.syski.client.android.model.repository.Repository;
 
 public class MotherboardViewModel extends AndroidViewModel{
 

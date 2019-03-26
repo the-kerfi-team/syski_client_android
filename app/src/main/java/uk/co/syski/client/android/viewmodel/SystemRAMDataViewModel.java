@@ -10,10 +10,8 @@ import java.util.List;
 import java.util.UUID;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.data.entity.data.CPUDataEntity;
-import uk.co.syski.client.android.data.entity.data.RAMDataEntity;
-import uk.co.syski.client.android.data.repository.SystemCPUDataRepository;
-import uk.co.syski.client.android.data.repository.SystemRAMDataRepository;
+import uk.co.syski.client.android.model.database.entity.data.RAMDataEntity;
+import uk.co.syski.client.android.model.repository.SystemRAMDataRepository;
 
 public class SystemRAMDataViewModel extends AndroidViewModel {
 

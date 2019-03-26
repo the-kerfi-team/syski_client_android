@@ -16,8 +16,8 @@ import android.widget.ListView;
 import java.util.List;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.data.entity.RAMEntity;
-import uk.co.syski.client.android.data.entity.data.RAMDataEntity;
+import uk.co.syski.client.android.model.database.entity.RAMEntity;
+import uk.co.syski.client.android.model.database.entity.data.RAMDataEntity;
 import uk.co.syski.client.android.model.fragment.HeadedValueModel;
 import uk.co.syski.client.android.view.adapter.RAMAdapter;
 import uk.co.syski.client.android.view.fragment.HeadedValueFragment;

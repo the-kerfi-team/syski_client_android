@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.data.entity.MotherboardEntity;
+import uk.co.syski.client.android.model.database.entity.MotherboardEntity;
 import uk.co.syski.client.android.model.fragment.DoubleHeadedValueModel;
 import uk.co.syski.client.android.model.fragment.HeadedValueModel;
 import uk.co.syski.client.android.view.adapter.HeadedValueListAdapter;

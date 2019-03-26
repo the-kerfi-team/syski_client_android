@@ -11,11 +11,9 @@ import java.util.List;
 import java.util.UUID;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.data.entity.CPUEntity;
-import uk.co.syski.client.android.data.entity.StorageEntity;
-import uk.co.syski.client.android.data.repository.CPURepository;
-import uk.co.syski.client.android.data.repository.Repository;
-import uk.co.syski.client.android.data.repository.StorageRepository;
+import uk.co.syski.client.android.model.database.entity.StorageEntity;
+import uk.co.syski.client.android.model.repository.Repository;
+import uk.co.syski.client.android.model.repository.StorageRepository;
 
 public class SystemStorageViewModel extends AndroidViewModel {
 

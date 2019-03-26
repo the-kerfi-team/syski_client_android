@@ -16,8 +16,8 @@ import android.widget.ListView;
 import java.util.List;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.data.entity.StorageEntity;
-import uk.co.syski.client.android.data.entity.data.StorageDataEntity;
+import uk.co.syski.client.android.model.database.entity.StorageEntity;
+import uk.co.syski.client.android.model.database.entity.data.StorageDataEntity;
 import uk.co.syski.client.android.model.fragment.DoubleHeadedValueModel;
 import uk.co.syski.client.android.model.fragment.HeadedValueModel;
 import uk.co.syski.client.android.view.adapter.StorageAdapter;

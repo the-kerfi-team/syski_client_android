@@ -19,11 +19,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.data.entity.CPUEntity;
-import uk.co.syski.client.android.data.entity.data.CPUDataEntity;
+import uk.co.syski.client.android.model.database.entity.CPUEntity;
+import uk.co.syski.client.android.model.database.entity.data.CPUDataEntity;
 import uk.co.syski.client.android.model.fragment.DoubleHeadedValueModel;
 import uk.co.syski.client.android.model.fragment.HeadedValueModel;
-import uk.co.syski.client.android.view.adapter.HeadedValueListAdapter;
 import uk.co.syski.client.android.view.fragment.HeadedValueFragment;
 import uk.co.syski.client.android.view.fragment.OverviewFragment;
 import uk.co.syski.client.android.view.graph.VariableCPULoadGraph;

@@ -2,20 +2,18 @@ package uk.co.syski.client.android.view.graph;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.util.List;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.data.entity.data.CPUDataEntity;
+import uk.co.syski.client.android.model.database.entity.data.CPUDataEntity;
 import uk.co.syski.client.android.viewmodel.SystemCPUDataViewModel;
 
 public class VariableCPUProcessesGraph extends AppCompatActivity {

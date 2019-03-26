@@ -21,12 +21,8 @@ import java.util.Calendar;
 import java.util.List;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.api.VolleySingleton;
-import uk.co.syski.client.android.api.requests.auth.APITokenRequest;
-import uk.co.syski.client.android.data.entity.SystemEntity;
-import uk.co.syski.client.android.data.entity.UserEntity;
 
-import uk.co.syski.client.android.data.repository.Repository;
+import uk.co.syski.client.android.model.database.entity.SystemEntity;
 import uk.co.syski.client.android.model.fragment.DoubleHeadedValueModel;
 import uk.co.syski.client.android.model.fragment.HeadedValueModel;
 import uk.co.syski.client.android.view.adapter.HeadedValueListAdapter;
