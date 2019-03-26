@@ -88,7 +88,7 @@
             android:parentActivityName=".view.SystemStorageActivity" />
         <activity android:name=".view.graph.VariableNetworkGraph" />
         <activity
-            android:name=".view.graph.VariableCPUProccessesGraph"
+            android:name=".view.graph.VariableCPUProcessesGraph"
             android:label="CPU Processes"
             android:parentActivityName=".view.CPUActivity" />
         <activity

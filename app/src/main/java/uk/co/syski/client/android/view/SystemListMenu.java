@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,7 +33,8 @@ import uk.co.syski.client.android.api.APIThread;
 import uk.co.syski.client.android.data.SyskiCache;
 import uk.co.syski.client.android.data.entity.SystemEntity;
 import uk.co.syski.client.android.data.repository.Repository;
-import uk.co.syski.client.android.view.adapters.SystemListAdapter;
+import uk.co.syski.client.android.model.fragment.HeadedValueModel;
+import uk.co.syski.client.android.view.adapter.HeadedValueListAdapter;
 import uk.co.syski.client.android.viewmodel.SystemListViewModel;
 
 public class SystemListMenu extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -61,29 +63,37 @@ public class SystemListMenu extends AppCompatActivity implements NavigationView.
         prefs = this.getSharedPreferences(getString(R.string.preference_sysID_key), Context.MODE_PRIVATE);
         prefEditor = prefs.edit();
 
-        //Setup list
-
-        final SystemListAdapter adapter = new SystemListAdapter(this, R.drawable.ic_pc);
-        final ListView listView = (ListView) findViewById(R.id.sysList);
-        listView.setAdapter(adapter);
-
+        //Setup List.
         SystemListViewModel model = ViewModelProviders.of(this).get(SystemListViewModel.class);
         model.get().observe(this, new Observer<List<SystemEntity>>() {
             @Override
             public void onChanged(@Nullable final List<SystemEntity> systemEntities) {
-                adapter.setData(systemEntities);
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Intent intent = new Intent(SystemListMenu.this,SystemOverviewActivity.class);
-                    String sysId = systemEntities.get(position).Id.toString();
-                    prefEditor.putString(getString(R.string.preference_sysID_key),sysId);
-                    prefEditor.apply();
-                    startActivity(intent);
-                    }
-                });
+                setupList(systemEntities);
             }
         });
+    }
+
+    private void setupList(final List<SystemEntity> systemEntities) {
+        ArrayList<HeadedValueModel> listItems = new ArrayList<>();
+        for (int i = 0; i < systemEntities.size(); i++)
+            listItems.add(new HeadedValueModel(R.drawable.ic_pc, "View details for", systemEntities.get(i).HostName));
+
+        ListView listView = findViewById(R.id.sysList);
+        listView.setAdapter(new HeadedValueListAdapter(this, listItems));
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                openSystemOverview(systemEntities.get(position).Id.toString());
+            }
+        });
+    }
+
+    private void openSystemOverview(String systemId) {
+        Intent intent = new Intent(SystemListMenu.this,SystemOverviewActivity.class);
+        prefEditor.putString(getString(R.string.preference_sysID_key),systemId);
+        prefEditor.apply();
+        startActivity(intent);
     }
 
     @Override
@@ -184,9 +194,6 @@ public class SystemListMenu extends AppCompatActivity implements NavigationView.
                             systemNotFound = false;
                         }
                     }
-
-
-
 
                     if (!systemNotFound) {
                         Intent intent = new Intent(this, SystemOverviewActivity.class);

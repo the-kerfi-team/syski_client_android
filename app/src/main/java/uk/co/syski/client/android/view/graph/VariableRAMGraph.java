@@ -30,8 +30,8 @@ public class VariableRAMGraph extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_variable_ramgraph);
-        graph = findViewById(R.id.ramGraph);
+        setContentView(R.layout.activity_graph);
+        graph = findViewById(R.id.graph);
 
         loadSeries = new LineGraphSeries<DataPoint>();
         graph.addSeries(loadSeries);

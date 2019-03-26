@@ -1,13 +1,13 @@
-package uk.co.syski.client.android.model;
+package uk.co.syski.client.android.model.fragment;
 
 public class HeadedValueModel {
     public final Integer image;
     public final String heading;
     public final String value;
 
-    public HeadedValueModel(String headingIn, String valueIn, Integer imageIn) {
+    public HeadedValueModel(Integer imageIn, String headingIn, String valueIn) {
+        image = imageIn;
         heading = headingIn;
         value = valueIn;
-        image = imageIn;
     }
 }
