@@ -78,10 +78,35 @@
             android:label="@string/sys_os_lbl"
             android:parentActivityName=".view.SystemOverviewActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".view.graph.VariableCPULoadGraph" />
-        <activity android:name=".view.graph.VariableStorageGraph" />
-        <activity android:name=".view.graph.VariableNetworkGraph"></activity>
-        <activity android:name=".view.graph.VariableCPUProccessesGraph" />
+        <activity
+            android:name=".view.graph.VariableCPULoadGraph"
+            android:label="CPU Load"
+            android:parentActivityName=".view.CPUActivity" />
+        <activity
+            android:name=".view.graph.VariableStorageTimeGraph"
+            android:label="Storage Time"
+            android:parentActivityName=".view.SystemStorageActivity" />
+        <activity android:name=".view.graph.VariableNetworkGraph" />
+        <activity
+            android:name=".view.graph.VariableCPUProcessesGraph"
+            android:label="CPU Processes"
+            android:parentActivityName=".view.CPUActivity" />
+        <activity
+            android:name=".view.graph.VariableRAMGraph"
+            android:label="Free RAM"
+            android:parentActivityName=".view.RAMActivity" />
+        <activity
+            android:name=".view.graph.VariableStorageTransfersGraph"
+            android:label="Storage Transfers"
+            android:parentActivityName=".view.SystemStorageActivity" />
+        <activity
+            android:name=".view.graph.VariableStorageReadWriteGraph"
+            android:label="Storage Reads and Writes"
+            android:parentActivityName=".view.SystemStorageActivity" />
+        <activity
+            android:name=".view.graph.VariableStorageByteReadWriteGraph"
+            android:label="Storage Byte Reads and Writes"
+            android:parentActivityName=".view.SystemStorageActivity" />
     </application>
 
 </manifest>
