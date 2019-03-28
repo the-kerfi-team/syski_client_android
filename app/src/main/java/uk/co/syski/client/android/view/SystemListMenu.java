@@ -25,6 +25,8 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
@@ -43,6 +45,7 @@ public class SystemListMenu extends AppCompatActivity implements NavigationView.
     SharedPreferences.Editor prefEditor;
 
     private SystemListViewModel viewModel;
+    private List<SystemEntity> systemEntityList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,44 +68,41 @@ public class SystemListMenu extends AppCompatActivity implements NavigationView.
         prefs = this.getSharedPreferences(getString(R.string.preference_sysID_key), Context.MODE_PRIVATE);
         prefEditor = prefs.edit();
 
-        //Setup List.
-        SystemListViewModel model = ViewModelProviders.of(this).get(SystemListViewModel.class);
-        model.get().observe(this, new Observer<List<SystemEntity>>() {
-            @Override
-            public void onChanged(@Nullable final List<SystemEntity> systemEntities) {
-                setupList(systemEntities);
-            }
-        });
-    }
-
-    private void setupList(final List<SystemEntity> systemEntities) {
-        ArrayList<HeadedValueModel> listItems = new ArrayList<>();
-        for (int i = 0; i < systemEntities.size(); i++)
-            listItems.add(new HeadedValueModel(R.drawable.ic_pc, "View details for", systemEntities.get(i).HostName));
-
-        ListView listView = findViewById(R.id.sysList);
-        listView.setAdapter(new HeadedValueListAdapter(this, listItems));
-
+        // Setup ListView
+        final ListView listView = findViewById(R.id.sysList);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                openSystemOverview(systemEntities.get(position).Id.toString());
+                if (systemEntityList != null)
+                {
+                    openSystemOverview(systemEntityList.get(position).Id.toString());
+                }
+            }
+        });
+        final HeadedValueListAdapter adapter = new HeadedValueListAdapter(this, new LinkedList<HeadedValueModel>());
+        listView.setAdapter(adapter);
+
+        //Setup List.
+        viewModel = ViewModelProviders.of(this).get(SystemListViewModel.class);
+        viewModel.get().observe(this, new Observer<HashMap<UUID, SystemEntity>>() {
+            @Override
+            public void onChanged(@Nullable final HashMap<UUID, SystemEntity> systemEntities) {
+                List<HeadedValueModel> listItems = new LinkedList<>();
+                for (SystemEntity systemEntity : systemEntities.values())
+                {
+                    listItems.add(new HeadedValueModel(R.drawable.ic_pc, "View details for", systemEntity.HostName));
+                }
+                adapter.setData(listItems);
+                systemEntityList = new ArrayList<>(systemEntities.values());
             }
         });
     }
 
     private void openSystemOverview(String systemId) {
-        Intent intent = new Intent(SystemListMenu.this,SystemOverviewActivity.class);
-        prefEditor.putString(getString(R.string.preference_sysID_key),systemId);
+        Intent intent = new Intent(SystemListMenu.this, SystemOverviewActivity.class);
+        prefEditor.putString(getString(R.string.preference_sysID_key), systemId);
         prefEditor.apply();
         startActivity(intent);
-    }
-
-    @Override
-    public void onStart()
-    {
-        super.onStart();
-        viewModel.refreshData();
     }
 
     @Override
@@ -196,12 +196,11 @@ public class SystemListMenu extends AppCompatActivity implements NavigationView.
                     UUID systemId = UUID.fromString(result.getContents());
 
                     SystemListViewModel model = ViewModelProviders.of(this).get(SystemListViewModel.class);
-                    List<SystemEntity> sys = model.get().getValue();
-                    for(SystemEntity system : sys){
-                        if(system.Id.equals(systemId)){
-                            systemNotFound = false;
-                        }
-                    }
+//                    for(SystemEntity system : sys){
+                   //     if(system.Id.equals(systemId)){
+                //            systemNotFound = false;
+                //        }
+               //     }
 
                     if (!systemNotFound) {
                         Intent intent = new Intent(this, SystemOverviewActivity.class);

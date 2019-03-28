@@ -7,52 +7,50 @@ public enum Repository {
         return INSTANCE;
     }
 
-
     private UserRepository mUserRepository = new UserRepository();
-
-    private SystemRepository mSystemRepository = new SystemRepository();
-
-    private CPURepository mCPURepository = new CPURepository();
-
-    private GPURepository mGPURepository = new GPURepository();
-
-    private RAMRepository mRAMRepository = new RAMRepository();
-
-    private StorageRepository mStorageRepository = new StorageRepository();
 
     private MOBORepository mMOBORepository = new MOBORepository();
 
     private OSRepository mOSRepository = new OSRepository();
 
-    public synchronized UserRepository getUserRepository() { return mUserRepository; }
+    public synchronized UserRepository getUserRepository()
+    {
+        return mUserRepository;
+    }
 
     public synchronized SystemRepository getSystemRepository()
     {
-        return mSystemRepository;
+        return SystemRepository.INSTANCE;
     }
 
     public synchronized CPURepository getCPURepository()
     {
-        return mCPURepository;
+        return CPURepository.INSTANCE;
     }
 
     public synchronized GPURepository getGPURepository()
     {
-        return mGPURepository;
+        return GPURepository.INSTANCE;
     }
 
     public synchronized RAMRepository getRAMRepository()
     {
-        return mRAMRepository;
+        return RAMRepository.INSTANCE;
     }
 
     public synchronized StorageRepository getStorageRepository()
     {
-        return mStorageRepository;
+        return StorageRepository.INSTANCE;
     }
 
-    public synchronized MOBORepository getMOBORepository() { return mMOBORepository;}
+    public synchronized MOBORepository getMOBORepository()
+    {
+        return mMOBORepository;
+    }
 
-    public synchronized OSRepository getOSRepository() { return mOSRepository;}
+    public synchronized OSRepository getOSRepository()
+    {
+        return mOSRepository;
+    }
 
 }

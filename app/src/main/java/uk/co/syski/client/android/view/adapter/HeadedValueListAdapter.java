@@ -16,7 +16,7 @@ import uk.co.syski.client.android.R;
 public class HeadedValueListAdapter extends ArrayAdapter {
 
     private final Activity context;
-    private final List<HeadedValueModel> listItems;
+    private List<HeadedValueModel> listItems;
 
     ImageView image;
     TextView heading, value;
@@ -46,4 +46,13 @@ public class HeadedValueListAdapter extends ArrayAdapter {
         heading = listView.findViewById(R.id.headingView);
         value = listView.findViewById(R.id.valueView);
     }
+
+    public void setData(List<HeadedValueModel> listItems)
+    {
+        this.listItems = listItems;
+        clear();
+        addAll(listItems);
+        notifyDataSetChanged();
+    }
+
 }

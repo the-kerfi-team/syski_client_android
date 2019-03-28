@@ -12,10 +12,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.UUID;
 
 import uk.co.syski.client.android.model.api.requests.APIAuthorizationRequest;
 import uk.co.syski.client.android.model.database.SyskiCache;
+import uk.co.syski.client.android.model.database.entity.CPUEntity;
 import uk.co.syski.client.android.model.database.entity.StorageEntity;
 import uk.co.syski.client.android.model.database.entity.linking.SystemStorageEntity;
 import uk.co.syski.client.android.model.repository.Repository;
@@ -34,37 +37,24 @@ public class APISystemStorageRequest extends APIAuthorizationRequest<JSONArray> 
         try {
 
             JSONArray jsonArray = new JSONArray(new String(response.data, HttpHeaderParser.parseCharset(response.headers, PROTOCOL_CHARSET)));
+            List<StorageEntity> newStorageEntities = new LinkedList<>();
 
             for (int i = 0; i < jsonArray.length(); i++) {
-                StorageEntity storageEntity = SyskiCache.GetDatabase().StorageDao().get(UUID.fromString(((JSONObject) jsonArray.get(i)).getString("id")));
+
+                //StorageEntity storageEntity = SyskiCache.GetDatabase().StorageDao().get());
+
+                StorageEntity storageEntity = Repository.getInstance().getStorageRepository().get(UUID.fromString(((JSONObject) jsonArray.get(i)).getString("id")));
                 if (storageEntity == null) {
                     storageEntity = new StorageEntity();
-                    storageEntity.Id = UUID.fromString(((JSONObject) jsonArray.get(i)).getString("id"));
-                    storageEntity.ManufacturerName = ((JSONObject) jsonArray.get(i)).getString("manufacturerName");
-                    storageEntity.ModelName = ((JSONObject) jsonArray.get(i)).getString("modelName");
-                    storageEntity.MemoryTypeName = ((JSONObject) jsonArray.get(i)).getString("memoryTypeName");
-                    storageEntity.MemoryBytes = Long.parseLong(((JSONObject) jsonArray.get(i)).getString("memoryBytes"));
-                    Repository.getInstance().getStorageRepository().insert(storageEntity);
-                } else {
-                    storageEntity.ManufacturerName = ((JSONObject) jsonArray.get(i)).getString("manufacturerName");
-                    storageEntity.ModelName = ((JSONObject) jsonArray.get(i)).getString("modelName");
-                    storageEntity.MemoryTypeName = ((JSONObject) jsonArray.get(i)).getString("memoryTypeName");
-                    storageEntity.MemoryBytes = Long.parseLong(((JSONObject) jsonArray.get(i)).getString("memoryBytes"));
-                    Repository.getInstance().getStorageRepository().update(storageEntity);
                 }
-
-                SystemStorageEntity systemStorageEntity = SyskiCache.GetDatabase().SystemStorageDao().get(mSystemId, i);
-                if (systemStorageEntity == null)
-                {
-                    Repository.getInstance().getStorageRepository().insert(storageEntity, mSystemId, i);
-                }
-                else
-                {
-                    systemStorageEntity.StorageId = storageEntity.Id;
-                    systemStorageEntity.Slot = i;
-                }
-
+                storageEntity.Id = UUID.fromString(((JSONObject) jsonArray.get(i)).getString("id"));
+                storageEntity.ManufacturerName = ((JSONObject) jsonArray.get(i)).getString("manufacturerName");
+                storageEntity.ModelName = ((JSONObject) jsonArray.get(i)).getString("modelName");
+                storageEntity.MemoryTypeName = ((JSONObject) jsonArray.get(i)).getString("memoryTypeName");
+                storageEntity.MemoryBytes = Long.parseLong(((JSONObject) jsonArray.get(i)).getString("memoryBytes"));
+                newStorageEntities.add(storageEntity);
             }
+            Repository.getInstance().getStorageRepository().upsert(mSystemId, newStorageEntities);
 
             return Response.success(jsonArray, HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException | JSONException e) {

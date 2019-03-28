@@ -43,7 +43,7 @@ public class CPUActivity extends AppCompatActivity {
         viewModel.get().observe(this, new Observer<List<CPUEntity>>() {
             @Override
             public void onChanged(@Nullable List<CPUEntity> cpuEntities) {
-                if (cpuEntities.size() > 0) {
+                if (cpuEntities != null && cpuEntities.size() > 0) {
                     updateStaticUI(cpuEntities.get(0));
                 }
             }

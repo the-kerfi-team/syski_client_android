@@ -1,77 +1,42 @@
 package uk.co.syski.client.android.model.repository;
 
+import android.arch.core.util.Function;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.Transformations;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 import uk.co.syski.client.android.model.api.VolleySingleton;
-import uk.co.syski.client.android.model.api.requests.system.APISystemCPURequest;
 import uk.co.syski.client.android.model.api.requests.system.APISystemsRequest;
 import uk.co.syski.client.android.model.database.SyskiCache;
-import uk.co.syski.client.android.model.database.dao.CPUDao;
 import uk.co.syski.client.android.model.database.dao.SystemDao;
-import uk.co.syski.client.android.model.database.dao.linking.SystemCPUDao;
-import uk.co.syski.client.android.model.database.entity.CPUEntity;
-import uk.co.syski.client.android.model.database.entity.GPUEntity;
 import uk.co.syski.client.android.model.database.entity.SystemEntity;
-import uk.co.syski.client.android.model.database.entity.linking.SystemCPUEntity;
 
-public class SystemRepository {
+public enum SystemRepository {
+    INSTANCE;
 
     // Database DAO's
     private SystemDao mSystemDao;
 
-    // CPU System in Memory
+    // Systems in Memory
     private HashMap<UUID, SystemEntity> mSystemEntities;
 
-    // Active System CPUs Cache in Memory
-    private UUID mActiveSystemId;
-    private boolean mActiveSystemChanged;
-    private MutableLiveData mActiveSystemEntities;
+    // System in LiveData
+    private MutableLiveData<HashMap<UUID, SystemEntity>> mLiveDataSystemEntities;
 
-    public SystemRepository() {
+    SystemRepository() {
         mSystemDao = SyskiCache.GetDatabase().SystemDao();
 
         mSystemEntities = new HashMap<>();
 
-        mActiveSystemEntities = new MutableLiveData<>();
-        mActiveSystemChanged = true;
+        mLiveDataSystemEntities = new MutableLiveData<>();
+
         loadFromDatabase();
-    }
-
-    private void setActiveSystem(UUID systemId)
-    {
-        if (mActiveSystemId == null || !mActiveSystemId.equals(systemId))
-        {
-            mActiveSystemId = systemId;
-            mActiveSystemChanged = true;
-        }
-    }
-
-    private void loadFromCache()
-    {
-        if (mActiveSystemChanged)
-        {
-            if (mActiveSystemId == null)
-            {
-                // Load all System's if no active System has been set
-                mActiveSystemEntities.postValue(new LinkedList<>(mSystemEntities.values()));
-            }
-            else
-            {
-                // Load System
-                mActiveSystemEntities.postValue(mSystemEntities.get(mActiveSystemId));
-            }
-            mActiveSystemChanged = false;
-        }
     }
 
     private void loadFromDatabase()
@@ -79,6 +44,7 @@ public class SystemRepository {
         try {
             // Load data from Database for CPU's
             mSystemEntities = new loadSystemEntitiesAsyncTask(mSystemDao, mSystemEntities).execute().get();
+            mLiveDataSystemEntities.postValue(mSystemEntities);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -92,26 +58,21 @@ public class SystemRepository {
         VolleySingleton.getInstance(context).addToRequestQueue(new APISystemsRequest(context));
     }
 
-    public LiveData<List<SystemEntity>> getSystemsLiveData(Context context)
+    public LiveData<HashMap<UUID, SystemEntity>> getSystemsLiveData(Context context)
     {
-        setActiveSystem(null);
-        loadFromCache();
         loadFromAPI(context);
-        return mActiveSystemEntities;
+        return mLiveDataSystemEntities;
     }
 
-    public LiveData<SystemEntity> getSystemLiveData(UUID systemId, Context context)
+    public LiveData<SystemEntity> getSystemLiveData(final UUID systemId, Context context)
     {
-        setActiveSystem(systemId);
-        loadFromCache();
         loadFromAPI(context);
-        return mActiveSystemEntities;
-    }
-
-    public void refresh()
-    {
-        setActiveSystem(null);
-        loadFromCache();
+        return Transformations.map(mLiveDataSystemEntities, new Function<HashMap<UUID, SystemEntity>, SystemEntity>() {
+            @Override
+            public SystemEntity apply(HashMap<UUID, SystemEntity> input) {
+                return input.get(systemId);
+            }
+        });
     }
 
     public SystemEntity get(UUID id)
@@ -130,16 +91,8 @@ public class SystemRepository {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-        if (mActiveSystemId == null)
-        {
-            // Load all System's if no active System has been set
-            mActiveSystemEntities.postValue(new LinkedList<>(mSystemEntities.values()));
-        }
-        else if (mActiveSystemId.equals(systemEntity))
-        {
-            // Load System
-            mActiveSystemEntities.postValue(mSystemEntities.get(mActiveSystemId));
-        }
+        mSystemEntities.put(systemEntity.Id, systemEntity);
+        mLiveDataSystemEntities.postValue(mSystemEntities);
     }
 
     // Add other methods here

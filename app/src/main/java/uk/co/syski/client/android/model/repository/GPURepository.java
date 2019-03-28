@@ -1,7 +1,9 @@
 package uk.co.syski.client.android.model.repository;
 
+import android.arch.core.util.Function;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.Transformations;
 import android.content.Context;
 import android.os.AsyncTask;
 
@@ -24,7 +26,8 @@ import uk.co.syski.client.android.model.database.entity.GPUEntity;
 import uk.co.syski.client.android.model.database.entity.linking.SystemCPUEntity;
 import uk.co.syski.client.android.model.database.entity.linking.SystemGPUEntity;
 
-public class GPURepository {
+public enum GPURepository {
+    INSTANCE;
 
     // Database DAO's
     private GPUDao mGPUDao;
@@ -34,12 +37,10 @@ public class GPURepository {
     private HashMap<UUID, GPUEntity> mGPUEntities;
     private HashMap<UUID, List<UUID>> mSystemGPUEntities;
 
-    // Active System GPUs Cache in Memory
-    private UUID mActiveSystemId;
-    private boolean mActiveSystemChanged;
-    private MutableLiveData<List<GPUEntity>> mActiveSystemGPUEntities;
 
-    public GPURepository() {
+    private MutableLiveData<HashMap<UUID, GPUEntity>> mLiveDataSystemGPUEntities;
+
+    GPURepository() {
         mGPUDao = SyskiCache.GetDatabase().GPUDao();
         mSystemGPUDao = SyskiCache.GetDatabase().SystemGPUDao();
 
@@ -47,48 +48,8 @@ public class GPURepository {
         mGPUEntities = new HashMap<>();
         mSystemGPUEntities = new HashMap<>();
 
-        mActiveSystemGPUEntities = new MutableLiveData<>();
-        mActiveSystemChanged = true;
+        mLiveDataSystemGPUEntities = new MutableLiveData<>();
         loadFromDatabase();
-    }
-
-    private void setActiveSystem(UUID systemId)
-    {
-        if (mActiveSystemId == null || !mActiveSystemId.equals(systemId))
-        {
-            mActiveSystemId = systemId;
-            mActiveSystemChanged = true;
-        }
-    }
-
-    private void loadFromCache()
-    {
-        if (mActiveSystemChanged)
-        {
-            if (mActiveSystemId == null)
-            {
-                // Load all GPU's if no active System has been set
-                mActiveSystemGPUEntities.postValue(new LinkedList<>(mGPUEntities.values()));
-            }
-            else
-            {
-                // Load System GPU's
-                List<UUID> ActiveSystemGPUsIds = mSystemGPUEntities.get(mActiveSystemId);
-                if (ActiveSystemGPUsIds != null)
-                {
-                    List<GPUEntity> ActiveSystemCPUs = new LinkedList<>();
-                    for (UUID gpuEntityId : ActiveSystemGPUsIds) {
-                        ActiveSystemCPUs.add(mGPUEntities.get(gpuEntityId));
-                    }
-                    mActiveSystemGPUEntities.postValue(ActiveSystemCPUs);
-                }
-                else
-                {
-                    mActiveSystemGPUEntities.postValue(null);
-                }
-            }
-            mActiveSystemChanged = false;
-        }
     }
 
     private void loadFromDatabase()
@@ -99,6 +60,8 @@ public class GPURepository {
 
             // Load data from Database for System CPU's
             mSystemGPUEntities = new loadSystemGPUEntitiesAsyncTask(mSystemGPUDao, mSystemGPUEntities).execute().get();
+
+            mLiveDataSystemGPUEntities.postValue(mGPUEntities);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -106,10 +69,10 @@ public class GPURepository {
         }
     }
 
-    private void loadFromAPI(Context context)
+    private void loadFromAPI(Context context, UUID systemId)
     {
         //TODO Load from API every user defined time.
-        VolleySingleton.getInstance(context).addToRequestQueue(new APISystemGPURequest(context, mActiveSystemId));
+        VolleySingleton.getInstance(context).addToRequestQueue(new APISystemGPURequest(context, systemId));
     }
 
     public void insert(GPUEntity gpuEntity)
@@ -127,12 +90,24 @@ public class GPURepository {
         //TODO Create insert method
     }
 
-    public LiveData<List<GPUEntity>> getSystemGPUsLiveData(UUID systemId, Context context)
+    public LiveData<List<GPUEntity>> getSystemGPUsLiveData(final UUID systemId, Context context)
     {
-        setActiveSystem(systemId);
-        loadFromCache();
-        loadFromAPI(context);
-        return mActiveSystemGPUEntities;
+        loadFromAPI(context, systemId);
+        return Transformations.map(mLiveDataSystemGPUEntities, new Function<HashMap<UUID, GPUEntity>, List<GPUEntity>>() {
+            @Override
+            public List<GPUEntity> apply(HashMap<UUID, GPUEntity> input) {
+                List<GPUEntity> result = new LinkedList<>();
+                List<UUID> systemCPUEntities = mSystemGPUEntities.get(systemId);
+                if (systemCPUEntities != null)
+                {
+                    for (UUID systemEntityId : systemCPUEntities)
+                    {
+                        result.add(input.get(systemEntityId));
+                    }
+                }
+                return result;
+            }
+        });
     }
 
     public List<CPUEntity> getSystemGPUs(UUID systemId)
@@ -180,7 +155,7 @@ public class GPURepository {
     public void upsert(UUID systemId, List<GPUEntity> gpuEntities)
     {
         try {
-            new upsertSystemGPUAsyncTask(mGPUDao, mSystemGPUDao, systemId).execute((GPUEntity[]) gpuEntities.toArray()).get();
+            new upsertSystemGPUAsyncTask(mGPUDao, mSystemGPUDao, systemId, gpuEntities).execute().get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -192,14 +167,7 @@ public class GPURepository {
             systemCPUEntities.add(gpuEntity.Id);
         }
         mSystemGPUEntities.put(systemId, systemCPUEntities);
-        if (mActiveSystemId == null)
-        {
-            mActiveSystemGPUEntities.postValue(new LinkedList<>(mGPUEntities.values()));
-        }
-        else if (mActiveSystemId.equals(systemId))
-        {
-            mActiveSystemGPUEntities.postValue(gpuEntities);
-        }
+        mLiveDataSystemGPUEntities.postValue(mGPUEntities);
     }
 
     public void delete(GPUEntity gpuEntity)
@@ -265,21 +233,25 @@ public class GPURepository {
 
     }
 
-    private static class upsertSystemGPUAsyncTask extends AsyncTask<GPUEntity, Void, Void> {
+    private static class upsertSystemGPUAsyncTask extends AsyncTask<Void, Void, Void> {
 
         private GPUDao mGPUDao;
         private SystemGPUDao mSystemGPUDao;
         private UUID mSystemId;
 
-        upsertSystemGPUAsyncTask(GPUDao gpuDao, SystemGPUDao systemGPUDao, UUID systemId) {
+        private List<GPUEntity> mGPUEntities;
+
+        upsertSystemGPUAsyncTask(GPUDao gpuDao, SystemGPUDao systemGPUDao, UUID systemId, List<GPUEntity> gpuEntities) {
             mGPUDao = gpuDao;
             mSystemGPUDao = systemGPUDao;
             mSystemId = systemId;
+
+            mGPUEntities = gpuEntities;
         }
 
-        protected Void doInBackground(final GPUEntity... gpuEntities) {
+        protected Void doInBackground(final Void... voids) {
             mSystemGPUDao.deleteBySystemId(mSystemId);
-            for (GPUEntity gpuEntity: gpuEntities) {
+            for (GPUEntity gpuEntity: mGPUEntities) {
                 mGPUDao.upsert(gpuEntity);
                 SystemGPUEntity systemGPUEntity = new SystemGPUEntity();
                 systemGPUEntity.SystemId = mSystemId;

@@ -18,14 +18,14 @@ import uk.co.syski.client.android.model.repository.StorageRepository;
 public class SystemStorageViewModel extends AndroidViewModel {
 
     private StorageRepository mStorageRepository;
-    private MutableLiveData<List<StorageEntity>> mSystemStorageList;
+    private LiveData<List<StorageEntity>> mSystemStorageList;
     private UUID systemId;
 
     public SystemStorageViewModel(@NonNull Application application) {
         super(application);
         systemId = UUID.fromString(application.getSharedPreferences(application.getString(R.string.preference_sysID_key), Context.MODE_PRIVATE).getString(application.getString(R.string.preference_sysID_key), null));
         mStorageRepository = Repository.getInstance().getStorageRepository();
-        mSystemStorageList = mStorageRepository.get(systemId);
+        mSystemStorageList = mStorageRepository.getSystemStoragesLiveData(systemId, application.getBaseContext());
     }
 
     public LiveData<List<StorageEntity>> get() {

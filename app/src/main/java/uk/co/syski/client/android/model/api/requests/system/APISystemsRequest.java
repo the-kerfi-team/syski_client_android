@@ -33,7 +33,6 @@ public class APISystemsRequest extends APIAuthorizationRequest<JSONArray> {
     @Override
     protected Response parseNetworkResponse(NetworkResponse response) {
         try {
-
             JSONArray jsonArray = new JSONArray(new String(response.data, HttpHeaderParser.parseCharset(response.headers, PROTOCOL_CHARSET)));
 
             for (int i = 0; i < jsonArray.length(); i++) {

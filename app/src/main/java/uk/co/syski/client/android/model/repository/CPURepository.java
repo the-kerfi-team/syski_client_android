@@ -1,7 +1,9 @@
 package uk.co.syski.client.android.model.repository;
 
+import android.arch.core.util.Function;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.Transformations;
 import android.content.Context;
 import android.os.AsyncTask;
 
@@ -19,7 +21,8 @@ import uk.co.syski.client.android.model.database.dao.linking.SystemCPUDao;
 import uk.co.syski.client.android.model.database.entity.CPUEntity;
 import uk.co.syski.client.android.model.database.entity.linking.SystemCPUEntity;
 
-public class CPURepository {
+public enum CPURepository {
+    INSTANCE;
 
     // Database DAO's
     private CPUDao mCPUDao;
@@ -29,59 +32,18 @@ public class CPURepository {
     private HashMap<UUID, CPUEntity> mCPUEntities;
     private HashMap<UUID, List<UUID>> mSystemCPUEntities;
 
-    // Active System CPUs Cache in Memory
-    private UUID mActiveSystemId;
-    private boolean mActiveSystemChanged;
-    private MutableLiveData<List<CPUEntity>> mActiveSystemCPUEntities;
+    // LiveData
+    private MutableLiveData<HashMap<UUID, CPUEntity>> mLiveDataSystemCPUEntities;
 
-    public CPURepository() {
+    CPURepository() {
         mCPUDao = SyskiCache.GetDatabase().CPUDao();
         mSystemCPUDao = SyskiCache.GetDatabase().SystemCPUDao();
 
         mCPUEntities = new HashMap<>();
         mSystemCPUEntities = new HashMap<>();
 
-        mActiveSystemCPUEntities = new MutableLiveData<>();
-        mActiveSystemChanged = true;
+        mLiveDataSystemCPUEntities = new MutableLiveData<>();
         loadFromDatabase();
-    }
-
-    private void setActiveSystem(UUID systemId)
-    {
-        if (mActiveSystemId == null || !mActiveSystemId.equals(systemId))
-        {
-            mActiveSystemId = systemId;
-            mActiveSystemChanged = true;
-        }
-    }
-
-    private void loadFromCache()
-    {
-        if (mActiveSystemChanged)
-        {
-            if (mActiveSystemId == null)
-            {
-                // Load all CPU's if no active System has been set
-                mActiveSystemCPUEntities.postValue(new LinkedList<>(mCPUEntities.values()));
-            }
-            else
-            {
-                // Load System CPU's
-                List<UUID> ActiveSystemCPUsIds = mSystemCPUEntities.get(mActiveSystemId);
-                if (ActiveSystemCPUsIds != null) {
-                    List<CPUEntity> ActiveSystemCPUs = new LinkedList<>();
-                    for (UUID cpuEntityId : ActiveSystemCPUsIds) {
-                        ActiveSystemCPUs.add(mCPUEntities.get(cpuEntityId));
-                    }
-                    mActiveSystemCPUEntities.postValue(ActiveSystemCPUs);
-                }
-                else
-                {
-                    mActiveSystemCPUEntities.postValue(null);
-                }
-            }
-            mActiveSystemChanged = false;
-        }
     }
 
     private void loadFromDatabase()
@@ -92,6 +54,9 @@ public class CPURepository {
 
             // Load data from Database for System CPU's
             mSystemCPUEntities = new loadSystemCPUEntitiesAsyncTask(mSystemCPUDao, mSystemCPUEntities).execute().get();
+
+            // Set Data in LiveData
+            mLiveDataSystemCPUEntities.postValue(mCPUEntities);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -99,10 +64,10 @@ public class CPURepository {
         }
     }
 
-    private void loadFromAPI(Context context)
+    private void loadFromAPI(Context context, UUID systemId)
     {
         //TODO Load from API every user defined time.
-        VolleySingleton.getInstance(context).addToRequestQueue(new APISystemCPURequest(context, mActiveSystemId));
+        VolleySingleton.getInstance(context).addToRequestQueue(new APISystemCPURequest(context, systemId));
     }
 
     public void insert(CPUEntity cpuEntity)
@@ -120,12 +85,24 @@ public class CPURepository {
         //TODO Create insert method
     }
 
-    public LiveData<List<CPUEntity>> getSystemCPUsLiveData(UUID systemId, Context context)
+    public LiveData<List<CPUEntity>> getSystemCPUsLiveData(final UUID systemId, Context context)
     {
-        setActiveSystem(systemId);
-        loadFromCache();
-        loadFromAPI(context);
-        return mActiveSystemCPUEntities;
+        loadFromAPI(context, systemId);
+        return Transformations.map(mLiveDataSystemCPUEntities, new Function<HashMap<UUID, CPUEntity>, List<CPUEntity>>() {
+            @Override
+            public List<CPUEntity> apply(HashMap<UUID, CPUEntity> input) {
+                List<CPUEntity> result = new LinkedList<>();
+                List<UUID> systemCPUEntities = mSystemCPUEntities.get(systemId);
+                if (systemCPUEntities != null)
+                {
+                    for (UUID systemEntityId : systemCPUEntities)
+                    {
+                        result.add(input.get(systemEntityId));
+                    }
+                }
+                return result;
+            }
+        });
     }
 
     public List<CPUEntity> getSystemCPUs(UUID systemId)
@@ -173,7 +150,7 @@ public class CPURepository {
     public void upsert(UUID systemId, List<CPUEntity> cpuEntities)
     {
         try {
-            new upsertSystemCPUAsyncTask(mCPUDao, mSystemCPUDao, systemId).execute((CPUEntity[]) cpuEntities.toArray()).get();
+            new upsertSystemCPUAsyncTask(mCPUDao, mSystemCPUDao, systemId, cpuEntities).execute().get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -185,14 +162,7 @@ public class CPURepository {
             systemCPUEntities.add(cpuEntity.Id);
         }
         mSystemCPUEntities.put(systemId, systemCPUEntities);
-        if (mActiveSystemId == null)
-        {
-            mActiveSystemCPUEntities.postValue(new LinkedList<>(mCPUEntities.values()));
-        }
-        else if (mActiveSystemId.equals(systemId))
-        {
-            mActiveSystemCPUEntities.postValue(cpuEntities);
-        }
+        mLiveDataSystemCPUEntities.postValue(mCPUEntities);
     }
 
     public void delete(CPUEntity cpuEntity)
@@ -258,21 +228,25 @@ public class CPURepository {
 
     }
 
-    private static class upsertSystemCPUAsyncTask extends AsyncTask<CPUEntity, Void, Void> {
+    private static class upsertSystemCPUAsyncTask extends AsyncTask<Void , Void, Void> {
 
         private CPUDao mCPUDao;
         private SystemCPUDao mSystemCPUDao;
         private UUID mSystemId;
 
-        upsertSystemCPUAsyncTask(CPUDao cpuDao, SystemCPUDao systemCPUDao, UUID systemId) {
+        private List<CPUEntity> mCPUEntities;
+
+        upsertSystemCPUAsyncTask(CPUDao cpuDao, SystemCPUDao systemCPUDao, UUID systemId, List<CPUEntity> cpuEntities) {
             mCPUDao = cpuDao;
             mSystemCPUDao = systemCPUDao;
             mSystemId = systemId;
+
+            mCPUEntities = cpuEntities;
         }
 
-        protected Void doInBackground(final CPUEntity... cpuEntities) {
+        protected Void doInBackground(final Void... voids) {
             mSystemCPUDao.deleteBySystemId(mSystemId);
-            for (CPUEntity cpuEntity: cpuEntities) {
+            for (CPUEntity cpuEntity: mCPUEntities) {
                 mCPUDao.upsert(cpuEntity);
                 SystemCPUEntity systemCPUEntity = new SystemCPUEntity();
                 systemCPUEntity.SystemId = mSystemId;
