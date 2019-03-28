@@ -11,9 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +21,7 @@ import uk.co.syski.client.android.model.database.entity.CPUEntity;
 import uk.co.syski.client.android.model.database.entity.data.CPUDataEntity;
 import uk.co.syski.client.android.model.fragment.DoubleHeadedValueModel;
 import uk.co.syski.client.android.model.fragment.HeadedValueModel;
+import uk.co.syski.client.android.view.adapter.CPUAdapter;
 import uk.co.syski.client.android.view.fragment.HeadedValueFragment;
 import uk.co.syski.client.android.view.fragment.OverviewFragment;
 import uk.co.syski.client.android.view.graph.VariableCPULoadGraph;
@@ -43,8 +42,8 @@ public class CPUActivity extends AppCompatActivity {
         viewModel.get().observe(this, new Observer<List<CPUEntity>>() {
             @Override
             public void onChanged(@Nullable List<CPUEntity> cpuEntities) {
-                if (cpuEntities != null && cpuEntities.size() > 0) {
-                    updateStaticUI(cpuEntities.get(0));
+                if (cpuEntities.size() > 0) {
+                    updateStaticUI(cpuEntities);
                 }
             }
         });
@@ -78,26 +77,9 @@ public class CPUActivity extends AppCompatActivity {
         });
     }
 
-    private void updateStaticUI(CPUEntity cpuEntity) {
-        ArrayList<HeadedValueModel> cpuData = new ArrayList<>();
-
-        cpuData.add(new HeadedValueModel(R.drawable.ic_architecture, "Architecture", cpuEntity.ArchitectureName));
-        cpuData.add(new HeadedValueModel(R.drawable.ic_clock, "Clock Speed", cpuEntity.ClockSpeed + " MHz"));
-        cpuData.add(new HeadedValueModel(R.drawable.ic_core, "Core Count", Integer.toString(cpuEntity.CoreCount)));
-        cpuData.add(new HeadedValueModel(R.drawable.ic_thread, "Thread Count", Integer.toString(cpuEntity.ThreadCount)));
-
-        OverviewFragment mainFragment = OverviewFragment.newInstance(
-            new DoubleHeadedValueModel(
-                R.drawable.ic_cpu,
-                "Model",
-                cpuEntity.ModelName,
-                "Manufacturer",
-                cpuEntity.ManufacturerName
-            ),
-            cpuData
-        );
-
-        getSupportFragmentManager().beginTransaction().replace(R.id.mainFragment, mainFragment).commit();
+    private void updateStaticUI(List<CPUEntity> cpuEntities) {
+        ListView listView = findViewById(R.id.cpuList);
+        listView.setAdapter(new CPUAdapter(this, cpuEntities));
     }
 
     private void updateRealTimeUI(CPUDataEntity cpuDataEntity) {

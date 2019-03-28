@@ -14,11 +14,13 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.model.database.entity.GPUEntity;
 import uk.co.syski.client.android.model.fragment.DoubleHeadedValueModel;
+import uk.co.syski.client.android.view.adapter.DoubleHeadedValueListAdapter;
 import uk.co.syski.client.android.view.fragment.DoubleHeadedValueFragment;
 import uk.co.syski.client.android.viewmodel.SystemGPUViewModel;
 
@@ -29,31 +31,34 @@ public class GPUActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_overview);
+        setContentView(R.layout.activity_gpu);
 
         SystemGPUViewModel viewModel = ViewModelProviders.of(this).get(SystemGPUViewModel.class);
         viewModel.get().observe(this, new Observer<List<GPUEntity>>() {
             @Override
             public void onChanged(@Nullable List<GPUEntity> gpuEntities) {
                 if (gpuEntities.size() > 0) {
-                    updateStaticUI(gpuEntities.get(0));
+                    updateStaticUI(gpuEntities);
                 }
             }
         });
     }
 
-    private void updateStaticUI(GPUEntity gpuEntity) {
-        DoubleHeadedValueFragment topFragment = DoubleHeadedValueFragment.newInstance(
-            new DoubleHeadedValueModel(
-                R.drawable.ic_gpu,
-                "Model",
-                gpuEntity.ModelName,
-                "Manufacturer",
-                gpuEntity.ManufacturerName
-            )
-        );
+    private void updateStaticUI(List<GPUEntity> gpuEntities) {
+        ArrayList<DoubleHeadedValueModel> listItems = new ArrayList<>();
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.topFragment, topFragment).commit();
+        for (int i = 0; i < gpuEntities.size(); i++) {
+            listItems.add( new DoubleHeadedValueModel(
+                    R.drawable.ic_gpu,
+                    "Model",
+                    gpuEntities.get(i).ModelName,
+                    "Manufacturer",
+                    gpuEntities.get(i).ManufacturerName
+            ));
+        }
+
+        ListView listView = findViewById(R.id.gpuList);
+        listView.setAdapter(new DoubleHeadedValueListAdapter(this, listItems));
     }
 
     @Override
