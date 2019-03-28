@@ -10,64 +10,98 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.data.entity.CPUEntity;
+import uk.co.syski.client.android.data.entity.data.CPUDataEntity;
+import uk.co.syski.client.android.model.fragment.DoubleHeadedValueModel;
+import uk.co.syski.client.android.model.fragment.HeadedValueModel;
+import uk.co.syski.client.android.view.adapter.CPUAdapter;
+import uk.co.syski.client.android.view.fragment.HeadedValueFragment;
+import uk.co.syski.client.android.view.fragment.OverviewFragment;
 import uk.co.syski.client.android.view.graph.VariableCPULoadGraph;
-import uk.co.syski.client.android.view.graph.VariableCPUProccessesGraph;
+import uk.co.syski.client.android.view.graph.VariableCPUProcessesGraph;
+import uk.co.syski.client.android.viewmodel.SystemCPUDataViewModel;
 import uk.co.syski.client.android.viewmodel.SystemCPUViewModel;
 
 public class CPUActivity extends AppCompatActivity {
 
     private static final String TAG = "CPUActivity";
-    TextView model,manufacturer,architecture,clock,core,thread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cpu);
 
-        initViews();
-
         SystemCPUViewModel viewModel = ViewModelProviders.of(this).get(SystemCPUViewModel.class);
         viewModel.get().observe(this, new Observer<List<CPUEntity>>() {
             @Override
             public void onChanged(@Nullable List<CPUEntity> cpuEntities) {
-                if (cpuEntities.size() > 0)
-                {
-                    model.setText(cpuEntities.get(0).ModelName);
-                    manufacturer.setText(cpuEntities.get(0).ManufacturerName);
-                    architecture.setText(cpuEntities.get(0).ArchitectureName);
-                    clock.setText("" + cpuEntities.get(0).ClockSpeed);
-                    core.setText("" + cpuEntities.get(0).CoreCount);
-                    thread.setText("" + cpuEntities.get(0).ThreadCount);
+                if (cpuEntities.size() > 0) {
+                    updateStaticUI(cpuEntities);
                 }
+            }
+        });
+
+        SystemCPUDataViewModel realTimeViewModel = ViewModelProviders.of(this).get(SystemCPUDataViewModel.class);
+        realTimeViewModel.get().observe(this, new Observer<List<CPUDataEntity>>() {
+            @Override
+            public void onChanged(@Nullable List<CPUDataEntity> cpuEntities) {
+                if (cpuEntities.size() > 0) {
+                    updateRealTimeUI(cpuEntities.get(cpuEntities.size() - 1));
+                }
+            }
+        });
+
+        View loadFragment = findViewById(R.id.loadFragment);
+        loadFragment.setOnClickListener(new AdapterView.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent cpuGraph = new Intent(v.getContext(), VariableCPULoadGraph.class);
+                startActivity(cpuGraph);
+            }
+        });
+
+        View processesFragment = findViewById(R.id.processesFragment);
+        processesFragment.setOnClickListener(new AdapterView.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent cpuGraph = new Intent(v.getContext(), VariableCPUProcessesGraph.class);
+                startActivity(cpuGraph);
             }
         });
     }
 
-    public void loadGraphOnClick(View view)
-    {
-        Intent cpuGraph = new Intent(this, VariableCPULoadGraph.class);
-        startActivity(cpuGraph);
+    private void updateStaticUI(List<CPUEntity> cpuEntities) {
+        ListView listView = findViewById(R.id.cpuList);
+        listView.setAdapter(new CPUAdapter(this, cpuEntities));
     }
 
-    public void processesGraphOnClick(View view)
-    {
-        Intent cpuGraph = new Intent(this, VariableCPUProccessesGraph.class);
-        startActivity(cpuGraph);
-    }
+    private void updateRealTimeUI(CPUDataEntity cpuDataEntity) {
+        HeadedValueFragment loadModel = HeadedValueFragment.newInstance(
+            new HeadedValueModel(
+                R.drawable.placeholder,
+                "CPU Load",
+                cpuDataEntity.Load + "%"
+            )
+        );
 
-    private void initViews() {
-        model = findViewById(R.id.cpuModel);
-        manufacturer = findViewById(R.id.cpuMan);
-        architecture = findViewById(R.id.cpuArch);
-        clock = findViewById(R.id.cpuClock);
-        core = findViewById(R.id.cpuCore);
-        thread = findViewById(R.id.cpuThread);
+        getSupportFragmentManager().beginTransaction().replace(R.id.loadFragment, loadModel).commit();
+
+        HeadedValueFragment processesModel = HeadedValueFragment.newInstance(
+            new HeadedValueModel(
+                R.drawable.placeholder,
+                "CPU Processes",
+                Integer.toString(Math.round(cpuDataEntity.Processes))
+            )
+        );
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.processesFragment, processesModel).commit();
     }
 
     @Override
@@ -89,5 +123,4 @@ public class CPUActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
 }

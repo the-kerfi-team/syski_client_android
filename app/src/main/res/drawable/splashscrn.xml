@@ -5,13 +5,17 @@
     <!-- The background color -->
     <item android:drawable="@android:color/white"/>
 
-    <!-- 144dp color version of your app icon - once implemented -->
+    <!--<item>-->
+        <!--<bitmap-->
+            <!--android:src="@drawable/expo"-->
+            <!--android:gravity="top"-->
+            <!--android:tileMode="repeat"/>-->
+    <!--</item>-->
+
     <item>
-
         <bitmap
-            android:src="@drawable/syski_sys_icon"
+            android:src="@drawable/splash"
             android:gravity="center"/>
-
     </item>
 
 </layer-list>
