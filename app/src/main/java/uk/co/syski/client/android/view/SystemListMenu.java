@@ -200,7 +200,7 @@ public class SystemListMenu extends AppCompatActivity implements NavigationView.
                         }
                     }
 
-                    if (!systemNotFound) {
+                    if (systemFound) {
                         Intent intent = new Intent(this, SystemOverviewActivity.class);
                         prefEditor.putString(getString(R.string.preference_sysID_key),systemId.toString());
                         prefEditor.apply();
