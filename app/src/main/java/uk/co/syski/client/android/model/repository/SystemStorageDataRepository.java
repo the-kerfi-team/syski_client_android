@@ -19,7 +19,7 @@ import java.util.TimerTask;
 import java.util.UUID;
 
 import uk.co.syski.client.android.model.api.VolleySingleton;
-import uk.co.syski.client.android.model.api.requests.system.APISystemRAMDataRequest;
+import uk.co.syski.client.android.model.api.requests.system.APISystemStorageDataRequest;
 import uk.co.syski.client.android.model.database.entity.data.StorageDataEntity;
 
 public class SystemStorageDataRepository {
@@ -54,7 +54,7 @@ public class SystemStorageDataRepository {
             public void run() {
                 mTimerHandler.post(new Runnable() {
                     public void run(){
-                        VolleySingleton.getInstance(mApplication).addToRequestQueue(new APISystemRAMDataRequest(mApplication, mActiveSystemId,
+                        VolleySingleton.getInstance(mApplication).addToRequestQueue(new APISystemStorageDataRequest(mApplication, mActiveSystemId,
                                 new Response.Listener<JSONArray>() {
                                     @Override
                                     public void onResponse(JSONArray response) {
