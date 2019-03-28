@@ -10,7 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import uk.co.syski.client.android.R;
@@ -19,24 +19,26 @@ import uk.co.syski.client.android.model.database.entity.StorageEntity;
 public class StorageAdapter extends ArrayAdapter {
 
     private final Activity context;
-    private final List<StorageEntity> listItems;
+    private List<StorageEntity> listItems;
 
     private View listItem;
 
-    public StorageAdapter(Activity context, List<StorageEntity> listItems) {
+    public StorageAdapter(Activity context) {
         super(context, R.layout.activity_storage);
+        this.context = context;
+    }
 
-        ArrayList<StorageEntity> listWithRepeats = new ArrayList<>();
-
+    public void setData(List<StorageEntity> listItems)
+    {
+        List<StorageEntity> listWithRepeats = new LinkedList<>();
         for (int i = 0; i < listItems.size(); i++) {
             listWithRepeats.add(listItems.get(i));
             listWithRepeats.add(listItems.get(i));
         }
-
-        addAll(listWithRepeats);
-
-        this.context = context;
         this.listItems = listWithRepeats;
+        clear();
+        addAll(listWithRepeats);
+        notifyDataSetChanged();
     }
 
     @Override

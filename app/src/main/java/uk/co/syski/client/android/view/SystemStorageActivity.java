@@ -37,11 +37,14 @@ public class SystemStorageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_storage);
 
+        final StorageAdapter adapter = new StorageAdapter(this);
+        ((ListView) findViewById(R.id.listView)).setAdapter(adapter);
+
         SystemStorageViewModel model = ViewModelProviders.of(this).get(SystemStorageViewModel.class);
         model.get().observe(this, new Observer<List<StorageEntity>>() {
             @Override
             public void onChanged(@Nullable List<StorageEntity> StorageEntities) {
-                updateStaticUI(StorageEntities);
+                adapter.setData(StorageEntities);
             }
         });
 
@@ -88,11 +91,6 @@ public class SystemStorageActivity extends AppCompatActivity {
                 startActivity(byteReadsWritesGraph);
             }
         });
-    }
-
-    private void updateStaticUI(List<StorageEntity> StorageEntities) {
-        ListView listView = findViewById(R.id.listView);
-        listView.setAdapter(new StorageAdapter(this, StorageEntities));
     }
 
     private void updateRealTimeUI(StorageDataEntity StorageDataEntity) {

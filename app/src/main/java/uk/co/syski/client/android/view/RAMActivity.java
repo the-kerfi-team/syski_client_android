@@ -32,11 +32,14 @@ public class RAMActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ram);
 
+        final RAMAdapter adapter = new RAMAdapter(this);
+        ((ListView) findViewById(R.id.listView)).setAdapter(adapter);
+
         SystemRAMViewModel model = ViewModelProviders.of(this).get(SystemRAMViewModel.class);
         model.get().observe(this, new Observer<List<RAMEntity>>() {
             @Override
             public void onChanged(@Nullable List<RAMEntity> ramEntities) {
-                updateStaticUI(ramEntities);
+                adapter.setData(ramEntities);
             }
         });
 
@@ -56,11 +59,6 @@ public class RAMActivity extends AppCompatActivity {
                 startActivity(ramGraph);
             }
         });
-    }
-
-    private void updateStaticUI(List<RAMEntity> ramEntities) {
-        ListView listView = findViewById(R.id.listView);
-        listView.setAdapter(new RAMAdapter(this, ramEntities));
     }
 
     private void updateRealTimeUI(RAMDataEntity ramDataEntity) {

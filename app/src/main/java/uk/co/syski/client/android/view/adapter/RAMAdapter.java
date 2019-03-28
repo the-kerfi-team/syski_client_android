@@ -10,7 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import uk.co.syski.client.android.R;
@@ -19,24 +19,27 @@ import uk.co.syski.client.android.model.database.entity.RAMEntity;
 public class RAMAdapter extends ArrayAdapter {
 
     private final Activity context;
-    private final List<RAMEntity> listItems;
+    private List<RAMEntity> listItems;
 
     private View listItem;
 
-    public RAMAdapter(Activity context, List<RAMEntity> listItems) {
+    public RAMAdapter(Activity context) {
         super(context, R.layout.activity_ram);
+        this.context = context;
+    }
 
-        ArrayList<RAMEntity> listWithRepeats = new ArrayList<>();
+    public void setData(List<RAMEntity> listItems)
+    {
+        List<RAMEntity> listWithRepeats = new LinkedList<>();
 
         for (int i = 0; i < listItems.size(); i++) {
             listWithRepeats.add(listItems.get(i));
             listWithRepeats.add(listItems.get(i));
         }
-
-        addAll(listWithRepeats);
-
-        this.context = context;
         this.listItems = listWithRepeats;
+        clear();
+        addAll(listWithRepeats);
+        notifyDataSetChanged();
     }
 
     @Override

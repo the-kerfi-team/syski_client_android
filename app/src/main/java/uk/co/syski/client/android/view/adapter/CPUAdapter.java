@@ -8,24 +8,28 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.data.entity.CPUEntity;
+import uk.co.syski.client.android.model.database.entity.CPUEntity;
 import uk.co.syski.client.android.model.fragment.DoubleHeadedValueModel;
 import uk.co.syski.client.android.model.fragment.HeadedValueModel;
 
 public class CPUAdapter extends ArrayAdapter {
 
     private final Activity context;
-    private final List<CPUEntity> listItems;
+    private List<CPUEntity> listItems;
 
-    public CPUAdapter(Activity context, List<CPUEntity> listItems) {
+    public CPUAdapter(Activity context) {
         super(context, R.layout.activity_cpu);
+        this.context = context;
+    }
 
-        ArrayList<CPUEntity> listWithRepeats = new ArrayList<>();
 
+    public void setData(List<CPUEntity> listItems)
+    {
+        List<CPUEntity> listWithRepeats = new LinkedList<>();
         for (int i = 0; i < listItems.size(); i++) {
             listWithRepeats.add(listItems.get(i));
             listWithRepeats.add(listItems.get(i));
@@ -33,11 +37,10 @@ public class CPUAdapter extends ArrayAdapter {
             listWithRepeats.add(listItems.get(i));
             listWithRepeats.add(listItems.get(i));
         }
-
-        addAll(listWithRepeats);
-
-        this.context = context;
         this.listItems = listWithRepeats;
+        clear();
+        addAll(listWithRepeats);
+        notifyDataSetChanged();
     }
 
     @Override

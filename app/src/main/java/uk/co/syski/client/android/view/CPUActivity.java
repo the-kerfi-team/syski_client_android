@@ -3,9 +3,9 @@ package uk.co.syski.client.android.view;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -13,17 +13,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.model.database.entity.CPUEntity;
 import uk.co.syski.client.android.model.database.entity.data.CPUDataEntity;
-import uk.co.syski.client.android.model.fragment.DoubleHeadedValueModel;
 import uk.co.syski.client.android.model.fragment.HeadedValueModel;
 import uk.co.syski.client.android.view.adapter.CPUAdapter;
 import uk.co.syski.client.android.view.fragment.HeadedValueFragment;
-import uk.co.syski.client.android.view.fragment.OverviewFragment;
 import uk.co.syski.client.android.view.graph.VariableCPULoadGraph;
 import uk.co.syski.client.android.view.graph.VariableCPUProcessesGraph;
 import uk.co.syski.client.android.viewmodel.SystemCPUDataViewModel;
@@ -38,13 +35,14 @@ public class CPUActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cpu);
 
+        final CPUAdapter cpuAdapter = new CPUAdapter(this);
+        ((ListView) findViewById(R.id.cpuList)).setAdapter(cpuAdapter);
+
         SystemCPUViewModel viewModel = ViewModelProviders.of(this).get(SystemCPUViewModel.class);
         viewModel.get().observe(this, new Observer<List<CPUEntity>>() {
             @Override
             public void onChanged(@Nullable List<CPUEntity> cpuEntities) {
-                if (cpuEntities.size() > 0) {
-                    updateStaticUI(cpuEntities);
-                }
+                cpuAdapter.setData(cpuEntities);
             }
         });
 
@@ -75,11 +73,6 @@ public class CPUActivity extends AppCompatActivity {
                 startActivity(cpuGraph);
             }
         });
-    }
-
-    private void updateStaticUI(List<CPUEntity> cpuEntities) {
-        ListView listView = findViewById(R.id.cpuList);
-        listView.setAdapter(new CPUAdapter(this, cpuEntities));
     }
 
     private void updateRealTimeUI(CPUDataEntity cpuDataEntity) {
