@@ -62,7 +62,6 @@ public class SystemListMenu extends AppCompatActivity implements NavigationView.
         prefEditor = prefs.edit();
 
         //Setup list
-
         final SystemListAdapter adapter = new SystemListAdapter(this, R.drawable.ic_pc);
         final ListView listView = (ListView) findViewById(R.id.sysList);
         listView.setAdapter(adapter);
@@ -126,14 +125,7 @@ public class SystemListMenu extends AppCompatActivity implements NavigationView.
         int id = item.getItemId();
 
         if (id == R.id.nav_qr) {
-            // Handle the QR action
-            IntentIntegrator integrator = new IntentIntegrator(this);
-            integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
-            integrator.setPrompt("Scan a QR Code");
-            integrator.setCameraId(0);
-            integrator.setOrientationLocked(false);
-            integrator.setBeepEnabled(false);
-            integrator.initiateScan();
+            initQR();
         } else if (id == R.id.nav_settings){
             //Handle Settings
             Intent settings = new Intent(this, SettingsActivity.class);
@@ -159,11 +151,21 @@ public class SystemListMenu extends AppCompatActivity implements NavigationView.
         return false;
     }
 
+    private void initQR(){
+        IntentIntegrator integrator = new IntentIntegrator(this);
+        integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
+        integrator.setPrompt("Scan a QR Code");
+        integrator.setCameraId(0);
+        integrator.setOrientationLocked(false);
+        integrator.setBeepEnabled(false);
+        integrator.initiateScan();
+    }
+
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (result != null) {
-            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this); //This is always the same.
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
             if (result.getContents() == null) {
                 if (sp.getBoolean("pref_developer_mode", Boolean.parseBoolean(getString(R.string.pref_developer_mode_default)))) {
                     Toast.makeText(this, "Scan Cancelled", Toast.LENGTH_LONG).show();
@@ -174,30 +176,29 @@ public class SystemListMenu extends AppCompatActivity implements NavigationView.
                     Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
                 }
                 try {
-                    boolean systemNotFound = true;
+                    boolean systemFound = false;
                     UUID systemId = UUID.fromString(result.getContents());
 
                     SystemListViewModel model = ViewModelProviders.of(this).get(SystemListViewModel.class);
+
+                    //Checks if system exists
                     List<SystemEntity> sys = model.get().getValue();
                     for(SystemEntity system : sys){
                         if(system.Id.equals(systemId)){
-                            systemNotFound = false;
+                            systemFound = true;
                         }
                     }
 
-
-
-
-                    if (!systemNotFound) {
+                    if (systemFound) {
                         Intent intent = new Intent(this, SystemOverviewActivity.class);
                         prefEditor.putString(getString(R.string.preference_sysID_key),systemId.toString());
                         prefEditor.apply();
                         startActivity(intent);
                     } else {
-                        Toast.makeText(this, "Error: System does not exist", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Error: System does not exist", Toast.LENGTH_LONG).show();
                     }
                 } catch (IllegalArgumentException e) {
-                    Toast.makeText(this, "Error: QR Code does not represent a system", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Error: QR Code does not represent a system", Toast.LENGTH_LONG).show();
                 }
             }
         } else {
