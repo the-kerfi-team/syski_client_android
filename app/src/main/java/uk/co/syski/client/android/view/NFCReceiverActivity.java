@@ -35,6 +35,10 @@ public class NFCReceiverActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if(savedInstanceState == null){
+            Intent intent = new Intent(this,NFCReceiverActivity.class);
+            startActivity(intent);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nfcreceiver);
 
