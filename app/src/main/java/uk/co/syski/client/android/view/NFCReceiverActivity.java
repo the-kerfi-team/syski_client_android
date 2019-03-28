@@ -10,6 +10,7 @@ import android.nfc.NdefMessage;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
@@ -81,8 +82,8 @@ public class NFCReceiverActivity extends AppCompatActivity {
             Log.e(TAG, "Error occurred when encoding NFC payload");
             Log.e("UnsupportedEncoding", e.toString());
         }
-
-        if (prefs.getBoolean("pref_developer_mode", Boolean.parseBoolean(getString(R.string.pref_developer_mode_default))))
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        if (sp.getBoolean("pref_developer_mode", Boolean.parseBoolean(getString(R.string.pref_developer_mode_default))))
         {
             Toast.makeText(this, "Scanned: " +text, Toast.LENGTH_LONG).show();
         }
