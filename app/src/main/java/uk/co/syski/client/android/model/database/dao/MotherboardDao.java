@@ -3,44 +3,56 @@ package uk.co.syski.client.android.model.database.dao;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
+import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
+import android.database.sqlite.SQLiteConstraintException;
 
 import java.util.List;
 import java.util.UUID;
 
+import uk.co.syski.client.android.model.database.entity.CPUEntity;
 import uk.co.syski.client.android.model.database.entity.MotherboardEntity;
 
 @Dao
-public interface MotherboardDao {
+public abstract class MotherboardDao {
 
-    @Insert
-    void insert(MotherboardEntity moboEntity);
+    @Insert(onConflict = OnConflictStrategy.FAIL)
+    public abstract void insert(MotherboardEntity motherboardEntitiy);
 
-    @Insert
-    void insert(MotherboardEntity... moboEntities);
+    @Insert(onConflict = OnConflictStrategy.FAIL)
+    public abstract void insert(MotherboardEntity... motherboardEntities);
 
-    @Query("SELECT * FROM MotherboardEntity")
-    List<MotherboardEntity> get();
+    @Query("SELECT * FROM CPUEntity")
+    public abstract List<CPUEntity> get();
 
-    @Query("SELECT * FROM MotherboardEntity WHERE Id == :Id")
-    MotherboardEntity get(UUID Id);
+    @Query("SELECT * FROM CPUEntity WHERE Id == :Id")
+    public abstract CPUEntity get(UUID Id);
 
-    @Query("SELECT * FROM MotherboardEntity WHERE Id in (:Ids)")
-    List<MotherboardEntity> get(UUID... Ids);
+    @Query("SELECT * FROM CPUEntity WHERE Id in (:Ids)")
+    public abstract List<CPUEntity> get(UUID... Ids);
 
-    @Query("SELECT MotherboardEntity.Id, MotherboardEntity.ManufacturerName, MotherboardEntity.ModelName, MotherboardEntity.Version FROM MotherboardEntity INNER JOIN SystemEntity ON MotherboardEntity.Id = MotherboardId  WHERE SystemEntity.Id IN (:Ids)")
-    List<MotherboardEntity> GetMotherboards(UUID... Ids);
+    @Query("SELECT * FROM MotherboardEntity INNER JOIN SystemMotherboardEntity ON Id = MotherboardId WHERE SystemId IN (:Ids)")
+    public abstract List<MotherboardEntity> getSystemMotherboards(UUID... Ids);
 
-    @Update
-    void update (MotherboardEntity moboEntity);
+    @Update(onConflict = OnConflictStrategy.FAIL)
+    public abstract void update(MotherboardEntity motherboardEntities);
 
-    @Update
-    void update (MotherboardEntity... moboEntities);
-
-    @Delete
-    void delete(MotherboardEntity moboEntity);
+    @Update(onConflict = OnConflictStrategy.FAIL)
+    public abstract void update(MotherboardEntity... cpuEntities);
 
     @Delete
-    void delete(MotherboardEntity... moboEntities);
+    public abstract void delete(MotherboardEntity motherboardEntity);
+
+    @Delete
+    public abstract void delete(MotherboardEntity... motherboardEntities);
+
+    public void upsert(MotherboardEntity motherboardEntitiy) {
+        try {
+            insert(motherboardEntitiy);
+        } catch (SQLiteConstraintException exception) {
+            update(motherboardEntitiy);
+        }
+    }
+
 }
