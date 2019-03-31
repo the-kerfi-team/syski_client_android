@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import uk.co.syski.client.android.data.SyskiCache;
+import uk.co.syski.client.android.data.repository.Repository;
 
 public class APIAuthorizationRequest<T> extends APIRequest<T> {
 
@@ -23,7 +24,7 @@ public class APIAuthorizationRequest<T> extends APIRequest<T> {
     @Override
     public Map<String, String> getHeaders() throws AuthFailureError {
         Map<String, String>  params = new HashMap<String, String>();
-        params.put("Authorization", "Bearer " + SyskiCache.GetDatabase().UserDao().getAccessToken());
+        params.put("Authorization", "Bearer " + Repository.getInstance().getUserRepository().getUser().AccessToken);
         return params;
     }
 

@@ -20,6 +20,7 @@ import uk.co.syski.client.android.data.entity.CPUEntity;
 import uk.co.syski.client.android.data.entity.GPUEntity;
 import uk.co.syski.client.android.data.entity.linking.SystemCPUEntity;
 import uk.co.syski.client.android.data.entity.linking.SystemGPUEntity;
+import uk.co.syski.client.android.data.repository.Repository;
 
 public class APISystemGPURequest extends APIAuthorizationRequest<JSONArray> {
 
@@ -43,12 +44,7 @@ public class APISystemGPURequest extends APIAuthorizationRequest<JSONArray> {
                     gpuEntity.Id = UUID.fromString(((JSONObject) jsonArray.get(i)).getString("id"));
                     gpuEntity.ManufacturerName = ((JSONObject) jsonArray.get(i)).getString("manufacturerName");
                     gpuEntity.ModelName = ((JSONObject) jsonArray.get(i)).getString("modelName");
-                    SyskiCache.GetDatabase().GPUDao().InsertAll(gpuEntity);
-
-                    SystemGPUEntity systemGPUEntity = new SystemGPUEntity();
-                    systemGPUEntity.GPUId = gpuEntity.Id;
-                    systemGPUEntity.SystemId = mSystemId;
-                    SyskiCache.GetDatabase().SystemGPUDao().InsertAll(systemGPUEntity);
+                    Repository.getInstance().getGPURepository().insert(gpuEntity,mSystemId);
                 } else {
                     // TODO Update CPU method
                 }

@@ -9,4 +9,7 @@ import uk.co.syski.client.android.data.entity.linking.SystemOSEntity;
 public interface SystemOSDao {
     @Insert
     void InsertAll(SystemOSEntity... systemOSEntities);
+
+    @Insert
+    void insert(SystemOSEntity... systemOSEntities);
 }

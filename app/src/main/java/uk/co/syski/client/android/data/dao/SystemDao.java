@@ -1,9 +1,13 @@
 package uk.co.syski.client.android.data.dao;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
+import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Update;
 
 import java.util.Date;
 import java.util.List;
@@ -14,24 +18,33 @@ import uk.co.syski.client.android.data.entity.SystemEntity;
 @Dao
 public interface SystemDao {
 
-    @Query("SELECT * FROM SystemEntity WHERE Id = :uuid")
+    @Query("SELECT Id, HostName, ModelName, ManufacturerName FROM SystemEntity WHERE Id = :uuid")
     SystemEntity getSystem(UUID uuid);
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insert(SystemEntity systemEntity);
 
-    @Query("UPDATE SystemEntity SET HostName=:hostName ,ModelName=:modelName, ManufacturerName=:manufacturerName, LastUpdated=:lastUpdated WHERE Id = :uuid")
-    void setSystem(UUID uuid, String hostName, String modelName, String manufacturerName, Date lastUpdated);
-
-    @Query("UPDATE SystemEntity SET MotherboardId=:motherboardId WHERE Id = :uuid")
-    void setSystemMotherboard(UUID uuid, UUID motherboardId);
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insert(SystemEntity... systemEntities);
 
     @Query("SELECT * FROM SystemEntity")
-    List<SystemEntity> getAllSystems();
+    List<SystemEntity> get();
+
+    @Query("SELECT * FROM SystemEntity WHERE Id = :uuid")
+    SystemEntity get(UUID uuid);
 
     @Query("SELECT * FROM SystemEntity WHERE Id IN (:Ids)")
-    List<SystemEntity> getSystems(UUID... Ids);
+    List<SystemEntity> get(UUID... Ids);
 
-    @Insert
-    void InsertAll(SystemEntity... systemEntities);
+    @Update
+    void update (SystemEntity systemEntity);
+
+    @Update
+    void update (SystemEntity... systemEntities);
 
     @Delete
-    void DeleteAll(SystemEntity... systemEntities);
+    void delete(SystemEntity systemEntity);
+
+    @Delete
+    void delete(SystemEntity... systemEntities);
+
 }

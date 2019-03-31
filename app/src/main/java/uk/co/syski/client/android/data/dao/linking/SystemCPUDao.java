@@ -8,5 +8,5 @@ import uk.co.syski.client.android.data.entity.linking.SystemCPUEntity;
 @Dao
 public interface SystemCPUDao {
     @Insert
-    void InsertAll(SystemCPUEntity... systemCPUEntities);
+    void insert(SystemCPUEntity... systemCPUEntities);
 }
