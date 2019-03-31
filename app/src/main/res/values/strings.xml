@@ -141,4 +141,5 @@
     <string name="pref_general_storage_value_title">Storage Value Displayed</string>
     <string name="pref_general_ram_value_title">RAM Value Displayed</string>
     <string name="pref_general_value_choice_heading">Unit Choices</string>
+    <string name="nfc_lbl">NFC Scanner</string>
 </resources>
