@@ -23,14 +23,14 @@ public abstract class MotherboardDao {
     @Insert(onConflict = OnConflictStrategy.FAIL)
     public abstract void insert(MotherboardEntity... motherboardEntities);
 
-    @Query("SELECT * FROM CPUEntity")
-    public abstract List<CPUEntity> get();
+    @Query("SELECT * FROM MotherboardEntity")
+    public abstract List<MotherboardEntity> get();
 
-    @Query("SELECT * FROM CPUEntity WHERE Id == :Id")
-    public abstract CPUEntity get(UUID Id);
+    @Query("SELECT * FROM MotherboardEntity WHERE Id == :Id")
+    public abstract MotherboardEntity get(UUID Id);
 
-    @Query("SELECT * FROM CPUEntity WHERE Id in (:Ids)")
-    public abstract List<CPUEntity> get(UUID... Ids);
+    @Query("SELECT * FROM MotherboardEntity WHERE Id in (:Ids)")
+    public abstract List<MotherboardEntity> get(UUID... Ids);
 
     @Query("SELECT * FROM MotherboardEntity INNER JOIN SystemMotherboardEntity ON Id = MotherboardId WHERE SystemId IN (:Ids)")
     public abstract List<MotherboardEntity> getSystemMotherboards(UUID... Ids);

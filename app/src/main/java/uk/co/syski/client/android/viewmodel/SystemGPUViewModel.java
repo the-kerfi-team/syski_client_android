@@ -3,7 +3,6 @@ package uk.co.syski.client.android.viewmodel;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
@@ -11,14 +10,14 @@ import java.util.List;
 import java.util.UUID;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.model.database.entity.GPUEntity;
+import uk.co.syski.client.android.model.viewmodel.SystemGPUModel;
 import uk.co.syski.client.android.model.repository.GPURepository;
 import uk.co.syski.client.android.model.repository.Repository;
 
 public class SystemGPUViewModel extends AndroidViewModel {
 
     private GPURepository mGPURepository;
-    private LiveData<List<GPUEntity>> mSystemGPUList;
+    private LiveData<List<SystemGPUModel>> mSystemGPUList;
     private UUID systemId;
 
     public SystemGPUViewModel(@NonNull Application application) {
@@ -28,6 +27,6 @@ public class SystemGPUViewModel extends AndroidViewModel {
         mSystemGPUList = mGPURepository.getSystemGPUsLiveData(systemId, application.getBaseContext());
     }
 
-    public LiveData<List<GPUEntity>> get() { return mSystemGPUList; }
+    public LiveData<List<SystemGPUModel>> get() { return mSystemGPUList; }
 
 }

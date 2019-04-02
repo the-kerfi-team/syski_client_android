@@ -16,8 +16,8 @@ import android.widget.ListView;
 import java.util.List;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.model.database.entity.RAMEntity;
 import uk.co.syski.client.android.model.database.entity.data.RAMDataEntity;
+import uk.co.syski.client.android.model.viewmodel.SystemRAMModel;
 import uk.co.syski.client.android.model.fragment.HeadedValueModel;
 import uk.co.syski.client.android.view.adapter.RAMAdapter;
 import uk.co.syski.client.android.view.fragment.HeadedValueFragment;
@@ -36,9 +36,9 @@ public class RAMActivity extends AppCompatActivity {
         ((ListView) findViewById(R.id.listView)).setAdapter(adapter);
 
         SystemRAMViewModel model = ViewModelProviders.of(this).get(SystemRAMViewModel.class);
-        model.get().observe(this, new Observer<List<RAMEntity>>() {
+        model.get().observe(this, new Observer<List<SystemRAMModel>>() {
             @Override
-            public void onChanged(@Nullable List<RAMEntity> ramEntities) {
+            public void onChanged(@Nullable List<SystemRAMModel> ramEntities) {
                 adapter.setData(ramEntities);
             }
         });

@@ -1,175 +1,239 @@
 package uk.co.syski.client.android.model.repository;
 
+import android.arch.core.util.Function;
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.Transformations;
+import android.content.Context;
 import android.os.AsyncTask;
 
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
+import uk.co.syski.client.android.model.api.VolleySingleton;
+import uk.co.syski.client.android.model.api.requests.system.APISystemOperatingSystemRequest;
 import uk.co.syski.client.android.model.database.SyskiCache;
 import uk.co.syski.client.android.model.database.dao.OperatingSystemDao;
 import uk.co.syski.client.android.model.database.dao.linking.SystemOSDao;
 import uk.co.syski.client.android.model.database.entity.OperatingSystemEntity;
 import uk.co.syski.client.android.model.database.entity.linking.SystemOSEntity;
-import uk.co.syski.client.android.model.database.model.OperatingSystemModel;
+import uk.co.syski.client.android.model.viewmodel.OperatingSystemModel;
 
-public class OSRepository {
+public enum OSRepository {
+    INSTANCE;
 
+    // Database DAO's
     private OperatingSystemDao mOperatingSystemDao;
-    private MutableLiveData<List<OperatingSystemEntity>> mOSEntities;
-    private boolean mDataUpdated;
-    private UUID mActiveSystemId;
-    private MutableLiveData<List<OperatingSystemModel>> mSystemOSEntities;
     private SystemOSDao mSystemOSDao;
 
-    public OSRepository() {
+    // OS Cache in Memory
+    private HashMap<UUID, OperatingSystemEntity> mOSEntities;
+    private HashMap<UUID, List<SystemOSEntity>> mSystemOSEntities;
+    private HashMap<UUID, List<OperatingSystemModel>> mSystemOSModels;
+
+    // LiveData
+    private MutableLiveData<HashMap<UUID, List<OperatingSystemModel>>> mLiveDataSystemOSModels;
+
+    OSRepository() {
         mOperatingSystemDao = SyskiCache.GetDatabase().OperatingSystemDao();
         mSystemOSDao = SyskiCache.GetDatabase().SystemOSDao();
-        mOSEntities = new MutableLiveData();
-        mSystemOSEntities = new MutableLiveData();
+
+        mOSEntities = new HashMap<>();
+        mSystemOSEntities = new HashMap<>();
+        mSystemOSModels = new HashMap<>();
+
+        mLiveDataSystemOSModels = new MutableLiveData<>();
+        loadFromDatabase();
+    }
+
+    private void loadFromDatabase()
+    {
         try {
-            mOSEntities.postValue(new OSRepository.getAsyncTask(mOperatingSystemDao).execute().get());
+            // Load data from Database for OS's
+            mOSEntities = new loadOSEntitiesAsyncTask(mOperatingSystemDao, mOSEntities).execute().get();
+
+            // Load data from Database for System OS's
+            mSystemOSEntities = new loadSystemOSEntitiesAsyncTask(mSystemOSDao, mSystemOSEntities).execute().get();
+
+            // Set Data in LiveData
+            for (Map.Entry<UUID, List<SystemOSEntity>> entry : mSystemOSEntities.entrySet())
+            {
+                List<OperatingSystemModel> OSModels = mSystemOSModels.get(entry.getKey());
+                if (OSModels == null)
+                {
+                    OSModels = new LinkedList<>();
+                }
+                for (SystemOSEntity systemOSEntity : entry.getValue())
+                {
+                    OperatingSystemEntity osEntity = mOSEntities.get(systemOSEntity.OSId);
+                    OSModels.add(new OperatingSystemModel(osEntity.Name, systemOSEntity.ArchitectureName, systemOSEntity.Version));
+                }
+                mSystemOSModels.put(entry.getKey(), OSModels);
+            }
+            mLiveDataSystemOSModels.postValue(mSystemOSModels);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-
     }
 
-    public MutableLiveData<List<OperatingSystemEntity>> get() {
-        return mOSEntities;
+    private void loadFromAPI(Context context, UUID systemId)
+    {
+        //TODO Load from API every user defined time.
+        VolleySingleton.getInstance(context).addToRequestQueue(new APISystemOperatingSystemRequest(context, systemId));
     }
 
-    public MutableLiveData<List<OperatingSystemModel>> get(final UUID systemId) {
-        if (mDataUpdated || mActiveSystemId == null || !mActiveSystemId.equals(systemId))
+    public LiveData<List<OperatingSystemModel>> getSystemOSsLiveData(final UUID systemId, Context context)
+    {
+        loadFromAPI(context, systemId);
+        return Transformations.map(mLiveDataSystemOSModels, new Function<HashMap<UUID, List<OperatingSystemModel>>, List<OperatingSystemModel>>() {
+            @Override
+            public List<OperatingSystemModel> apply(HashMap<UUID, List<OperatingSystemModel>> input) {
+                List<OperatingSystemModel> osModelList = input.get(systemId);
+                if (osModelList == null)
+                {
+                    osModelList = new LinkedList<>();
+                }
+                if (osModelList.isEmpty())
+                {
+                    osModelList.add(new OperatingSystemModel());
+                }
+                return osModelList;
+            }
+        });
+    }
+
+    public List<SystemOSEntity> getSystemOSs(UUID systemId)
+    {
+        return mSystemOSEntities.get(systemId);
+    }
+
+    public OperatingSystemEntity getOS(UUID id)
+    {
+        return mOSEntities.get(id);
+    }
+
+    public void upsert(UUID systemId, List<SystemOSEntity> systemOSEntities, List<OperatingSystemEntity> osEntities)
+    {
+        try {
+            new upsertOSAsyncTask(mOperatingSystemDao, systemId, osEntities).execute().get();
+            new upsertSystemOSAsyncTask(mSystemOSDao, systemId, systemOSEntities).execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        List<OperatingSystemModel> systemOSModels = new LinkedList<>();
+        for (OperatingSystemEntity osEntity : osEntities)
         {
-            mActiveSystemId = systemId;
-            updateSystemOSData();
-            mDataUpdated = false;
+            mOSEntities.put(osEntity.Id, osEntity);
         }
-        return mSystemOSEntities;
-    }
-
-    public void insert(OperatingSystemEntity operatingSystemEntity) {
-        new OSRepository.insertAsyncTask(mOperatingSystemDao).execute(operatingSystemEntity);
-        updateData();
-    }
-
-    public void insert(OperatingSystemEntity osEntity, UUID systemId) {
-        new OSRepository.insertSystemOSAsyncTask(mOperatingSystemDao, mSystemOSDao, systemId).execute(osEntity);
-        updateData();
-        if (mActiveSystemId != null && mActiveSystemId.equals(systemId))
+        for (SystemOSEntity systemOSEntity : systemOSEntities)
         {
-            updateSystemOSData();
+            OperatingSystemEntity osEntity = mOSEntities.get(systemOSEntity.OSId);
+            systemOSModels.add(new OperatingSystemModel(osEntity.Name, systemOSEntity.ArchitectureName, systemOSEntity.Version));
         }
+        mSystemOSEntities.put(systemId, systemOSEntities);
+        mSystemOSModels.put(systemId, systemOSModels);
+        mLiveDataSystemOSModels.postValue(mSystemOSModels);
     }
 
-    public void update(OperatingSystemEntity operatingSystemEntity) {
-        new OSRepository.updateAsyncTask(mOperatingSystemDao).execute(operatingSystemEntity);
-        updateData();
-    }
+    private static class loadOSEntitiesAsyncTask extends AsyncTask<Void, Void, HashMap<UUID, OperatingSystemEntity>> {
 
-    public void updateSystemOSData() {
-        try {
-            mSystemOSEntities.postValue(new OSRepository.getSystemOSAsyncTask(mOperatingSystemDao).execute(mActiveSystemId).get());
-            mDataUpdated = true;
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-    }
+        private OperatingSystemDao mOperatingSystemDao;
+        private HashMap<UUID, OperatingSystemEntity> mOSEntities;
 
-    public void updateData() {
-        try {
-            mOSEntities.postValue(new OSRepository.getAsyncTask(mOperatingSystemDao).execute().get());
-            mDataUpdated = true;
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-    }
 
-    private static class getAsyncTask extends AsyncTask<Void, Void, List<OperatingSystemEntity>> {
-        private OperatingSystemDao mAsyncTaskDao;
-
-        getAsyncTask(OperatingSystemDao dao) {
-            mAsyncTaskDao = dao;
+        loadOSEntitiesAsyncTask(OperatingSystemDao operatingSystemDao, HashMap<UUID, OperatingSystemEntity> osEntities) {
+            mOperatingSystemDao = operatingSystemDao;
+            mOSEntities = osEntities;
         }
 
-        protected List<OperatingSystemEntity> doInBackground(final Void... voids) {
-            return mAsyncTaskDao.get();
-        }
-    }
-
-    private static class insertAsyncTask extends AsyncTask<OperatingSystemEntity, Void, Void> {
-
-        private OperatingSystemDao mAsyncTaskDao;
-
-        insertAsyncTask(OperatingSystemDao dao) {
-            mAsyncTaskDao = dao;
-        }
-
-        @Override
-        protected Void doInBackground(final OperatingSystemEntity... osEntities) {
-            mAsyncTaskDao.insert(osEntities);
-            return null;
+        protected HashMap<UUID, OperatingSystemEntity> doInBackground(final Void... voids) {
+            for (OperatingSystemEntity operatingSystemEntity : mOperatingSystemDao.get())
+            {
+                mOSEntities.put(operatingSystemEntity.Id, operatingSystemEntity);
+            }
+            return mOSEntities;
         }
 
     }
 
-    private static class updateAsyncTask extends AsyncTask<OperatingSystemEntity, Void, Void> {
+    private static class loadSystemOSEntitiesAsyncTask extends AsyncTask<Void, Void, HashMap<UUID, List<SystemOSEntity>>> {
 
-        private OperatingSystemDao mAsyncTaskDao;
+        private SystemOSDao mSystemOSDao;
+        private HashMap<UUID, List<SystemOSEntity>> mSystemOSEntities;
 
-        updateAsyncTask(OperatingSystemDao dao) {
-            mAsyncTaskDao = dao;
+
+        loadSystemOSEntitiesAsyncTask(SystemOSDao systemOSDao, HashMap<UUID, List<SystemOSEntity>> systemOSEntities) {
+            mSystemOSDao = systemOSDao;
+            mSystemOSEntities = systemOSEntities;
         }
 
-        @Override
-        protected Void doInBackground(final OperatingSystemEntity... osEntities) {
-            mAsyncTaskDao.update(osEntities);
-            return null;
+        protected HashMap<UUID, List<SystemOSEntity>> doInBackground(final Void... voids) {
+            for (SystemOSEntity systemOSEntity : mSystemOSDao.get())
+            {
+                List<SystemOSEntity> OSEntities = mSystemOSEntities.get(systemOSEntity.SystemId);
+                if (OSEntities == null)
+                {
+                    OSEntities = new LinkedList<>();
+                }
+                OSEntities.add(systemOSEntity);
+                mSystemOSEntities.put(systemOSEntity.SystemId, OSEntities);
+            }
+            return mSystemOSEntities;
         }
+
     }
 
-    private static class getSystemOSAsyncTask extends AsyncTask<UUID, Void, List<OperatingSystemModel>> {
-        private OperatingSystemDao mAsyncTaskDao;
+    private static class upsertOSAsyncTask extends AsyncTask<Void , Void, Void> {
 
-        getSystemOSAsyncTask(OperatingSystemDao dao) {
-            mAsyncTaskDao = dao;
-        }
-
-        protected List<OperatingSystemModel> doInBackground(final UUID... uuids) {
-            List<OperatingSystemModel> result = mAsyncTaskDao.getSystemOperatingSystems(uuids);
-            return mAsyncTaskDao.getSystemOperatingSystems(uuids);
-        }
-    }
-
-    private static class insertSystemOSAsyncTask extends AsyncTask<OperatingSystemEntity, Void, Void> {
-        private OperatingSystemDao mAsyncTaskOSDao;
-        private SystemOSDao mAsyncTaskSystemOSDao;
+        private OperatingSystemDao mOperatingSystemDao;
         private UUID mSystemId;
 
-        insertSystemOSAsyncTask(OperatingSystemDao osDao, SystemOSDao systemDao, UUID systemId) {
-            mAsyncTaskOSDao = osDao;
-            mAsyncTaskSystemOSDao = systemDao;
+        private List<OperatingSystemEntity> mOperatingSystemEntities;
+
+        upsertOSAsyncTask(OperatingSystemDao operatingSystemDao, UUID systemId, List<OperatingSystemEntity> operatingSystemEntities) {
+            mOperatingSystemDao = operatingSystemDao;
             mSystemId = systemId;
+            mOperatingSystemEntities = operatingSystemEntities;
         }
 
-        protected Void doInBackground(final OperatingSystemEntity... osEntities) {
-            mAsyncTaskOSDao.insert(osEntities);
-            SystemOSEntity systemOSEntity = new SystemOSEntity();
-            for (OperatingSystemEntity osEntity: osEntities) {
-                systemOSEntity.OSId = osEntity.Id;
-                systemOSEntity.SystemId = mSystemId;
-                mAsyncTaskSystemOSDao.insert(systemOSEntity);
+        protected Void doInBackground(final Void... voids) {
+            for (OperatingSystemEntity operatingSystemEntity: mOperatingSystemEntities) {
+                mOperatingSystemDao.upsert(operatingSystemEntity);
             }
             return null;
         }
+
     }
-    
+
+    private static class upsertSystemOSAsyncTask extends AsyncTask<Void , Void, Void> {
+
+        private SystemOSDao mSystemOSDao;
+        private UUID mSystemId;
+
+        private List<SystemOSEntity> mSystemCPUEntities;
+
+        upsertSystemOSAsyncTask(SystemOSDao systemOSDao, UUID systemId, List<SystemOSEntity> systemOSEntities) {
+            mSystemOSDao = systemOSDao;
+            mSystemId = systemId;
+            mSystemCPUEntities = systemOSEntities;
+        }
+
+        protected Void doInBackground(final Void... voids) {
+            mSystemOSDao.deleteBySystemId(mSystemId);
+            for (SystemOSEntity systemOSEntity: mSystemCPUEntities) {
+                mSystemOSDao.insert(systemOSEntity);
+            }
+            return null;
+        }
+
+    }
+
 }

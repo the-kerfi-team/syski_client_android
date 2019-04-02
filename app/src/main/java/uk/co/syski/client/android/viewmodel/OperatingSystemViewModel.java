@@ -2,7 +2,7 @@ package uk.co.syski.client.android.viewmodel;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
-import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.LiveData;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
@@ -12,22 +12,22 @@ import java.util.UUID;
 import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.model.repository.OSRepository;
 import uk.co.syski.client.android.model.repository.Repository;
-import uk.co.syski.client.android.model.database.model.OperatingSystemModel;
+import uk.co.syski.client.android.model.viewmodel.OperatingSystemModel;
 
 public class OperatingSystemViewModel extends AndroidViewModel{
 
     private OSRepository mOSRepository;
-    private MutableLiveData<List<OperatingSystemModel>> mSystemOSList;
+    private LiveData<List<OperatingSystemModel>> mSystemOSList;
     private UUID systemId;
 
     public OperatingSystemViewModel(@NonNull Application application) {
         super(application);
         systemId = UUID.fromString(application.getSharedPreferences(application.getString(R.string.preference_sysID_key), Context.MODE_PRIVATE).getString(application.getString(R.string.preference_sysID_key), null));
         mOSRepository = Repository.getInstance().getOSRepository();
-        mSystemOSList = mOSRepository.get(systemId);
+        mSystemOSList = mOSRepository.getSystemOSsLiveData(systemId, application.getBaseContext());
     }
 
-    public MutableLiveData<List<OperatingSystemModel>> get() {
+    public LiveData<List<OperatingSystemModel>> get() {
         return mSystemOSList;
     }
 

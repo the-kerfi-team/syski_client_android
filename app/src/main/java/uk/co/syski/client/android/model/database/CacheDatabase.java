@@ -15,6 +15,7 @@ import uk.co.syski.client.android.model.database.dao.TypeDao;
 import uk.co.syski.client.android.model.database.dao.UserDao;
 import uk.co.syski.client.android.model.database.dao.linking.SystemCPUDao;
 import uk.co.syski.client.android.model.database.dao.linking.SystemGPUDao;
+import uk.co.syski.client.android.model.database.dao.linking.SystemMotherboardDao;
 import uk.co.syski.client.android.model.database.dao.linking.SystemOSDao;
 import uk.co.syski.client.android.model.database.dao.linking.SystemRAMDao;
 import uk.co.syski.client.android.model.database.dao.linking.SystemStorageDao;
@@ -30,6 +31,7 @@ import uk.co.syski.client.android.model.database.entity.TypeEntity;
 import uk.co.syski.client.android.model.database.entity.UserEntity;
 import uk.co.syski.client.android.model.database.entity.linking.SystemCPUEntity;
 import uk.co.syski.client.android.model.database.entity.linking.SystemGPUEntity;
+import uk.co.syski.client.android.model.database.entity.linking.SystemMotherboardEntity;
 import uk.co.syski.client.android.model.database.entity.linking.SystemOSEntity;
 import uk.co.syski.client.android.model.database.entity.linking.SystemRAMEntity;
 import uk.co.syski.client.android.model.database.entity.linking.SystemStorageEntity;
@@ -51,7 +53,8 @@ import uk.co.syski.client.android.model.database.entity.linking.SystemTypeEntity
         SystemGPUEntity.class,
         StorageEntity.class,
         SystemStorageEntity.class,
-        MotherboardEntity.class
+        MotherboardEntity.class,
+        SystemMotherboardEntity.class
     },
     version = 1
 )
@@ -72,5 +75,6 @@ public abstract class CacheDatabase extends RoomDatabase {
     public abstract StorageDao StorageDao();
     public abstract SystemStorageDao SystemStorageDao();
     public abstract MotherboardDao MotherboardDao();
+    public abstract SystemMotherboardDao SystemMotherboardDao();
 }
 

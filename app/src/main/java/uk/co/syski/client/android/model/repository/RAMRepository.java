@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
@@ -18,9 +19,9 @@ import uk.co.syski.client.android.model.api.requests.system.APISystemRAMRequest;
 import uk.co.syski.client.android.model.database.SyskiCache;
 import uk.co.syski.client.android.model.database.dao.RAMDao;
 import uk.co.syski.client.android.model.database.dao.linking.SystemRAMDao;
-import uk.co.syski.client.android.model.database.entity.CPUEntity;
 import uk.co.syski.client.android.model.database.entity.RAMEntity;
 import uk.co.syski.client.android.model.database.entity.linking.SystemRAMEntity;
+import uk.co.syski.client.android.model.viewmodel.SystemRAMModel;
 
 public enum RAMRepository {
     INSTANCE;
@@ -31,10 +32,11 @@ public enum RAMRepository {
 
     // RAM Cache in Memory
     private HashMap<UUID, RAMEntity> mRAMEntities;
-    private HashMap<UUID, List<UUID>> mSystemRAMEntities;
+    private HashMap<UUID, List<SystemRAMEntity>> mSystemRAMEntities;
+    private HashMap<UUID, List<SystemRAMModel>> mSystemRAMModels;
 
     // LiveData
-    private MutableLiveData<HashMap<UUID, RAMEntity>> mLiveDataSystemRAMEntities;
+    private MutableLiveData<HashMap<UUID, List<SystemRAMModel>>> mLiveDataSystemRAMEntities;
 
     RAMRepository() {
         mRAMDao = SyskiCache.GetDatabase().RAMDao();
@@ -42,6 +44,7 @@ public enum RAMRepository {
 
         mRAMEntities = new HashMap<>();
         mSystemRAMEntities = new HashMap<>();
+        mSystemRAMModels = new HashMap<>();
 
         mLiveDataSystemRAMEntities = new MutableLiveData<>();
         loadFromDatabase();
@@ -57,59 +60,50 @@ public enum RAMRepository {
             mSystemRAMEntities = new loadSystemRAMEntitiesAsyncTask(mSystemRAMDao, mSystemRAMEntities).execute().get();
 
             // Set Data in LiveData
-            mLiveDataSystemRAMEntities.postValue(mRAMEntities);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+            for (Map.Entry<UUID, List<SystemRAMEntity>> entry : mSystemRAMEntities.entrySet())
+            {
+                List<SystemRAMModel> RAMModels = mSystemRAMModels.get(entry.getKey());
+                if (RAMModels == null)
+                {
+                    RAMModels = new LinkedList<>();
+                }
+                for (SystemRAMEntity systemRAMEntity : entry.getValue())
+                {
+                    RAMEntity ramEntity = mRAMEntities.get(systemRAMEntity.RAMId);
+                    RAMModels.add(new SystemRAMModel(ramEntity.ModelName, ramEntity.ManufacturerName, ramEntity.MemoryTypeName, ramEntity.MemoryBytes));
+                }
+                mSystemRAMModels.put(entry.getKey(), RAMModels);
+            }
+            mLiveDataSystemRAMEntities.postValue(mSystemRAMModels);
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
     }
 
-    private void loadFromAPI(Context context, UUID systemId)
+    private void loadFromAPI(final Context context, final UUID systemId)
     {
         //TODO Load from API every user defined time.
         VolleySingleton.getInstance(context).addToRequestQueue(new APISystemRAMRequest(context, systemId));
     }
 
-    public void insert(RAMEntity ramEntity)
-    {
-        //TODO Create insert method
-    }
-
-    public void insert(UUID systemId, RAMEntity ramEntity)
-    {
-        //TODO Create insert method
-    }
-
-    public void insert(UUID systemId, List<RAMEntity> ramEntities)
-    {
-        //TODO Create insert method
-    }
-
-    public LiveData<List<RAMEntity>> getSystemRAMsLiveData(final UUID systemId, Context context)
+    public LiveData<List<SystemRAMModel>> getSystemRAMsLiveData(final UUID systemId, Context context)
     {
         loadFromAPI(context, systemId);
-        return Transformations.map(mLiveDataSystemRAMEntities, new Function<HashMap<UUID, RAMEntity>, List<RAMEntity>>() {
+        return Transformations.map(mLiveDataSystemRAMEntities, new Function<HashMap<UUID, List<SystemRAMModel>>, List<SystemRAMModel>>() {
             @Override
-            public List<RAMEntity> apply(HashMap<UUID, RAMEntity> input) {
-                List<RAMEntity> result = new LinkedList<>();
-                List<UUID> systemRAMEntities = mSystemRAMEntities.get(systemId);
-                if (systemRAMEntities != null)
+            public List<SystemRAMModel> apply(HashMap<UUID, List<SystemRAMModel>> input) {
+                List<SystemRAMModel> ramModelList = input.get(systemId);
+                if (ramModelList == null)
                 {
-                    for (UUID systemEntityId : systemRAMEntities)
-                    {
-                        result.add(input.get(systemEntityId));
-                    }
+                    ramModelList = new LinkedList<>();
                 }
-                return result;
+                if (ramModelList.isEmpty())
+                {
+                    ramModelList.add(new SystemRAMModel());
+                }
+                return ramModelList;
             }
         });
-    }
-
-    public List<RAMEntity> getSystemRAMs(UUID systemId)
-    {
-        //TODO Create get System Component method
-        return null;
     }
 
     public RAMEntity get(UUID id)
@@ -117,68 +111,22 @@ public enum RAMRepository {
         return mRAMEntities.get(id);
     }
 
-    public List<RAMEntity> getAll()
-    {
-        //TODO Create get Components method
-        return null;
-    }
-
-    public void update(RAMEntity ramEntity)
-    {
-        //TODO Create update Component method
-    }
-
-    public void update(UUID systemId, RAMEntity ramEntity)
-    {
-        //TODO Create update Components method
-    }
-
-    public void update(UUID systemId, List<RAMEntity> ramEntities)
-    {
-        //TODO Create update Components method
-    }
-
-    public void upsert(RAMEntity ramEntity)
-    {
-        //TODO Create upsert Component method
-    }
-
-    public void upsert(UUID systemId, RAMEntity ramEntity)
-    {
-        //TODO Create upsert Components method
-    }
-
-    public void upsert(UUID systemId, List<RAMEntity> ramEntities)
+    public void upsert(UUID systemId, List<SystemRAMEntity> systemRAMEntities, List<RAMEntity> ramEntities)
     {
         try {
-            new upsertSystemRAMAsyncTask(mRAMDao, mSystemRAMDao, systemId, ramEntities).execute().get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+            new upsertRAMAsyncTask(mRAMDao, ramEntities).execute().get();
+            new upsertSystemRAMAsyncTask(mSystemRAMDao, systemId, systemRAMEntities).execute().get();
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
-        List<UUID> systemRAMEntities = new LinkedList<>();
+        List<SystemRAMModel> systemRAMModels = new LinkedList<>();
         for (RAMEntity ramEntity : ramEntities)
         {
-            systemRAMEntities.add(ramEntity.Id);
+            mRAMEntities.put(ramEntity.Id, ramEntity);
+            systemRAMModels.add(new SystemRAMModel(ramEntity.ModelName, ramEntity.ManufacturerName, ramEntity.MemoryTypeName, ramEntity.MemoryBytes));
         }
-        mSystemRAMEntities.put(systemId, systemRAMEntities);
-        mLiveDataSystemRAMEntities.postValue(mRAMEntities);
-    }
-
-    public void delete(RAMEntity ramEntity)
-    {
-        //TODO Create delete Component method
-    }
-
-    public void delete(UUID systemId, RAMEntity ramEntity)
-    {
-        //TODO Create delete Component method
-    }
-
-    public void delete(UUID systemId, List<RAMEntity> ramEntities)
-    {
-        //TODO Create delete Component method
+        mSystemRAMModels.put(systemId, systemRAMModels);
+        mLiveDataSystemRAMEntities.postValue(mSystemRAMModels);
     }
 
     private static class loadRAMEntitiesAsyncTask extends AsyncTask<Void, Void, HashMap<UUID, RAMEntity>> {
@@ -202,26 +150,25 @@ public enum RAMRepository {
 
     }
 
-    private static class loadSystemRAMEntitiesAsyncTask extends AsyncTask<Void, Void, HashMap<UUID, List<UUID>>> {
+    private static class loadSystemRAMEntitiesAsyncTask extends AsyncTask<Void, Void, HashMap<UUID, List<SystemRAMEntity>>> {
 
         private SystemRAMDao mSystemRAMDao;
-        private HashMap<UUID, List<UUID>> mSystemRAMEntities;
+        private HashMap<UUID, List<SystemRAMEntity>> mSystemRAMEntities;
 
-
-        loadSystemRAMEntitiesAsyncTask(SystemRAMDao systemRAMDao, HashMap<UUID, List<UUID>> systemRAMEntities) {
+        loadSystemRAMEntitiesAsyncTask(SystemRAMDao systemRAMDao, HashMap<UUID, List<SystemRAMEntity>> systemRAMEntities) {
             mSystemRAMDao = systemRAMDao;
             mSystemRAMEntities = systemRAMEntities;
         }
 
-        protected HashMap<UUID, List<UUID>> doInBackground(final Void... voids) {
+        protected HashMap<UUID, List<SystemRAMEntity>> doInBackground(final Void... voids) {
             for (SystemRAMEntity SystemRAMEntity : mSystemRAMDao.get())
             {
-                List<UUID> RAMEntities = mSystemRAMEntities.get(SystemRAMEntity.SystemId);
+                List<SystemRAMEntity> RAMEntities = mSystemRAMEntities.get(SystemRAMEntity.SystemId);
                 if (RAMEntities == null)
                 {
                     RAMEntities = new LinkedList<>();
                 }
-                RAMEntities.add(SystemRAMEntity.RAMId);
+                RAMEntities.add(SystemRAMEntity);
                 mSystemRAMEntities.put(SystemRAMEntity.SystemId, RAMEntities);
             }
             return mSystemRAMEntities;
@@ -229,31 +176,40 @@ public enum RAMRepository {
 
     }
 
-    private static class upsertSystemRAMAsyncTask extends AsyncTask<Void , Void, Void> {
+    private static class upsertRAMAsyncTask extends AsyncTask<Void , Void, Void> {
 
         private RAMDao mRAMDao;
-        private SystemRAMDao mSystemRAMDao;
-        private UUID mSystemId;
-
         private List<RAMEntity> mRAMEntities;
 
-        upsertSystemRAMAsyncTask(RAMDao ramDao, SystemRAMDao systemRAMDao, UUID systemId, List<RAMEntity> ramEntities) {
+        upsertRAMAsyncTask(RAMDao ramDao, List<RAMEntity> ramEntities) {
             mRAMDao = ramDao;
-            mSystemRAMDao = systemRAMDao;
-            mSystemId = systemId;
-
             mRAMEntities = ramEntities;
         }
 
         protected Void doInBackground(final Void... voids) {
-            mSystemRAMDao.deleteBySystemId(mSystemId);
-            int i = 0;
             for (RAMEntity ramEntity: mRAMEntities) {
                 mRAMDao.upsert(ramEntity);
-                SystemRAMEntity systemRAMEntity = new SystemRAMEntity();
-                systemRAMEntity.SystemId = mSystemId;
-                systemRAMEntity.RAMId = ramEntity.Id;
-                systemRAMEntity.DimmSlot = i++;
+            }
+            return null;
+        }
+
+    }
+
+    private static class upsertSystemRAMAsyncTask extends AsyncTask<Void , Void, Void> {
+
+        private SystemRAMDao mSystemRAMDao;
+        private UUID mSystemId;
+        private List<SystemRAMEntity> mSystemRAMEntities;
+
+        upsertSystemRAMAsyncTask(SystemRAMDao systemRAMDao, UUID systemId, List<SystemRAMEntity> systemRAMEntities) {
+            mSystemRAMDao = systemRAMDao;
+            mSystemId = systemId;
+            mSystemRAMEntities = systemRAMEntities;
+        }
+
+        protected Void doInBackground(final Void... voids) {
+            mSystemRAMDao.deleteBySystemId(mSystemId);
+            for (SystemRAMEntity systemRAMEntity: mSystemRAMEntities) {
                 mSystemRAMDao.insert(systemRAMEntity);
             }
             return null;

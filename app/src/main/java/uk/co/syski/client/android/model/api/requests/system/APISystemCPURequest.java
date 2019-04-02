@@ -18,6 +18,7 @@ import java.util.UUID;
 
 import uk.co.syski.client.android.model.api.requests.APIAuthorizationRequest;
 import uk.co.syski.client.android.model.database.entity.CPUEntity;
+import uk.co.syski.client.android.model.database.entity.linking.SystemCPUEntity;
 import uk.co.syski.client.android.model.repository.CPURepository;
 import uk.co.syski.client.android.model.repository.Repository;
 
@@ -38,14 +39,15 @@ public class APISystemCPURequest extends APIAuthorizationRequest<JSONArray> {
             JSONArray jsonArray = new JSONArray(new String(response.data, HttpHeaderParser.parseCharset(response.headers, PROTOCOL_CHARSET)));
 
             List<CPUEntity> newCPUEntities = new LinkedList<>();
+            List<SystemCPUEntity> newSystemCPUEntities = new LinkedList<>();
+
             for (int i = 0; i < jsonArray.length(); i++) {
 
                 // Load from Database
                 //CPUEntity cpuEntity = SyskiCache.GetDatabase().CPUDao().get());
 
                 // Load from Repository (Using Cache)
-                CPUEntity cpuEntity = Repository.getInstance().getCPURepository().get(UUID.fromString(((JSONObject) jsonArray.get(i)).getString("id")));
-
+                CPUEntity cpuEntity = Repository.getInstance().getCPURepository().getCPU(UUID.fromString(((JSONObject) jsonArray.get(i)).getString("id")));
                 if (cpuEntity == null)
                 {
                     cpuEntity = new CPUEntity();
@@ -58,8 +60,13 @@ public class APISystemCPURequest extends APIAuthorizationRequest<JSONArray> {
                 cpuEntity.CoreCount = (int) Double.parseDouble(((JSONObject) jsonArray.get(i)).getString("coreCount"));
                 cpuEntity.ThreadCount = (int) Double.parseDouble(((JSONObject) jsonArray.get(i)).getString("threadCount"));
                 newCPUEntities.add(cpuEntity);
+
+                SystemCPUEntity systemCPUEntity = new SystemCPUEntity();
+                systemCPUEntity.SystemId = mSystemId;
+                systemCPUEntity.CPUId = cpuEntity.Id;
+                newSystemCPUEntities.add(systemCPUEntity);
             }
-            Repository.getInstance().getCPURepository().upsert(mSystemId, newCPUEntities);
+            Repository.getInstance().getCPURepository().upsert(mSystemId, newSystemCPUEntities, newCPUEntities);
 
             return Response.success(jsonArray, HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException | JSONException e) {

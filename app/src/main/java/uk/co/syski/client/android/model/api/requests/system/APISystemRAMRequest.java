@@ -20,6 +20,7 @@ import uk.co.syski.client.android.model.api.requests.APIAuthorizationRequest;
 import uk.co.syski.client.android.model.database.SyskiCache;
 import uk.co.syski.client.android.model.database.entity.CPUEntity;
 import uk.co.syski.client.android.model.database.entity.RAMEntity;
+import uk.co.syski.client.android.model.database.entity.linking.SystemCPUEntity;
 import uk.co.syski.client.android.model.database.entity.linking.SystemRAMEntity;
 import uk.co.syski.client.android.model.repository.Repository;
 
@@ -39,6 +40,8 @@ public class APISystemRAMRequest extends APIAuthorizationRequest<JSONArray> {
             JSONArray jsonArray = new JSONArray(new String(response.data, HttpHeaderParser.parseCharset(response.headers, PROTOCOL_CHARSET)));
 
             List<RAMEntity> newRAMEntities = new LinkedList<>();
+            List<SystemRAMEntity> newSystemRAMEntities = new LinkedList<>();
+
             for (int i = 0; i < jsonArray.length(); i++) {
 
                 // Load from Database
@@ -56,8 +59,14 @@ public class APISystemRAMRequest extends APIAuthorizationRequest<JSONArray> {
                 ramEntity.MemoryTypeName = ((JSONObject) jsonArray.get(i)).getString("memoryTypeName");
                 ramEntity.MemoryBytes = Long.parseLong(((JSONObject) jsonArray.get(i)).getString("memoryBytes"));
                 newRAMEntities.add(ramEntity);
+
+                SystemRAMEntity systemRAMEntity = new SystemRAMEntity();
+                systemRAMEntity.SystemId = mSystemId;
+                systemRAMEntity.RAMId = ramEntity.Id;
+                systemRAMEntity.DimmSlot = i;
+                newSystemRAMEntities.add(systemRAMEntity);
             }
-            Repository.getInstance().getRAMRepository().upsert(mSystemId, newRAMEntities);
+            Repository.getInstance().getRAMRepository().upsert(mSystemId, newSystemRAMEntities, newRAMEntities);
 
             return Response.success(jsonArray, HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException | JSONException e) {

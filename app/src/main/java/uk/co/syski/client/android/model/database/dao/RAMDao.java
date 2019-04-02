@@ -16,8 +16,8 @@ import uk.co.syski.client.android.model.database.entity.RAMEntity;
 @Dao
 public abstract class RAMDao {
 
-    @Query("SELECT Id, ModelName, ManufacturerName, MemoryTypeName, MemoryBytes FROM RAMEntity WHERE Id == :Id")
-    public abstract RAMEntity GetRAM(UUID Id);
+    @Query("SELECT * FROM RAMEntity WHERE Id == :Id")
+    public abstract RAMEntity get(UUID Id);
 
     @Query("SELECT * FROM RAMEntity")
     public abstract List<RAMEntity> get();

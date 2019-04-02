@@ -14,7 +14,6 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
 @Entity(
         primaryKeys = {
                 "SystemId",
-                "MotherboardId"
         },
         foreignKeys = {
                 @ForeignKey(

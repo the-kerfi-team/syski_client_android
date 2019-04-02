@@ -14,13 +14,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.model.database.entity.RAMEntity;
+import uk.co.syski.client.android.model.viewmodel.SystemRAMModel;
 
 public class RAMAdapter extends ArrayAdapter {
 
     private final Activity context;
-    private List<RAMEntity> listItems;
-
+    private List<SystemRAMModel> listItems;
     private View listItem;
 
     public RAMAdapter(Activity context) {
@@ -28,18 +27,20 @@ public class RAMAdapter extends ArrayAdapter {
         this.context = context;
     }
 
-    public void setData(List<RAMEntity> listItems)
+    public void setData(List<SystemRAMModel> listItems)
     {
-        List<RAMEntity> listWithRepeats = new LinkedList<>();
-
-        for (int i = 0; i < listItems.size(); i++) {
-            listWithRepeats.add(listItems.get(i));
-            listWithRepeats.add(listItems.get(i));
+        if (listItems != null)
+        {
+            List<SystemRAMModel> listWithRepeats = new LinkedList<>();
+            for (int i = 0; i < listItems.size(); i++) {
+                listWithRepeats.add(listItems.get(i));
+                listWithRepeats.add(listItems.get(i));
+            }
+            this.listItems = listWithRepeats;
+            clear();
+            addAll(this.listItems);
+            notifyDataSetChanged();
         }
-        this.listItems = listWithRepeats;
-        clear();
-        addAll(listWithRepeats);
-        notifyDataSetChanged();
     }
 
     @Override
@@ -58,9 +59,9 @@ public class RAMAdapter extends ArrayAdapter {
 
             imageView.setImageResource(R.drawable.ic_gpu);
             firstHeadingView.setText("Model");
-            firstValueView.setText(listItems.get(position).ModelName);
+            firstValueView.setText(listItems.get(position).getModelName());
             secondHeadingView.setText("Manufacturer");
-            secondValueView.setText(listItems.get(position).ManufacturerName);
+            secondValueView.setText(listItems.get(position).getManufacturerName());
         }
         else
         {
@@ -72,29 +73,11 @@ public class RAMAdapter extends ArrayAdapter {
 
             image.setImageResource(R.drawable.ic_memory_size);
             heading.setText("Size");
-            value.setText(formatBytes(listItems.get(position).MemoryBytes));
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+            value.setText(listItems.get(position).getMemoryBytesAsString(sp.getString("pref_general_ram_unit", context.getString(R.string.pref_general_storage_unit))));
         }
 
         return listItem;
     }
 
-    public String formatBytes(long bytes) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        String ramUnits = sp.getString("pref_general_ram_unit", context.getString(R.string.pref_general_storage_unit));
-        switch (ramUnits) {
-            case "TB":
-                bytes /= 1024;
-            case "GB":
-                bytes /= 1024;
-            case "MB":
-                bytes /= 1024;
-            case "KB":
-                bytes /= 1024;
-                break;
-            default:
-                return bytes + "B";
-        }
-
-        return bytes + " " + ramUnits;
-    }
 }

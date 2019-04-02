@@ -33,8 +33,7 @@ import uk.co.syski.client.android.viewmodel.SystemSummaryViewModel;
 public class SystemOverviewActivity extends AppCompatActivity {
 
     private static final String TAG = "SystemOverviewActivity";
-
-    SystemSummaryViewModel viewModel;
+    private SystemSummaryViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

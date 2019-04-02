@@ -61,10 +61,6 @@ public class APITokenRequest extends APIRequest<JSONObject> {
     protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
         try {
             JSONObject jsonObject = new JSONObject(new String(response.data, HttpHeaderParser.parseCharset(response.headers, PROTOCOL_CHARSET)));
-            if (mUUID.equals(UUID.fromString(jsonObject.getString("id"))))
-            {
-                return Response.error(new VolleyError());
-            }
             UserEntity userEntity = Repository.getInstance().getUserRepository().getUser();
             userEntity.AccessToken = jsonObject.getString("access_token");
             userEntity.RefreshToken = jsonObject.getString("refresh_token");

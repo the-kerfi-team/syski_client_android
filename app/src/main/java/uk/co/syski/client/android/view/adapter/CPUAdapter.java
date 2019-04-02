@@ -12,35 +12,34 @@ import java.util.LinkedList;
 import java.util.List;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.model.database.entity.CPUEntity;
+import uk.co.syski.client.android.model.viewmodel.SystemCPUModel;
 import uk.co.syski.client.android.model.fragment.DoubleHeadedValueModel;
 import uk.co.syski.client.android.model.fragment.HeadedValueModel;
 
 public class CPUAdapter extends ArrayAdapter {
 
     private final Activity context;
-    private List<CPUEntity> listItems;
+    private List<SystemCPUModel> listItems;
 
     public CPUAdapter(Activity context) {
         super(context, R.layout.activity_cpu);
         this.context = context;
     }
 
-
-    public void setData(List<CPUEntity> listItems)
+    public void setData(List<SystemCPUModel> listItems)
     {
-        List<CPUEntity> listWithRepeats = new LinkedList<>();
-        for (int i = 0; i < listItems.size(); i++) {
+       List<SystemCPUModel> listWithRepeats = new LinkedList<>();
+       for (int i = 0; i < listItems.size(); i++) {
             listWithRepeats.add(listItems.get(i));
             listWithRepeats.add(listItems.get(i));
             listWithRepeats.add(listItems.get(i));
             listWithRepeats.add(listItems.get(i));
             listWithRepeats.add(listItems.get(i));
-        }
-        this.listItems = listWithRepeats;
-        clear();
-        addAll(listWithRepeats);
-        notifyDataSetChanged();
+       }
+       this.listItems = listWithRepeats;
+       clear();
+       addAll(listWithRepeats);
+       notifyDataSetChanged();
     }
 
     @Override
@@ -51,33 +50,33 @@ public class CPUAdapter extends ArrayAdapter {
                 return getDoubleHeadedValue(inflater, new DoubleHeadedValueModel(
                         R.drawable.ic_cpu,
                         "Model",
-                        listItems.get(position).ModelName,
+                        listItems.get(position).getModelName(),
                         "Manufacturer",
-                        listItems.get(position).ManufacturerName
+                        listItems.get(position).getManufacturerName()
                 ));
             case 1:
                 return getHeadedValue(inflater, new HeadedValueModel(
                         R.drawable.ic_architecture,
                         "Architecture",
-                        listItems.get(position).ArchitectureName
+                        listItems.get(position).getArchitectureName()
                 ));
             case 2:
                 return getHeadedValue(inflater, new HeadedValueModel(
                         R.drawable.ic_clock,
                         "Clock Speed",
-                        Integer.toString(listItems.get(position).ClockSpeed)
+                        listItems.get(position).getClockSpeedAsString()
                 ));
             case 3:
                 return getHeadedValue(inflater, new HeadedValueModel(
                         R.drawable.ic_core,
                         "Core Count",
-                        Integer.toString(listItems.get(position).CoreCount)
+                        listItems.get(position).getCoreCountAsString()
                 ));
             case 4:
                 return getHeadedValue(inflater, new HeadedValueModel(
                         R.drawable.ic_thread,
                         "Thread Count",
-                        Integer.toString(listItems.get(position).ThreadCount)
+                        listItems.get(position).getThreadCountAsString()
                 ));
         }
 

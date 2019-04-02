@@ -20,6 +20,8 @@ import uk.co.syski.client.android.model.api.requests.APIAuthorizationRequest;
 import uk.co.syski.client.android.model.database.SyskiCache;
 import uk.co.syski.client.android.model.database.entity.CPUEntity;
 import uk.co.syski.client.android.model.database.entity.GPUEntity;
+import uk.co.syski.client.android.model.database.entity.linking.SystemCPUEntity;
+import uk.co.syski.client.android.model.database.entity.linking.SystemGPUEntity;
 import uk.co.syski.client.android.model.repository.Repository;
 
 public class APISystemGPURequest extends APIAuthorizationRequest<JSONArray> {
@@ -38,13 +40,14 @@ public class APISystemGPURequest extends APIAuthorizationRequest<JSONArray> {
             JSONArray jsonArray = new JSONArray(new String(response.data, HttpHeaderParser.parseCharset(response.headers, PROTOCOL_CHARSET)));
 
             List<GPUEntity> newGPUEntities = new LinkedList<>();
+            List<SystemGPUEntity> newSystemGPUEntities = new LinkedList<>();
             for (int i = 0; i < jsonArray.length(); i++) {
 
                 // Load from Database
                 //GPUEntity gpuEntity = SyskiCache.GetDatabase().GPUDao().get());
 
                 // Load from Repository (Using Cache)
-                GPUEntity gpuEntity = Repository.getInstance().getGPURepository().get(UUID.fromString(((JSONObject) jsonArray.get(i)).getString("id")));
+                GPUEntity gpuEntity = Repository.getInstance().getGPURepository().getGPU(UUID.fromString(((JSONObject) jsonArray.get(i)).getString("id")));
                 if (gpuEntity == null) {
                     gpuEntity = new GPUEntity();
                 }
@@ -52,8 +55,13 @@ public class APISystemGPURequest extends APIAuthorizationRequest<JSONArray> {
                 gpuEntity.ManufacturerName = ((JSONObject) jsonArray.get(i)).getString("manufacturerName");
                 gpuEntity.ModelName = ((JSONObject) jsonArray.get(i)).getString("modelName");
                 newGPUEntities.add(gpuEntity);
+
+                SystemGPUEntity systemGPUEntity = new SystemGPUEntity();
+                systemGPUEntity.SystemId = mSystemId;
+                systemGPUEntity.GPUId = gpuEntity.Id;
+                newSystemGPUEntities.add(systemGPUEntity);
             }
-            Repository.getInstance().getGPURepository().upsert(mSystemId, newGPUEntities);
+            Repository.getInstance().getGPURepository().upsert(mSystemId, newSystemGPUEntities, newGPUEntities);
 
             return Response.success(jsonArray, HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException | JSONException e) {
