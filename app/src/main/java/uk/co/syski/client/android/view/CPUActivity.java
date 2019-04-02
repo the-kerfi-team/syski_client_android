@@ -11,19 +11,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListView;
+import android.widget.ExpandableListView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.data.entity.CPUEntity;
 import uk.co.syski.client.android.data.entity.data.CPUDataEntity;
-import uk.co.syski.client.android.model.fragment.DoubleHeadedValueModel;
 import uk.co.syski.client.android.model.fragment.HeadedValueModel;
-import uk.co.syski.client.android.view.adapter.CPUAdapter;
+import uk.co.syski.client.android.view.adapter.expandablelistview.CPUAdapter;
 import uk.co.syski.client.android.view.fragment.HeadedValueFragment;
-import uk.co.syski.client.android.view.fragment.OverviewFragment;
 import uk.co.syski.client.android.view.graph.VariableCPULoadGraph;
 import uk.co.syski.client.android.view.graph.VariableCPUProcessesGraph;
 import uk.co.syski.client.android.viewmodel.SystemCPUDataViewModel;
@@ -78,7 +75,7 @@ public class CPUActivity extends AppCompatActivity {
     }
 
     private void updateStaticUI(List<CPUEntity> cpuEntities) {
-        ListView listView = findViewById(R.id.cpuList);
+        ExpandableListView listView = findViewById(R.id.cpuList);
         listView.setAdapter(new CPUAdapter(this, cpuEntities));
     }
 

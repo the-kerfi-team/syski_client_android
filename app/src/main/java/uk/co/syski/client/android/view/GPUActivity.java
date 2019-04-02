@@ -9,10 +9,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +17,7 @@ import java.util.List;
 import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.data.entity.GPUEntity;
 import uk.co.syski.client.android.model.fragment.DoubleHeadedValueModel;
-import uk.co.syski.client.android.view.adapter.DoubleHeadedValueListAdapter;
-import uk.co.syski.client.android.view.fragment.DoubleHeadedValueFragment;
+import uk.co.syski.client.android.view.adapter.listview.DoubleHeadedValueListAdapter;
 import uk.co.syski.client.android.viewmodel.SystemGPUViewModel;
 
 public class GPUActivity extends AppCompatActivity {

@@ -1,4 +1,4 @@
-package uk.co.syski.client.android.view.adapter;
+package uk.co.syski.client.android.view.adapter.listview;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
