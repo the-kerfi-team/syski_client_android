@@ -13,18 +13,16 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,8 +31,7 @@ import uk.co.syski.client.android.api.APIThread;
 import uk.co.syski.client.android.data.SyskiCache;
 import uk.co.syski.client.android.data.entity.SystemEntity;
 import uk.co.syski.client.android.data.repository.Repository;
-import uk.co.syski.client.android.model.fragment.HeadedValueModel;
-import uk.co.syski.client.android.view.adapter.HeadedValueListAdapter;
+import uk.co.syski.client.android.view.adapter.recyclerview.SystemListAdapter;
 import uk.co.syski.client.android.viewmodel.SystemListViewModel;
 
 public class SystemListMenu extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -74,26 +71,18 @@ public class SystemListMenu extends AppCompatActivity implements NavigationView.
     }
 
     private void setupList(final List<SystemEntity> systemEntities) {
-        ArrayList<HeadedValueModel> listItems = new ArrayList<>();
-        for (int i = 0; i < systemEntities.size(); i++)
-            listItems.add(new HeadedValueModel(R.drawable.ic_pc, "View details for", systemEntities.get(i).HostName));
+        RecyclerView listView = findViewById(R.id.sysList);
+        listView.setAdapter(new SystemListAdapter(this, systemEntities));
+        listView.setLayoutManager(new GridLayoutManager(this, 1));
 
-        ListView listView = findViewById(R.id.sysList);
-        listView.setAdapter(new HeadedValueListAdapter(this, listItems));
-
+/*
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 openSystemOverview(systemEntities.get(position).Id.toString());
             }
         });
-    }
-
-    private void openSystemOverview(String systemId) {
-        Intent intent = new Intent(SystemListMenu.this,SystemOverviewActivity.class);
-        prefEditor.putString(getString(R.string.preference_sysID_key),systemId);
-        prefEditor.apply();
-        startActivity(intent);
+*/
     }
 
     @Override

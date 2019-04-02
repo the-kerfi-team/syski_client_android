@@ -3,15 +3,15 @@ package uk.co.syski.client.android.view;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListView;
+import android.widget.ExpandableListView;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.data.entity.RAMEntity;
 import uk.co.syski.client.android.data.entity.data.RAMDataEntity;
 import uk.co.syski.client.android.model.fragment.HeadedValueModel;
-import uk.co.syski.client.android.view.adapter.RAMAdapter;
+import uk.co.syski.client.android.view.adapter.expandablelistview.RAMAdapter;
 import uk.co.syski.client.android.view.fragment.HeadedValueFragment;
 import uk.co.syski.client.android.view.graph.VariableRAMGraph;
 import uk.co.syski.client.android.viewmodel.SystemRAMDataViewModel;
@@ -59,7 +59,7 @@ public class RAMActivity extends AppCompatActivity {
     }
 
     private void updateStaticUI(List<RAMEntity> ramEntities) {
-        ListView listView = findViewById(R.id.listView);
+        ExpandableListView listView = findViewById(R.id.listView);
         listView.setAdapter(new RAMAdapter(this, ramEntities));
     }
 
