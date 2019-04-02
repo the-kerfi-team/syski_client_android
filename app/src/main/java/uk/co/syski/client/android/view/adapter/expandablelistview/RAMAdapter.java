@@ -125,7 +125,7 @@ public class RAMAdapter extends BaseExpandableListAdapter {
                 bytes /= 1024;
                 break;
             default:
-                return bytes + "B";
+                return bytes + " B";
         }
 
         return bytes + " " + ramUnits;

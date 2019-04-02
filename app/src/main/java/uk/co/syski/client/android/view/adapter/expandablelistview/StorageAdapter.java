@@ -125,7 +125,7 @@ public class StorageAdapter extends BaseExpandableListAdapter {
                 bytes /= 1000;
                 break;
             default:
-                return bytes + "B";
+                return bytes + " B";
         }
 
         return bytes + " " + storageUnits;
