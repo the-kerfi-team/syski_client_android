@@ -34,22 +34,21 @@ import java.util.List;
 import java.util.UUID;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.api.APIThread;
-import uk.co.syski.client.android.api.VolleySingleton;
-import uk.co.syski.client.android.api.requests.APIRequest;
-import uk.co.syski.client.android.api.requests.auth.APILoginRequest;
-import uk.co.syski.client.android.api.requests.auth.APIRegisterRequest;
-import uk.co.syski.client.android.data.SyskiCache;
-import uk.co.syski.client.android.data.entity.CPUEntity;
-import uk.co.syski.client.android.data.entity.GPUEntity;
-import uk.co.syski.client.android.data.entity.RAMEntity;
-import uk.co.syski.client.android.data.entity.StorageEntity;
-import uk.co.syski.client.android.data.entity.SystemEntity;
-import uk.co.syski.client.android.data.entity.linking.SystemCPUEntity;
-import uk.co.syski.client.android.data.entity.linking.SystemGPUEntity;
-import uk.co.syski.client.android.data.entity.linking.SystemRAMEntity;
-import uk.co.syski.client.android.data.entity.linking.SystemStorageEntity;
-import uk.co.syski.client.android.data.repository.Repository;
+import uk.co.syski.client.android.model.api.VolleySingleton;
+import uk.co.syski.client.android.model.api.requests.APIRequest;
+import uk.co.syski.client.android.model.api.requests.auth.APILoginRequest;
+import uk.co.syski.client.android.model.api.requests.auth.APIRegisterRequest;
+import uk.co.syski.client.android.model.database.SyskiCache;
+import uk.co.syski.client.android.model.database.entity.CPUEntity;
+import uk.co.syski.client.android.model.database.entity.GPUEntity;
+import uk.co.syski.client.android.model.database.entity.RAMEntity;
+import uk.co.syski.client.android.model.database.entity.StorageEntity;
+import uk.co.syski.client.android.model.database.entity.SystemEntity;
+import uk.co.syski.client.android.model.database.entity.linking.SystemCPUEntity;
+import uk.co.syski.client.android.model.database.entity.linking.SystemGPUEntity;
+import uk.co.syski.client.android.model.database.entity.linking.SystemRAMEntity;
+import uk.co.syski.client.android.model.database.entity.linking.SystemStorageEntity;
+import uk.co.syski.client.android.model.repository.Repository;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -67,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
         if (userId != null)
         {
             Repository.getInstance().getUserRepository().setActiveUserId(UUID.fromString(userId));
-            APIThread.getInstance(getApplicationContext()).enable();
             startActivity(new Intent(this, SystemListMenu.class));
             finish();
         }
@@ -217,7 +215,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         protected void RequestSuccessful(JSONObject response) {
-            APIThread.getInstance(getContext()).enable();
             startActivity(new Intent(getActivity(), SystemListMenu.class));
             getActivity().finish();
         }
@@ -423,5 +420,6 @@ public class MainActivity extends AppCompatActivity {
         public int getCount() {
             return mFragmentList.size();
         }
+
     }
 }

@@ -15,9 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.model.fragment.HeadedValueModel;
-import uk.co.syski.client.android.model.OperatingSystemModel;
+import uk.co.syski.client.android.model.viewmodel.OperatingSystemModel;
 import uk.co.syski.client.android.view.adapter.listview.HeadedValueListAdapter;
+import uk.co.syski.client.android.view.model.HeadedValueModel;
 import uk.co.syski.client.android.viewmodel.OperatingSystemViewModel;
 
 public class SystemOSActivity extends AppCompatActivity {
@@ -31,7 +31,7 @@ public class SystemOSActivity extends AppCompatActivity {
         viewModel.get().observe(this, new Observer<List<OperatingSystemModel>>() {
             @Override
             public void onChanged(@Nullable List<OperatingSystemModel> osEntities) {
-                if (osEntities.size() > 0) {
+                if (osEntities != null && osEntities.size() > 0) {
                     updateStaticUI(osEntities.get(0));
                 }
             }
@@ -44,17 +44,17 @@ public class SystemOSActivity extends AppCompatActivity {
         osData.add(new HeadedValueModel(
             R.drawable.ic_pc,
             "Name",
-            operatingSystemModel.Name
+            operatingSystemModel.getName()
         ));
         osData.add(new HeadedValueModel(
             R.drawable.ic_architecture,
             "Architecture",
-            operatingSystemModel.ArchitectureName
+            operatingSystemModel.getArchitectureName()
         ));
         osData.add(new HeadedValueModel(
             R.drawable.ic_version,
             "Version",
-            operatingSystemModel.Version
+            operatingSystemModel.getVersion()
         ));
 
         ListView listView = findViewById(R.id.listView);

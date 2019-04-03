@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.model.fragment.HeadedValueModel;
+import uk.co.syski.client.android.view.model.HeadedValueModel;
 
 public class HeadedValueFragment extends Fragment {
 

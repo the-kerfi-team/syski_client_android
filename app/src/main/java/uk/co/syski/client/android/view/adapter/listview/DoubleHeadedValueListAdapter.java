@@ -11,23 +11,29 @@ import android.widget.TextView;
 import java.util.List;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.model.fragment.DoubleHeadedValueModel;
-import uk.co.syski.client.android.model.fragment.HeadedValueModel;
+import uk.co.syski.client.android.view.model.DoubleHeadedValueModel;
 
 public class DoubleHeadedValueListAdapter extends ArrayAdapter {
 
     private final Activity context;
-    private final List<DoubleHeadedValueModel> listItems;
+    private List<DoubleHeadedValueModel> listItems;
 
     ImageView imageView;
     TextView firstHeadingView, firstValueView, secondHeadingView, secondValueView;
 
     View view;
 
-    public DoubleHeadedValueListAdapter(Activity context, List<DoubleHeadedValueModel> listItems) {
-        super(context, R.layout.fragment_overview, listItems);
+    public DoubleHeadedValueListAdapter(Activity context) {
+        super(context, R.layout.fragment_overview);
         this.context = context;
+    }
+
+    public void setData(List<DoubleHeadedValueModel> listItems)
+    {
         this.listItems = listItems;
+        clear();
+        addAll(listItems);
+        notifyDataSetChanged();
     }
 
     @Override

@@ -8,24 +8,30 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.data.entity.CPUEntity;
+import uk.co.syski.client.android.model.viewmodel.SystemCPUModel;
 
 public class CPUAdapter extends BaseExpandableListAdapter {
 
     private Activity context;
-    private List<CPUEntity> cpuEntities;
+    private List<SystemCPUModel> cpuModelEntities;
 
-    public CPUAdapter(Activity context, List<CPUEntity> cpuEntities) {
+    public CPUAdapter(Activity context) {
         this.context = context;
-        this.cpuEntities = cpuEntities;
+        this.cpuModelEntities = new LinkedList<>();
+    }
+
+    public void setData(List<SystemCPUModel> cpuModelEntities) {
+        this.cpuModelEntities = cpuModelEntities;
+        notifyDataSetChanged();
     }
 
     @Override
     public int getGroupCount() {
-        return cpuEntities.size();
+        return cpuModelEntities.size();
     }
 
     @Override
@@ -35,12 +41,12 @@ public class CPUAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getGroup(int groupPosition) {
-        return cpuEntities.get(groupPosition);
+        return cpuModelEntities.get(groupPosition);
     }
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return cpuEntities.get(groupPosition);
+        return cpuModelEntities.get(groupPosition);
     }
 
     @Override
@@ -70,9 +76,9 @@ public class CPUAdapter extends BaseExpandableListAdapter {
 
         imageView.setImageResource(R.drawable.ic_cpu);
         firstHeadingView.setText("Model");
-        firstValueView.setText(cpuEntities.get(groupPosition).ModelName);
+        firstValueView.setText(cpuModelEntities.get(groupPosition).getModelName());
         secondHeadingView.setText("Manufacturer");
-        secondValueView.setText(cpuEntities.get(groupPosition).ManufacturerName);
+        secondValueView.setText(cpuModelEntities.get(groupPosition).getManufacturerName());
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,22 +107,22 @@ public class CPUAdapter extends BaseExpandableListAdapter {
             case 0:
                 imageView.setImageResource(R.drawable.ic_architecture);
                 headingView.setText("Architecture");
-                valueView.setText(cpuEntities.get(groupPosition).ArchitectureName);
+                valueView.setText(cpuModelEntities.get(groupPosition).getArchitectureName());
                 break;
             case 1:
                 imageView.setImageResource(R.drawable.ic_clock);
                 headingView.setText("Clock Speed");
-                valueView.setText(Integer.toString(cpuEntities.get(groupPosition).ClockSpeed));
+                valueView.setText(cpuModelEntities.get(groupPosition).getClockSpeedAsString());
                 break;
             case 2:
                 imageView.setImageResource(R.drawable.ic_core);
                 headingView.setText("Core Count");
-                valueView.setText(Integer.toString(cpuEntities.get(groupPosition).CoreCount));
+                valueView.setText(cpuModelEntities.get(groupPosition).getCoreCountAsString());
                 break;
             case 3:
                 imageView.setImageResource(R.drawable.ic_thread);
                 headingView.setText("Thread Count");
-                valueView.setText(Integer.toString(cpuEntities.get(groupPosition).ThreadCount));
+                valueView.setText(cpuModelEntities.get(groupPosition).getThreadCountAsString());
                 break;
         }
 

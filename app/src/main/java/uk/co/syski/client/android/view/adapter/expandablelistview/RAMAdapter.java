@@ -10,24 +10,30 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.data.entity.RAMEntity;
+import uk.co.syski.client.android.model.viewmodel.SystemRAMModel;
 
 public class RAMAdapter extends BaseExpandableListAdapter {
 
     private Activity context;
-    private List<RAMEntity> ramEntities;
+    private List<SystemRAMModel> ramModelEntities;
 
-    public RAMAdapter(Activity context, List<RAMEntity> ramEntities) {
+    public RAMAdapter(Activity context) {
         this.context = context;
-        this.ramEntities = ramEntities;
+        this.ramModelEntities = new LinkedList<>();
+    }
+
+    public void setData(List<SystemRAMModel> ramModelEntities) {
+        this.ramModelEntities = ramModelEntities;
+        notifyDataSetChanged();
     }
 
     @Override
     public int getGroupCount() {
-        return ramEntities.size();
+        return ramModelEntities.size();
     }
 
     @Override
@@ -37,12 +43,12 @@ public class RAMAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getGroup(int groupPosition) {
-        return ramEntities.get(groupPosition);
+        return ramModelEntities.get(groupPosition);
     }
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return ramEntities.get(groupPosition);
+        return ramModelEntities.get(groupPosition);
     }
 
     @Override
@@ -72,9 +78,9 @@ public class RAMAdapter extends BaseExpandableListAdapter {
 
         imageView.setImageResource(R.drawable.ic_cpu);
         firstHeadingView.setText("Model");
-        firstValueView.setText(ramEntities.get(groupPosition).ModelName);
+        firstValueView.setText(ramModelEntities.get(groupPosition).getModelName());
         secondHeadingView.setText("Manufacturer");
-        secondValueView.setText(ramEntities.get(groupPosition).ManufacturerName);
+        secondValueView.setText(ramModelEntities.get(groupPosition).getManufacturerName());
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,7 +107,8 @@ public class RAMAdapter extends BaseExpandableListAdapter {
 
         imageView.setImageResource(R.drawable.ic_memory_size);
         headingView.setText("Size");
-        valueView.setText(formatBytes(ramEntities.get(groupPosition).MemoryBytes));
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        valueView.setText(ramModelEntities.get(groupPosition).getMemoryBytesAsString(sp.getString("pref_general_ram_unit", context.getString(R.string.pref_general_storage_unit))));
 
         return convertView;
     }
@@ -111,23 +118,4 @@ public class RAMAdapter extends BaseExpandableListAdapter {
         return false;
     }
 
-    public String formatBytes(long bytes) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        String ramUnits = sp.getString("pref_general_ram_unit", context.getString(R.string.pref_general_storage_unit));
-        switch (ramUnits) {
-            case "TB":
-                bytes /= 1024;
-            case "GB":
-                bytes /= 1024;
-            case "MB":
-                bytes /= 1024;
-            case "KB":
-                bytes /= 1024;
-                break;
-            default:
-                return bytes + " B";
-        }
-
-        return bytes + " " + ramUnits;
-    }
 }

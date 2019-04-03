@@ -10,13 +10,13 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import uk.co.syski.client.android.model.fragment.HeadedValueModel;
 import uk.co.syski.client.android.R;
+import uk.co.syski.client.android.view.model.HeadedValueModel;
 
 public class HeadedValueListAdapter extends ArrayAdapter {
 
     private final Activity context;
-    private final List<HeadedValueModel> listItems;
+    private List<HeadedValueModel> listItems;
 
     ImageView image;
     TextView heading, value;
@@ -26,6 +26,14 @@ public class HeadedValueListAdapter extends ArrayAdapter {
         super(context, R.layout.fragment_overview, listItems);
         this.context = context;
         this.listItems = listItems;
+    }
+
+    public void setData(List<HeadedValueModel> listItems)
+    {
+        this.listItems = listItems;
+        clear();
+        addAll(listItems);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -46,4 +54,5 @@ public class HeadedValueListAdapter extends ArrayAdapter {
         heading = listView.findViewById(R.id.headingView);
         value = listView.findViewById(R.id.valueView);
     }
+
 }
