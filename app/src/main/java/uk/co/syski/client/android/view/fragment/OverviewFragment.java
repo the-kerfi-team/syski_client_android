@@ -10,9 +10,9 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.model.fragment.DoubleHeadedValueModel;
-import uk.co.syski.client.android.model.fragment.HeadedValueModel;
 import uk.co.syski.client.android.view.adapter.listview.HeadedValueListAdapter;
+import uk.co.syski.client.android.view.model.DoubleHeadedValueModel;
+import uk.co.syski.client.android.view.model.HeadedValueModel;
 
 
 /**

@@ -14,7 +14,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.data.entity.SystemEntity;
+import uk.co.syski.client.android.model.database.entity.SystemEntity;
 import uk.co.syski.client.android.view.SystemOverviewActivity;
 
 public class SystemListAdapter extends RecyclerView.Adapter<SystemListAdapter.SystemViewHolder> {
@@ -26,12 +26,16 @@ public class SystemListAdapter extends RecyclerView.Adapter<SystemListAdapter.Sy
 
     Activity context;
 
-    public SystemListAdapter(Activity context, List<SystemEntity> listItems) {
-        systemEntities = listItems;
+    public SystemListAdapter(Activity context) {
         this.context = context;
-
         prefs = context.getSharedPreferences(context.getString(R.string.preference_sysID_key), Context.MODE_PRIVATE);
         prefEditor = prefs.edit();
+    }
+
+    public void setData(List<SystemEntity> systemEntities)
+    {
+        this.systemEntities = systemEntities;
+        notifyDataSetChanged();
     }
 
     public static class SystemViewHolder extends RecyclerView.ViewHolder {

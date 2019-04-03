@@ -18,13 +18,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.data.entity.SystemEntity;
-
-import uk.co.syski.client.android.model.fragment.DoubleHeadedValueModel;
-import uk.co.syski.client.android.model.fragment.HeadedValueModel;
+import uk.co.syski.client.android.model.database.entity.SystemEntity;
 import uk.co.syski.client.android.view.adapter.listview.HeadedValueListAdapter;
 import uk.co.syski.client.android.view.fragment.HeadedValueFragment;
 import uk.co.syski.client.android.view.fragment.OverviewFragment;
+import uk.co.syski.client.android.view.model.DoubleHeadedValueModel;
+import uk.co.syski.client.android.view.model.HeadedValueModel;
 import uk.co.syski.client.android.viewmodel.SystemSummaryViewModel;
 
 public class SystemOverviewActivity extends AppCompatActivity {
@@ -94,7 +93,7 @@ public class SystemOverviewActivity extends AppCompatActivity {
         );
 
         OverviewFragment overviewFragment = OverviewFragment.newInstance(
-            new DoubleHeadedValueModel (
+            new DoubleHeadedValueModel(
                 R.drawable.ic_pc,
                 "Model",
                 systemEntity.ModelName,

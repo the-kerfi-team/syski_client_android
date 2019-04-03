@@ -8,6 +8,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
@@ -16,6 +18,7 @@ import uk.co.syski.client.android.model.api.requests.system.APISystemsRequest;
 import uk.co.syski.client.android.model.database.SyskiCache;
 import uk.co.syski.client.android.model.database.dao.SystemDao;
 import uk.co.syski.client.android.model.database.entity.SystemEntity;
+import uk.co.syski.client.android.model.viewmodel.SystemRAMModel;
 
 public enum SystemRepository {
     INSTANCE;
@@ -58,10 +61,15 @@ public enum SystemRepository {
         VolleySingleton.getInstance(context).addToRequestQueue(new APISystemsRequest(context));
     }
 
-    public LiveData<HashMap<UUID, SystemEntity>> getSystemsLiveData(Context context)
+    public LiveData<List<SystemEntity>> getSystemsLiveData(Context context)
     {
         loadFromAPI(context);
-        return mLiveDataSystemEntities;
+        return Transformations.map(mLiveDataSystemEntities, new Function<HashMap<UUID, SystemEntity>, List<SystemEntity>>() {
+            @Override
+            public List<SystemEntity> apply(HashMap<UUID, SystemEntity> input) {
+                return new LinkedList<>(input.values());
+            }
+        });
     }
 
     public LiveData<SystemEntity> getSystemLiveData(final UUID systemId, Context context)

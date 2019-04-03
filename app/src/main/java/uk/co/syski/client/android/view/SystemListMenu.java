@@ -18,20 +18,28 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.api.APIThread;
-import uk.co.syski.client.android.data.SyskiCache;
-import uk.co.syski.client.android.data.entity.SystemEntity;
-import uk.co.syski.client.android.data.repository.Repository;
+import uk.co.syski.client.android.model.database.SyskiCache;
+import uk.co.syski.client.android.model.database.entity.SystemEntity;
+import uk.co.syski.client.android.model.repository.Repository;
+import uk.co.syski.client.android.view.adapter.listview.HeadedValueListAdapter;
 import uk.co.syski.client.android.view.adapter.recyclerview.SystemListAdapter;
+import uk.co.syski.client.android.view.model.HeadedValueModel;
+import uk.co.syski.client.android.viewmodel.OperatingSystemViewModel;
 import uk.co.syski.client.android.viewmodel.SystemListViewModel;
 
 public class SystemListMenu extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -64,23 +72,30 @@ public class SystemListMenu extends AppCompatActivity implements NavigationView.
         prefEditor = prefs.edit();
 
         // Setup ListView
-        final ListView listView = findViewById(R.id.sysList);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        RecyclerView listView = findViewById(R.id.sysList);
+        listView.setLayoutManager(new GridLayoutManager(this, 1));
+        final SystemListAdapter adapter = new SystemListAdapter(this);
+        listView.setAdapter(adapter);
+        viewModel = ViewModelProviders.of(this).get(SystemListViewModel.class);
+        viewModel.get().observe(this, new Observer<List<SystemEntity>>() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (systemEntityList != null)
-                {
-                    openSystemOverview(systemEntityList.get(position).Id.toString());
-                }
+            public void onChanged(@Nullable List<SystemEntity> systemEntities) {
+                adapter.setData(systemEntities);
             }
         });
-        final HeadedValueListAdapter adapter = new HeadedValueListAdapter(this, new LinkedList<HeadedValueModel>());
-        listView.setAdapter(adapter);
+
+
+    }
+
+    private void openSystemOverview(String systemId) {
+        Intent intent = new Intent(SystemListMenu.this, SystemOverviewActivity.class);
+        prefEditor.putString(getString(R.string.preference_sysID_key), systemId);
+        prefEditor.apply();
+        startActivity(intent);
+    }
 
     private void setupList(final List<SystemEntity> systemEntities) {
-        RecyclerView listView = findViewById(R.id.sysList);
-        listView.setAdapter(new SystemListAdapter(this, systemEntities));
-        listView.setLayoutManager(new GridLayoutManager(this, 1));
+
 
 /*
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -191,15 +206,14 @@ public class SystemListMenu extends AppCompatActivity implements NavigationView.
                     boolean systemFound = false;
                     UUID systemId = UUID.fromString(result.getContents());
 
-                    SystemListViewModel model = ViewModelProviders.of(this).get(SystemListViewModel.class);
 
                     //Checks if system exists
-                    List<SystemEntity> sys = model.get().getValue();
-                    for(SystemEntity system : sys){
-                        if(system.Id.equals(systemId)){
-                            systemFound = true;
-                        }
-                    }
+                    //SystemEntity sys = null
+
+
+                  //  if(sys != null){
+                   //     systemFound = true;
+                  //  }
 
                     if (systemFound) {
                         Intent intent = new Intent(this, SystemOverviewActivity.class);

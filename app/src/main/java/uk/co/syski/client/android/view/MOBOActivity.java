@@ -13,14 +13,13 @@ import android.view.MenuItem;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.model.database.entity.MotherboardEntity;
-import uk.co.syski.client.android.model.fragment.DoubleHeadedValueModel;
-import uk.co.syski.client.android.model.fragment.HeadedValueModel;
+import uk.co.syski.client.android.model.viewmodel.SystemMotherboardModel;
 import uk.co.syski.client.android.view.adapter.listview.HeadedValueListAdapter;
 import uk.co.syski.client.android.view.fragment.DoubleHeadedValueFragment;
+import uk.co.syski.client.android.view.model.DoubleHeadedValueModel;
+import uk.co.syski.client.android.view.model.HeadedValueModel;
 import uk.co.syski.client.android.viewmodel.MotherboardViewModel;
 
 public class MOBOActivity extends AppCompatActivity {
@@ -55,7 +54,6 @@ public class MOBOActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.topFragment, topFragment).commit();
 
         ArrayList<HeadedValueModel> motherboardData = new ArrayList<>();
-
         motherboardData.add(
             new HeadedValueModel(
                 R.drawable.ic_version,

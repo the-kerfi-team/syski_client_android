@@ -11,8 +11,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.model.fragment.DoubleHeadedValueModel;
-import uk.co.syski.client.android.model.fragment.HeadedValueModel;
+import uk.co.syski.client.android.view.model.DoubleHeadedValueModel;
 
 public class DoubleHeadedValueListAdapter extends ArrayAdapter {
 

@@ -1,4 +1,4 @@
-package uk.co.syski.client.android.model.fragment;
+package uk.co.syski.client.android.view.model;
 
 public class DoubleHeadedValueModel {
     public final Integer image;

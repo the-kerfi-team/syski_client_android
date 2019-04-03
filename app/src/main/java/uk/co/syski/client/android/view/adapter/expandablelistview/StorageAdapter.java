@@ -10,24 +10,32 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.data.entity.StorageEntity;
+import uk.co.syski.client.android.model.database.entity.StorageEntity;
+import uk.co.syski.client.android.model.viewmodel.SystemRAMModel;
+import uk.co.syski.client.android.model.viewmodel.SystemStorageModel;
 
 public class StorageAdapter extends BaseExpandableListAdapter {
 
     private Activity context;
-    private List<StorageEntity> StorageEntities;
+    private List<SystemStorageModel> storageModelEntities;
 
-    public StorageAdapter(Activity context, List<StorageEntity> StorageEntities) {
+    public StorageAdapter(Activity context) {
         this.context = context;
-        this.StorageEntities = StorageEntities;
+        this.storageModelEntities = new LinkedList<>();
+    }
+
+    public void setData(List<SystemStorageModel> storageModelEntities) {
+        this.storageModelEntities = storageModelEntities;
+        notifyDataSetChanged();
     }
 
     @Override
     public int getGroupCount() {
-        return StorageEntities.size();
+        return storageModelEntities.size();
     }
 
     @Override
@@ -37,12 +45,12 @@ public class StorageAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getGroup(int groupPosition) {
-        return StorageEntities.get(groupPosition);
+        return storageModelEntities.get(groupPosition);
     }
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return StorageEntities.get(groupPosition);
+        return storageModelEntities.get(groupPosition);
     }
 
     @Override
@@ -72,9 +80,9 @@ public class StorageAdapter extends BaseExpandableListAdapter {
 
         imageView.setImageResource(R.drawable.ic_storage);
         firstHeadingView.setText("Model");
-        firstValueView.setText(StorageEntities.get(groupPosition).ModelName);
+        firstValueView.setText(storageModelEntities.get(groupPosition).getModelName());
         secondHeadingView.setText("Manufacturer");
-        secondValueView.setText(StorageEntities.get(groupPosition).ManufacturerName);
+        secondValueView.setText(storageModelEntities.get(groupPosition).getManufacturerName());
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,7 +109,8 @@ public class StorageAdapter extends BaseExpandableListAdapter {
 
         imageView.setImageResource(R.drawable.ic_memory_size);
         headingView.setText("Size");
-        valueView.setText(formatBytes(StorageEntities.get(groupPosition).MemoryBytes));
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        valueView.setText(storageModelEntities.get(groupPosition).getMemoryBytesAsString(sp.getString("pref_general_storage_unit", context.getString(R.string.pref_general_storage_unit))));
 
         return convertView;
     }
@@ -111,23 +120,4 @@ public class StorageAdapter extends BaseExpandableListAdapter {
         return false;
     }
 
-    public String formatBytes(long bytes) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        String storageUnits = sp.getString("pref_general_storage_unit", context.getString(R.string.pref_general_storage_unit));
-        switch (storageUnits) {
-            case "TB":
-                bytes /= 1000;
-            case "GB":
-                bytes /= 1000;
-            case "MB":
-                bytes /= 1000;
-            case "KB":
-                bytes /= 1000;
-                break;
-            default:
-                return bytes + " B";
-        }
-
-        return bytes + " " + storageUnits;
-    }
 }

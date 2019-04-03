@@ -12,17 +12,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
+import android.widget.ListView;
 
 import java.util.List;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.data.entity.CPUEntity;
-import uk.co.syski.client.android.data.entity.data.CPUDataEntity;
-import uk.co.syski.client.android.model.fragment.HeadedValueModel;
+import uk.co.syski.client.android.model.database.entity.CPUEntity;
+import uk.co.syski.client.android.model.database.entity.data.CPUDataEntity;
+import uk.co.syski.client.android.model.viewmodel.SystemCPUModel;
 import uk.co.syski.client.android.view.adapter.expandablelistview.CPUAdapter;
 import uk.co.syski.client.android.view.fragment.HeadedValueFragment;
 import uk.co.syski.client.android.view.graph.VariableCPULoadGraph;
 import uk.co.syski.client.android.view.graph.VariableCPUProcessesGraph;
+import uk.co.syski.client.android.view.model.HeadedValueModel;
 import uk.co.syski.client.android.viewmodel.SystemCPUDataViewModel;
 import uk.co.syski.client.android.viewmodel.SystemCPUViewModel;
 
@@ -36,7 +38,7 @@ public class CPUActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cpu);
 
         final CPUAdapter cpuAdapter = new CPUAdapter(this);
-        ((ListView) findViewById(R.id.cpuList)).setAdapter(cpuAdapter);
+        ((ExpandableListView) findViewById(R.id.cpuList)).setAdapter(cpuAdapter);
 
         SystemCPUViewModel viewModel = ViewModelProviders.of(this).get(SystemCPUViewModel.class);
         viewModel.get().observe(this, new Observer<List<SystemCPUModel>>() {
@@ -73,11 +75,6 @@ public class CPUActivity extends AppCompatActivity {
                 startActivity(cpuGraph);
             }
         });
-    }
-
-    private void updateStaticUI(List<CPUEntity> cpuEntities) {
-        ExpandableListView listView = findViewById(R.id.cpuList);
-        listView.setAdapter(new CPUAdapter(this, cpuEntities));
     }
 
     private void updateRealTimeUI(CPUDataEntity cpuDataEntity) {
