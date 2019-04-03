@@ -17,7 +17,7 @@ import java.util.List;
 import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.model.viewmodel.SystemGPUModel;
 import uk.co.syski.client.android.model.fragment.DoubleHeadedValueModel;
-import uk.co.syski.client.android.view.adapter.DoubleHeadedValueListAdapter;
+import uk.co.syski.client.android.view.adapter.listview.DoubleHeadedValueListAdapter;
 import uk.co.syski.client.android.viewmodel.SystemGPUViewModel;
 
 public class GPUActivity extends AppCompatActivity {

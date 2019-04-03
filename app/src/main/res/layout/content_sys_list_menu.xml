@@ -8,7 +8,7 @@
     tools:context="uk.co.syski.client.android.view.SystemListMenu"
     tools:showIn="@layout/app_bar_sys_list_menu">
 
-    <ListView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/sysList"
         android:layout_width="0dp"
         android:layout_height="0dp"

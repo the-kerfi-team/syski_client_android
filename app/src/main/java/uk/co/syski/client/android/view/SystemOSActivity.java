@@ -17,7 +17,8 @@ import java.util.List;
 import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.model.viewmodel.OperatingSystemModel;
 import uk.co.syski.client.android.model.fragment.HeadedValueModel;
-import uk.co.syski.client.android.view.adapter.HeadedValueListAdapter;
+import uk.co.syski.client.android.model.OperatingSystemModel;
+import uk.co.syski.client.android.view.adapter.listview.HeadedValueListAdapter;
 import uk.co.syski.client.android.viewmodel.OperatingSystemViewModel;
 
 public class SystemOSActivity extends AppCompatActivity {

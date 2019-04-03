@@ -11,7 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListView;
+import android.widget.ExpandableListView;
 
 import java.util.List;
 
@@ -20,8 +20,7 @@ import uk.co.syski.client.android.model.database.entity.StorageEntity;
 import uk.co.syski.client.android.model.database.entity.data.StorageDataEntity;
 import uk.co.syski.client.android.model.fragment.DoubleHeadedValueModel;
 import uk.co.syski.client.android.model.fragment.HeadedValueModel;
-import uk.co.syski.client.android.model.viewmodel.SystemStorageModel;
-import uk.co.syski.client.android.view.adapter.StorageAdapter;
+import uk.co.syski.client.android.view.adapter.expandablelistview.StorageAdapter;
 import uk.co.syski.client.android.view.fragment.DoubleHeadedValueFragment;
 import uk.co.syski.client.android.view.fragment.HeadedValueFragment;
 import uk.co.syski.client.android.view.graph.VariableStorageByteReadWriteGraph;
@@ -92,6 +91,11 @@ public class SystemStorageActivity extends AppCompatActivity {
                 startActivity(byteReadsWritesGraph);
             }
         });
+    }
+
+    private void updateStaticUI(List<StorageEntity> StorageEntities) {
+        ExpandableListView listView = findViewById(R.id.listView);
+        listView.setAdapter(new StorageAdapter(this, StorageEntities));
     }
 
     private void updateRealTimeUI(StorageDataEntity StorageDataEntity) {

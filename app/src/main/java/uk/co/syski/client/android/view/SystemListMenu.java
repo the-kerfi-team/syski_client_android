@@ -13,30 +13,25 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
 import uk.co.syski.client.android.R;
-
-import uk.co.syski.client.android.model.database.SyskiCache;
-import uk.co.syski.client.android.model.database.entity.SystemEntity;
-import uk.co.syski.client.android.model.fragment.HeadedValueModel;
-import uk.co.syski.client.android.model.repository.Repository;
-import uk.co.syski.client.android.view.adapter.HeadedValueListAdapter;
+import uk.co.syski.client.android.api.APIThread;
+import uk.co.syski.client.android.data.SyskiCache;
+import uk.co.syski.client.android.data.entity.SystemEntity;
+import uk.co.syski.client.android.data.repository.Repository;
+import uk.co.syski.client.android.view.adapter.recyclerview.SystemListAdapter;
 import uk.co.syski.client.android.viewmodel.SystemListViewModel;
 
 public class SystemListMenu extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -82,9 +77,13 @@ public class SystemListMenu extends AppCompatActivity implements NavigationView.
         final HeadedValueListAdapter adapter = new HeadedValueListAdapter(this, new LinkedList<HeadedValueModel>());
         listView.setAdapter(adapter);
 
-        //Setup List.
-        viewModel = ViewModelProviders.of(this).get(SystemListViewModel.class);
-        viewModel.get().observe(this, new Observer<HashMap<UUID, SystemEntity>>() {
+    private void setupList(final List<SystemEntity> systemEntities) {
+        RecyclerView listView = findViewById(R.id.sysList);
+        listView.setAdapter(new SystemListAdapter(this, systemEntities));
+        listView.setLayoutManager(new GridLayoutManager(this, 1));
+
+/*
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onChanged(@Nullable final HashMap<UUID, SystemEntity> systemEntities) {
                 List<HeadedValueModel> listItems = new LinkedList<>();
@@ -96,13 +95,7 @@ public class SystemListMenu extends AppCompatActivity implements NavigationView.
                 systemEntityList = new ArrayList<>(systemEntities.values());
             }
         });
-    }
-
-    private void openSystemOverview(String systemId) {
-        Intent intent = new Intent(SystemListMenu.this, SystemOverviewActivity.class);
-        prefEditor.putString(getString(R.string.preference_sysID_key), systemId);
-        prefEditor.apply();
-        startActivity(intent);
+*/
     }
 
     @Override
@@ -145,14 +138,7 @@ public class SystemListMenu extends AppCompatActivity implements NavigationView.
         int id = item.getItemId();
 
         if (id == R.id.nav_qr) {
-            // Handle the QR action
-            IntentIntegrator integrator = new IntentIntegrator(this);
-            integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
-            integrator.setPrompt("Scan a QR Code");
-            integrator.setCameraId(0);
-            integrator.setOrientationLocked(false);
-            integrator.setBeepEnabled(false);
-            integrator.initiateScan();
+            initQR();
         } else if (id == R.id.nav_settings){
             //Handle Settings
             Intent settings = new Intent(this, SettingsActivity.class);
@@ -177,11 +163,21 @@ public class SystemListMenu extends AppCompatActivity implements NavigationView.
         return false;
     }
 
+    private void initQR(){
+        IntentIntegrator integrator = new IntentIntegrator(this);
+        integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE);
+        integrator.setPrompt("Scan a QR Code");
+        integrator.setCameraId(0);
+        integrator.setOrientationLocked(false);
+        integrator.setBeepEnabled(false);
+        integrator.initiateScan();
+    }
+
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (result != null) {
-            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this); //This is always the same.
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
             if (result.getContents() == null) {
                 if (sp.getBoolean("pref_developer_mode", Boolean.parseBoolean(getString(R.string.pref_developer_mode_default)))) {
                     Toast.makeText(this, "Scan Cancelled", Toast.LENGTH_LONG).show();
@@ -192,26 +188,29 @@ public class SystemListMenu extends AppCompatActivity implements NavigationView.
                     Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
                 }
                 try {
-                    boolean systemNotFound = true;
+                    boolean systemFound = false;
                     UUID systemId = UUID.fromString(result.getContents());
 
                     SystemListViewModel model = ViewModelProviders.of(this).get(SystemListViewModel.class);
-//                    for(SystemEntity system : sys){
-                   //     if(system.Id.equals(systemId)){
-                //            systemNotFound = false;
-                //        }
-               //     }
 
-                    if (!systemNotFound) {
+                    //Checks if system exists
+                    List<SystemEntity> sys = model.get().getValue();
+                    for(SystemEntity system : sys){
+                        if(system.Id.equals(systemId)){
+                            systemFound = true;
+                        }
+                    }
+
+                    if (systemFound) {
                         Intent intent = new Intent(this, SystemOverviewActivity.class);
                         prefEditor.putString(getString(R.string.preference_sysID_key),systemId.toString());
                         prefEditor.apply();
                         startActivity(intent);
                     } else {
-                        Toast.makeText(this, "Error: System does not exist", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Error: System does not exist", Toast.LENGTH_LONG).show();
                     }
                 } catch (IllegalArgumentException e) {
-                    Toast.makeText(this, "Error: QR Code does not represent a system", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Error: QR Code does not represent a system", Toast.LENGTH_LONG).show();
                 }
             }
         } else {

@@ -1,6 +1,5 @@
 package uk.co.syski.client.android.view;
 
-import android.app.ActionBar;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
@@ -13,19 +12,17 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.FrameLayout;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import uk.co.syski.client.android.R;
+import uk.co.syski.client.android.data.entity.SystemEntity;
 
-import uk.co.syski.client.android.model.database.entity.SystemEntity;
 import uk.co.syski.client.android.model.fragment.DoubleHeadedValueModel;
 import uk.co.syski.client.android.model.fragment.HeadedValueModel;
-import uk.co.syski.client.android.view.adapter.HeadedValueListAdapter;
+import uk.co.syski.client.android.view.adapter.listview.HeadedValueListAdapter;
 import uk.co.syski.client.android.view.fragment.HeadedValueFragment;
 import uk.co.syski.client.android.view.fragment.OverviewFragment;
 import uk.co.syski.client.android.viewmodel.SystemSummaryViewModel;
