@@ -17,6 +17,7 @@ import uk.co.syski.client.android.model.api.requests.APIAuthorizationRequest;
 import uk.co.syski.client.android.model.database.SyskiCache;
 import uk.co.syski.client.android.model.database.entity.MotherboardEntity;
 import uk.co.syski.client.android.model.database.entity.SystemEntity;
+import uk.co.syski.client.android.model.database.entity.linking.SystemMotherboardEntity;
 import uk.co.syski.client.android.model.repository.Repository;
 
 public class APISystemMotherboardRequest extends APIAuthorizationRequest<JSONObject> {
@@ -33,26 +34,24 @@ public class APISystemMotherboardRequest extends APIAuthorizationRequest<JSONObj
         try {
             JSONObject jsonObject = new JSONObject(new String(response.data, HttpHeaderParser.parseCharset(response.headers, PROTOCOL_CHARSET)));
 
-            MotherboardEntity motherboardEntity = SyskiCache.GetDatabase().MotherboardDao().get(UUID.fromString(jsonObject.getString("id")));
-                if (motherboardEntity == null) {
-                    motherboardEntity = new MotherboardEntity();
-                    motherboardEntity.Id = UUID.fromString(jsonObject.getString("id"));
-                    motherboardEntity.ManufacturerName = jsonObject.getString("manufacturerName");
-                    motherboardEntity.ModelName = jsonObject.getString("modelName");
-                    motherboardEntity.Version = jsonObject.getString("version");
-                    Repository.getInstance().getMOBORepository().insert(motherboardEntity);
-
-                    SystemEntity systemEntity = SyskiCache.GetDatabase().SystemDao().get(mSystemId);
-                    if (systemEntity != null)
-                    {
-                        systemEntity.MotherboardId = motherboardEntity.Id;
-                        SyskiCache.GetDatabase().SystemDao().update(systemEntity);
-                    }
-
+            //MotherboardEntity motherboardEntity = SyskiCache.GetDatabase().MotherboardDao().get(UUID.fromString(jsonObject.getString("id")));
+            MotherboardEntity motherboardEntity = Repository.getInstance().getMOBORepository().getMotherboard(UUID.fromString(jsonObject.getString("id")));
+            if (motherboardEntity == null) {
+                motherboardEntity = new MotherboardEntity();
             }
+            motherboardEntity.Id = UUID.fromString(jsonObject.getString("id"));
+            motherboardEntity.ManufacturerName = jsonObject.getString("manufacturerName");
+            motherboardEntity.ModelName = jsonObject.getString("modelName");
+            motherboardEntity.Version = jsonObject.getString("version");
+
+            SystemMotherboardEntity systemMotherboardEntity = new SystemMotherboardEntity();
+            systemMotherboardEntity.SystemId = mSystemId;
+            systemMotherboardEntity.MotherboardId = motherboardEntity.Id;
+
+            Repository.getInstance().getMOBORepository().upsert(mSystemId, systemMotherboardEntity, motherboardEntity);
 
             return Response.success(jsonObject, HttpHeaderParser.parseCacheHeaders(response));
-        } catch (UnsupportedEncodingException | JSONException e) {
+        } catch (JSONException | UnsupportedEncodingException e) {
             return Response.error(new ParseError(e));
         }
     }

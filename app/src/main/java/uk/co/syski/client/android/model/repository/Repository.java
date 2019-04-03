@@ -9,8 +9,6 @@ public enum Repository {
 
     private UserRepository mUserRepository = new UserRepository();
 
-    private MOBORepository mMOBORepository = new MOBORepository();
-
     public synchronized UserRepository getUserRepository()
     {
         return mUserRepository;
@@ -43,7 +41,7 @@ public enum Repository {
 
     public synchronized MOBORepository getMOBORepository()
     {
-        return mMOBORepository;
+        return MOBORepository.INSTANCE;
     }
 
     public synchronized OSRepository getOSRepository()

@@ -22,6 +22,7 @@ import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.model.database.entity.MotherboardEntity;
 import uk.co.syski.client.android.model.fragment.DoubleHeadedValueModel;
 import uk.co.syski.client.android.model.fragment.HeadedValueModel;
+import uk.co.syski.client.android.model.viewmodel.SystemMotherboardModel;
 import uk.co.syski.client.android.view.adapter.HeadedValueListAdapter;
 import uk.co.syski.client.android.view.fragment.DoubleHeadedValueFragment;
 import uk.co.syski.client.android.viewmodel.MotherboardViewModel;
@@ -36,24 +37,22 @@ public class MOBOActivity extends AppCompatActivity {
         setContentView(R.layout.fragment_overview);
 
         MotherboardViewModel viewModel = ViewModelProviders.of(this).get(MotherboardViewModel.class);
-        viewModel.get().observe(this, new Observer<List<MotherboardEntity>>() {
+        viewModel.get().observe(this, new Observer<SystemMotherboardModel>() {
             @Override
-            public void onChanged(@Nullable List<MotherboardEntity> motherboardEntities) {
-                if (motherboardEntities.size() > 0) {
-                    updateStaticUI(motherboardEntities.get(0));
-                }
+            public void onChanged(@Nullable SystemMotherboardModel motherboardEntity) {
+                updateStaticUI(motherboardEntity);
             }
         });
     }
 
-    private void updateStaticUI(MotherboardEntity motherboardEntity) {
+    private void updateStaticUI(SystemMotherboardModel motherboardEntity) {
         DoubleHeadedValueFragment topFragment = DoubleHeadedValueFragment.newInstance(
             new DoubleHeadedValueModel(
                 R.drawable.ic_gpu,
                 "Model",
-                motherboardEntity.ModelName,
+                motherboardEntity.getModelName(),
                 "Manufacturer",
-                motherboardEntity.ManufacturerName
+                motherboardEntity.getManufacturerName()
             )
         );
 
@@ -65,7 +64,7 @@ public class MOBOActivity extends AppCompatActivity {
             new HeadedValueModel(
                 R.drawable.ic_version,
                 "Version",
-                motherboardEntity.Version
+                motherboardEntity.getVersion()
             )
         );
 

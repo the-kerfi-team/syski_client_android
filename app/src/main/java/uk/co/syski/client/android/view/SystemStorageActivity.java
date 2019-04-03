@@ -20,6 +20,7 @@ import uk.co.syski.client.android.model.database.entity.StorageEntity;
 import uk.co.syski.client.android.model.database.entity.data.StorageDataEntity;
 import uk.co.syski.client.android.model.fragment.DoubleHeadedValueModel;
 import uk.co.syski.client.android.model.fragment.HeadedValueModel;
+import uk.co.syski.client.android.model.viewmodel.SystemStorageModel;
 import uk.co.syski.client.android.view.adapter.StorageAdapter;
 import uk.co.syski.client.android.view.fragment.DoubleHeadedValueFragment;
 import uk.co.syski.client.android.view.fragment.HeadedValueFragment;
@@ -41,9 +42,9 @@ public class SystemStorageActivity extends AppCompatActivity {
         ((ListView) findViewById(R.id.listView)).setAdapter(adapter);
 
         SystemStorageViewModel model = ViewModelProviders.of(this).get(SystemStorageViewModel.class);
-        model.get().observe(this, new Observer<List<StorageEntity>>() {
+        model.get().observe(this, new Observer<List<SystemStorageModel>>() {
             @Override
-            public void onChanged(@Nullable List<StorageEntity> StorageEntities) {
+            public void onChanged(@Nullable List<SystemStorageModel> StorageEntities) {
                 adapter.setData(StorageEntities);
             }
         });

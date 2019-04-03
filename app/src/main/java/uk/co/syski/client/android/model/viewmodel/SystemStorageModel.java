@@ -1,13 +1,13 @@
 package uk.co.syski.client.android.model.viewmodel;
 
-public class SystemRAMModel {
+public class SystemStorageModel {
 
     private String modelName;
     private String manufacturerName;
     private String memoryTypeName;
     private Long memoryBytes;
 
-    public SystemRAMModel(String modelName, String manufacturerName, String memoryTypeName, Long memoryBytes)
+    public SystemStorageModel(String modelName, String manufacturerName, String memoryTypeName, Long memoryBytes)
     {
         this.modelName = modelName;
         this.manufacturerName = manufacturerName;
@@ -15,7 +15,7 @@ public class SystemRAMModel {
         this.memoryBytes = memoryBytes;
     }
 
-    public SystemRAMModel()
+    public SystemStorageModel()
     {
         this(null, null, null, null);
     }
@@ -35,33 +35,29 @@ public class SystemRAMModel {
         return ModelUtil.nullToUnknown(memoryTypeName);
     }
 
-    public long getMemoryBytes()
+    public String getMemoryBytesAsString(String storageUnits)
     {
-        return memoryBytes;
+        return ModelUtil.nullToUnknown(formatBytes(memoryBytes, storageUnits));
     }
 
-    public String getMemoryBytesAsString(String ramUnits)
-    {
-        return ModelUtil.nullToUnknown(formatBytes(memoryBytes, ramUnits));
-    }
 
-    private String formatBytes(Long bytes, String ramUnits) {
+    private String formatBytes(Long bytes, String storageUnits) {
         if (bytes != null) {
-            switch (ramUnits) {
+            switch (storageUnits) {
                 case "TB":
-                    bytes /= 1024;
+                    bytes /= 1000;
                 case "GB":
-                    bytes /= 1024;
+                    bytes /= 1000;
                 case "MB":
-                    bytes /= 1024;
+                    bytes /= 1000;
                 case "KB":
-                    bytes /= 1024;
+                    bytes /= 1000;
                     break;
                 default:
                     return bytes + "B";
             }
 
-            return bytes + " " + ramUnits;
+            return bytes + " " + storageUnits;
         }
         else
         {

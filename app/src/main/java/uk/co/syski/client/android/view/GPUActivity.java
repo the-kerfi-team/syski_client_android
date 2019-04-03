@@ -45,7 +45,7 @@ public class GPUActivity extends AppCompatActivity {
                             "Model",
                             gpuEntities.get(i).getModelName(),
                             "Manufacturer",
-                            gpuEntities.get(i).getModelName()
+                            gpuEntities.get(i).getManufacturerName()
                     ));
                 }
                 adapter.setData(listItems);

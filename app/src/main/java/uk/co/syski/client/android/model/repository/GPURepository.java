@@ -126,7 +126,7 @@ public enum GPURepository {
         for (SystemGPUEntity systemGPUEntity : systemGPUEntities)
         {
             GPUEntity gpuEntity = mGPUEntities.get(systemGPUEntity.GPUId);
-            systemGPUModels.add(new SystemGPUModel(gpuEntity.ManufacturerName, gpuEntity.ModelName));
+            systemGPUModels.add(new SystemGPUModel(gpuEntity.ModelName, gpuEntity.ManufacturerName));
         }
         mSystemGPUEntities.put(systemId, systemGPUEntities);
         mSystemGPUModels.put(systemId, systemGPUModels);

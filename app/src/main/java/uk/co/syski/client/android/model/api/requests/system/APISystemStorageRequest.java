@@ -38,7 +38,7 @@ public class APISystemStorageRequest extends APIAuthorizationRequest<JSONArray> 
 
             JSONArray jsonArray = new JSONArray(new String(response.data, HttpHeaderParser.parseCharset(response.headers, PROTOCOL_CHARSET)));
             List<StorageEntity> newStorageEntities = new LinkedList<>();
-
+            List<SystemStorageEntity> newSystemStorageEntities = new LinkedList<>();
             for (int i = 0; i < jsonArray.length(); i++) {
 
                 //StorageEntity storageEntity = SyskiCache.GetDatabase().StorageDao().get());
@@ -53,8 +53,14 @@ public class APISystemStorageRequest extends APIAuthorizationRequest<JSONArray> 
                 storageEntity.MemoryTypeName = ((JSONObject) jsonArray.get(i)).getString("memoryTypeName");
                 storageEntity.MemoryBytes = Long.parseLong(((JSONObject) jsonArray.get(i)).getString("memoryBytes"));
                 newStorageEntities.add(storageEntity);
+
+                SystemStorageEntity systemStorageEntity = new SystemStorageEntity();
+                systemStorageEntity.SystemId = mSystemId;
+                systemStorageEntity.StorageId = storageEntity.Id;
+                systemStorageEntity.Slot = i;
+                newSystemStorageEntities.add(systemStorageEntity);
             }
-            Repository.getInstance().getStorageRepository().upsert(mSystemId, newStorageEntities);
+            Repository.getInstance().getStorageRepository().upsert(mSystemId, newSystemStorageEntities, newStorageEntities);
 
             return Response.success(jsonArray, HttpHeaderParser.parseCacheHeaders(response));
         } catch (UnsupportedEncodingException | JSONException e) {

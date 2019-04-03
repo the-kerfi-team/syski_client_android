@@ -15,11 +15,12 @@ import java.util.List;
 
 import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.model.database.entity.StorageEntity;
+import uk.co.syski.client.android.model.viewmodel.SystemStorageModel;
 
 public class StorageAdapter extends ArrayAdapter {
 
     private final Activity context;
-    private List<StorageEntity> listItems;
+    private List<SystemStorageModel> listItems;
 
     private View listItem;
 
@@ -28,9 +29,9 @@ public class StorageAdapter extends ArrayAdapter {
         this.context = context;
     }
 
-    public void setData(List<StorageEntity> listItems)
+    public void setData(List<SystemStorageModel> listItems)
     {
-        List<StorageEntity> listWithRepeats = new LinkedList<>();
+        List<SystemStorageModel> listWithRepeats = new LinkedList<>();
         for (int i = 0; i < listItems.size(); i++) {
             listWithRepeats.add(listItems.get(i));
             listWithRepeats.add(listItems.get(i));
@@ -57,9 +58,9 @@ public class StorageAdapter extends ArrayAdapter {
 
             imageView.setImageResource(R.drawable.ic_gpu);
             firstHeadingView.setText("Model");
-            firstValueView.setText(listItems.get(position).ModelName);
+            firstValueView.setText(listItems.get(position).getModelName());
             secondHeadingView.setText("Manufacturer");
-            secondValueView.setText(listItems.get(position).ManufacturerName);
+            secondValueView.setText(listItems.get(position).getManufacturerName());
         }
         else
         {
@@ -71,30 +72,12 @@ public class StorageAdapter extends ArrayAdapter {
 
             image.setImageResource(R.drawable.ic_memory_size);
             heading.setText("Size");
-            value.setText(formatBytes(listItems.get(position).MemoryBytes));
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+            value.setText(listItems.get(position).getMemoryBytesAsString(sp.getString("pref_general_storage_unit", context.getString(R.string.pref_general_storage_unit))));
         }
 
         return listItem;
     }
 
-    public String formatBytes(long bytes) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        String storageUnits = sp.getString("pref_general_storage_unit", context.getString(R.string.pref_general_storage_unit));
-        switch (storageUnits) {
-            case "TB":
-                bytes /= 1000;
-            case "GB":
-                bytes /= 1000;
-            case "MB":
-                bytes /= 1000;
-            case "KB":
-                bytes /= 1000;
-                break;
-            default:
-                return bytes + "B";
-        }
-
-        return bytes + " " + storageUnits;
-    }
 }
 
