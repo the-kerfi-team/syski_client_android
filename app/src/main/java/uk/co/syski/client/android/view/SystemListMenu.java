@@ -206,14 +206,15 @@ public class SystemListMenu extends AppCompatActivity implements NavigationView.
                     boolean systemFound = false;
                     UUID systemId = UUID.fromString(result.getContents());
 
-
-                    //Checks if system exists
-                    //SystemEntity sys = null
-
-
-                  //  if(sys != null){
-                   //     systemFound = true;
-                  //  }
+                    List<SystemEntity> sys = viewModel.get().getValue();
+                    if (sys != null)
+                    {
+                        for(SystemEntity system : sys){
+                            if(system.Id.equals(systemId)){
+                                systemFound = true;
+                            }
+                        }
+                    }
 
                     if (systemFound) {
                         Intent intent = new Intent(this, SystemOverviewActivity.class);

@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.UUID;
 
 import uk.co.syski.client.android.R;
+import uk.co.syski.client.android.model.database.entity.SystemEntity;
 import uk.co.syski.client.android.viewmodel.SystemListViewModel;
 
 public class NFCReceiverActivity extends AppCompatActivity {
@@ -97,12 +98,12 @@ public class NFCReceiverActivity extends AppCompatActivity {
 
             Log.i(TAG, "Looking up SysID using NFC");
             SystemListViewModel model = ViewModelProviders.of(this).get(SystemListViewModel.class);
-            //List<SystemEntity> sys = model.get().getValue();
-            //for(SystemEntity system : sys){
-            //    if(system.Id.equals(systemId)){
-           //         systemNotFound = false;
-           //     }
-            //}
+            List<SystemEntity> sys = model.get().getValue();
+            for(SystemEntity system : sys){
+                if(system.Id.equals(systemId)){
+                    systemNotFound = false;
+                }
+            }
 
             if (!systemNotFound) {
                 Intent intent = new Intent(this, SystemOverviewActivity.class);
