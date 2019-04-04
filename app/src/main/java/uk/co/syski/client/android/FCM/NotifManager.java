@@ -33,7 +33,7 @@ public class NotifManager {
         Log.i(TAG, "Displaying Notification: " +title);
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(mContext, "syskinotif")
-                        .setSmallIcon(R.drawable.syski_sys_icon)
+                        .setSmallIcon(R.drawable.logo_sys_144)
                         .setContentTitle(title)
                         .setContentText(body);
 
