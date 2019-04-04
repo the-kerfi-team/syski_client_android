@@ -14,8 +14,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.model.database.entity.StorageEntity;
-import uk.co.syski.client.android.model.viewmodel.SystemRAMModel;
 import uk.co.syski.client.android.model.viewmodel.SystemStorageModel;
 
 public class StorageAdapter extends BaseExpandableListAdapter {
@@ -110,7 +108,7 @@ public class StorageAdapter extends BaseExpandableListAdapter {
         imageView.setImageResource(R.drawable.ic_memory_size);
         headingView.setText("Size");
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        valueView.setText(storageModelEntities.get(groupPosition).getMemoryBytesAsString(sp.getString("pref_general_storage_unit", context.getString(R.string.pref_general_storage_unit))));
+        valueView.setText(storageModelEntities.get(groupPosition).getMemoryBytesAsString(sp.getString("pref_general_storage_unit", context.getString(R.string.pref_general_storage_unit_default))));
 
         return convertView;
     }
