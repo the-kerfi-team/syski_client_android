@@ -108,7 +108,7 @@ public class RAMAdapter extends BaseExpandableListAdapter {
         imageView.setImageResource(R.drawable.ic_memory_size);
         headingView.setText("Size");
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        valueView.setText(ramModelEntities.get(groupPosition).getMemoryBytesAsString(sp.getString("pref_general_ram_unit", context.getString(R.string.pref_general_storage_unit))));
+        valueView.setText(ramModelEntities.get(groupPosition).getMemoryBytesAsString(sp.getString("pref_general_ram_unit", context.getString(R.string.pref_general_ram_unit_default))));
 
         return convertView;
     }
