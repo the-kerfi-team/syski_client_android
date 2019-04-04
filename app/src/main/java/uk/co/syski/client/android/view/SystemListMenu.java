@@ -86,7 +86,7 @@ public class SystemListMenu extends AppCompatActivity implements NavigationView.
 
 
 
-        //Firebase Tests
+        //Firebase
         FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
                     @Override

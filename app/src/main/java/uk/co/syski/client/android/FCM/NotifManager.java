@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.view.MainActivity;
@@ -13,6 +14,7 @@ import static android.content.Context.NOTIFICATION_SERVICE;
 
 public class NotifManager {
 
+    private static final String TAG = "NotifManager";
     private Context mContext;
     private static NotifManager mInstance;
 
@@ -28,7 +30,7 @@ public class NotifManager {
     }
 
     public void displayNotification(String title, String body) {
-
+        Log.i(TAG, "Displaying Notification: " +title);
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(mContext, "syskinotif")
                         .setSmallIcon(R.drawable.syski_sys_icon)
