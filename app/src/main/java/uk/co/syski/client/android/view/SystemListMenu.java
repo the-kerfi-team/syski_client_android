@@ -21,9 +21,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -33,9 +30,6 @@ import com.google.firebase.iid.InstanceIdResult;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
@@ -43,10 +37,7 @@ import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.model.database.SyskiCache;
 import uk.co.syski.client.android.model.database.entity.SystemEntity;
 import uk.co.syski.client.android.model.repository.Repository;
-import uk.co.syski.client.android.view.adapter.listview.HeadedValueListAdapter;
 import uk.co.syski.client.android.view.adapter.recyclerview.SystemListAdapter;
-import uk.co.syski.client.android.view.model.HeadedValueModel;
-import uk.co.syski.client.android.viewmodel.OperatingSystemViewModel;
 import uk.co.syski.client.android.viewmodel.SystemListViewModel;
 
 public class SystemListMenu extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -114,7 +105,7 @@ public class SystemListMenu extends AppCompatActivity implements NavigationView.
                         // Log and toast
                         String msg = getString(R.string.msg_token_fmt, token);
                         Log.d(TAG, "FCM " + msg);
-                        Toast.makeText(SystemListMenu.this, msg, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(SystemListMenu.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
 
