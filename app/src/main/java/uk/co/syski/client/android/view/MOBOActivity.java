@@ -10,20 +10,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.data.entity.MotherboardEntity;
-import uk.co.syski.client.android.model.fragment.DoubleHeadedValueModel;
-import uk.co.syski.client.android.model.fragment.HeadedValueModel;
-import uk.co.syski.client.android.view.adapter.HeadedValueListAdapter;
+import uk.co.syski.client.android.model.viewmodel.SystemMotherboardModel;
+import uk.co.syski.client.android.view.adapter.listview.HeadedValueListAdapter;
 import uk.co.syski.client.android.view.fragment.DoubleHeadedValueFragment;
+import uk.co.syski.client.android.view.model.DoubleHeadedValueModel;
+import uk.co.syski.client.android.view.model.HeadedValueModel;
 import uk.co.syski.client.android.viewmodel.MotherboardViewModel;
 
 public class MOBOActivity extends AppCompatActivity {
@@ -36,36 +32,33 @@ public class MOBOActivity extends AppCompatActivity {
         setContentView(R.layout.fragment_overview);
 
         MotherboardViewModel viewModel = ViewModelProviders.of(this).get(MotherboardViewModel.class);
-        viewModel.get().observe(this, new Observer<List<MotherboardEntity>>() {
+        viewModel.get().observe(this, new Observer<SystemMotherboardModel>() {
             @Override
-            public void onChanged(@Nullable List<MotherboardEntity> motherboardEntities) {
-                if (motherboardEntities.size() > 0) {
-                    updateStaticUI(motherboardEntities.get(0));
-                }
+            public void onChanged(@Nullable SystemMotherboardModel motherboardEntity) {
+                updateStaticUI(motherboardEntity);
             }
         });
     }
 
-    private void updateStaticUI(MotherboardEntity motherboardEntity) {
+    private void updateStaticUI(SystemMotherboardModel motherboardEntity) {
         DoubleHeadedValueFragment topFragment = DoubleHeadedValueFragment.newInstance(
             new DoubleHeadedValueModel(
                 R.drawable.ic_gpu,
                 "Model",
-                motherboardEntity.ModelName,
+                motherboardEntity.getModelName(),
                 "Manufacturer",
-                motherboardEntity.ManufacturerName
+                motherboardEntity.getManufacturerName()
             )
         );
 
         getSupportFragmentManager().beginTransaction().replace(R.id.topFragment, topFragment).commit();
 
         ArrayList<HeadedValueModel> motherboardData = new ArrayList<>();
-
         motherboardData.add(
             new HeadedValueModel(
                 R.drawable.ic_version,
                 "Version",
-                motherboardEntity.Version
+                motherboardEntity.getVersion()
             )
         );
 

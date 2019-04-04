@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.UUID;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.data.entity.SystemEntity;
+import uk.co.syski.client.android.model.database.entity.SystemEntity;
 import uk.co.syski.client.android.viewmodel.SystemListViewModel;
 
 public class NFCReceiverActivity extends AppCompatActivity {

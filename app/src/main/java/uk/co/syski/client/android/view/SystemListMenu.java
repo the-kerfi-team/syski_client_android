@@ -15,6 +15,8 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -32,16 +34,19 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.api.APIThread;
-import uk.co.syski.client.android.data.SyskiCache;
-import uk.co.syski.client.android.data.entity.SystemEntity;
-import uk.co.syski.client.android.data.repository.Repository;
-import uk.co.syski.client.android.model.fragment.HeadedValueModel;
-import uk.co.syski.client.android.view.adapter.HeadedValueListAdapter;
+import uk.co.syski.client.android.model.database.SyskiCache;
+import uk.co.syski.client.android.model.database.entity.SystemEntity;
+import uk.co.syski.client.android.model.repository.Repository;
+import uk.co.syski.client.android.view.adapter.listview.HeadedValueListAdapter;
+import uk.co.syski.client.android.view.adapter.recyclerview.SystemListAdapter;
+import uk.co.syski.client.android.view.model.HeadedValueModel;
+import uk.co.syski.client.android.viewmodel.OperatingSystemViewModel;
 import uk.co.syski.client.android.viewmodel.SystemListViewModel;
 
 public class SystemListMenu extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -49,6 +54,9 @@ public class SystemListMenu extends AppCompatActivity implements NavigationView.
     private static final String TAG = "SystemListMenu";
     SharedPreferences prefs;
     SharedPreferences.Editor prefEditor;
+
+    private SystemListViewModel viewModel;
+    private List<SystemEntity> systemEntityList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,12 +79,16 @@ public class SystemListMenu extends AppCompatActivity implements NavigationView.
         prefs = this.getSharedPreferences(getString(R.string.preference_sysID_key), Context.MODE_PRIVATE);
         prefEditor = prefs.edit();
 
-        //Setup List.
-        SystemListViewModel model = ViewModelProviders.of(this).get(SystemListViewModel.class);
-        model.get().observe(this, new Observer<List<SystemEntity>>() {
+        // Setup ListView
+        RecyclerView listView = findViewById(R.id.sysList);
+        listView.setLayoutManager(new GridLayoutManager(this, 1));
+        final SystemListAdapter adapter = new SystemListAdapter(this);
+        listView.setAdapter(adapter);
+        viewModel = ViewModelProviders.of(this).get(SystemListViewModel.class);
+        viewModel.get().observe(this, new Observer<List<SystemEntity>>() {
             @Override
-            public void onChanged(@Nullable final List<SystemEntity> systemEntities) {
-                setupList(systemEntities);
+            public void onChanged(@Nullable List<SystemEntity> systemEntities) {
+                adapter.setData(systemEntities);
             }
         });
 
@@ -108,27 +120,30 @@ public class SystemListMenu extends AppCompatActivity implements NavigationView.
 
     }
 
-    private void setupList(final List<SystemEntity> systemEntities) {
-        ArrayList<HeadedValueModel> listItems = new ArrayList<>();
-        for (int i = 0; i < systemEntities.size(); i++)
-            listItems.add(new HeadedValueModel(R.drawable.ic_pc, "View details for", systemEntities.get(i).HostName));
-
-        ListView listView = findViewById(R.id.sysList);
-        listView.setAdapter(new HeadedValueListAdapter(this, listItems));
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                openSystemOverview(systemEntities.get(position).Id.toString());
-            }
-        });
-    }
-
     private void openSystemOverview(String systemId) {
         Intent intent = new Intent(SystemListMenu.this, SystemOverviewActivity.class);
         prefEditor.putString(getString(R.string.preference_sysID_key), systemId);
         prefEditor.apply();
         startActivity(intent);
+    }
+
+    private void setupList(final List<SystemEntity> systemEntities) {
+
+
+/*
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onChanged(@Nullable final HashMap<UUID, SystemEntity> systemEntities) {
+                List<HeadedValueModel> listItems = new LinkedList<>();
+                for (SystemEntity systemEntity : systemEntities.values())
+                {
+                    listItems.add(new HeadedValueModel(R.drawable.ic_pc, "View details for", systemEntity.HostName));
+                }
+                adapter.setData(listItems);
+                systemEntityList = new ArrayList<>(systemEntities.values());
+            }
+        });
+*/
     }
 
     @Override
@@ -184,7 +199,6 @@ public class SystemListMenu extends AppCompatActivity implements NavigationView.
                 }
             }).start();
             Repository.getInstance().getUserRepository().setActiveUserId(null);
-            APIThread.getInstance(getApplicationContext()).disable();
             prefEditor.remove(getString(R.string.preference_sysID_key)).commit();
             getSharedPreferences(getString(R.string.preference_usrID_key), Context.MODE_PRIVATE).edit().remove(getString(R.string.preference_usrID_key)).commit();
             finish();
@@ -224,13 +238,13 @@ public class SystemListMenu extends AppCompatActivity implements NavigationView.
                     boolean systemFound = false;
                     UUID systemId = UUID.fromString(result.getContents());
 
-                    SystemListViewModel model = ViewModelProviders.of(this).get(SystemListViewModel.class);
-
-                    //Checks if system exists
-                    List<SystemEntity> sys = model.get().getValue();
-                    for (SystemEntity system : sys) {
-                        if (system.Id.equals(systemId)) {
-                            systemFound = true;
+                    List<SystemEntity> sys = viewModel.get().getValue();
+                    if (sys != null)
+                    {
+                        for(SystemEntity system : sys){
+                            if(system.Id.equals(systemId)){
+                                systemFound = true;
+                            }
                         }
                     }
 

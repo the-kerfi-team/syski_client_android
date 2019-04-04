@@ -13,7 +13,7 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 import java.util.List;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.data.entity.data.StorageDataEntity;
+import uk.co.syski.client.android.model.database.entity.data.StorageDataEntity;
 import uk.co.syski.client.android.viewmodel.SystemStorageDataViewModel;
 
 public class VariableStorageReadWriteGraph extends AppCompatActivity {
