@@ -142,4 +142,10 @@
     <string name="pref_general_ram_value_title">RAM Value Displayed</string>
     <string name="pref_general_value_choice_heading">Unit Choices</string>
     <string name="nfc_lbl">NFC Scanner</string>
+    <string name="channel_name">syskinotif</string>
+    <string name="channel_description">Syski Notification Channel</string>
+    <string name="channel_id">syskinotif</string>
+    <string name="default_notification_channel_id">1</string>
+    <string name="fcm_message">FirebaseMessage</string>
+    <string name="msg_token_fmt" translatable="false">InstanceID Token: %s</string>
 </resources>

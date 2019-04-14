@@ -1,8 +1,11 @@
 package uk.co.syski.client.android.view;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -60,17 +63,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        createNotificationChannel();
         SyskiCache.BuildDatabase(getApplicationContext());
         prefs = getApplicationContext().getSharedPreferences(getString(R.string.preference_usrID_key), Context.MODE_PRIVATE);
         String userId = prefs.getString(getString(R.string.preference_usrID_key), null);
-        if (userId != null)
-        {
+        if (userId != null) {
             Repository.getInstance().getUserRepository().setActiveUserId(UUID.fromString(userId));
             startActivity(new Intent(this, SystemListMenu.class));
             finish();
-        }
-        else
-        {
+        } else {
             setTheme(R.style.AppTheme);
             setContentView(R.layout.activity_main);
 
@@ -88,8 +89,24 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void SeedDatabase()
-    {
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String CHANNEL_ID = getString(R.string.channel_id);
+            CharSequence name = getString(R.string.channel_name);
+            String description = getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    private void SeedDatabase() {
         SystemEntity system = new SystemEntity();
         UUID uuid = UUID.fromString("38400000-8cf0-11bd-b23e-10b96e4ef00d");
         //system.Id = uuid.randomUUID();
@@ -100,11 +117,11 @@ public class MainActivity extends AppCompatActivity {
 
         CPUEntity cpu = new CPUEntity();
         cpu.ThreadCount = 2;
-        cpu.ModelName="CPU Model";
-        cpu.ManufacturerName="CPU Manufacturer";
-        cpu.CoreCount=1;
-        cpu.ClockSpeed=1;
-        cpu.ArchitectureName="Architecture";
+        cpu.ModelName = "CPU Model";
+        cpu.ManufacturerName = "CPU Manufacturer";
+        cpu.CoreCount = 1;
+        cpu.ClockSpeed = 1;
+        cpu.ArchitectureName = "Architecture";
         cpu.Id = UUID.randomUUID();
 
         RAMEntity ram = new RAMEntity();
@@ -175,8 +192,7 @@ public class MainActivity extends AppCompatActivity {
 
         protected void sendAPIRequest(String APIRequest) {
             APIRequest request = null;
-            if (APIRequest.equalsIgnoreCase("register"))
-            {
+            if (APIRequest.equalsIgnoreCase("register")) {
                 request = new APIRegisterRequest(getContext(),
                         mEmailView.getText().toString(),
                         mPasswordView.getText().toString(),
@@ -192,9 +208,7 @@ public class MainActivity extends AppCompatActivity {
                                 RequestFailed(error);
                             }
                         });
-            }
-            else if (APIRequest.equalsIgnoreCase("login"))
-            {
+            } else if (APIRequest.equalsIgnoreCase("login")) {
                 request = new APILoginRequest(getContext(),
                         mEmailView.getText().toString(),
                         mPasswordView.getText().toString(),
@@ -226,13 +240,11 @@ public class MainActivity extends AppCompatActivity {
             mDisableButton = false;
         }
 
-        protected boolean isEmailValid(String email)
-        {
+        protected boolean isEmailValid(String email) {
             return email.contains("@");
         }
 
-        protected boolean isPasswordValid(String password)
-        {
+        protected boolean isPasswordValid(String password) {
             return password.length() > 6;
         }
     }
