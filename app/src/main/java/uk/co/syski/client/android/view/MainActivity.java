@@ -97,61 +97,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void SeedDatabase() {
-        SystemEntity system = new SystemEntity();
-        UUID uuid = UUID.fromString("38400000-8cf0-11bd-b23e-10b96e4ef00d");
-        //system.Id = uuid.randomUUID();
-        system.Id = uuid;
-        system.HostName = "Earth";
-        system.ManufacturerName = "Not Dell";
-        system.ModelName = "Mega Thinkpad";
-
-        CPUEntity cpu = new CPUEntity();
-        cpu.ThreadCount = 2;
-        cpu.ModelName = "CPU Model";
-        cpu.ManufacturerName = "CPU Manufacturer";
-        cpu.CoreCount = 1;
-        cpu.ClockSpeed = 1;
-        cpu.ArchitectureName = "Architecture";
-        cpu.Id = UUID.randomUUID();
-
-        RAMEntity ram = new RAMEntity();
-        ram.Id = UUID.randomUUID();
-        ram.ManufacturerName = "RAM MANUFACTURER";
-        ram.MemoryBytes = 50000;
-        ram.MemoryTypeName = "RAM TYPE";
-        ram.ModelName = "RAM MODEL";
-
-        StorageEntity storage = new StorageEntity();
-        storage.Id = UUID.randomUUID();
-        storage.ManufacturerName = "Storage Manufacturer";
-        storage.MemoryBytes = 2199023255552L;
-        storage.MemoryTypeName = "StorageType";
-        storage.ModelName = "Storage Model";
-
-        GPUEntity gpu = new GPUEntity();
-        gpu.Id = UUID.randomUUID();
-        gpu.ModelName = "GPU Model";
-        gpu.ManufacturerName = "GPU Manufacturer";
-
-        SystemCPUEntity systemCPU = new SystemCPUEntity();
-        systemCPU.CPUId = cpu.Id;
-        systemCPU.SystemId = system.Id;
-
-        SystemRAMEntity systemRAM = new SystemRAMEntity();
-        systemRAM.RAMId = ram.Id;
-        systemRAM.SystemId = system.Id;
-
-        SystemStorageEntity systemStore = new SystemStorageEntity();
-        systemStore.StorageId = storage.Id;
-        systemStore.SystemId = system.Id;
-
-        SystemGPUEntity systemGPU = new SystemGPUEntity();
-        systemGPU.SystemId = system.Id;
-        systemGPU.GPUId = gpu.Id;
-
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.sys_list_menu, menu);
