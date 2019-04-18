@@ -12,12 +12,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
-import android.widget.ListView;
 
 import java.util.List;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.model.database.entity.RAMEntity;
 import uk.co.syski.client.android.model.database.entity.data.RAMDataEntity;
 import uk.co.syski.client.android.model.viewmodel.SystemRAMModel;
 import uk.co.syski.client.android.view.adapter.expandablelistview.RAMAdapter;
@@ -27,6 +25,9 @@ import uk.co.syski.client.android.view.model.HeadedValueModel;
 import uk.co.syski.client.android.viewmodel.SystemRAMDataViewModel;
 import uk.co.syski.client.android.viewmodel.SystemRAMViewModel;
 
+/**
+ * Activity for displaying all RAM information for a system
+ */
 public class RAMActivity extends AppCompatActivity {
 
     @Override

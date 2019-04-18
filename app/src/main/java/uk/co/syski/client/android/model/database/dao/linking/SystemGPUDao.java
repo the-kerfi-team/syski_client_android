@@ -9,7 +9,6 @@ import android.arch.persistence.room.Update;
 import java.util.List;
 import java.util.UUID;
 
-import uk.co.syski.client.android.model.database.entity.linking.SystemCPUEntity;
 import uk.co.syski.client.android.model.database.entity.linking.SystemGPUEntity;
 
 @Dao

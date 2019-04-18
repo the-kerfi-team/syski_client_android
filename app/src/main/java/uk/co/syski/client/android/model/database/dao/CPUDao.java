@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.UUID;
 
 import uk.co.syski.client.android.model.database.entity.CPUEntity;
-import uk.co.syski.client.android.model.database.entity.StorageEntity;
 
 @Dao
 public abstract class CPUDao {

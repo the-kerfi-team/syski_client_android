@@ -40,6 +40,9 @@ import uk.co.syski.client.android.model.repository.Repository;
 import uk.co.syski.client.android.view.adapter.recyclerview.SystemListAdapter;
 import uk.co.syski.client.android.viewmodel.SystemListViewModel;
 
+/**
+ * Activity displaying a list of a user's systems
+ */
 public class SystemListMenu extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "SystemListMenu";
@@ -109,32 +112,6 @@ public class SystemListMenu extends AppCompatActivity implements NavigationView.
                     }
                 });
 
-    }
-
-    private void openSystemOverview(String systemId) {
-        Intent intent = new Intent(SystemListMenu.this, SystemOverviewActivity.class);
-        prefEditor.putString(getString(R.string.preference_sysID_key), systemId);
-        prefEditor.apply();
-        startActivity(intent);
-    }
-
-    private void setupList(final List<SystemEntity> systemEntities) {
-
-
-/*
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onChanged(@Nullable final HashMap<UUID, SystemEntity> systemEntities) {
-                List<HeadedValueModel> listItems = new LinkedList<>();
-                for (SystemEntity systemEntity : systemEntities.values())
-                {
-                    listItems.add(new HeadedValueModel(R.drawable.ic_pc, "View details for", systemEntity.HostName));
-                }
-                adapter.setData(listItems);
-                systemEntityList = new ArrayList<>(systemEntities.values());
-            }
-        });
-*/
     }
 
     @Override

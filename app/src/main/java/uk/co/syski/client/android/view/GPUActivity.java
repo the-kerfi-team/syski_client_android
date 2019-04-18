@@ -20,6 +20,9 @@ import uk.co.syski.client.android.view.adapter.listview.DoubleHeadedValueListAda
 import uk.co.syski.client.android.view.model.DoubleHeadedValueModel;
 import uk.co.syski.client.android.viewmodel.SystemGPUViewModel;
 
+/**
+ * Activity for displaying all GPU information for a system
+ */
 public class GPUActivity extends AppCompatActivity {
 
     private static final String TAG = "GPUActivity";

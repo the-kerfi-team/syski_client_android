@@ -5,6 +5,10 @@ import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+/**
+ * Service for handling Firebase Cloud Messaging (Notifications) For the App
+ * Only functions when a message is received from Firebase, which is parsed and handled
+ */
 public class FCMService extends FirebaseMessagingService {
 
     private static final String TAG = "FCMService";

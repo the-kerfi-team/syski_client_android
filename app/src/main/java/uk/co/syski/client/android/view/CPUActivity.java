@@ -12,12 +12,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
-import android.widget.ListView;
 
 import java.util.List;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.model.database.entity.CPUEntity;
 import uk.co.syski.client.android.model.database.entity.data.CPUDataEntity;
 import uk.co.syski.client.android.model.viewmodel.SystemCPUModel;
 import uk.co.syski.client.android.view.adapter.expandablelistview.CPUAdapter;
@@ -28,6 +26,9 @@ import uk.co.syski.client.android.view.model.HeadedValueModel;
 import uk.co.syski.client.android.viewmodel.SystemCPUDataViewModel;
 import uk.co.syski.client.android.viewmodel.SystemCPUViewModel;
 
+/**
+ * Activity for displaying all CPU information for a system
+ */
 public class CPUActivity extends AppCompatActivity {
 
     private static final String TAG = "CPUActivity";

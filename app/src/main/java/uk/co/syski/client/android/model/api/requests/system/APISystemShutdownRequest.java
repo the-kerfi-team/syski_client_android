@@ -7,10 +7,8 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Response;
 import com.android.volley.toolbox.HttpHeaderParser;
-import com.android.volley.toolbox.StringRequest;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.UUID;
 

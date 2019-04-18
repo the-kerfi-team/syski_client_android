@@ -26,6 +26,9 @@ import uk.co.syski.client.android.view.model.DoubleHeadedValueModel;
 import uk.co.syski.client.android.view.model.HeadedValueModel;
 import uk.co.syski.client.android.viewmodel.SystemSummaryViewModel;
 
+/**
+ * Activity for displaying an overview of a specified system
+ */
 public class SystemOverviewActivity extends AppCompatActivity {
 
     private static final String TAG = "SystemOverviewActivity";

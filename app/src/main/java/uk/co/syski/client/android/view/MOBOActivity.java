@@ -22,6 +22,9 @@ import uk.co.syski.client.android.view.model.DoubleHeadedValueModel;
 import uk.co.syski.client.android.view.model.HeadedValueModel;
 import uk.co.syski.client.android.viewmodel.MotherboardViewModel;
 
+/**
+ * Activity for displaying all Motherboard information for a system
+ */
 public class MOBOActivity extends AppCompatActivity {
 
     private static final String TAG = "MOBOActivity";

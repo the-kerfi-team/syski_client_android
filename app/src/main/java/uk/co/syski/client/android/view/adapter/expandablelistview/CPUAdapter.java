@@ -75,9 +75,9 @@ public class CPUAdapter extends BaseExpandableListAdapter {
         TextView secondValueView = convertView.findViewById(R.id.secondValueView);
 
         imageView.setImageResource(R.drawable.ic_cpu);
-        firstHeadingView.setText("Model");
+        firstHeadingView.setText(R.string.txtModel);
         firstValueView.setText(cpuModelEntities.get(groupPosition).getModelName());
-        secondHeadingView.setText("Manufacturer");
+        secondHeadingView.setText(R.string.txtManufacturer);
         secondValueView.setText(cpuModelEntities.get(groupPosition).getManufacturerName());
 
         convertView.setOnClickListener(new View.OnClickListener() {
@@ -106,22 +106,22 @@ public class CPUAdapter extends BaseExpandableListAdapter {
         switch (childPosition) {
             case 0:
                 imageView.setImageResource(R.drawable.ic_architecture);
-                headingView.setText("Architecture");
+                headingView.setText(R.string.txtArch);
                 valueView.setText(cpuModelEntities.get(groupPosition).getArchitectureName());
                 break;
             case 1:
                 imageView.setImageResource(R.drawable.ic_clock);
-                headingView.setText("Clock Speed");
+                headingView.setText(R.string.txtClock);
                 valueView.setText(cpuModelEntities.get(groupPosition).getClockSpeedAsString());
                 break;
             case 2:
                 imageView.setImageResource(R.drawable.ic_core);
-                headingView.setText("Core Count");
+                headingView.setText(R.string.txtCore);
                 valueView.setText(cpuModelEntities.get(groupPosition).getCoreCountAsString());
                 break;
             case 3:
                 imageView.setImageResource(R.drawable.ic_thread);
-                headingView.setText("Thread Count");
+                headingView.setText(R.string.txtThread);
                 valueView.setText(cpuModelEntities.get(groupPosition).getThreadCountAsString());
                 break;
         }

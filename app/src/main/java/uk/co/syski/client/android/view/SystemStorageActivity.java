@@ -12,12 +12,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
-import android.widget.ListView;
 
 import java.util.List;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.model.database.entity.StorageEntity;
 import uk.co.syski.client.android.model.database.entity.data.StorageDataEntity;
 import uk.co.syski.client.android.model.viewmodel.SystemStorageModel;
 import uk.co.syski.client.android.view.adapter.expandablelistview.StorageAdapter;
@@ -32,6 +30,9 @@ import uk.co.syski.client.android.view.model.HeadedValueModel;
 import uk.co.syski.client.android.viewmodel.SystemStorageDataViewModel;
 import uk.co.syski.client.android.viewmodel.SystemStorageViewModel;
 
+/**
+ * Activity for displaying all storage information for a system
+ */
 public class SystemStorageActivity extends AppCompatActivity {
 
     @Override

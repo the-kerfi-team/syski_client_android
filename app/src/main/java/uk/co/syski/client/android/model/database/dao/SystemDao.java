@@ -11,7 +11,6 @@ import android.database.sqlite.SQLiteConstraintException;
 import java.util.List;
 import java.util.UUID;
 
-import uk.co.syski.client.android.model.database.entity.GPUEntity;
 import uk.co.syski.client.android.model.database.entity.SystemEntity;
 
 @Dao
