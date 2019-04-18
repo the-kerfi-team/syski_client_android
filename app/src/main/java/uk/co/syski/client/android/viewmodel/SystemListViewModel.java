@@ -5,9 +5,7 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 
 import uk.co.syski.client.android.model.database.entity.SystemEntity;
 import uk.co.syski.client.android.model.repository.Repository;

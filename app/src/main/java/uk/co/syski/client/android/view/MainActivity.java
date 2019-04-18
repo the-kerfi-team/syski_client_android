@@ -42,15 +42,6 @@ import uk.co.syski.client.android.model.api.requests.APIRequest;
 import uk.co.syski.client.android.model.api.requests.auth.APILoginRequest;
 import uk.co.syski.client.android.model.api.requests.auth.APIRegisterRequest;
 import uk.co.syski.client.android.model.database.SyskiCache;
-import uk.co.syski.client.android.model.database.entity.CPUEntity;
-import uk.co.syski.client.android.model.database.entity.GPUEntity;
-import uk.co.syski.client.android.model.database.entity.RAMEntity;
-import uk.co.syski.client.android.model.database.entity.StorageEntity;
-import uk.co.syski.client.android.model.database.entity.SystemEntity;
-import uk.co.syski.client.android.model.database.entity.linking.SystemCPUEntity;
-import uk.co.syski.client.android.model.database.entity.linking.SystemGPUEntity;
-import uk.co.syski.client.android.model.database.entity.linking.SystemRAMEntity;
-import uk.co.syski.client.android.model.database.entity.linking.SystemStorageEntity;
 import uk.co.syski.client.android.model.repository.Repository;
 
 

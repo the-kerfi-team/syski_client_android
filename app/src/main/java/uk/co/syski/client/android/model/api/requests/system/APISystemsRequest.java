@@ -14,13 +14,9 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.UUID;
 
 import uk.co.syski.client.android.model.api.requests.APIAuthorizationRequest;
-import uk.co.syski.client.android.model.database.SyskiCache;
-import uk.co.syski.client.android.model.database.entity.CPUEntity;
 import uk.co.syski.client.android.model.database.entity.SystemEntity;
 import uk.co.syski.client.android.model.repository.Repository;
 

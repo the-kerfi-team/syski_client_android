@@ -14,9 +14,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.UUID;
 
 import uk.co.syski.client.android.model.api.requests.APIAuthorizationRequest;
-import uk.co.syski.client.android.model.database.SyskiCache;
 import uk.co.syski.client.android.model.database.entity.MotherboardEntity;
-import uk.co.syski.client.android.model.database.entity.SystemEntity;
 import uk.co.syski.client.android.model.database.entity.linking.SystemMotherboardEntity;
 import uk.co.syski.client.android.model.repository.Repository;
 

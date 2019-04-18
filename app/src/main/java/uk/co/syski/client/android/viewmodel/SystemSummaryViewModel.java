@@ -1,16 +1,12 @@
 package uk.co.syski.client.android.viewmodel;
 
 import android.app.Application;
-import android.arch.core.util.Function;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Transformations;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
 import java.util.UUID;
 
 import uk.co.syski.client.android.R;
