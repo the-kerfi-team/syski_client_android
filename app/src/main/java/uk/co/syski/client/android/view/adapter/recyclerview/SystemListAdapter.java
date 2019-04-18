@@ -63,7 +63,7 @@ public class SystemListAdapter extends RecyclerView.Adapter<SystemListAdapter.Sy
         TextView valueView = holder.view.findViewById(R.id.valueView);
 
         imageView.setImageResource(R.drawable.ic_pc);
-        headingView.setText("View Details for");
+        headingView.setText(R.string.txt_details_for);
         valueView.setText(systemEntities.get(position).HostName);
 
         holder.view.setOnClickListener(new View.OnClickListener() {
