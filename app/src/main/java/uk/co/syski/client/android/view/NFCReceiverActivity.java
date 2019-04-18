@@ -25,7 +25,7 @@ import uk.co.syski.client.android.viewmodel.SystemListViewModel;
 
 public class NFCReceiverActivity extends AppCompatActivity {
 
-    private static final String TAG = "CPUActivity";
+    private static final String TAG = "NFCReceiverActivity";
 
     private NfcAdapter nfcAdapter;
     private PendingIntent pendingIntent;
