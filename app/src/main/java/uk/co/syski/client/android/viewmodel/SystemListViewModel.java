@@ -26,9 +26,4 @@ public class SystemListViewModel extends AndroidViewModel {
         return mSystemList;
     }
 
-    public void openSummary(UUID systemId)
-    {
-
-    }
-
 }
