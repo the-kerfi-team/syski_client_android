@@ -12,6 +12,9 @@ import uk.co.syski.client.android.view.MainActivity;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
+/**
+ * Used to manage Notifications for the app, allowing notifications to be displayed
+ */
 public class NotifManager {
 
     private static final String TAG = "NotifManager";
@@ -29,6 +32,11 @@ public class NotifManager {
         return mInstance;
     }
 
+    /**
+     * Used to display a notification while the application is running
+     * @param title the title of the notification, appearing on the notification bar
+     * @param body the body (main text) of the notification
+     */
     public void displayNotification(String title, String body) {
         Log.i(TAG, "Displaying Notification: " +title);
         NotificationCompat.Builder mBuilder =
