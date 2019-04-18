@@ -70,10 +70,10 @@ public class MainActivity extends AppCompatActivity {
             mSectionsPagerAdapter.addFragment(new Tab_Login(), "Login");
             mSectionsPagerAdapter.addFragment(new Tab_Register(), "Register");
 
-            mViewPager = (ViewPager) findViewById(R.id.container);
+            mViewPager = findViewById(R.id.container);
             mViewPager.setAdapter(mSectionsPagerAdapter);
 
-            TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+            TabLayout tabLayout = findViewById(R.id.tabs);
 
             mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
             tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
@@ -325,8 +325,8 @@ public class MainActivity extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             View view = inflater.inflate(R.layout.fragment_main_tab_register, container, false);
 
-            mEmailView = (EditText) view.findViewById(R.id.email);
-            mPasswordView = (EditText) view.findViewById(R.id.password);
+            mEmailView = view.findViewById(R.id.email);
+            mPasswordView = view.findViewById(R.id.password);
             mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
                 public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -338,7 +338,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-            Button mEmailSignUpButton = (Button) view.findViewById(R.id.email_sign_up_button);
+            Button mEmailSignUpButton = view.findViewById(R.id.email_sign_up_button);
             mEmailSignUpButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
