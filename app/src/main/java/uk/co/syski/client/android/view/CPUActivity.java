@@ -26,6 +26,9 @@ import uk.co.syski.client.android.view.model.HeadedValueModel;
 import uk.co.syski.client.android.viewmodel.SystemCPUDataViewModel;
 import uk.co.syski.client.android.viewmodel.SystemCPUViewModel;
 
+/**
+ * Activity for displaying all CPU information for a system
+ */
 public class CPUActivity extends AppCompatActivity {
 
     private static final String TAG = "CPUActivity";

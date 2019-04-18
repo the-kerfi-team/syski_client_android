@@ -30,6 +30,9 @@ import uk.co.syski.client.android.view.model.HeadedValueModel;
 import uk.co.syski.client.android.viewmodel.SystemStorageDataViewModel;
 import uk.co.syski.client.android.viewmodel.SystemStorageViewModel;
 
+/**
+ * Activity for displaying all storage information for a system
+ */
 public class SystemStorageActivity extends AppCompatActivity {
 
     @Override

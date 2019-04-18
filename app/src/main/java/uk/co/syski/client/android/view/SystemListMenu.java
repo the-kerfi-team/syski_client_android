@@ -40,6 +40,9 @@ import uk.co.syski.client.android.model.repository.Repository;
 import uk.co.syski.client.android.view.adapter.recyclerview.SystemListAdapter;
 import uk.co.syski.client.android.viewmodel.SystemListViewModel;
 
+/**
+ * Activity displaying a list of a user's systems
+ */
 public class SystemListMenu extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "SystemListMenu";

@@ -20,6 +20,9 @@ import uk.co.syski.client.android.view.adapter.listview.HeadedValueListAdapter;
 import uk.co.syski.client.android.view.model.HeadedValueModel;
 import uk.co.syski.client.android.viewmodel.OperatingSystemViewModel;
 
+/**
+ * Activity for displaying all Operating System information for a system
+ */
 public class SystemOSActivity extends AppCompatActivity {
 
     @Override

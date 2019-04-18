@@ -25,6 +25,9 @@ import uk.co.syski.client.android.view.model.HeadedValueModel;
 import uk.co.syski.client.android.viewmodel.SystemRAMDataViewModel;
 import uk.co.syski.client.android.viewmodel.SystemRAMViewModel;
 
+/**
+ * Activity for displaying all RAM information for a system
+ */
 public class RAMActivity extends AppCompatActivity {
 
     @Override
