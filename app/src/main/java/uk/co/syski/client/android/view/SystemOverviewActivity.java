@@ -86,7 +86,7 @@ public class SystemOverviewActivity extends AppCompatActivity {
 
         systemData.add(
             new HeadedValueModel(
-                R.drawable.placeholder,
+                R.drawable.name_icon,
                 "Host Name",
                 systemEntity.HostName
             )
@@ -94,7 +94,7 @@ public class SystemOverviewActivity extends AppCompatActivity {
 
         OverviewFragment overviewFragment = OverviewFragment.newInstance(
             new DoubleHeadedValueModel(
-                R.drawable.ic_pc,
+                R.drawable.pc_icon,
                 "Model",
                 systemEntity.ModelName,
                 "Manufacturer",
@@ -135,42 +135,42 @@ public class SystemOverviewActivity extends AppCompatActivity {
 
         listItems.add(
             new HeadedValueModel(
-                R.drawable.ic_cpu,
+                R.drawable.cpu_icon,
                 "View details for",
                 "CPU"
             )
         );
         listItems.add(
             new HeadedValueModel(
-                R.drawable.ic_gpu,
+                R.drawable.ram_icon,
                 "View details for",
                 "RAM"
             )
         );
         listItems.add(
             new HeadedValueModel(
-                R.drawable.ic_storage,
+                R.drawable.storage_icon,
                 "View details for",
                 "Storage"
             )
         );
         listItems.add(
             new HeadedValueModel(
-                R.drawable.ic_gpu,
+                R.drawable.gpu_icon,
                 "View details for",
                 "GPU"
             )
         );
         listItems.add(
             new HeadedValueModel(
-                R.drawable.ic_gpu,
+                R.drawable.motherboard_icon,
                 "View details for",
                 "Motherboard"
             )
         );
         listItems.add(
             new HeadedValueModel(
-                R.drawable.ic_pc,
+                R.drawable.pc_icon,
                 "View details for",
                 "Operating System"
             )

@@ -42,17 +42,17 @@ public class SystemOSActivity extends AppCompatActivity {
         ArrayList<HeadedValueModel> osData = new ArrayList<>();
 
         osData.add(new HeadedValueModel(
-            R.drawable.ic_pc,
+            R.drawable.name_icon,
             "Name",
             operatingSystemModel.getName()
         ));
         osData.add(new HeadedValueModel(
-            R.drawable.ic_architecture,
+            R.drawable.cpu_architecture_icon,
             "Architecture",
             operatingSystemModel.getArchitectureName()
         ));
         osData.add(new HeadedValueModel(
-            R.drawable.ic_version,
+            R.drawable.version_icon,
             "Version",
             operatingSystemModel.getVersion()
         ));

@@ -74,7 +74,7 @@ public class CPUAdapter extends BaseExpandableListAdapter {
         TextView secondHeadingView = convertView.findViewById(R.id.secondHeadingView);
         TextView secondValueView = convertView.findViewById(R.id.secondValueView);
 
-        imageView.setImageResource(R.drawable.ic_cpu);
+        imageView.setImageResource(R.drawable.cpu_icon);
         firstHeadingView.setText("Model");
         firstValueView.setText(cpuModelEntities.get(groupPosition).getModelName());
         secondHeadingView.setText("Manufacturer");
@@ -105,22 +105,22 @@ public class CPUAdapter extends BaseExpandableListAdapter {
 
         switch (childPosition) {
             case 0:
-                imageView.setImageResource(R.drawable.ic_architecture);
+                imageView.setImageResource(R.drawable.cpu_architecture_icon);
                 headingView.setText("Architecture");
                 valueView.setText(cpuModelEntities.get(groupPosition).getArchitectureName());
                 break;
             case 1:
-                imageView.setImageResource(R.drawable.ic_clock);
+                imageView.setImageResource(R.drawable.cpu_clock_icon);
                 headingView.setText("Clock Speed");
                 valueView.setText(cpuModelEntities.get(groupPosition).getClockSpeedAsString());
                 break;
             case 2:
-                imageView.setImageResource(R.drawable.ic_core);
+                imageView.setImageResource(R.drawable.cpu_core_icon);
                 headingView.setText("Core Count");
                 valueView.setText(cpuModelEntities.get(groupPosition).getCoreCountAsString());
                 break;
             case 3:
-                imageView.setImageResource(R.drawable.ic_thread);
+                imageView.setImageResource(R.drawable.cpu_thread_icon);
                 headingView.setText("Thread Count");
                 valueView.setText(cpuModelEntities.get(groupPosition).getThreadCountAsString());
                 break;

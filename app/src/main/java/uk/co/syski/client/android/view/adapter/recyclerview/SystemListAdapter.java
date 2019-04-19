@@ -60,7 +60,7 @@ public class SystemListAdapter extends RecyclerView.Adapter<SystemListAdapter.Sy
         TextView headingView = holder.view.findViewById(R.id.headingView);
         TextView valueView = holder.view.findViewById(R.id.valueView);
 
-        imageView.setImageResource(R.drawable.ic_pc);
+        imageView.setImageResource(R.drawable.pc_icon);
         headingView.setText("View Details for");
         valueView.setText(systemEntities.get(position).HostName);
 

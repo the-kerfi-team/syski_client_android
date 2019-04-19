@@ -41,7 +41,7 @@ public class GPUActivity extends AppCompatActivity {
 
                 for (int i = 0; i < gpuEntities.size(); i++) {
                     listItems.add( new DoubleHeadedValueModel(
-                            R.drawable.ic_gpu,
+                            R.drawable.gpu_icon,
                             "Model",
                             gpuEntities.get(i).getModelName(),
                             "Manufacturer",
