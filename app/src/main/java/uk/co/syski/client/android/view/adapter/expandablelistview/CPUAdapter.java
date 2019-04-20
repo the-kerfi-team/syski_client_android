@@ -74,10 +74,10 @@ public class CPUAdapter extends BaseExpandableListAdapter {
         TextView secondHeadingView = convertView.findViewById(R.id.secondHeadingView);
         TextView secondValueView = convertView.findViewById(R.id.secondValueView);
 
-        imageView.setImageResource(R.drawable.cpu_icon);
-        firstHeadingView.setText("Model");
+        imageView.setImageResource(R.drawable.ic_cpu);
+        firstHeadingView.setText(R.string.txtModel);
         firstValueView.setText(cpuModelEntities.get(groupPosition).getModelName());
-        secondHeadingView.setText("Manufacturer");
+        secondHeadingView.setText(R.string.txtManufacturer);
         secondValueView.setText(cpuModelEntities.get(groupPosition).getManufacturerName());
 
         convertView.setOnClickListener(new View.OnClickListener() {
@@ -105,23 +105,23 @@ public class CPUAdapter extends BaseExpandableListAdapter {
 
         switch (childPosition) {
             case 0:
-                imageView.setImageResource(R.drawable.cpu_architecture_icon);
-                headingView.setText("Architecture");
+                imageView.setImageResource(R.drawable.ic_architecture);
+                headingView.setText(R.string.txtArch);
                 valueView.setText(cpuModelEntities.get(groupPosition).getArchitectureName());
                 break;
             case 1:
-                imageView.setImageResource(R.drawable.cpu_clock_icon);
-                headingView.setText("Clock Speed");
+                imageView.setImageResource(R.drawable.ic_clock);
+                headingView.setText(R.string.txtClock);
                 valueView.setText(cpuModelEntities.get(groupPosition).getClockSpeedAsString());
                 break;
             case 2:
-                imageView.setImageResource(R.drawable.cpu_core_icon);
-                headingView.setText("Core Count");
+                imageView.setImageResource(R.drawable.ic_core);
+                headingView.setText(R.string.txtCore);
                 valueView.setText(cpuModelEntities.get(groupPosition).getCoreCountAsString());
                 break;
             case 3:
-                imageView.setImageResource(R.drawable.cpu_thread_icon);
-                headingView.setText("Thread Count");
+                imageView.setImageResource(R.drawable.ic_thread);
+                headingView.setText(R.string.txtThread);
                 valueView.setText(cpuModelEntities.get(groupPosition).getThreadCountAsString());
                 break;
         }

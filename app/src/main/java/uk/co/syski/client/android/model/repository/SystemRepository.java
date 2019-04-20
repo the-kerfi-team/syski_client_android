@@ -18,7 +18,6 @@ import uk.co.syski.client.android.model.api.requests.system.APISystemsRequest;
 import uk.co.syski.client.android.model.database.SyskiCache;
 import uk.co.syski.client.android.model.database.dao.SystemDao;
 import uk.co.syski.client.android.model.database.entity.SystemEntity;
-import uk.co.syski.client.android.model.viewmodel.SystemRAMModel;
 
 public enum SystemRepository {
     INSTANCE;

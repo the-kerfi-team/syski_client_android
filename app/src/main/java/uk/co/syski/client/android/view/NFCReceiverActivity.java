@@ -23,9 +23,14 @@ import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.model.database.entity.SystemEntity;
 import uk.co.syski.client.android.viewmodel.SystemListViewModel;
 
+/**
+ * Activity used when an NFC tag is scanned, parsing the scanned tag and handling its contents
+ * Opening the system overview if a valid system (ID) is found on the tag
+ * Else displaying an appropriate message
+ */
 public class NFCReceiverActivity extends AppCompatActivity {
 
-    private static final String TAG = "CPUActivity";
+    private static final String TAG = "NFCReceiverActivity";
 
     private NfcAdapter nfcAdapter;
     private PendingIntent pendingIntent;

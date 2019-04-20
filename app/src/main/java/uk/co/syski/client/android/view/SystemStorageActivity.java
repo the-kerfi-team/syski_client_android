@@ -12,14 +12,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
-import android.widget.ListView;
 
 import java.util.List;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.model.database.entity.StorageEntity;
 import uk.co.syski.client.android.model.database.entity.data.StorageDataEntity;
 import uk.co.syski.client.android.model.viewmodel.SystemStorageModel;
+import uk.co.syski.client.android.view.activity.SyskiActivity;
 import uk.co.syski.client.android.view.adapter.expandablelistview.StorageAdapter;
 import uk.co.syski.client.android.view.fragment.DoubleHeadedValueFragment;
 import uk.co.syski.client.android.view.fragment.HeadedValueFragment;
@@ -27,17 +26,23 @@ import uk.co.syski.client.android.view.graph.VariableStorageByteReadWriteGraph;
 import uk.co.syski.client.android.view.graph.VariableStorageReadWriteGraph;
 import uk.co.syski.client.android.view.graph.VariableStorageTimeGraph;
 import uk.co.syski.client.android.view.graph.VariableStorageTransfersGraph;
+import uk.co.syski.client.android.view.menu.SyskiOptionsMenu;
 import uk.co.syski.client.android.view.model.DoubleHeadedValueModel;
 import uk.co.syski.client.android.view.model.HeadedValueModel;
 import uk.co.syski.client.android.viewmodel.SystemStorageDataViewModel;
 import uk.co.syski.client.android.viewmodel.SystemStorageViewModel;
 
-public class SystemStorageActivity extends AppCompatActivity {
+/**
+ * Activity for displaying all storage information for a system
+ */
+public class SystemStorageActivity extends SyskiActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_storage);
+
+        optionsMenu = new SyskiOptionsMenu();
 
         final StorageAdapter adapter = new StorageAdapter(this);
         ((ExpandableListView) findViewById(R.id.listView)).setAdapter(adapter);
@@ -139,25 +144,5 @@ public class SystemStorageActivity extends AppCompatActivity {
         );
 
         getSupportFragmentManager().beginTransaction().replace(R.id.byteReadsWritesFragment, byteReadsWritesFragment).commit();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.appbar, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_syslist) {
-            Intent settings = new Intent(this, SystemListMenu.class);
-            startActivity(settings);
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }

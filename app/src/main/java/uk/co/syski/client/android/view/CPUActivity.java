@@ -12,23 +12,26 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
-import android.widget.ListView;
 
 import java.util.List;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.model.database.entity.CPUEntity;
 import uk.co.syski.client.android.model.database.entity.data.CPUDataEntity;
 import uk.co.syski.client.android.model.viewmodel.SystemCPUModel;
+import uk.co.syski.client.android.view.activity.SyskiActivity;
 import uk.co.syski.client.android.view.adapter.expandablelistview.CPUAdapter;
 import uk.co.syski.client.android.view.fragment.HeadedValueFragment;
 import uk.co.syski.client.android.view.graph.VariableCPULoadGraph;
 import uk.co.syski.client.android.view.graph.VariableCPUProcessesGraph;
+import uk.co.syski.client.android.view.menu.SyskiOptionsMenu;
 import uk.co.syski.client.android.view.model.HeadedValueModel;
 import uk.co.syski.client.android.viewmodel.SystemCPUDataViewModel;
 import uk.co.syski.client.android.viewmodel.SystemCPUViewModel;
 
-public class CPUActivity extends AppCompatActivity {
+/**
+ * Activity for displaying all CPU information for a system
+ */
+public class CPUActivity extends SyskiActivity {
 
     private static final String TAG = "CPUActivity";
 
@@ -36,6 +39,8 @@ public class CPUActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cpu);
+
+        optionsMenu = new SyskiOptionsMenu();
 
         final CPUAdapter cpuAdapter = new CPUAdapter(this);
         ((ExpandableListView) findViewById(R.id.cpuList)).setAdapter(cpuAdapter);
@@ -97,25 +102,5 @@ public class CPUActivity extends AppCompatActivity {
         );
 
         getSupportFragmentManager().beginTransaction().replace(R.id.processesFragment, processesModel).commit();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.appbar, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_syslist) {
-            Intent settings = new Intent(this, SystemListMenu.class);
-            startActivity(settings);
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }

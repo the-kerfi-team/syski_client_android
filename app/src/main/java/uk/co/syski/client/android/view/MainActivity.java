@@ -1,8 +1,11 @@
 package uk.co.syski.client.android.view;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -39,15 +42,6 @@ import uk.co.syski.client.android.model.api.requests.APIRequest;
 import uk.co.syski.client.android.model.api.requests.auth.APILoginRequest;
 import uk.co.syski.client.android.model.api.requests.auth.APIRegisterRequest;
 import uk.co.syski.client.android.model.database.SyskiCache;
-import uk.co.syski.client.android.model.database.entity.CPUEntity;
-import uk.co.syski.client.android.model.database.entity.GPUEntity;
-import uk.co.syski.client.android.model.database.entity.RAMEntity;
-import uk.co.syski.client.android.model.database.entity.StorageEntity;
-import uk.co.syski.client.android.model.database.entity.SystemEntity;
-import uk.co.syski.client.android.model.database.entity.linking.SystemCPUEntity;
-import uk.co.syski.client.android.model.database.entity.linking.SystemGPUEntity;
-import uk.co.syski.client.android.model.database.entity.linking.SystemRAMEntity;
-import uk.co.syski.client.android.model.database.entity.linking.SystemStorageEntity;
 import uk.co.syski.client.android.model.repository.Repository;
 
 
@@ -60,17 +54,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        createNotificationChannel();
         SyskiCache.BuildDatabase(getApplicationContext());
         prefs = getApplicationContext().getSharedPreferences(getString(R.string.preference_usrID_key), Context.MODE_PRIVATE);
         String userId = prefs.getString(getString(R.string.preference_usrID_key), null);
-        if (userId != null)
-        {
+        if (userId != null) {
             Repository.getInstance().getUserRepository().setActiveUserId(UUID.fromString(userId));
             startActivity(new Intent(this, SystemListMenu.class));
             finish();
-        }
-        else
-        {
+        } else {
             setTheme(R.style.AppTheme);
             setContentView(R.layout.activity_main);
 
@@ -78,70 +70,31 @@ public class MainActivity extends AppCompatActivity {
             mSectionsPagerAdapter.addFragment(new Tab_Login(), "Login");
             mSectionsPagerAdapter.addFragment(new Tab_Register(), "Register");
 
-            mViewPager = (ViewPager) findViewById(R.id.container);
+            mViewPager = findViewById(R.id.container);
             mViewPager.setAdapter(mSectionsPagerAdapter);
 
-            TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+            TabLayout tabLayout = findViewById(R.id.tabs);
 
             mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
             tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
         }
     }
 
-    private void SeedDatabase()
-    {
-        SystemEntity system = new SystemEntity();
-        UUID uuid = UUID.fromString("38400000-8cf0-11bd-b23e-10b96e4ef00d");
-        //system.Id = uuid.randomUUID();
-        system.Id = uuid;
-        system.HostName = "Earth";
-        system.ManufacturerName = "Not Dell";
-        system.ModelName = "Mega Thinkpad";
-
-        CPUEntity cpu = new CPUEntity();
-        cpu.ThreadCount = 2;
-        cpu.ModelName="CPU Model";
-        cpu.ManufacturerName="CPU Manufacturer";
-        cpu.CoreCount=1;
-        cpu.ClockSpeed=1;
-        cpu.ArchitectureName="Architecture";
-        cpu.Id = UUID.randomUUID();
-
-        RAMEntity ram = new RAMEntity();
-        ram.Id = UUID.randomUUID();
-        ram.ManufacturerName = "RAM MANUFACTURER";
-        ram.MemoryBytes = 50000;
-        ram.MemoryTypeName = "RAM TYPE";
-        ram.ModelName = "RAM MODEL";
-
-        StorageEntity storage = new StorageEntity();
-        storage.Id = UUID.randomUUID();
-        storage.ManufacturerName = "Storage Manufacturer";
-        storage.MemoryBytes = 2199023255552L;
-        storage.MemoryTypeName = "StorageType";
-        storage.ModelName = "Storage Model";
-
-        GPUEntity gpu = new GPUEntity();
-        gpu.Id = UUID.randomUUID();
-        gpu.ModelName = "GPU Model";
-        gpu.ManufacturerName = "GPU Manufacturer";
-
-        SystemCPUEntity systemCPU = new SystemCPUEntity();
-        systemCPU.CPUId = cpu.Id;
-        systemCPU.SystemId = system.Id;
-
-        SystemRAMEntity systemRAM = new SystemRAMEntity();
-        systemRAM.RAMId = ram.Id;
-        systemRAM.SystemId = system.Id;
-
-        SystemStorageEntity systemStore = new SystemStorageEntity();
-        systemStore.StorageId = storage.Id;
-        systemStore.SystemId = system.Id;
-
-        SystemGPUEntity systemGPU = new SystemGPUEntity();
-        systemGPU.SystemId = system.Id;
-        systemGPU.GPUId = gpu.Id;
-
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String CHANNEL_ID = getString(R.string.channel_id);
+            CharSequence name = getString(R.string.channel_name);
+            String description = getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 
     @Override
@@ -175,8 +128,7 @@ public class MainActivity extends AppCompatActivity {
 
         protected void sendAPIRequest(String APIRequest) {
             APIRequest request = null;
-            if (APIRequest.equalsIgnoreCase("register"))
-            {
+            if (APIRequest.equalsIgnoreCase("register")) {
                 request = new APIRegisterRequest(getContext(),
                         mEmailView.getText().toString(),
                         mPasswordView.getText().toString(),
@@ -192,9 +144,7 @@ public class MainActivity extends AppCompatActivity {
                                 RequestFailed(error);
                             }
                         });
-            }
-            else if (APIRequest.equalsIgnoreCase("login"))
-            {
+            } else if (APIRequest.equalsIgnoreCase("login")) {
                 request = new APILoginRequest(getContext(),
                         mEmailView.getText().toString(),
                         mPasswordView.getText().toString(),
@@ -226,13 +176,11 @@ public class MainActivity extends AppCompatActivity {
             mDisableButton = false;
         }
 
-        protected boolean isEmailValid(String email)
-        {
+        protected boolean isEmailValid(String email) {
             return email.contains("@");
         }
 
-        protected boolean isPasswordValid(String password)
-        {
+        protected boolean isPasswordValid(String password) {
             return password.length() > 6;
         }
     }
@@ -322,8 +270,8 @@ public class MainActivity extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
             View view = inflater.inflate(R.layout.fragment_main_tab_register, container, false);
 
-            mEmailView = (EditText) view.findViewById(R.id.email);
-            mPasswordView = (EditText) view.findViewById(R.id.password);
+            mEmailView = view.findViewById(R.id.email);
+            mPasswordView = view.findViewById(R.id.password);
             mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                 @Override
                 public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -335,7 +283,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-            Button mEmailSignUpButton = (Button) view.findViewById(R.id.email_sign_up_button);
+            Button mEmailSignUpButton = view.findViewById(R.id.email_sign_up_button);
             mEmailSignUpButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

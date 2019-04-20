@@ -12,27 +12,32 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
-import android.widget.ListView;
 
 import java.util.List;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.model.database.entity.RAMEntity;
 import uk.co.syski.client.android.model.database.entity.data.RAMDataEntity;
 import uk.co.syski.client.android.model.viewmodel.SystemRAMModel;
+import uk.co.syski.client.android.view.activity.SyskiActivity;
 import uk.co.syski.client.android.view.adapter.expandablelistview.RAMAdapter;
 import uk.co.syski.client.android.view.fragment.HeadedValueFragment;
 import uk.co.syski.client.android.view.graph.VariableRAMGraph;
+import uk.co.syski.client.android.view.menu.SyskiOptionsMenu;
 import uk.co.syski.client.android.view.model.HeadedValueModel;
 import uk.co.syski.client.android.viewmodel.SystemRAMDataViewModel;
 import uk.co.syski.client.android.viewmodel.SystemRAMViewModel;
 
-public class RAMActivity extends AppCompatActivity {
+/**
+ * Activity for displaying all RAM information for a system
+ */
+public class RAMActivity extends SyskiActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ram);
+
+        optionsMenu = new SyskiOptionsMenu();
 
         final RAMAdapter adapter = new RAMAdapter(this);
         ((ExpandableListView) findViewById(R.id.listView)).setAdapter(adapter);
@@ -73,25 +78,5 @@ public class RAMActivity extends AppCompatActivity {
         );
 
         getSupportFragmentManager().beginTransaction().replace(R.id.freeRAMFragment, freeRAMFragment).commit();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.appbar, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_syslist) {
-            Intent settings = new Intent(this, SystemListMenu.class);
-            startActivity(settings);
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }

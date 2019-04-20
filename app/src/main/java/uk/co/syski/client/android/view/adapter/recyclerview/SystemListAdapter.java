@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import uk.co.syski.client.android.R;
@@ -28,6 +29,7 @@ public class SystemListAdapter extends RecyclerView.Adapter<SystemListAdapter.Sy
 
     public SystemListAdapter(Activity context) {
         this.context = context;
+        this.systemEntities = new LinkedList<>();
         prefs = context.getSharedPreferences(context.getString(R.string.preference_sysID_key), Context.MODE_PRIVATE);
         prefEditor = prefs.edit();
     }
@@ -60,8 +62,8 @@ public class SystemListAdapter extends RecyclerView.Adapter<SystemListAdapter.Sy
         TextView headingView = holder.view.findViewById(R.id.headingView);
         TextView valueView = holder.view.findViewById(R.id.valueView);
 
-        imageView.setImageResource(R.drawable.pc_icon);
-        headingView.setText("View Details for");
+        imageView.setImageResource(R.drawable.ic_pc);
+        headingView.setText(R.string.txt_details_for);
         valueView.setText(systemEntities.get(position).HostName);
 
         holder.view.setOnClickListener(new View.OnClickListener() {

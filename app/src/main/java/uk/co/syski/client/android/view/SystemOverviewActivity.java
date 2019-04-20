@@ -19,14 +19,19 @@ import java.util.List;
 
 import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.model.database.entity.SystemEntity;
+import uk.co.syski.client.android.view.activity.SyskiActivity;
 import uk.co.syski.client.android.view.adapter.listview.HeadedValueListAdapter;
 import uk.co.syski.client.android.view.fragment.HeadedValueFragment;
 import uk.co.syski.client.android.view.fragment.OverviewFragment;
+import uk.co.syski.client.android.view.menu.SyskiOptionsMenu;
 import uk.co.syski.client.android.view.model.DoubleHeadedValueModel;
 import uk.co.syski.client.android.view.model.HeadedValueModel;
 import uk.co.syski.client.android.viewmodel.SystemSummaryViewModel;
 
-public class SystemOverviewActivity extends AppCompatActivity {
+/**
+ * Activity for displaying an overview of a specified system
+ */
+public class SystemOverviewActivity extends SyskiActivity {
 
     private static final String TAG = "SystemOverviewActivity";
     private SystemSummaryViewModel viewModel;
@@ -35,6 +40,8 @@ public class SystemOverviewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_system_overview);
+
+        optionsMenu = new SyskiOptionsMenu();
 
         buildBaseUI();
 
@@ -187,23 +194,4 @@ public class SystemOverviewActivity extends AppCompatActivity {
         viewModel.restartOnClick();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.appbar, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_syslist) {
-            Intent settings = new Intent(this, SystemListMenu.class);
-            startActivity(settings);
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 }

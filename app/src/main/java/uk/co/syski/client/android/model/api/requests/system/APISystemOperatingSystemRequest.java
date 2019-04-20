@@ -17,10 +17,7 @@ import java.util.List;
 import java.util.UUID;
 
 import uk.co.syski.client.android.model.api.requests.APIAuthorizationRequest;
-import uk.co.syski.client.android.model.database.SyskiCache;
-import uk.co.syski.client.android.model.database.entity.CPUEntity;
 import uk.co.syski.client.android.model.database.entity.OperatingSystemEntity;
-import uk.co.syski.client.android.model.database.entity.linking.SystemCPUEntity;
 import uk.co.syski.client.android.model.database.entity.linking.SystemOSEntity;
 import uk.co.syski.client.android.model.repository.Repository;
 

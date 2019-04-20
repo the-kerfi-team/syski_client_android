@@ -4,13 +4,10 @@ import android.arch.core.util.Function;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Transformations;
-import android.arch.persistence.room.Dao;
 import android.content.Context;
 import android.os.AsyncTask;
 
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
@@ -19,14 +16,9 @@ import uk.co.syski.client.android.model.api.VolleySingleton;
 import uk.co.syski.client.android.model.api.requests.system.APISystemMotherboardRequest;
 import uk.co.syski.client.android.model.database.SyskiCache;
 import uk.co.syski.client.android.model.database.dao.MotherboardDao;
-import uk.co.syski.client.android.model.database.dao.OperatingSystemDao;
 import uk.co.syski.client.android.model.database.dao.linking.SystemMotherboardDao;
-import uk.co.syski.client.android.model.database.dao.linking.SystemOSDao;
 import uk.co.syski.client.android.model.database.entity.MotherboardEntity;
-import uk.co.syski.client.android.model.database.entity.OperatingSystemEntity;
 import uk.co.syski.client.android.model.database.entity.linking.SystemMotherboardEntity;
-import uk.co.syski.client.android.model.database.entity.linking.SystemOSEntity;
-import uk.co.syski.client.android.model.viewmodel.OperatingSystemModel;
 import uk.co.syski.client.android.model.viewmodel.SystemMotherboardModel;
 
 public enum MOBORepository {
