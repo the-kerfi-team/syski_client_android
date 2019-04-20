@@ -114,17 +114,19 @@ public class SystemOverviewActivity extends AppCompatActivity {
     private void openComponentOverview(int position) {
         Class dest;
         switch (position) {
-            case 0: dest = CPUActivity.class;
+            case 0: dest = BIOSActivity.class;
                 break;
-            case 1: dest = RAMActivity.class;
+            case 1: dest = CPUActivity.class;
                 break;
-            case 2: dest = SystemStorageActivity.class;
+            case 2: dest = RAMActivity.class;
                 break;
-            case 3: dest = GPUActivity.class;
+            case 3: dest = SystemStorageActivity.class;
                 break;
-            case 4: dest = MOBOActivity.class;
+            case 4: dest = GPUActivity.class;
                 break;
-            case 5: dest = SystemOSActivity.class;
+            case 5: dest = MOBOActivity.class;
+                break;
+            case 6: dest = SystemOSActivity.class;
                 break;
             default: dest = null;
         }
@@ -136,6 +138,13 @@ public class SystemOverviewActivity extends AppCompatActivity {
     private List<HeadedValueModel> getComponentList() {
         ArrayList<HeadedValueModel> listItems = new ArrayList<>();
 
+        listItems.add(
+            new HeadedValueModel(
+                R.drawable.placeholder,
+                "View details for",
+                "BIOS"
+            )
+        );
         listItems.add(
             new HeadedValueModel(
                 R.drawable.ic_cpu,
