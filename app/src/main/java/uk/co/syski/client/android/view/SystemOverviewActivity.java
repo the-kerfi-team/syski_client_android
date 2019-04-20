@@ -65,7 +65,7 @@ public class SystemOverviewActivity extends SyskiActivity {
             }
         });
 
-        HeadedValueFragment shutdownModel = HeadedValueFragment.newInstance(new HeadedValueModel(R.drawable.placeholder, "Shutdown System", "Tap here"));
+        HeadedValueFragment shutdownModel = HeadedValueFragment.newInstance(new HeadedValueModel(R.drawable.shutdown_icon, "Shutdown System", "Tap here"));
         getSupportFragmentManager().beginTransaction().add(R.id.shutdownFragment, shutdownModel).commit();
 
         View shutdownFragment = findViewById(R.id.shutdownFragment);
@@ -76,7 +76,7 @@ public class SystemOverviewActivity extends SyskiActivity {
             }
         });
 
-        HeadedValueFragment restartModel = HeadedValueFragment.newInstance(new HeadedValueModel(R.drawable.placeholder, "Restart System", "Tap here"));
+        HeadedValueFragment restartModel = HeadedValueFragment.newInstance(new HeadedValueModel(R.drawable.restart_icon, "Restart System", "Tap here"));
         getSupportFragmentManager().beginTransaction().add(R.id.restartFragment, restartModel).commit();
 
         View restartFragment = findViewById(R.id.restartFragment);

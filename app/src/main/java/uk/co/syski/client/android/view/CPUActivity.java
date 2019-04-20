@@ -85,7 +85,7 @@ public class CPUActivity extends SyskiActivity {
     private void updateRealTimeUI(CPUDataEntity cpuDataEntity) {
         HeadedValueFragment loadModel = HeadedValueFragment.newInstance(
             new HeadedValueModel(
-                R.drawable.placeholder,
+                R.drawable.graph_icon,
                 "CPU Load",
                 cpuDataEntity.Load + "%"
             )
@@ -95,7 +95,7 @@ public class CPUActivity extends SyskiActivity {
 
         HeadedValueFragment processesModel = HeadedValueFragment.newInstance(
             new HeadedValueModel(
-                R.drawable.placeholder,
+                R.drawable.graph_icon,
                 "CPU Processes",
                 Integer.toString(Math.round(cpuDataEntity.Processes))
             )
