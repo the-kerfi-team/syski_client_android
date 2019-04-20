@@ -206,6 +206,11 @@ public class SystemOverviewActivity extends AppCompatActivity {
             startActivity(settings);
             return true;
         }
+        if (id == R.id.action_settings) {
+            Intent settings = new Intent(this, SettingsActivity.class);
+            startActivity(settings);
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
