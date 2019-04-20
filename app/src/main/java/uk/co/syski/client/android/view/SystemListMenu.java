@@ -37,13 +37,15 @@ import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.model.database.SyskiCache;
 import uk.co.syski.client.android.model.database.entity.SystemEntity;
 import uk.co.syski.client.android.model.repository.Repository;
+import uk.co.syski.client.android.view.activity.SyskiActivity;
 import uk.co.syski.client.android.view.adapter.recyclerview.SystemListAdapter;
+import uk.co.syski.client.android.view.menu.SystemListOptionsMenu;
 import uk.co.syski.client.android.viewmodel.SystemListViewModel;
 
 /**
  * Activity displaying a list of a user's systems
  */
-public class SystemListMenu extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class SystemListMenu extends SyskiActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "SystemListMenu";
     SharedPreferences prefs;
@@ -56,6 +58,8 @@ public class SystemListMenu extends AppCompatActivity implements NavigationView.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sys_list_menu);
+
+        optionsMenu = new SystemListOptionsMenu();
 
         //Setup toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -122,29 +126,6 @@ public class SystemListMenu extends AppCompatActivity implements NavigationView.
         } else {
             super.onBackPressed();
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.sys_list_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
-            Intent settings = new Intent(this, SettingsActivity.class);
-            startActivity(settings);
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")

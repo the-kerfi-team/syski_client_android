@@ -16,14 +16,16 @@ import java.util.List;
 
 import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.model.viewmodel.SystemGPUModel;
+import uk.co.syski.client.android.view.activity.SyskiActivity;
 import uk.co.syski.client.android.view.adapter.listview.DoubleHeadedValueListAdapter;
+import uk.co.syski.client.android.view.menu.SyskiOptionsMenu;
 import uk.co.syski.client.android.view.model.DoubleHeadedValueModel;
 import uk.co.syski.client.android.viewmodel.SystemGPUViewModel;
 
 /**
  * Activity for displaying all GPU information for a system
  */
-public class GPUActivity extends AppCompatActivity {
+public class GPUActivity extends SyskiActivity {
 
     private static final String TAG = "GPUActivity";
 
@@ -31,6 +33,8 @@ public class GPUActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gpu);
+
+        optionsMenu = new SyskiOptionsMenu();
 
         final DoubleHeadedValueListAdapter adapter = new DoubleHeadedValueListAdapter(this);
         ListView listView = findViewById(R.id.gpuList);
@@ -54,25 +58,5 @@ public class GPUActivity extends AppCompatActivity {
                 adapter.setData(listItems);
             }
         });
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.appbar, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_syslist) {
-            Intent settings = new Intent(this, SystemListMenu.class);
-            startActivity(settings);
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }

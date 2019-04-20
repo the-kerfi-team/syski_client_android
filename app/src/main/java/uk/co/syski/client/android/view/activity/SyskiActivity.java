@@ -8,7 +8,7 @@ import uk.co.syski.client.android.view.menu.ActivityOptionsMenu;
 
 public abstract class SyskiActivity extends AppCompatActivity {
 
-    ActivityOptionsMenu optionsMenu;
+    protected ActivityOptionsMenu optionsMenu;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
