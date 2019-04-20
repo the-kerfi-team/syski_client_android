@@ -1,7 +1,11 @@
 package uk.co.syski.client.android.view;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -33,10 +37,30 @@ public class BIOSActivity extends AppCompatActivity {
 
         ArrayList<HeadedValueModel> biosData = new ArrayList<>();
 
-        biosData.add(new HeadedValueModel(R.drawable.version_icon, "Version", "P3.40"));
+        biosData.add(new HeadedValueModel(R.drawable.ic_version, "Version", "P3.40"));
         biosData.add(new HeadedValueModel(R.drawable.placeholder, "Date", "20171227000000.000000+000"));
 
         ListView dataList = findViewById(R.id.listView);
         dataList.setAdapter(new HeadedValueListAdapter(this, biosData));
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.appbar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_syslist) {
+            Intent settings = new Intent(this, SystemListMenu.class);
+            startActivity(settings);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
