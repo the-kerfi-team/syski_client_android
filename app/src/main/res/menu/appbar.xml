@@ -4,7 +4,14 @@
     <item
         android:id="@+id/action_syslist"
         android:icon="@drawable/ic_home"
-        android:orderInCategory="100"
+        android:orderInCategory="101"
+        android:title="@string/action_syslist"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_settings"
+        android:icon="@android:drawable/ic_menu_preferences"
+        android:orderInCategory="101"
         android:title="@string/action_syslist"
         app:showAsAction="always" />
 

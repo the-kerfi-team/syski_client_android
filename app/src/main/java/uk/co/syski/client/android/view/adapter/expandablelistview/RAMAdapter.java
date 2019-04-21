@@ -76,7 +76,7 @@ public class RAMAdapter extends BaseExpandableListAdapter {
         TextView secondHeadingView = convertView.findViewById(R.id.secondHeadingView);
         TextView secondValueView = convertView.findViewById(R.id.secondValueView);
 
-        imageView.setImageResource(R.drawable.ic_cpu);
+        imageView.setImageResource(R.drawable.ram_icon);
         firstHeadingView.setText(R.string.txtModel);
         firstValueView.setText(ramModelEntities.get(groupPosition).getModelName());
         secondHeadingView.setText(R.string.txtManufacturer);
@@ -105,7 +105,7 @@ public class RAMAdapter extends BaseExpandableListAdapter {
         TextView headingView = convertView.findViewById(R.id.headingView);
         TextView valueView = convertView.findViewById(R.id.valueView);
 
-        imageView.setImageResource(R.drawable.ic_memory_size);
+        imageView.setImageResource(R.drawable.memory_size_icon);
         headingView.setText(R.string.txtSize);
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         valueView.setText(ramModelEntities.get(groupPosition).getMemoryBytesAsString(sp.getString("pref_general_ram_unit", context.getString(R.string.pref_general_ram_unit_default))));

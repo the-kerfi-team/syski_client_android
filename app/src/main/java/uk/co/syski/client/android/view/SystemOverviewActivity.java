@@ -19,9 +19,11 @@ import java.util.List;
 
 import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.model.database.entity.SystemEntity;
+import uk.co.syski.client.android.view.activity.SyskiActivity;
 import uk.co.syski.client.android.view.adapter.listview.HeadedValueListAdapter;
 import uk.co.syski.client.android.view.fragment.HeadedValueFragment;
 import uk.co.syski.client.android.view.fragment.OverviewFragment;
+import uk.co.syski.client.android.view.menu.SyskiOptionsMenu;
 import uk.co.syski.client.android.view.model.DoubleHeadedValueModel;
 import uk.co.syski.client.android.view.model.HeadedValueModel;
 import uk.co.syski.client.android.viewmodel.SystemSummaryViewModel;
@@ -29,7 +31,7 @@ import uk.co.syski.client.android.viewmodel.SystemSummaryViewModel;
 /**
  * Activity for displaying an overview of a specified system
  */
-public class SystemOverviewActivity extends AppCompatActivity {
+public class SystemOverviewActivity extends SyskiActivity {
 
     private static final String TAG = "SystemOverviewActivity";
     private SystemSummaryViewModel viewModel;
@@ -38,6 +40,8 @@ public class SystemOverviewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_system_overview);
+
+        optionsMenu = new SyskiOptionsMenu();
 
         buildBaseUI();
 
@@ -61,7 +65,7 @@ public class SystemOverviewActivity extends AppCompatActivity {
             }
         });
 
-        HeadedValueFragment shutdownModel = HeadedValueFragment.newInstance(new HeadedValueModel(R.drawable.placeholder, "Shutdown System", "Tap here"));
+        HeadedValueFragment shutdownModel = HeadedValueFragment.newInstance(new HeadedValueModel(R.drawable.shutdown_icon, "Shutdown System", "Tap here"));
         getSupportFragmentManager().beginTransaction().add(R.id.shutdownFragment, shutdownModel).commit();
 
         View shutdownFragment = findViewById(R.id.shutdownFragment);
@@ -72,7 +76,7 @@ public class SystemOverviewActivity extends AppCompatActivity {
             }
         });
 
-        HeadedValueFragment restartModel = HeadedValueFragment.newInstance(new HeadedValueModel(R.drawable.placeholder, "Restart System", "Tap here"));
+        HeadedValueFragment restartModel = HeadedValueFragment.newInstance(new HeadedValueModel(R.drawable.restart_icon, "Restart System", "Tap here"));
         getSupportFragmentManager().beginTransaction().add(R.id.restartFragment, restartModel).commit();
 
         View restartFragment = findViewById(R.id.restartFragment);
@@ -89,7 +93,7 @@ public class SystemOverviewActivity extends AppCompatActivity {
 
         systemData.add(
             new HeadedValueModel(
-                R.drawable.placeholder,
+                R.drawable.name_icon,
                 "Host Name",
                 systemEntity.HostName
             )
@@ -97,7 +101,7 @@ public class SystemOverviewActivity extends AppCompatActivity {
 
         OverviewFragment overviewFragment = OverviewFragment.newInstance(
             new DoubleHeadedValueModel(
-                R.drawable.ic_pc,
+                R.drawable.pc_icon,
                 "Model",
                 systemEntity.ModelName,
                 "Manufacturer",
@@ -138,42 +142,42 @@ public class SystemOverviewActivity extends AppCompatActivity {
 
         listItems.add(
             new HeadedValueModel(
-                R.drawable.ic_cpu,
+                R.drawable.cpu_icon,
                 "View details for",
                 "CPU"
             )
         );
         listItems.add(
             new HeadedValueModel(
-                R.drawable.ic_gpu,
+                R.drawable.ram_icon,
                 "View details for",
                 "RAM"
             )
         );
         listItems.add(
             new HeadedValueModel(
-                R.drawable.ic_storage,
+                R.drawable.storage_icon,
                 "View details for",
                 "Storage"
             )
         );
         listItems.add(
             new HeadedValueModel(
-                R.drawable.ic_gpu,
+                R.drawable.gpu_icon,
                 "View details for",
                 "GPU"
             )
         );
         listItems.add(
             new HeadedValueModel(
-                R.drawable.ic_gpu,
+                R.drawable.motherboard_icon,
                 "View details for",
                 "Motherboard"
             )
         );
         listItems.add(
             new HeadedValueModel(
-                R.drawable.ic_pc,
+                R.drawable.pc_icon,
                 "View details for",
                 "Operating System"
             )
@@ -190,23 +194,4 @@ public class SystemOverviewActivity extends AppCompatActivity {
         viewModel.restartOnClick();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.appbar, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_syslist) {
-            Intent settings = new Intent(this, SystemListMenu.class);
-            startActivity(settings);
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 }
