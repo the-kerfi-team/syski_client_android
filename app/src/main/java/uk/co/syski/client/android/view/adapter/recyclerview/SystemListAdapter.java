@@ -16,7 +16,7 @@ import java.util.List;
 
 import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.model.database.entity.SystemEntity;
-import uk.co.syski.client.android.view.SystemOverviewActivity;
+import uk.co.syski.client.android.view.activity.SystemOverviewActivity;
 
 public class SystemListAdapter extends RecyclerView.Adapter<SystemListAdapter.SystemViewHolder> {
 

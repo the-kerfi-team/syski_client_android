@@ -1,4 +1,4 @@
-package uk.co.syski.client.android.view;
+package uk.co.syski.client.android.view.activity;
 
 import android.app.PendingIntent;
 import android.arch.lifecycle.Observer;
@@ -14,12 +14,10 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -37,7 +35,6 @@ import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.model.database.SyskiCache;
 import uk.co.syski.client.android.model.database.entity.SystemEntity;
 import uk.co.syski.client.android.model.repository.Repository;
-import uk.co.syski.client.android.view.activity.SyskiActivity;
 import uk.co.syski.client.android.view.adapter.recyclerview.SystemListAdapter;
 import uk.co.syski.client.android.view.menu.SystemListOptionsMenu;
 import uk.co.syski.client.android.viewmodel.SystemListViewModel;

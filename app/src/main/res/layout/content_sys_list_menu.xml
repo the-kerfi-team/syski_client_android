@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="uk.co.syski.client.android.view.SystemListMenu"
+    tools:context="uk.co.syski.client.android.view.activity.SystemListMenu"
     tools:showIn="@layout/app_bar_sys_list_menu">
 
     <android.support.v7.widget.RecyclerView

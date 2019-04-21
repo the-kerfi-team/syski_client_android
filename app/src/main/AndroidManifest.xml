@@ -18,7 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".view.MainActivity"
+            android:name=".view.activity.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Splash">
             <intent-filter>
@@ -28,92 +28,92 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.SystemListMenu"
+            android:name=".view.activity.SystemListMenu"
             android:label="@string/title_activity_sys_list_menu"
-            android:parentActivityName=".view.MainActivity"
+            android:parentActivityName=".view.activity.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="uk.co.syski.client.android.view.MainActivity" />
+                android:value="uk.co.syski.client.android.view.activity.MainActivity" />
         </activity>
         <activity
-            android:name=".view.SettingsActivity"
+            android:name=".view.activity.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".view.SystemListMenu"
+            android:parentActivityName=".view.activity.SystemListMenu"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.SystemOverviewActivity"
+            android:name=".view.activity.SystemOverviewActivity"
             android:label="@string/sys_overview_lbl"
-            android:parentActivityName=".view.SystemListMenu"
+            android:parentActivityName=".view.activity.SystemListMenu"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
             android:screenOrientation="fullSensor"
             tools:replace="screenOrientation" />
         <activity
-            android:name=".view.CPUActivity"
+            android:name=".view.activity.CPUActivity"
             android:label="@string/sys_cpu_lbl"
-            android:parentActivityName=".view.SystemOverviewActivity"
+            android:parentActivityName=".view.activity.SystemOverviewActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.RAMActivity"
+            android:name=".view.activity.RAMActivity"
             android:label="@string/sys_ram_lbl"
-            android:parentActivityName=".view.SystemOverviewActivity"
+            android:parentActivityName=".view.activity.SystemOverviewActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.SystemStorageActivity"
+            android:name=".view.activity.SystemStorageActivity"
             android:label="@string/sys_stg_lbl"
-            android:parentActivityName=".view.SystemOverviewActivity"
+            android:parentActivityName=".view.activity.SystemOverviewActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.GPUActivity"
+            android:name=".view.activity.GPUActivity"
             android:label="@string/sys_gpu_lbl"
-            android:parentActivityName=".view.SystemOverviewActivity"
+            android:parentActivityName=".view.activity.SystemOverviewActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.MOBOActivity"
+            android:name=".view.activity.MOBOActivity"
             android:label="@string/sys_mobo_lbl"
-            android:parentActivityName=".view.SystemOverviewActivity"
+            android:parentActivityName=".view.activity.SystemOverviewActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".view.SystemOSActivity"
+            android:name=".view.activity.SystemOSActivity"
             android:label="@string/sys_os_lbl"
-            android:parentActivityName=".view.SystemOverviewActivity"
+            android:parentActivityName=".view.activity.SystemOverviewActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.graph.VariableCPULoadGraph"
             android:label="CPU Load"
-            android:parentActivityName=".view.CPUActivity" />
+            android:parentActivityName=".view.activity.CPUActivity" />
         <activity
             android:name=".view.graph.VariableStorageTimeGraph"
             android:label="Storage Time"
-            android:parentActivityName=".view.SystemStorageActivity" />
+            android:parentActivityName=".view.activity.SystemStorageActivity" />
         <activity android:name=".view.graph.VariableNetworkGraph" />
         <activity
             android:name=".view.graph.VariableCPUProcessesGraph"
             android:label="CPU Processes"
-            android:parentActivityName=".view.CPUActivity" />
+            android:parentActivityName=".view.activity.CPUActivity" />
         <activity
             android:name=".view.graph.VariableRAMGraph"
             android:label="Free RAM"
-            android:parentActivityName=".view.RAMActivity" />
+            android:parentActivityName=".view.activity.RAMActivity" />
         <activity
             android:name=".view.graph.VariableStorageTransfersGraph"
             android:label="Storage Transfers"
-            android:parentActivityName=".view.SystemStorageActivity" />
+            android:parentActivityName=".view.activity.SystemStorageActivity" />
         <activity
             android:name=".view.graph.VariableStorageReadWriteGraph"
             android:label="Storage Reads and Writes"
-            android:parentActivityName=".view.SystemStorageActivity" />
+            android:parentActivityName=".view.activity.SystemStorageActivity" />
         <activity
             android:name=".view.graph.VariableStorageByteReadWriteGraph"
             android:label="Storage Byte Reads and Writes"
-            android:parentActivityName=".view.SystemStorageActivity" />
+            android:parentActivityName=".view.activity.SystemStorageActivity" />
         <activity
-            android:name=".view.NFCReceiverActivity"
+            android:name=".view.activity.NFCReceiverActivity"
             android:label="@string/nfc_lbl"
-            android:parentActivityName=".view.SystemListMenu">
+            android:parentActivityName=".view.activity.SystemListMenu">
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
 

@@ -19,17 +19,17 @@
         android:title="@string/pref_header_data_sync" />
     -->
     <header
-        android:fragment="uk.co.syski.client.android.view.SettingsActivity$GenPreferenceFragment"
+        android:fragment="uk.co.syski.client.android.view.activity.SettingsActivity$GenPreferenceFragment"
         android:icon="@drawable/ic_info_black_24dp"
         android:title="@string/pref_header_general" />
 
     <header
-        android:fragment="uk.co.syski.client.android.view.SettingsActivity$APIPreferenceFragment"
+        android:fragment="uk.co.syski.client.android.view.activity.SettingsActivity$APIPreferenceFragment"
         android:icon="@drawable/ic_backup_black_24dp"
         android:title="@string/pref_title_api" />
 
     <header
-        android:fragment="uk.co.syski.client.android.view.SettingsActivity$DeveloperPreferenceFragment"
+        android:fragment="uk.co.syski.client.android.view.activity.SettingsActivity$DeveloperPreferenceFragment"
         android:icon="@drawable/ic_usb_black_24dp"
         android:title="@string/pref_title_developer" />
 
