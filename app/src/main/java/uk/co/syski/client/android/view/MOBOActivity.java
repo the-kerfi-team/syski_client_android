@@ -50,7 +50,7 @@ public class MOBOActivity extends SyskiActivity {
     private void updateStaticUI(SystemMotherboardModel motherboardEntity) {
         DoubleHeadedValueFragment topFragment = DoubleHeadedValueFragment.newInstance(
             new DoubleHeadedValueModel(
-                R.drawable.ic_gpu,
+                R.drawable.motherboard_icon,
                 "Model",
                 motherboardEntity.getModelName(),
                 "Manufacturer",
@@ -63,7 +63,7 @@ public class MOBOActivity extends SyskiActivity {
         ArrayList<HeadedValueModel> motherboardData = new ArrayList<>();
         motherboardData.add(
             new HeadedValueModel(
-                R.drawable.ic_version,
+                R.drawable.version_icon,
                 "Version",
                 motherboardEntity.getVersion()
             )

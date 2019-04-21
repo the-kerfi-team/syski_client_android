@@ -48,7 +48,7 @@ public class GPUActivity extends SyskiActivity {
 
                 for (int i = 0; i < gpuEntities.size(); i++) {
                     listItems.add( new DoubleHeadedValueModel(
-                            R.drawable.ic_gpu,
+                            R.drawable.gpu_icon,
                             "Model",
                             gpuEntities.get(i).getModelName(),
                             "Manufacturer",

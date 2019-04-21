@@ -76,7 +76,7 @@ public class StorageAdapter extends BaseExpandableListAdapter {
         TextView secondHeadingView = convertView.findViewById(R.id.secondHeadingView);
         TextView secondValueView = convertView.findViewById(R.id.secondValueView);
 
-        imageView.setImageResource(R.drawable.ic_storage);
+        imageView.setImageResource(R.drawable.storage_icon);
         firstHeadingView.setText(R.string.txtModel);
         firstValueView.setText(storageModelEntities.get(groupPosition).getModelName());
         secondHeadingView.setText(R.string.txtManufacturer);
@@ -105,7 +105,7 @@ public class StorageAdapter extends BaseExpandableListAdapter {
         TextView headingView = convertView.findViewById(R.id.headingView);
         TextView valueView = convertView.findViewById(R.id.valueView);
 
-        imageView.setImageResource(R.drawable.ic_memory_size);
+        imageView.setImageResource(R.drawable.memory_size_icon);
         headingView.setText(R.string.txtSize);
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         valueView.setText(storageModelEntities.get(groupPosition).getMemoryBytesAsString(sp.getString("pref_general_storage_unit", context.getString(R.string.pref_general_storage_unit_default))));

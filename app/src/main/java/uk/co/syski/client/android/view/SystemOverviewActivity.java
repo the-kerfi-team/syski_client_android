@@ -65,7 +65,7 @@ public class SystemOverviewActivity extends SyskiActivity {
             }
         });
 
-        HeadedValueFragment shutdownModel = HeadedValueFragment.newInstance(new HeadedValueModel(R.drawable.placeholder, "Shutdown System", "Tap here"));
+        HeadedValueFragment shutdownModel = HeadedValueFragment.newInstance(new HeadedValueModel(R.drawable.shutdown_icon, "Shutdown System", "Tap here"));
         getSupportFragmentManager().beginTransaction().add(R.id.shutdownFragment, shutdownModel).commit();
 
         View shutdownFragment = findViewById(R.id.shutdownFragment);
@@ -76,7 +76,7 @@ public class SystemOverviewActivity extends SyskiActivity {
             }
         });
 
-        HeadedValueFragment restartModel = HeadedValueFragment.newInstance(new HeadedValueModel(R.drawable.placeholder, "Restart System", "Tap here"));
+        HeadedValueFragment restartModel = HeadedValueFragment.newInstance(new HeadedValueModel(R.drawable.restart_icon, "Restart System", "Tap here"));
         getSupportFragmentManager().beginTransaction().add(R.id.restartFragment, restartModel).commit();
 
         View restartFragment = findViewById(R.id.restartFragment);
@@ -93,7 +93,7 @@ public class SystemOverviewActivity extends SyskiActivity {
 
         systemData.add(
             new HeadedValueModel(
-                R.drawable.placeholder,
+                R.drawable.name_icon,
                 "Host Name",
                 systemEntity.HostName
             )
@@ -101,7 +101,7 @@ public class SystemOverviewActivity extends SyskiActivity {
 
         OverviewFragment overviewFragment = OverviewFragment.newInstance(
             new DoubleHeadedValueModel(
-                R.drawable.ic_pc,
+                R.drawable.pc_icon,
                 "Model",
                 systemEntity.ModelName,
                 "Manufacturer",
@@ -142,42 +142,42 @@ public class SystemOverviewActivity extends SyskiActivity {
 
         listItems.add(
             new HeadedValueModel(
-                R.drawable.ic_cpu,
+                R.drawable.cpu_icon,
                 "View details for",
                 "CPU"
             )
         );
         listItems.add(
             new HeadedValueModel(
-                R.drawable.ic_gpu,
+                R.drawable.ram_icon,
                 "View details for",
                 "RAM"
             )
         );
         listItems.add(
             new HeadedValueModel(
-                R.drawable.ic_storage,
+                R.drawable.storage_icon,
                 "View details for",
                 "Storage"
             )
         );
         listItems.add(
             new HeadedValueModel(
-                R.drawable.ic_gpu,
+                R.drawable.gpu_icon,
                 "View details for",
                 "GPU"
             )
         );
         listItems.add(
             new HeadedValueModel(
-                R.drawable.ic_gpu,
+                R.drawable.motherboard_icon,
                 "View details for",
                 "Motherboard"
             )
         );
         listItems.add(
             new HeadedValueModel(
-                R.drawable.ic_pc,
+                R.drawable.pc_icon,
                 "View details for",
                 "Operating System"
             )

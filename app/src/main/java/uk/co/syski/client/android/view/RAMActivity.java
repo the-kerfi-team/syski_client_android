@@ -71,7 +71,7 @@ public class RAMActivity extends SyskiActivity {
     private void updateRealTimeUI(RAMDataEntity ramDataEntity) {
         HeadedValueFragment freeRAMFragment = HeadedValueFragment.newInstance(
             new HeadedValueModel(
-                R.drawable.placeholder,
+                R.drawable.graph_icon,
                 "Free RAM",
                 ramDataEntity.Free + "MB"
             )

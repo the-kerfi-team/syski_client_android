@@ -103,7 +103,7 @@ public class SystemStorageActivity extends SyskiActivity {
     private void updateRealTimeUI(StorageDataEntity StorageDataEntity) {
         HeadedValueFragment timeFragment = HeadedValueFragment.newInstance(
                 new HeadedValueModel(
-                R.drawable.placeholder,
+                R.drawable.graph_icon,
                 "Time",
                 StorageDataEntity.Time + "s"
             )
@@ -113,7 +113,7 @@ public class SystemStorageActivity extends SyskiActivity {
 
         HeadedValueFragment transfersFragment = HeadedValueFragment.newInstance(
                 new HeadedValueModel(
-                R.drawable.placeholder,
+                R.drawable.graph_icon,
                 "Transfers",
                 Float.toString(StorageDataEntity.Transfers)
             )
@@ -123,7 +123,7 @@ public class SystemStorageActivity extends SyskiActivity {
 
         DoubleHeadedValueFragment readsWritesFragment = DoubleHeadedValueFragment.newInstance(
             new DoubleHeadedValueModel(
-                R.drawable.placeholder,
+                R.drawable.graph_icon,
                 "Reads",
                 Float.toString(StorageDataEntity.Reads),
                 "Writes",
@@ -135,7 +135,7 @@ public class SystemStorageActivity extends SyskiActivity {
 
         DoubleHeadedValueFragment byteReadsWritesFragment = DoubleHeadedValueFragment.newInstance(
             new DoubleHeadedValueModel(
-                R.drawable.placeholder,
+                R.drawable.graph_icon,
                 "Byte Reads",
                 Float.toString(StorageDataEntity.ByteReads),
                 "Byte Writes",
