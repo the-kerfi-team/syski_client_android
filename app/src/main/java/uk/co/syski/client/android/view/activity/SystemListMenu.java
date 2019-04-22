@@ -101,12 +101,13 @@ public class SystemListMenu extends SyskiActivity implements NavigationView.OnNa
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 // TODO: Delete System from API
-                adapter.removeItem(viewHolder.getAdapterPosition());
                 SystemEntity systemEntity = adapter.getItem(viewHolder.getAdapterPosition());
+
                 viewModel.delete(systemEntity);
+                adapter.removeItem(viewHolder.getAdapterPosition());
 
                 // TODO: Snackbar Undo Functionality
-                Snackbar snackbar = Snackbar.make(listView,"System Deleted", Snackbar.LENGTH_LONG);
+                Snackbar snackbar = Snackbar.make(listView,"System: \""+systemEntity.HostName+"\" Deleted", Snackbar.LENGTH_LONG);
                 snackbar.show();
             }
         };
