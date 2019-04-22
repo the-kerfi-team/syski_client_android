@@ -85,4 +85,13 @@ public class SystemListAdapter extends RecyclerView.Adapter<SystemListAdapter.Sy
     public int getItemCount() {
         return systemEntities.size();
     }
+
+    public SystemEntity getItem(int pos){
+        return systemEntities.get(pos);
+    }
+
+    public void removeItem(int pos){
+        systemEntities.remove(pos);
+        notifyItemRemoved(pos);
+    }
 }
