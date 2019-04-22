@@ -3,6 +3,7 @@ package uk.co.syski.client.android.view.activity;
 import android.app.PendingIntent;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,6 +18,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -76,9 +78,12 @@ public class SystemListMenu extends SyskiActivity implements NavigationView.OnNa
 
         // Setup ListView
         RecyclerView listView = findViewById(R.id.sysList);
+
         listView.setLayoutManager(new GridLayoutManager(this, 1));
+
         final SystemListAdapter adapter = new SystemListAdapter(this);
         listView.setAdapter(adapter);
+
         viewModel = ViewModelProviders.of(this).get(SystemListViewModel.class);
         viewModel.get().observe(this, new Observer<List<SystemEntity>>() {
             @Override
@@ -86,6 +91,20 @@ public class SystemListMenu extends SyskiActivity implements NavigationView.OnNa
                 adapter.setData(systemEntities);
             }
         });
+
+        ItemTouchHelper.SimpleCallback systemListCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+
+            }
+        };
+
+        new ItemTouchHelper(systemListCallback).attachToRecyclerView(listView);
 
         Intent intent = new Intent(this, SystemListMenu.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
