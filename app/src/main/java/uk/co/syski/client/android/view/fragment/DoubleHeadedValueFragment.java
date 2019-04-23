@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.model.fragment.DoubleHeadedValueModel;
+import uk.co.syski.client.android.view.model.DoubleHeadedValueModel;
 
 public class DoubleHeadedValueFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

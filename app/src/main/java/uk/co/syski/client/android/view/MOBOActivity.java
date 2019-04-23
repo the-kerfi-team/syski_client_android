@@ -10,23 +10,24 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.data.entity.MotherboardEntity;
-import uk.co.syski.client.android.model.fragment.DoubleHeadedValueModel;
-import uk.co.syski.client.android.model.fragment.HeadedValueModel;
-import uk.co.syski.client.android.view.adapter.HeadedValueListAdapter;
+import uk.co.syski.client.android.model.viewmodel.SystemMotherboardModel;
+import uk.co.syski.client.android.view.activity.SyskiActivity;
+import uk.co.syski.client.android.view.adapter.listview.HeadedValueListAdapter;
 import uk.co.syski.client.android.view.fragment.DoubleHeadedValueFragment;
+import uk.co.syski.client.android.view.menu.SyskiOptionsMenu;
+import uk.co.syski.client.android.view.model.DoubleHeadedValueModel;
+import uk.co.syski.client.android.view.model.HeadedValueModel;
 import uk.co.syski.client.android.viewmodel.MotherboardViewModel;
 
-public class MOBOActivity extends AppCompatActivity {
+/**
+ * Activity for displaying all Motherboard information for a system
+ */
+public class MOBOActivity extends SyskiActivity {
 
     private static final String TAG = "MOBOActivity";
 
@@ -35,61 +36,40 @@ public class MOBOActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_overview);
 
+        optionsMenu = new SyskiOptionsMenu();
+
         MotherboardViewModel viewModel = ViewModelProviders.of(this).get(MotherboardViewModel.class);
-        viewModel.get().observe(this, new Observer<List<MotherboardEntity>>() {
+        viewModel.get().observe(this, new Observer<SystemMotherboardModel>() {
             @Override
-            public void onChanged(@Nullable List<MotherboardEntity> motherboardEntities) {
-                if (motherboardEntities.size() > 0) {
-                    updateStaticUI(motherboardEntities.get(0));
-                }
+            public void onChanged(@Nullable SystemMotherboardModel motherboardEntity) {
+                updateStaticUI(motherboardEntity);
             }
         });
     }
 
-    private void updateStaticUI(MotherboardEntity motherboardEntity) {
+    private void updateStaticUI(SystemMotherboardModel motherboardEntity) {
         DoubleHeadedValueFragment topFragment = DoubleHeadedValueFragment.newInstance(
             new DoubleHeadedValueModel(
-                R.drawable.ic_gpu,
+                R.drawable.motherboard_icon,
                 "Model",
-                motherboardEntity.ModelName,
+                motherboardEntity.getModelName(),
                 "Manufacturer",
-                motherboardEntity.ManufacturerName
+                motherboardEntity.getManufacturerName()
             )
         );
 
         getSupportFragmentManager().beginTransaction().replace(R.id.topFragment, topFragment).commit();
 
         ArrayList<HeadedValueModel> motherboardData = new ArrayList<>();
-
         motherboardData.add(
             new HeadedValueModel(
-                R.drawable.ic_version,
+                R.drawable.version_icon,
                 "Version",
-                motherboardEntity.Version
+                motherboardEntity.getVersion()
             )
         );
 
         ListView dataList = findViewById(R.id.listView);
         dataList.setAdapter(new HeadedValueListAdapter(this, motherboardData));
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.appbar, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_syslist) {
-            Intent settings = new Intent(this, SystemListMenu.class);
-            startActivity(settings);
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }

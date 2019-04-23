@@ -13,7 +13,7 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 import java.util.List;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.data.entity.data.CPUDataEntity;
+import uk.co.syski.client.android.model.database.entity.data.CPUDataEntity;
 import uk.co.syski.client.android.viewmodel.SystemCPUDataViewModel;
 
 public class VariableCPULoadGraph extends AppCompatActivity {

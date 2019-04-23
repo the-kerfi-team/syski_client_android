@@ -11,37 +11,47 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListView;
+import android.widget.ExpandableListView;
 
 import java.util.List;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.data.entity.StorageEntity;
-import uk.co.syski.client.android.data.entity.data.StorageDataEntity;
-import uk.co.syski.client.android.model.fragment.DoubleHeadedValueModel;
-import uk.co.syski.client.android.model.fragment.HeadedValueModel;
-import uk.co.syski.client.android.view.adapter.StorageAdapter;
+import uk.co.syski.client.android.model.database.entity.data.StorageDataEntity;
+import uk.co.syski.client.android.model.viewmodel.SystemStorageModel;
+import uk.co.syski.client.android.view.activity.SyskiActivity;
+import uk.co.syski.client.android.view.adapter.expandablelistview.StorageAdapter;
 import uk.co.syski.client.android.view.fragment.DoubleHeadedValueFragment;
 import uk.co.syski.client.android.view.fragment.HeadedValueFragment;
 import uk.co.syski.client.android.view.graph.VariableStorageByteReadWriteGraph;
 import uk.co.syski.client.android.view.graph.VariableStorageReadWriteGraph;
 import uk.co.syski.client.android.view.graph.VariableStorageTimeGraph;
 import uk.co.syski.client.android.view.graph.VariableStorageTransfersGraph;
+import uk.co.syski.client.android.view.menu.SyskiOptionsMenu;
+import uk.co.syski.client.android.view.model.DoubleHeadedValueModel;
+import uk.co.syski.client.android.view.model.HeadedValueModel;
 import uk.co.syski.client.android.viewmodel.SystemStorageDataViewModel;
 import uk.co.syski.client.android.viewmodel.SystemStorageViewModel;
 
-public class SystemStorageActivity extends AppCompatActivity {
+/**
+ * Activity for displaying all storage information for a system
+ */
+public class SystemStorageActivity extends SyskiActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_storage);
 
+        optionsMenu = new SyskiOptionsMenu();
+
+        final StorageAdapter adapter = new StorageAdapter(this);
+        ((ExpandableListView) findViewById(R.id.listView)).setAdapter(adapter);
+
         SystemStorageViewModel model = ViewModelProviders.of(this).get(SystemStorageViewModel.class);
-        model.get().observe(this, new Observer<List<StorageEntity>>() {
+        model.get().observe(this, new Observer<List<SystemStorageModel>>() {
             @Override
-            public void onChanged(@Nullable List<StorageEntity> StorageEntities) {
-                updateStaticUI(StorageEntities);
+            public void onChanged(@Nullable List<SystemStorageModel> StorageEntities) {
+                adapter.setData(StorageEntities);
             }
         });
 
@@ -90,15 +100,10 @@ public class SystemStorageActivity extends AppCompatActivity {
         });
     }
 
-    private void updateStaticUI(List<StorageEntity> StorageEntities) {
-        ListView listView = findViewById(R.id.listView);
-        listView.setAdapter(new StorageAdapter(this, StorageEntities));
-    }
-
     private void updateRealTimeUI(StorageDataEntity StorageDataEntity) {
         HeadedValueFragment timeFragment = HeadedValueFragment.newInstance(
                 new HeadedValueModel(
-                R.drawable.placeholder,
+                R.drawable.graph_icon,
                 "Time",
                 StorageDataEntity.Time + "s"
             )
@@ -108,7 +113,7 @@ public class SystemStorageActivity extends AppCompatActivity {
 
         HeadedValueFragment transfersFragment = HeadedValueFragment.newInstance(
                 new HeadedValueModel(
-                R.drawable.placeholder,
+                R.drawable.graph_icon,
                 "Transfers",
                 Float.toString(StorageDataEntity.Transfers)
             )
@@ -118,7 +123,7 @@ public class SystemStorageActivity extends AppCompatActivity {
 
         DoubleHeadedValueFragment readsWritesFragment = DoubleHeadedValueFragment.newInstance(
             new DoubleHeadedValueModel(
-                R.drawable.placeholder,
+                R.drawable.graph_icon,
                 "Reads",
                 Float.toString(StorageDataEntity.Reads),
                 "Writes",
@@ -130,7 +135,7 @@ public class SystemStorageActivity extends AppCompatActivity {
 
         DoubleHeadedValueFragment byteReadsWritesFragment = DoubleHeadedValueFragment.newInstance(
             new DoubleHeadedValueModel(
-                R.drawable.placeholder,
+                R.drawable.graph_icon,
                 "Byte Reads",
                 Float.toString(StorageDataEntity.ByteReads),
                 "Byte Writes",
@@ -139,25 +144,5 @@ public class SystemStorageActivity extends AppCompatActivity {
         );
 
         getSupportFragmentManager().beginTransaction().replace(R.id.byteReadsWritesFragment, byteReadsWritesFragment).commit();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.appbar, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_syslist) {
-            Intent settings = new Intent(this, SystemListMenu.class);
-            startActivity(settings);
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }

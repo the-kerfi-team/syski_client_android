@@ -15,23 +15,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.model.fragment.HeadedValueModel;
-import uk.co.syski.client.android.model.OperatingSystemModel;
-import uk.co.syski.client.android.view.adapter.HeadedValueListAdapter;
+import uk.co.syski.client.android.model.viewmodel.OperatingSystemModel;
+import uk.co.syski.client.android.view.activity.SyskiActivity;
+import uk.co.syski.client.android.view.adapter.listview.HeadedValueListAdapter;
+import uk.co.syski.client.android.view.menu.SyskiOptionsMenu;
+import uk.co.syski.client.android.view.model.HeadedValueModel;
 import uk.co.syski.client.android.viewmodel.OperatingSystemViewModel;
 
-public class SystemOSActivity extends AppCompatActivity {
+/**
+ * Activity for displaying all Operating System information for a system
+ */
+public class SystemOSActivity extends SyskiActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_os);
 
+        optionsMenu = new SyskiOptionsMenu();
+
         OperatingSystemViewModel viewModel = ViewModelProviders.of(this).get(OperatingSystemViewModel.class);
         viewModel.get().observe(this, new Observer<List<OperatingSystemModel>>() {
             @Override
             public void onChanged(@Nullable List<OperatingSystemModel> osEntities) {
-                if (osEntities.size() > 0) {
+                if (osEntities != null && osEntities.size() > 0) {
                     updateStaticUI(osEntities.get(0));
                 }
             }
@@ -42,42 +49,22 @@ public class SystemOSActivity extends AppCompatActivity {
         ArrayList<HeadedValueModel> osData = new ArrayList<>();
 
         osData.add(new HeadedValueModel(
-            R.drawable.ic_pc,
+            R.drawable.name_icon,
             "Name",
-            operatingSystemModel.Name
+            operatingSystemModel.getName()
         ));
         osData.add(new HeadedValueModel(
-            R.drawable.ic_architecture,
+            R.drawable.cpu_architecture_icon,
             "Architecture",
-            operatingSystemModel.ArchitectureName
+            operatingSystemModel.getArchitectureName()
         ));
         osData.add(new HeadedValueModel(
-            R.drawable.ic_version,
+            R.drawable.version_icon,
             "Version",
-            operatingSystemModel.Version
+            operatingSystemModel.getVersion()
         ));
 
         ListView listView = findViewById(R.id.listView);
         listView.setAdapter(new HeadedValueListAdapter(this, osData));
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.appbar, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_syslist) {
-            Intent settings = new Intent(this, SystemListMenu.class);
-            startActivity(settings);
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }
