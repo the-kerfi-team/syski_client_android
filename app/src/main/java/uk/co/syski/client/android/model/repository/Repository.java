@@ -44,6 +44,11 @@ public enum Repository {
         return MOBORepository.INSTANCE;
     }
 
+    public synchronized BIOSRepository getBIOSRepository()
+    {
+        return BIOSRepository.INSTANCE;
+    }
+
     public synchronized OSRepository getOSRepository()
     {
         return OSRepository.INSTANCE;
