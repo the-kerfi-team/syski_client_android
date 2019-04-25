@@ -139,6 +139,10 @@
         <activity
             android:name=".view.activity.BIOSActivity"
             android:label="BIOS"
+            android:parentActivityName=".view.activity.SystemOverviewActivity" />
+        <activity
+            android:name=".view.activity.ProcessListActivity"
+            android:label="Processes"
             android:parentActivityName=".view.activity.SystemOverviewActivity"
             />
     </application>
