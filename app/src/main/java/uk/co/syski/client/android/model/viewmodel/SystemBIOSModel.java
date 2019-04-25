@@ -16,6 +16,11 @@ public class SystemBIOSModel
         this.date = date;
     }
 
+    public SystemBIOSModel()
+    {
+        this(null, null, null, null);
+    }
+
     public String getManufacturerName()
     {
         return ModelUtil.nullToUnknown(manufacturerName);

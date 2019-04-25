@@ -41,10 +41,10 @@ public class BIOSActivity extends SyskiActivity {
         DoubleHeadedValueFragment topFragment = DoubleHeadedValueFragment.newInstance(
             new DoubleHeadedValueModel(
                 R.drawable.placeholder,
-                "Caption",
-                biosEntity.getCaption(),
-                "Manufacturer",
-                biosEntity.getManufacturerName()
+               "Manufacturer",
+                biosEntity.getManufacturerName(),
+               "Caption",
+                biosEntity.getCaption()
             )
         );
 

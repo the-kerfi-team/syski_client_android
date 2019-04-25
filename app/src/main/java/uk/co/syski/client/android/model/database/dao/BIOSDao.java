@@ -1,5 +1,6 @@
 package uk.co.syski.client.android.model.database.dao;
 
+import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
@@ -13,6 +14,7 @@ import java.util.UUID;
 import uk.co.syski.client.android.model.database.entity.BIOSEntity;
 import uk.co.syski.client.android.model.database.entity.CPUEntity;
 
+@Dao
 public abstract class BIOSDao {
 
     @Insert(onConflict = OnConflictStrategy.FAIL)
@@ -21,13 +23,13 @@ public abstract class BIOSDao {
     @Insert(onConflict = OnConflictStrategy.FAIL)
     public abstract void insert(BIOSEntity... biosEntities);
 
-    @Query("SELECT * FROM CPUEntity")
+    @Query("SELECT * FROM BIOSEntity")
     public abstract List<BIOSEntity> get();
 
-    @Query("SELECT * FROM CPUEntity WHERE Id == :Id")
+    @Query("SELECT * FROM BIOSEntity WHERE Id == :Id")
     public abstract BIOSEntity get(UUID Id);
 
-    @Query("SELECT * FROM CPUEntity WHERE Id in (:Ids)")
+    @Query("SELECT * FROM BIOSEntity WHERE Id in (:Ids)")
     public abstract List<BIOSEntity> get(UUID... Ids);
 
     @Query("SELECT * FROM BIOSEntity INNER JOIN SystemBIOSEntity ON Id = BIOSId WHERE SystemId IN (:Ids)")
