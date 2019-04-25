@@ -16,7 +16,7 @@ import java.util.List;
 
 import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.model.database.entity.SystemEntity;
-import uk.co.syski.client.android.view.SystemOverviewActivity;
+import uk.co.syski.client.android.view.activity.SystemOverviewActivity;
 
 public class SystemListAdapter extends RecyclerView.Adapter<SystemListAdapter.SystemViewHolder> {
 
@@ -62,7 +62,7 @@ public class SystemListAdapter extends RecyclerView.Adapter<SystemListAdapter.Sy
         TextView headingView = holder.view.findViewById(R.id.headingView);
         TextView valueView = holder.view.findViewById(R.id.valueView);
 
-        imageView.setImageResource(R.drawable.ic_pc);
+        imageView.setImageResource(R.drawable.pc_icon);
         headingView.setText(R.string.txt_details_for);
         valueView.setText(systemEntities.get(position).HostName);
 
@@ -84,5 +84,14 @@ public class SystemListAdapter extends RecyclerView.Adapter<SystemListAdapter.Sy
     @Override
     public int getItemCount() {
         return systemEntities.size();
+    }
+
+    public SystemEntity getItem(int pos){
+        return systemEntities.get(pos);
+    }
+
+    public void removeItem(int pos){
+        systemEntities.remove(pos);
+        notifyItemRemoved(pos);
     }
 }

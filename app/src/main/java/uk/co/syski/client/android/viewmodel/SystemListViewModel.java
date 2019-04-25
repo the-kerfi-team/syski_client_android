@@ -26,4 +26,8 @@ public class SystemListViewModel extends AndroidViewModel {
         return mSystemList;
     }
 
+    public void delete(SystemEntity systemEntity){
+        mSystemRepository.delete(systemEntity);
+    }
+
 }

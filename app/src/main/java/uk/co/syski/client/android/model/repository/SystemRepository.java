@@ -104,6 +104,17 @@ public enum SystemRepository {
 
     // Add other methods here
 
+    public void delete(SystemEntity systemEntity)
+    {
+        try {
+            new deleteSystemsAsyncTask(mSystemDao).execute(systemEntity).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
+
     private static class loadSystemEntitiesAsyncTask extends AsyncTask<Void, Void, HashMap<UUID, SystemEntity>> {
 
         private SystemDao mSystemDao;
@@ -140,6 +151,19 @@ public enum SystemRepository {
             return null;
         }
 
+    }
+
+    private static class deleteSystemsAsyncTask extends AsyncTask<SystemEntity, Void, Void> {
+        private SystemDao mSystemDao;
+
+        deleteSystemsAsyncTask(SystemDao systemDao) { mSystemDao = systemDao;}
+
+        protected Void doInBackground(final SystemEntity... systemEntities) {
+            for (SystemEntity systemEntity: systemEntities) {
+                mSystemDao.delete(systemEntity);
+            }
+            return null;
+        }
     }
 
 }

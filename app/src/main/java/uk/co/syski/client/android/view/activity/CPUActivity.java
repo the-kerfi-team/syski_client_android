@@ -1,4 +1,4 @@
-package uk.co.syski.client.android.view;
+package uk.co.syski.client.android.view.activity;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -18,10 +19,12 @@ import java.util.List;
 import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.model.database.entity.data.CPUDataEntity;
 import uk.co.syski.client.android.model.viewmodel.SystemCPUModel;
+import uk.co.syski.client.android.view.activity.SyskiActivity;
 import uk.co.syski.client.android.view.adapter.expandablelistview.CPUAdapter;
 import uk.co.syski.client.android.view.fragment.HeadedValueFragment;
 import uk.co.syski.client.android.view.graph.VariableCPULoadGraph;
 import uk.co.syski.client.android.view.graph.VariableCPUProcessesGraph;
+import uk.co.syski.client.android.view.menu.SyskiOptionsMenu;
 import uk.co.syski.client.android.view.model.HeadedValueModel;
 import uk.co.syski.client.android.viewmodel.SystemCPUDataViewModel;
 import uk.co.syski.client.android.viewmodel.SystemCPUViewModel;
@@ -29,7 +32,7 @@ import uk.co.syski.client.android.viewmodel.SystemCPUViewModel;
 /**
  * Activity for displaying all CPU information for a system
  */
-public class CPUActivity extends AppCompatActivity {
+public class CPUActivity extends SyskiActivity {
 
     private static final String TAG = "CPUActivity";
 
@@ -38,8 +41,15 @@ public class CPUActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cpu);
 
+        optionsMenu = new SyskiOptionsMenu();
+
         final CPUAdapter cpuAdapter = new CPUAdapter(this);
         ((ExpandableListView) findViewById(R.id.cpuList)).setAdapter(cpuAdapter);
+
+        DisplayMetrics display = this.getResources().getDisplayMetrics();
+        int width = display.widthPixels;
+        ExpandableListView listView = findViewById(R.id.cpuList);
+        listView.setIndicatorBounds(width-100, width);
 
         SystemCPUViewModel viewModel = ViewModelProviders.of(this).get(SystemCPUViewModel.class);
         viewModel.get().observe(this, new Observer<List<SystemCPUModel>>() {
@@ -81,7 +91,7 @@ public class CPUActivity extends AppCompatActivity {
     private void updateRealTimeUI(CPUDataEntity cpuDataEntity) {
         HeadedValueFragment loadModel = HeadedValueFragment.newInstance(
             new HeadedValueModel(
-                R.drawable.placeholder,
+                R.drawable.graph_icon,
                 "CPU Load",
                 cpuDataEntity.Load + "%"
             )
@@ -91,32 +101,12 @@ public class CPUActivity extends AppCompatActivity {
 
         HeadedValueFragment processesModel = HeadedValueFragment.newInstance(
             new HeadedValueModel(
-                R.drawable.placeholder,
+                R.drawable.graph_icon,
                 "CPU Processes",
                 Integer.toString(Math.round(cpuDataEntity.Processes))
             )
         );
 
         getSupportFragmentManager().beginTransaction().replace(R.id.processesFragment, processesModel).commit();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.appbar, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_syslist) {
-            Intent settings = new Intent(this, SystemListMenu.class);
-            startActivity(settings);
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }

@@ -8,7 +8,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.view.MainActivity;
+import uk.co.syski.client.android.view.activity.MainActivity;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 
