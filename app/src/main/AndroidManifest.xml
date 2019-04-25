@@ -137,9 +137,9 @@
             android:resource="@color/colorPrimary" />
 
         <activity
-            android:name=".view.BIOSActivity"
+            android:name=".view.activity.BIOSActivity"
             android:label="BIOS"
-            android:parentActivityName=".view.SystemOverviewActivity"
+            android:parentActivityName=".view.activity.SystemOverviewActivity"
             />
     </application>
 
