@@ -127,6 +127,8 @@ public class SystemOverviewActivity extends SyskiActivity {
                 break;
             case 6: dest = SystemOSActivity.class;
                 break;
+            case 7: dest = ProcessListActivity.class;
+                break;
             default: dest = null;
         }
 
@@ -184,6 +186,13 @@ public class SystemOverviewActivity extends SyskiActivity {
                 R.drawable.pc_icon,
                 "View details for",
                 "Operating System"
+            )
+        );
+        listItems.add(
+            new HeadedValueModel(
+                R.drawable.placeholder,
+                "View details of",
+                "Processes"
             )
         );
 

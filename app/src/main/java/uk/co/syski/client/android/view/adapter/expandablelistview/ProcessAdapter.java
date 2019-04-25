@@ -12,19 +12,19 @@ import java.util.LinkedList;
 import java.util.List;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.model.viewmodel.SystemProcessModel;
+import uk.co.syski.client.android.model.database.entity.data.SystemProcessesEntity;
 
 public class ProcessAdapter extends BaseExpandableListAdapter {
 
     private Activity context;
-    private List<SystemProcessModel> processModelList;
+    private List<SystemProcessesEntity> processModelList;
 
     public ProcessAdapter(Activity context) {
         this.context = context;
         this.processModelList = new LinkedList<>();
     }
 
-    public void setData(List<SystemProcessModel> processModelList) {
+    public void setData(List<SystemProcessesEntity> processModelList) {
         this.processModelList = processModelList;
         notifyDataSetChanged();
     }
