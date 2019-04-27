@@ -74,7 +74,7 @@ public class ProcessAdapter extends BaseExpandableListAdapter {
         TextView secondHeadingView = convertView.findViewById(R.id.secondHeadingView);
         TextView secondValueView = convertView.findViewById(R.id.secondValueView);
 
-        imageView.setImageResource(R.drawable.placeholder);
+        imageView.setImageResource(R.drawable.process_icon);
         firstHeadingView.setText("Name");
         firstValueView.setText("");
         secondHeadingView.setText("Path");

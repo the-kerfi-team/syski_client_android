@@ -176,7 +176,7 @@ public class SystemOverviewActivity extends SyskiActivity {
         );
         listItems.add(
                 new HeadedValueModel(
-                        R.drawable.placeholder,
+                        R.drawable.bios_icon,
                         "View details for",
                         "BIOS"
                 )
@@ -190,7 +190,7 @@ public class SystemOverviewActivity extends SyskiActivity {
         );
         listItems.add(
             new HeadedValueModel(
-                R.drawable.placeholder,
+                R.drawable.process_icon,
                 "View details of",
                 "Processes"
             )

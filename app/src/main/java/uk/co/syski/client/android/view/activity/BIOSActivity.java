@@ -40,7 +40,7 @@ public class BIOSActivity extends SyskiActivity {
     private void updateStaticUI(SystemBIOSModel biosEntity) {
         DoubleHeadedValueFragment topFragment = DoubleHeadedValueFragment.newInstance(
             new DoubleHeadedValueModel(
-                R.drawable.placeholder,
+                R.drawable.bios_icon,
                "Manufacturer",
                 biosEntity.getManufacturerName(),
                "Caption",
