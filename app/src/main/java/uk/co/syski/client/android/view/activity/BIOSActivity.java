@@ -53,7 +53,7 @@ public class BIOSActivity extends SyskiActivity {
         ArrayList<HeadedValueModel> biosData = new ArrayList<>();
 
         biosData.add(new HeadedValueModel(R.drawable.version_icon, "Version", biosEntity.getVersion()));
-        biosData.add(new HeadedValueModel(R.drawable.placeholder, "Date", biosEntity.getDate()));
+        biosData.add(new HeadedValueModel(R.drawable.date_icon, "Date", biosEntity.getDate()));
 
         ListView dataList = findViewById(R.id.listView);
         dataList.setAdapter(new HeadedValueListAdapter(this, biosData));

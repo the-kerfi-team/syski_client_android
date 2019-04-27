@@ -93,7 +93,7 @@ public class CPUActivity extends SyskiActivity {
             new HeadedValueModel(
                 R.drawable.graph_icon,
                 "CPU Load",
-                cpuDataEntity.Load + "%"
+                Math.round(cpuDataEntity.Load) + "%"
             )
         );
 
