@@ -66,7 +66,7 @@ public class ProcessAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getGroupView(final int groupPosition, final boolean isExpanded, View convertView, final ViewGroup parent) {
-        convertView = context.getLayoutInflater().inflate(R.layout.fragment_double_headed_value, parent, false);
+        convertView = context.getLayoutInflater().inflate(R.layout.fragment_process, parent, false);
 
         ImageView imageView = convertView.findViewById(R.id.imageView);
         TextView firstHeadingView = convertView.findViewById(R.id.firstHeadingView);
