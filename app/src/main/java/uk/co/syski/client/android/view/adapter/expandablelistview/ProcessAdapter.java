@@ -105,22 +105,22 @@ public class ProcessAdapter extends BaseExpandableListAdapter {
 
         switch (childPosition) {
             case 0:
-                imageView.setImageResource(R.drawable.placeholder);
+                imageView.setImageResource(R.drawable.memory_size_icon);
                 headingView.setText("Memory Size");
                 valueView.setText(String.valueOf(processModelList.get(groupPosition).MemSize));
                 break;
             case 1:
-                imageView.setImageResource(R.drawable.placeholder);
+                imageView.setImageResource(R.drawable.cpu_clock_icon);
                 headingView.setText("Kernel Time");
                 valueView.setText(String.valueOf(processModelList.get(groupPosition).KernelTime));
                 break;
             case 2:
-                imageView.setImageResource(R.drawable.placeholder);
+                imageView.setImageResource(R.drawable.cpu_thread_icon);
                 headingView.setText("Threads");
                 valueView.setText(String.valueOf(processModelList.get(groupPosition).Threads));
                 break;
             case 3:
-                imageView.setImageResource(R.drawable.placeholder);
+                imageView.setImageResource(R.drawable.cpu_clock_icon);
                 headingView.setText("Up Time");
                 valueView.setText(String.valueOf(processModelList.get(groupPosition).UpTime));
                 break;
