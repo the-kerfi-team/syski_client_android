@@ -76,9 +76,9 @@ public class ProcessAdapter extends BaseExpandableListAdapter {
 
         imageView.setImageResource(R.drawable.placeholder);
         firstHeadingView.setText("Name");
-        firstValueView.setText("");
+        firstValueView.setText(processModelList.get(groupPosition).Name);
         secondHeadingView.setText("Path");
-        secondValueView.setText("");
+        secondValueView.setText(processModelList.get(groupPosition).Path);
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,22 +107,22 @@ public class ProcessAdapter extends BaseExpandableListAdapter {
             case 0:
                 imageView.setImageResource(R.drawable.placeholder);
                 headingView.setText("Memory Size");
-                valueView.setText("");
+                valueView.setText(String.valueOf(processModelList.get(groupPosition).MemSize));
                 break;
             case 1:
                 imageView.setImageResource(R.drawable.placeholder);
                 headingView.setText("Kernel Time");
-                valueView.setText("");
+                valueView.setText(String.valueOf(processModelList.get(groupPosition).KernelTime));
                 break;
             case 2:
                 imageView.setImageResource(R.drawable.placeholder);
                 headingView.setText("Threads");
-                valueView.setText("");
+                valueView.setText(String.valueOf(processModelList.get(groupPosition).Threads));
                 break;
             case 3:
                 imageView.setImageResource(R.drawable.placeholder);
                 headingView.setText("Up Time");
-                valueView.setText("");
+                valueView.setText(String.valueOf(processModelList.get(groupPosition).UpTime));
                 break;
         }
 
