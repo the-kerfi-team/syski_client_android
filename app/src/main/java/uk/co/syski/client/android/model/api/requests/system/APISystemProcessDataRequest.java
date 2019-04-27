@@ -16,13 +16,13 @@ import java.util.UUID;
 
 import uk.co.syski.client.android.model.api.requests.APIAuthorizationRequest;
 
-public class APISystemNetworkDataRequest extends APIAuthorizationRequest<JSONArray>
+public class APISystemProcessDataRequest extends APIAuthorizationRequest<JSONArray>
 {
 
     private UUID mSystemId;
 
-    public APISystemNetworkDataRequest(Context context, UUID systemId, Response.Listener<JSONArray> listener, @Nullable Response.ErrorListener errorListener) {
-        super(context, Method.POST, "system/" + systemId.toString() + "/cpu/data", null, listener, errorListener);
+    public APISystemProcessDataRequest(Context context, UUID systemId, Response.Listener<JSONArray> listener, @Nullable Response.ErrorListener errorListener) {
+        super(context, Method.GET, "system/" + systemId.toString() + "/processes", null, listener, errorListener);
         mSystemId = systemId;
     }
 

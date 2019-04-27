@@ -22,7 +22,7 @@ public class APISystemStorageDataRequest extends APIAuthorizationRequest<JSONArr
     private UUID mSystemId;
 
     public APISystemStorageDataRequest(Context context, UUID systemId, Response.Listener<JSONArray> listener, @Nullable Response.ErrorListener errorListener) {
-        super(context, Method.POST, "system/" + systemId.toString() + "/storage/data", null, listener, errorListener);
+        super(context, Method.GET, "system/" + systemId.toString() + "/storage/data", null, listener, errorListener);
         mSystemId = systemId;
     }
 

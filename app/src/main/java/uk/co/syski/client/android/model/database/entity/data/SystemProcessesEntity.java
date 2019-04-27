@@ -31,6 +31,9 @@ public class SystemProcessesEntity {
     public UUID SystemId;
 
     @NonNull
+    public int Id;
+
+    @NonNull
     public String Name;
 
     @NonNull
