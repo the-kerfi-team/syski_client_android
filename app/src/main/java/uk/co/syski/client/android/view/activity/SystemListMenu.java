@@ -37,6 +37,7 @@ import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.model.database.SyskiCache;
 import uk.co.syski.client.android.model.database.entity.SystemEntity;
 import uk.co.syski.client.android.model.repository.Repository;
+import uk.co.syski.client.android.model.viewmodel.SystemModel;
 import uk.co.syski.client.android.view.adapter.recyclerview.SystemListAdapter;
 import uk.co.syski.client.android.view.menu.SystemListOptionsMenu;
 import uk.co.syski.client.android.viewmodel.SystemListViewModel;
@@ -85,9 +86,9 @@ public class SystemListMenu extends SyskiActivity implements NavigationView.OnNa
         listView.setAdapter(adapter);
 
         viewModel = ViewModelProviders.of(this).get(SystemListViewModel.class);
-        viewModel.get().observe(this, new Observer<List<SystemEntity>>() {
+        viewModel.get().observe(this, new Observer<List<SystemModel>>() {
             @Override
-            public void onChanged(@Nullable List<SystemEntity> systemEntities) {
+            public void onChanged(@Nullable List<SystemModel> systemEntities) {
                 adapter.setData(systemEntities);
             }
         });
@@ -101,13 +102,13 @@ public class SystemListMenu extends SyskiActivity implements NavigationView.OnNa
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 // TODO: Delete System from API
-                SystemEntity systemEntity = adapter.getItem(viewHolder.getAdapterPosition());
+                SystemModel systemEntity = adapter.getItem(viewHolder.getAdapterPosition());
 
-                viewModel.delete(systemEntity);
+                viewModel.delete(systemEntity.getId());
                 adapter.removeItem(viewHolder.getAdapterPosition());
 
                 // TODO: Snackbar Undo Functionality
-                Snackbar snackbar = Snackbar.make(listView,"System: \""+systemEntity.HostName+"\" Deleted", Snackbar.LENGTH_LONG);
+                Snackbar snackbar = Snackbar.make(listView,"System: \""+systemEntity.getHostName()+"\" Deleted", Snackbar.LENGTH_LONG);
                 snackbar.show();
             }
         };
@@ -211,11 +212,11 @@ public class SystemListMenu extends SyskiActivity implements NavigationView.OnNa
                     boolean systemFound = false;
                     UUID systemId = UUID.fromString(result.getContents());
 
-                    List<SystemEntity> sys = viewModel.get().getValue();
+                    List<SystemModel> sys = viewModel.get().getValue();
                     if (sys != null)
                     {
-                        for(SystemEntity system : sys){
-                            if(system.Id.equals(systemId)){
+                        for(SystemModel system : sys){
+                            if(system.getId().equals(systemId)){
                                 systemFound = true;
                             }
                         }

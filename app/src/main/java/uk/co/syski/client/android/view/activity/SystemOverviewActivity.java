@@ -15,6 +15,7 @@ import java.util.List;
 
 import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.model.database.entity.SystemEntity;
+import uk.co.syski.client.android.model.viewmodel.SystemModel;
 import uk.co.syski.client.android.view.adapter.listview.HeadedValueListAdapter;
 import uk.co.syski.client.android.view.fragment.HeadedValueFragment;
 import uk.co.syski.client.android.view.fragment.OverviewFragment;
@@ -41,9 +42,9 @@ public class SystemOverviewActivity extends SyskiActivity {
         buildBaseUI();
 
         viewModel = ViewModelProviders.of(this).get(SystemSummaryViewModel.class);
-        viewModel.get().observe(this, new Observer<SystemEntity>() {
+        viewModel.get().observe(this, new Observer<SystemModel>() {
             @Override
-            public void onChanged(@Nullable SystemEntity systemEntity) {
+            public void onChanged(@Nullable SystemModel systemEntity) {
                 updateStaticUI(systemEntity);
             }
         });
@@ -83,24 +84,33 @@ public class SystemOverviewActivity extends SyskiActivity {
         });
     }
 
-    private void updateStaticUI(SystemEntity systemEntity) {
+    private void updateStaticUI(SystemModel systemEntity) {
         ArrayList<HeadedValueModel> systemData = new ArrayList<>();
 
         systemData.add(
             new HeadedValueModel(
                 R.drawable.name_icon,
                 "Host Name",
-                systemEntity.HostName
+                systemEntity.getHostName()
             )
         );
 
+        int icon;
+        if (systemEntity.getOnline())
+        {
+            icon = R.drawable.online_pc_icon;
+        }
+        else
+        {
+            icon = R.drawable.offline_pc_icon;
+        }
         OverviewFragment overviewFragment = OverviewFragment.newInstance(
             new DoubleHeadedValueModel(
-                R.drawable.pc_icon,
+                icon,
                 "Model",
-                systemEntity.ModelName,
+                systemEntity.getModelName(),
                 "Manufacturer",
-                systemEntity.ManufacturerName
+                systemEntity.getManufacturerName()
             ),
             systemData
         );

@@ -16,6 +16,7 @@ import java.util.List;
 
 import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.model.database.entity.SystemEntity;
+import uk.co.syski.client.android.model.viewmodel.SystemModel;
 import uk.co.syski.client.android.view.activity.SystemOverviewActivity;
 
 public class SystemListAdapter extends RecyclerView.Adapter<SystemListAdapter.SystemViewHolder> {
@@ -23,7 +24,7 @@ public class SystemListAdapter extends RecyclerView.Adapter<SystemListAdapter.Sy
     SharedPreferences prefs;
     SharedPreferences.Editor prefEditor;
 
-    List<SystemEntity> systemEntities;
+    List<SystemModel> systemEntities;
 
     Activity context;
 
@@ -34,7 +35,7 @@ public class SystemListAdapter extends RecyclerView.Adapter<SystemListAdapter.Sy
         prefEditor = prefs.edit();
     }
 
-    public void setData(List<SystemEntity> systemEntities)
+    public void setData(List<SystemModel> systemEntities)
     {
         this.systemEntities = systemEntities;
         notifyDataSetChanged();
@@ -62,14 +63,22 @@ public class SystemListAdapter extends RecyclerView.Adapter<SystemListAdapter.Sy
         TextView headingView = holder.view.findViewById(R.id.headingView);
         TextView valueView = holder.view.findViewById(R.id.valueView);
 
-        imageView.setImageResource(R.drawable.pc_icon);
+        if (systemEntities.get(position).getOnline())
+        {
+            imageView.setImageResource(R.drawable.online_pc_icon);
+        }
+        else
+        {
+            imageView.setImageResource(R.drawable.offline_pc_icon);
+        }
+
         headingView.setText(R.string.txt_details_for);
-        valueView.setText(systemEntities.get(position).HostName);
+        valueView.setText(systemEntities.get(position).getHostNameAndPing());
 
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openSystemOverview(systemEntities.get(position).Id.toString());
+                openSystemOverview(systemEntities.get(position).getId().toString());
             }
         });
     }
@@ -86,7 +95,7 @@ public class SystemListAdapter extends RecyclerView.Adapter<SystemListAdapter.Sy
         return systemEntities.size();
     }
 
-    public SystemEntity getItem(int pos){
+    public SystemModel getItem(int pos){
         return systemEntities.get(pos);
     }
 
