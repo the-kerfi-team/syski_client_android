@@ -102,7 +102,7 @@ public class SystemOverviewActivity extends SyskiActivity {
 
             systemData.add(
                 new HeadedValueModel(
-                    R.drawable.placeholder,
+                    R.drawable.ping_icon,
                     "Last Ping",
                     Math.round(systemEntity.getPing()) + " ms"
                 )
