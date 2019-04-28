@@ -99,6 +99,14 @@ public class SystemOverviewActivity extends SyskiActivity {
         if (systemEntity.getOnline())
         {
             icon = R.drawable.online_pc_icon;
+
+            systemData.add(
+                new HeadedValueModel(
+                    R.drawable.placeholder,
+                    "Last Ping",
+                    Math.round(systemEntity.getPing()) + " ms"
+                )
+            );
         }
         else
         {
