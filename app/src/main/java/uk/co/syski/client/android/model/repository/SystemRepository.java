@@ -183,8 +183,11 @@ public enum SystemRepository {
             e.printStackTrace();
         }
         mSystemEntities.put(systemEntity.Id, systemEntity);
-        mSystemModels.put(systemEntity.Id, new SystemModel(systemEntity.Id, systemEntity.HostName, systemEntity.ModelName, systemEntity.ManufacturerName));
-        mLiveDataSystemEntities.postValue(mSystemModels);
+        if (mSystemModels.get(systemEntity.Id) == null)
+        {
+            mSystemModels.put(systemEntity.Id, new SystemModel(systemEntity.Id, systemEntity.HostName, systemEntity.ModelName, systemEntity.ManufacturerName));
+            mLiveDataSystemEntities.postValue(mSystemModels);
+        }
     }
 
     public void delete(UUID id)
