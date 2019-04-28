@@ -30,7 +30,7 @@ public class SystemListViewModel extends AndroidViewModel {
     }
 
     public void delete(UUID id){
-        mSystemRepository.delete(id);
+        mSystemRepository.delete(id, this.getApplication().getBaseContext());
     }
 
     @Override

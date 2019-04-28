@@ -30,6 +30,7 @@ import java.util.concurrent.ExecutionException;
 import uk.co.syski.client.android.model.api.VolleySingleton;
 import uk.co.syski.client.android.model.api.requests.system.APISystemCPUDataRequest;
 import uk.co.syski.client.android.model.api.requests.system.APISystemPingRequest;
+import uk.co.syski.client.android.model.api.requests.system.APISystemRemove;
 import uk.co.syski.client.android.model.api.requests.system.APISystemsRequest;
 import uk.co.syski.client.android.model.database.SyskiCache;
 import uk.co.syski.client.android.model.database.dao.SystemDao;
@@ -190,7 +191,7 @@ public enum SystemRepository {
         }
     }
 
-    public void delete(UUID id)
+    public void delete(UUID id, Context context)
     {
         try {
             new deleteSystemsAsyncTask(mSystemDao).execute(mSystemEntities.get(id)).get();
@@ -199,6 +200,10 @@ public enum SystemRepository {
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
+        mSystemEntities.remove(id);
+        mSystemModels.remove(id);
+        VolleySingleton.getInstance(context).addToRequestQueue(new APISystemRemove(context, id));
+        mLiveDataSystemEntities.postValue(mSystemModels);
     }
 
     private static class loadSystemEntitiesAsyncTask extends AsyncTask<Void, Void, HashMap<UUID, SystemEntity>> {
