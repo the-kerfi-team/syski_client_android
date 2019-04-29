@@ -13,10 +13,12 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 import java.util.List;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.data.entity.data.StorageDataEntity;
+import uk.co.syski.client.android.model.database.entity.data.StorageDataEntity;
+import uk.co.syski.client.android.view.activity.SyskiActivity;
+import uk.co.syski.client.android.view.menu.SyskiOptionsMenu;
 import uk.co.syski.client.android.viewmodel.SystemStorageDataViewModel;
 
-public class VariableStorageTransfersGraph extends AppCompatActivity {
+public class VariableStorageTransfersGraph extends SyskiActivity {
 
     GraphView graph;
     LineGraphSeries<DataPoint> loadSeries;
@@ -27,6 +29,9 @@ public class VariableStorageTransfersGraph extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
+
+        optionsMenu = new SyskiOptionsMenu();
+
         graph = findViewById(R.id.graph);
 
         loadSeries = new LineGraphSeries<DataPoint>();

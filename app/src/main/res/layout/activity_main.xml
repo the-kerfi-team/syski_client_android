@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="uk.co.syski.client.android.view.MainActivity">
+    tools:context="uk.co.syski.client.android.view.activity.MainActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -24,13 +24,13 @@
                 android:id="@+id/tabLogin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Login" />
+                android:text="@string/action_sign_in" />
 
             <android.support.design.widget.TabItem
                 android:id="@+id/tabRegister"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Register" />
+                android:text="@string/action_sign_up" />
 
         </android.support.design.widget.TabLayout>
     </android.support.design.widget.AppBarLayout>

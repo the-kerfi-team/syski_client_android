@@ -1,29 +1,42 @@
 package uk.co.syski.client.android.viewmodel;
 
+import android.app.Application;
+import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModel;
+import android.support.annotation.NonNull;
 
 import java.util.List;
+import java.util.UUID;
 
-import uk.co.syski.client.android.data.entity.SystemEntity;
-import uk.co.syski.client.android.data.repository.Repository;
-import uk.co.syski.client.android.data.repository.SystemRepository;
+import uk.co.syski.client.android.model.database.entity.SystemEntity;
+import uk.co.syski.client.android.model.repository.Repository;
+import uk.co.syski.client.android.model.repository.SystemRepository;
+import uk.co.syski.client.android.model.viewmodel.SystemModel;
 
-public class SystemListViewModel extends ViewModel {
-
-    private String TAG = this.getClass().getSimpleName();
+public class SystemListViewModel extends AndroidViewModel {
 
     private SystemRepository mSystemRepository;
-    private MutableLiveData<List<SystemEntity>> mSystemList;
+    private LiveData<List<SystemModel>> mSystemList;
 
-
-    public SystemListViewModel()
-    {
+    public SystemListViewModel(@NonNull Application application) {
+        super(application);
         mSystemRepository = Repository.getInstance().getSystemRepository();
-        mSystemList = mSystemRepository.get();
+        mSystemList = mSystemRepository.getSystemsLiveData(application);
+        mSystemRepository.start(application);
     }
 
-    public LiveData<List<SystemEntity>> get() { return mSystemList; }
+    public LiveData<List<SystemModel>> get() {
+        return mSystemList;
+    }
+
+    public void delete(UUID id){
+        mSystemRepository.delete(id, this.getApplication().getBaseContext());
+    }
+
+    @Override
+    public void onCleared()
+    {
+        mSystemRepository.stop();
+    }
 
 }

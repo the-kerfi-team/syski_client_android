@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.UUID;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.data.entity.data.StorageDataEntity;
-import uk.co.syski.client.android.data.repository.SystemStorageDataRepository;
+import uk.co.syski.client.android.model.database.entity.data.StorageDataEntity;
+import uk.co.syski.client.android.model.repository.SystemStorageDataRepository;
 
 public class SystemStorageDataViewModel extends AndroidViewModel {
 
