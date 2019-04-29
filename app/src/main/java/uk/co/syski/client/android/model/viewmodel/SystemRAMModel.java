@@ -58,7 +58,7 @@ public class SystemRAMModel {
                     bytes /= 1024;
                     break;
                 default:
-                    return bytes + "B";
+                    return bytes + " " + "B";
             }
 
             return bytes + " " + ramUnits;

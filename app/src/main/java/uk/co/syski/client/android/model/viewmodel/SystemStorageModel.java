@@ -54,7 +54,7 @@ public class SystemStorageModel {
                     bytes /= 1000;
                     break;
                 default:
-                    return bytes + "B";
+                    return bytes + " " + "B";
             }
 
             return bytes + " " + storageUnits;
