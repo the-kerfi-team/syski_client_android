@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,13 +14,14 @@ import java.util.List;
 
 import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.model.database.entity.data.SystemProcessesEntity;
+import uk.co.syski.client.android.view.activity.ProcessListActivity;
 
 public class ProcessAdapter extends BaseExpandableListAdapter {
 
-    private Activity context;
+    private ProcessListActivity context;
     private List<SystemProcessesEntity> processModelList;
 
-    public ProcessAdapter(Activity context) {
+    public ProcessAdapter(ProcessListActivity context) {
         this.context = context;
         this.processModelList = new LinkedList<>();
     }
@@ -89,6 +91,14 @@ public class ProcessAdapter extends BaseExpandableListAdapter {
                 } else {
                     listView.collapseGroup(groupPosition);
                 }
+            }
+        });
+
+        ImageButton killButton = convertView.findViewById(R.id.killButton);
+        killButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                context.killProcess(processModelList.get(groupPosition));
             }
         });
 

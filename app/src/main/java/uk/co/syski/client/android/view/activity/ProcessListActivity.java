@@ -10,7 +10,6 @@ import java.util.List;
 
 import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.model.database.entity.data.SystemProcessesEntity;
-import uk.co.syski.client.android.model.viewmodel.SystemCPUModel;
 import uk.co.syski.client.android.view.adapter.expandablelistview.ProcessAdapter;
 import uk.co.syski.client.android.view.menu.SyskiOptionsMenu;
 import uk.co.syski.client.android.viewmodel.SystemProcessesViewModel;
@@ -19,6 +18,7 @@ public class ProcessListActivity extends SyskiActivity {
 
     ExpandableListView processList;
     ProcessAdapter adapter;
+    SystemProcessesViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +31,7 @@ public class ProcessListActivity extends SyskiActivity {
         adapter = new ProcessAdapter(this);
         processList.setAdapter(adapter);
 
-        SystemProcessesViewModel viewModel = ViewModelProviders.of(this).get(SystemProcessesViewModel.class);
+        viewModel = ViewModelProviders.of(this).get(SystemProcessesViewModel.class);
         viewModel.get().observe(this, new Observer<List<SystemProcessesEntity>>() {
             @Override
             public void onChanged(@Nullable List<SystemProcessesEntity> systemProcessesEntities) {
@@ -39,5 +39,9 @@ public class ProcessListActivity extends SyskiActivity {
                 processList.deferNotifyDataSetChanged();
             }
         });
+    }
+
+    public void killProcess(SystemProcessesEntity systemProcessesEntity) {
+        
     }
 }
