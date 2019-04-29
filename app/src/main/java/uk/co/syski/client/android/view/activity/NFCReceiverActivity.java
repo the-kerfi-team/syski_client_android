@@ -1,4 +1,4 @@
-package uk.co.syski.client.android.view;
+package uk.co.syski.client.android.view.activity;
 
 import android.app.PendingIntent;
 import android.arch.lifecycle.ViewModelProviders;
@@ -21,6 +21,7 @@ import java.util.UUID;
 
 import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.model.database.entity.SystemEntity;
+import uk.co.syski.client.android.model.viewmodel.SystemModel;
 import uk.co.syski.client.android.viewmodel.SystemListViewModel;
 
 /**
@@ -103,9 +104,9 @@ public class NFCReceiverActivity extends AppCompatActivity {
 
             Log.i(TAG, "Looking up SysID using NFC");
             SystemListViewModel model = ViewModelProviders.of(this).get(SystemListViewModel.class);
-            List<SystemEntity> sys = model.get().getValue();
-            for(SystemEntity system : sys){
-                if(system.Id.equals(systemId)){
+            List<SystemModel> sys = model.get().getValue();
+            for(SystemModel system : sys){
+                if(system.getId().equals(systemId)){
                     systemNotFound = false;
                 }
             }

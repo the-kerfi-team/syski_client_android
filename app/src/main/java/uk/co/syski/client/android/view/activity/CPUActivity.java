@@ -1,4 +1,4 @@
-package uk.co.syski.client.android.view;
+package uk.co.syski.client.android.view.activity;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -44,6 +45,11 @@ public class CPUActivity extends SyskiActivity {
 
         final CPUAdapter cpuAdapter = new CPUAdapter(this);
         ((ExpandableListView) findViewById(R.id.cpuList)).setAdapter(cpuAdapter);
+
+        DisplayMetrics display = this.getResources().getDisplayMetrics();
+        int width = display.widthPixels;
+        ExpandableListView listView = findViewById(R.id.cpuList);
+        listView.setIndicatorBounds(width-100, width);
 
         SystemCPUViewModel viewModel = ViewModelProviders.of(this).get(SystemCPUViewModel.class);
         viewModel.get().observe(this, new Observer<List<SystemCPUModel>>() {
@@ -87,7 +93,7 @@ public class CPUActivity extends SyskiActivity {
             new HeadedValueModel(
                 R.drawable.graph_icon,
                 "CPU Load",
-                cpuDataEntity.Load + "%"
+                Math.round(cpuDataEntity.Load) + "%"
             )
         );
 

@@ -7,8 +7,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import uk.co.syski.client.android.R;
-import uk.co.syski.client.android.view.SettingsActivity;
-import uk.co.syski.client.android.view.SystemListMenu;
+import uk.co.syski.client.android.view.activity.SettingsActivity;
+import uk.co.syski.client.android.view.activity.SystemListMenu;
 
 public class SyskiOptionsMenu implements ActivityOptionsMenu {
 

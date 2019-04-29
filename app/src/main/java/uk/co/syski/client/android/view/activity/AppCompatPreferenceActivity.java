@@ -1,4 +1,4 @@
-package uk.co.syski.client.android.view;
+package uk.co.syski.client.android.view.activity;
 
 import android.content.res.Configuration;
 import android.os.Bundle;

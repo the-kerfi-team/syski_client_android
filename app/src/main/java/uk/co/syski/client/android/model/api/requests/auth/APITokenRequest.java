@@ -34,7 +34,7 @@ public class APITokenRequest extends APIRequest<JSONObject> {
     @Override
     public Map<String, String> getHeaders() throws AuthFailureError {
         Map<String, String> params = new HashMap<String, String>();
-        params.put("User-Agent", "Syski APP");
+        //params.put("User-Agent", "Syski APP");
         params.put("Authorization", "Bearer " + Repository.getInstance().getUserRepository().getUser().AccessToken);
         return params;
     }

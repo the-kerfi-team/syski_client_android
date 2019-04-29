@@ -18,13 +18,14 @@ import uk.co.syski.client.android.model.database.entity.SystemEntity;
 import uk.co.syski.client.android.model.database.entity.UserEntity;
 import uk.co.syski.client.android.model.repository.Repository;
 import uk.co.syski.client.android.model.repository.SystemRepository;
+import uk.co.syski.client.android.model.viewmodel.SystemModel;
 
 public class SystemSummaryViewModel extends AndroidViewModel {
 
     private String TAG = this.getClass().getSimpleName();
 
     private SystemRepository mSystemRepository;
-    private LiveData<SystemEntity> mSystem;
+    private LiveData<SystemModel> mSystem;
     private UUID systemId;
 
     public SystemSummaryViewModel(@NonNull Application application) {
@@ -54,7 +55,7 @@ public class SystemSummaryViewModel extends AndroidViewModel {
         VolleySingleton.getInstance(getApplication()).addToRequestQueue(new APISystemRestartRequest(getApplication(), systemId));
     }
 
-    public LiveData<SystemEntity> get()
+    public LiveData<SystemModel> get()
     {
         return mSystem;
     }

@@ -1,4 +1,4 @@
-package uk.co.syski.client.android.view;
+package uk.co.syski.client.android.view.activity;
 
 import android.app.PendingIntent;
 import android.arch.lifecycle.Observer;
@@ -11,15 +11,15 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -37,7 +37,7 @@ import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.model.database.SyskiCache;
 import uk.co.syski.client.android.model.database.entity.SystemEntity;
 import uk.co.syski.client.android.model.repository.Repository;
-import uk.co.syski.client.android.view.activity.SyskiActivity;
+import uk.co.syski.client.android.model.viewmodel.SystemModel;
 import uk.co.syski.client.android.view.adapter.recyclerview.SystemListAdapter;
 import uk.co.syski.client.android.view.menu.SystemListOptionsMenu;
 import uk.co.syski.client.android.viewmodel.SystemListViewModel;
@@ -78,17 +78,42 @@ public class SystemListMenu extends SyskiActivity implements NavigationView.OnNa
         prefEditor = prefs.edit();
 
         // Setup ListView
-        RecyclerView listView = findViewById(R.id.sysList);
+        final RecyclerView listView = findViewById(R.id.sysList);
+
         listView.setLayoutManager(new GridLayoutManager(this, 1));
+
         final SystemListAdapter adapter = new SystemListAdapter(this);
         listView.setAdapter(adapter);
+
         viewModel = ViewModelProviders.of(this).get(SystemListViewModel.class);
-        viewModel.get().observe(this, new Observer<List<SystemEntity>>() {
+        viewModel.get().observe(this, new Observer<List<SystemModel>>() {
             @Override
-            public void onChanged(@Nullable List<SystemEntity> systemEntities) {
+            public void onChanged(@Nullable List<SystemModel> systemEntities) {
                 adapter.setData(systemEntities);
             }
         });
+
+        ItemTouchHelper.SimpleCallback systemListCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                // TODO: Delete System from API
+                SystemModel systemEntity = adapter.getItem(viewHolder.getAdapterPosition());
+
+                viewModel.delete(systemEntity.getId());
+                adapter.removeItem(viewHolder.getAdapterPosition());
+
+                // TODO: Snackbar Undo Functionality
+                Snackbar snackbar = Snackbar.make(listView,"System: \""+systemEntity.getHostName()+"\" Deleted", Snackbar.LENGTH_LONG);
+                snackbar.show();
+            }
+        };
+
+        new ItemTouchHelper(systemListCallback).attachToRecyclerView(listView);
 
         Intent intent = new Intent(this, SystemListMenu.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -187,11 +212,11 @@ public class SystemListMenu extends SyskiActivity implements NavigationView.OnNa
                     boolean systemFound = false;
                     UUID systemId = UUID.fromString(result.getContents());
 
-                    List<SystemEntity> sys = viewModel.get().getValue();
+                    List<SystemModel> sys = viewModel.get().getValue();
                     if (sys != null)
                     {
-                        for(SystemEntity system : sys){
-                            if(system.Id.equals(systemId)){
+                        for(SystemModel system : sys){
+                            if(system.getId().equals(systemId)){
                                 systemFound = true;
                             }
                         }

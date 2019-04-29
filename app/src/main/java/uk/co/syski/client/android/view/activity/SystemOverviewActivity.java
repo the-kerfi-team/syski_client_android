@@ -1,15 +1,11 @@
-package uk.co.syski.client.android.view;
+package uk.co.syski.client.android.view.activity;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -19,7 +15,7 @@ import java.util.List;
 
 import uk.co.syski.client.android.R;
 import uk.co.syski.client.android.model.database.entity.SystemEntity;
-import uk.co.syski.client.android.view.activity.SyskiActivity;
+import uk.co.syski.client.android.model.viewmodel.SystemModel;
 import uk.co.syski.client.android.view.adapter.listview.HeadedValueListAdapter;
 import uk.co.syski.client.android.view.fragment.HeadedValueFragment;
 import uk.co.syski.client.android.view.fragment.OverviewFragment;
@@ -46,9 +42,9 @@ public class SystemOverviewActivity extends SyskiActivity {
         buildBaseUI();
 
         viewModel = ViewModelProviders.of(this).get(SystemSummaryViewModel.class);
-        viewModel.get().observe(this, new Observer<SystemEntity>() {
+        viewModel.get().observe(this, new Observer<SystemModel>() {
             @Override
-            public void onChanged(@Nullable SystemEntity systemEntity) {
+            public void onChanged(@Nullable SystemModel systemEntity) {
                 updateStaticUI(systemEntity);
             }
         });
@@ -88,24 +84,41 @@ public class SystemOverviewActivity extends SyskiActivity {
         });
     }
 
-    private void updateStaticUI(SystemEntity systemEntity) {
+    private void updateStaticUI(SystemModel systemEntity) {
         ArrayList<HeadedValueModel> systemData = new ArrayList<>();
 
         systemData.add(
             new HeadedValueModel(
                 R.drawable.name_icon,
                 "Host Name",
-                systemEntity.HostName
+                systemEntity.getHostName()
             )
         );
 
+        int icon;
+        if (systemEntity.getOnline())
+        {
+            icon = R.drawable.online_pc_icon;
+
+            systemData.add(
+                new HeadedValueModel(
+                    R.drawable.ping_icon,
+                    "Last Ping",
+                    Math.round(systemEntity.getPing()) + " ms"
+                )
+            );
+        }
+        else
+        {
+            icon = R.drawable.offline_pc_icon;
+        }
         OverviewFragment overviewFragment = OverviewFragment.newInstance(
             new DoubleHeadedValueModel(
-                R.drawable.pc_icon,
+                icon,
                 "Model",
-                systemEntity.ModelName,
+                systemEntity.getModelName(),
                 "Manufacturer",
-                systemEntity.ManufacturerName
+                systemEntity.getManufacturerName()
             ),
             systemData
         );
@@ -128,12 +141,16 @@ public class SystemOverviewActivity extends SyskiActivity {
                 break;
             case 4: dest = MOBOActivity.class;
                 break;
-            case 5: dest = SystemOSActivity.class;
+            case 5: dest = BIOSActivity.class;
+                break;
+            case 6: dest = SystemOSActivity.class;
+                break;
+            case 7: dest = ProcessListActivity.class;
                 break;
             default: dest = null;
         }
 
-        Intent intent = new Intent(SystemOverviewActivity.this, dest);
+        Intent intent = new Intent(uk.co.syski.client.android.view.activity.SystemOverviewActivity.this, dest);
         startActivity(intent);
     }
 
@@ -176,15 +193,30 @@ public class SystemOverviewActivity extends SyskiActivity {
             )
         );
         listItems.add(
+                new HeadedValueModel(
+                        R.drawable.bios_icon,
+                        "View details for",
+                        "BIOS"
+                )
+        );
+        listItems.add(
             new HeadedValueModel(
                 R.drawable.pc_icon,
                 "View details for",
                 "Operating System"
             )
         );
+        listItems.add(
+            new HeadedValueModel(
+                R.drawable.process_icon,
+                "View details of",
+                "Processes"
+            )
+        );
 
         return listItems;
     }
+
 
     public void shutdownOnClick(View v) {
         viewModel.shutdownOnClick();

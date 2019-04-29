@@ -23,7 +23,7 @@ import uk.co.syski.client.android.model.repository.Repository;
 public class APISystemsRequest extends APIAuthorizationRequest<JSONArray> {
 
     public APISystemsRequest(Context context) {
-        super(context, Method.GET, "system", null, null, null);
+        super(context, Method.GET, "system/all", null, null, null);
     }
 
     @Override

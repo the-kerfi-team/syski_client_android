@@ -22,7 +22,7 @@ public class APISystemCPUDataRequest extends APIAuthorizationRequest<JSONArray>
     private UUID mSystemId;
 
     public APISystemCPUDataRequest(Context context, UUID systemId, Response.Listener<JSONArray> listener, @Nullable Response.ErrorListener errorListener) {
-        super(context, Method.POST, "system/" + systemId.toString() + "/cpu/data", null, listener, errorListener);
+        super(context, Method.GET, "system/" + systemId.toString() + "/cpu/data", null, listener, errorListener);
         mSystemId = systemId;
     }
 
