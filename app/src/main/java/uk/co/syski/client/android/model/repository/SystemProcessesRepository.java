@@ -71,7 +71,7 @@ public class SystemProcessesRepository {
                                                 systemProcessesEntity.ParentId = Integer.parseInt(((JSONObject) response.get(i)).getString("parentId"));
                                                 systemProcessesEntity.Path = ((JSONObject) response.get(i)).getString("path");
                                                 systemProcessesEntity.Threads = Integer.parseInt(((JSONObject) response.get(i)).getString("threads"));
-                                                systemProcessesEntity.UpTime = Integer.parseInt(((JSONObject) response.get(i)).getString("upTime"));
+                                                systemProcessesEntity.UpTime = Long.parseLong(((JSONObject) response.get(i)).getString("upTime"));
                                                 systemProcessesEntity.CollectionDateTime = dateFormat.parse(((JSONObject) response.get(i)).getString("collectionDateTime"));
                                             } catch (JSONException e) {
                                                 e.printStackTrace();

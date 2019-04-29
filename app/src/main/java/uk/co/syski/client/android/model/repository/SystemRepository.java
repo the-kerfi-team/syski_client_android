@@ -74,33 +74,33 @@ public enum SystemRepository {
             public void run() {
                 mTimerHandler.post(new Runnable() {
                     public void run(){
+                        VolleySingleton.getInstance(application.getBaseContext()).addToRequestQueue(new APISystemsRequest(application.getBaseContext()));
                         for (final Map.Entry<UUID, SystemModel> entry: mSystemModels.entrySet()) {
                             VolleySingleton.getInstance(application).addToRequestQueue(new APISystemPingRequest(application, entry.getKey(),
-                                    new Response.Listener<JSONObject>() {
-                                        @Override
-                                        public void onResponse(JSONObject response) {
-                                            SystemModel systemModel = entry.getValue();
-                                            try {
-                                                systemModel.setOnline();
-                                                systemModel.setPing(Float.parseFloat(response.getString("ping")));
-                                            } catch (JSONException e) {
-                                                e.printStackTrace();
+                                            new Response.Listener<JSONObject>() {
+                                                @Override
+                                                public void onResponse(JSONObject response) {
+                                                    SystemModel systemModel = entry.getValue();
+                                                    try {
+                                                        systemModel.setOnline();
+                                                        systemModel.setPing(Float.parseFloat(response.getString("ping")));
+                                                    } catch (JSONException e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                    mLiveDataSystemEntities.postValue(mSystemModels);
+                                                }
+                                            },
+                                            new Response.ErrorListener() {
+                                                @Override
+                                                public void onErrorResponse(VolleyError error) {
+                                                    SystemModel systemModel = entry.getValue();
+                                                    systemModel.setOffline();
+                                                    mLiveDataSystemEntities.postValue(mSystemModels);
+                                                }
                                             }
-                                            mLiveDataSystemEntities.postValue(mSystemModels);
-                                        }
-                                    },
-                                    new Response.ErrorListener() {
-                                        @Override
-                                        public void onErrorResponse(VolleyError error) {
-                                            SystemModel systemModel = entry.getValue();
-                                            systemModel.setOffline();
-                                            mLiveDataSystemEntities.postValue(mSystemModels);
-                                        }
-                                    }
-                                )
+                                    )
                             );
                         }
-
                     }
                 });
             }
