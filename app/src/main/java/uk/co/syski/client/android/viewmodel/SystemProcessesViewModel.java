@@ -10,6 +10,9 @@ import java.util.List;
 import java.util.UUID;
 
 import uk.co.syski.client.android.R;
+import uk.co.syski.client.android.model.api.VolleySingleton;
+import uk.co.syski.client.android.model.api.requests.system.APISystemKillProcess;
+import uk.co.syski.client.android.model.api.requests.system.APISystemProcessDataRequest;
 import uk.co.syski.client.android.model.database.entity.data.SystemProcessesEntity;
 import uk.co.syski.client.android.model.repository.SystemProcessesRepository;
 import uk.co.syski.client.android.model.repository.SystemStorageDataRepository;
@@ -33,6 +36,10 @@ public class SystemProcessesViewModel extends AndroidViewModel
         return mSystemDataProcessesList;
     }
 
+    public void killProcess(int id)
+    {
+        VolleySingleton.getInstance(getApplication().getBaseContext()).addToRequestQueue(new APISystemKillProcess(getApplication().getBaseContext(), systemId, id));
+    }
 
     @Override
     public void onCleared()

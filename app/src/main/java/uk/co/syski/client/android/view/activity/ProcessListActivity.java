@@ -42,6 +42,6 @@ public class ProcessListActivity extends SyskiActivity {
     }
 
     public void killProcess(SystemProcessesEntity systemProcessesEntity) {
-        
+        viewModel.killProcess(systemProcessesEntity.Id);
     }
 }
